@@ -13,7 +13,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import users.Admin;
+import users.User;
 
 public class Main extends Application {
 
@@ -61,7 +64,15 @@ public class Main extends Application {
     }
 
     public void login() {
-        Scene mainApplication = new Scene(new GridPane(), 1000, 700);
+
+
+        User test = new Admin("Bob", "Test", 123123,6,6,"easilyCrackable");
+        Text text = new Text();
+        text.setText(test.getFirstName() + " " + test.getLastName());
+
+        GridPane screen = new GridPane();
+        screen.addRow(0, text);
+        Scene mainApplication = new Scene(screen, 500, 300);
         primaryStage.setScene(mainApplication);
     }
 
