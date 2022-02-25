@@ -1,0 +1,47 @@
+plugins {
+    id 'java-library'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java' //assume that your source codes are inside this
+        }
+    }
+
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+application {
+    mainClass = "samples.Main"
+}
+
+task copyResources (type: Copy) {
+    from 'src/main/java/resources'
+    into 'build/classes/java/main/resources'
+}
+
+javafx {
+    version = "17.0.1"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+build.finalizedBy copyResources
