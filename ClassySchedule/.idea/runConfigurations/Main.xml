@@ -3,7 +3,6 @@
     <option name="INCLUDE_PROVIDED_SCOPE" value="true" />
     <option name="MAIN_CLASS_NAME" value="samples.Main" />
     <module name="ClassySchedule.main" />
-    <option name="VM_PARAMETERS" value="--module-path ${PATH_TO_FX};build/classes/java --add-modules javafx.controls,javafx.fxml,javafx.base,javafx.graphics" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="samples.*" />
