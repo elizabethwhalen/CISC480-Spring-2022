@@ -1,6 +1,7 @@
 package users;
 
-public class Faculty implements User{
+
+public class Admin implements users.User {
 
     private String firstName;
     private String lastName;
@@ -10,7 +11,7 @@ public class Faculty implements User{
     private String password;
     //TODO: Add list of preferences
 
-    public Faculty (String firstName, String lastName, int id, float remainingTeachLoad, int prepNum, String password) {
+    public Admin (String firstName, String lastName, int id, float remainingTeachLoad, int prepNum, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;
@@ -78,4 +79,5 @@ public class Faculty implements User{
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

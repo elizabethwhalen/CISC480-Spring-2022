@@ -1,5 +1,4 @@
-package sample;
-
+package src.sample;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -24,7 +23,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         this.primaryStage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml")); //Warning:(26, 39) Argument 'getClass().getResource("sample.fxml")' might be null
         primaryStage.setTitle("Classy-Schedule");
         primaryStage.setScene(new Scene(root, 1000, 700));
         primaryStage.show();
@@ -38,7 +37,7 @@ public class Main extends Application {
         password.setText("Password");
 
         //Login onclick event
-        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() { // Warning:(40, 43) Anonymous new EventHandler<ActionEvent>() can be replaced with lambda. Warning:(40, 60) Explicit type argument ActionEvent can be replaced with <>
             public void handle(ActionEvent e)
             {
                 login();
@@ -66,7 +65,7 @@ public class Main extends Application {
     public void login() {
 
 
-        User test = new Admin("Bob", "Test", 123123,6,6,"easilyCrackable");
+        Admin test = new Admin("Bob", "Johnson", 123123,6,6,"easilyCrackable");
         Text text = new Text();
         text.setText(test.getFirstName() + " " + test.getLastName());
 

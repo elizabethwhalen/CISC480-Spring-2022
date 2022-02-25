@@ -1,6 +1,7 @@
 package users;
 
-public class Adjunct implements User {
+public class Faculty implements users.User {
+
     private String firstName;
     private String lastName;
     private int id;
@@ -9,7 +10,7 @@ public class Adjunct implements User {
     private String password;
     //TODO: Add list of preferences
 
-    public Adjunct (String firstName, String lastName, int id, float remainingTeachLoad, int prepNum, String password) {
+    public Faculty (String firstName, String lastName, int id, float remainingTeachLoad, int prepNum, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;

@@ -1,8 +1,6 @@
 package users;
 
-
-public class Admin implements User{
-
+public class Adjunct implements users.User {
     private String firstName;
     private String lastName;
     private int id;
@@ -11,7 +9,7 @@ public class Admin implements User{
     private String password;
     //TODO: Add list of preferences
 
-    public Admin (String firstName, String lastName, int id, float remainingTeachLoad, int prepNum, String password) {
+    public Adjunct (String firstName, String lastName, int id, float remainingTeachLoad, int prepNum, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;
@@ -79,5 +77,4 @@ public class Admin implements User{
     public void setPassword(String password) {
         this.password = password;
     }
-
 }
