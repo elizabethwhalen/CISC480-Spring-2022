@@ -5,4 +5,5 @@ module ClassySchedule.main {
     requires javafx.graphics;
 
     opens samples;
+    opens courses;
 }
