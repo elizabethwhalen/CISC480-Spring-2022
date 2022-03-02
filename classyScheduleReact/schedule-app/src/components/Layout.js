@@ -1,11 +1,12 @@
 import React from 'react'
-//import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import AppRouter from '../router/AppRouter'
+import { CssBaseline } from '@material-ui/core'
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     display: 'flex',
-//   },
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
 //   toolbar: {
 //     display: 'flex',
 //     alignItems: 'center',
@@ -18,10 +19,15 @@ import AppRouter from '../router/AppRouter'
 //     flexGrow: 1,
 //     padding: theme.spacing(3),
 //   },
-// }))
+ }))
 
 export default function Layout() {
+  const classes = useStyles()
   return (
-    <AppRouter></AppRouter>
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppRouter></AppRouter>
+    </div>
+   
   )
 }
