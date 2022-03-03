@@ -3,7 +3,7 @@ import { Grid, Paper, } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import background from '../images/campus.jpg'
 import logo from '../images/ustlogo.png'
-
+import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -51,7 +51,45 @@ const Login = () => {
               <img src={logo} style={{ width: '260px', height: '50px' }} alt='logo' ></img>
             </Grid>
             <Grid item xs={12} fullWidth style={{marginBottom: '30px'}}>
-            Sign in with your organizational account
+              Sign in with your organizational account
+            </Grid>
+            <Grid item xs={12} fullWidth>
+            <ValidatorForm onError={(errors) => console.log(errors)}>
+            <Grid container spacing={2}>
+              <Grid item>
+                <TextValidator
+                  size="small"
+                  variant="outlined"
+                  label="Email"
+                  
+                  fullWidth
+                  name="email"
+                  type="text"
+                  validators={['matchRegexp:^[0-9]{1,9}$', 'required']}
+                  errorMessages={[
+                    'Invalid - It should be a 9-digit number',
+                    'this field is required',
+                  ]}
+                />
+              </Grid>
+              <Grid item >
+                <TextValidator
+                  size="small"
+                  variant="outlined"
+                  label="Password"
+                  
+                  fullWidth
+                  name="password"
+                  type="text"
+                  validators={['matchRegexp:^[0-9]{1,3}$', 'required']}
+                  errorMessages={[
+                    'Invalid - It should be a 3-digit number',
+                    'this field is required',
+                  ]}
+                />
+              </Grid>
+            </Grid>
+          </ValidatorForm>
             </Grid>
           </Grid>
         </Grid>
