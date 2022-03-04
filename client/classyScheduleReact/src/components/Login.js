@@ -1,9 +1,10 @@
 import React from 'react'
-import { Grid, Paper, } from '@material-ui/core'
+import { Button, Grid, Paper, } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import background from '../images/campus.jpg'
 import logo from '../images/ustlogo.png'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
+import { Link } from 'react-router-dom'
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -72,7 +73,18 @@ const Login = () => {
                         'Invalid - It should be a 3-digit number',
                         'this field is required',
                       ]}
+                      styles={{marginBottom: '20px'}}
                     />
+                    <Link to='/ForgotPassword' style={{ textDecoration: 'none'}}>
+                      Forgor password?
+                      </Link>
+                  </Grid>
+                  <Grid item>
+                  <Link to='/AddClass' style={{ textDecoration: 'none' }}>
+                    <Button variant="contained" disableElevation >
+                      Submit
+                    </Button>
+                    </Link>
                   </Grid>
                 </Grid>
               </ValidatorForm>

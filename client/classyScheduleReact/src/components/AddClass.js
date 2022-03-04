@@ -4,9 +4,11 @@ import React from 'react'
 const AddClass = () => {
     return (
         <div>
-            
+            <h1>
+                THIS IS ADDCLASS PAGE
+            </h1>
         </div>
     )
 }
 
-export default AddClass
+export default AddClass;
