@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import login.LoginController;
 import users.Admin;
 import users.User;
 
@@ -14,11 +15,14 @@ public class Main extends Application {
 
     private Stage primaryStage;
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
 
         this.primaryStage = primaryStage;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/addcourse.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/login page draft.fxml"));
         Parent root = loader.load();
+        LoginController loginController = loader.getController();
+        loginController.setStage(primaryStage);
+
         primaryStage.setTitle("Classy-Schedule");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();

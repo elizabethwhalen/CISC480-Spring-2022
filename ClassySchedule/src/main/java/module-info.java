@@ -7,4 +7,5 @@ module ClassySchedule.main {
 
     opens samples;
     opens courses;
+    opens login;
 }
