@@ -1,16 +1,22 @@
-import { Paper, Grid, TextField, Button, Typography } from '@material-ui/core'
+import { Paper, Grid, TextField, Button, Typography, Divider as MuiDivider  } from '@material-ui/core'
 import React from 'react'
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { makeStyles } from '@material-ui/core/styles'
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
+    root:{
+        display: 'flex',
+        height: '100vh',
+    },
     container: {
         padding: theme.spacing(4),
         position: 'relative',
         flexGrow: 1,
+        height: '100%'
     },
     title: {
         color: '#7E16A4',
@@ -20,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AddClass = () => {
     const [code, setCode] = React.useState('');
+    const [courseNum, setCourseNum] = React.useState('');
 
     const handleChange = (event) => {
         setCode(event.target.value);
@@ -33,15 +40,16 @@ const AddClass = () => {
                     <Typography variant="h6" className={classes.title} gutterBottom>
                         Add New Class
                     </Typography>
+                    {/* <MuiDivider /> */}
                 </Grid>
                 <Grid item xs={4} >
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                        <InputLabel id="demo-simple-select-label">Department Code</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value={code}
-                            label="Dept. Code"
+                            label="code"
                             onChange={handleChange}
                             size='medium'
                             autoWidth
@@ -61,9 +69,12 @@ const AddClass = () => {
                     <TextField fullWidth size="medium" id="outlined-basic" label="Coure Name" variant="outlined" />
                 </Grid>
                 <Grid item xs={4} fullWidth>
-                    <Button variant="contained" size="large" type="submit" disableElevation>
+                    <Button variant="contained" size="large" type="submit"  disableElevation>
                         Submit
                     </Button>
+                    {/* <Link to='/Calendar'>
+                        Calendar
+                    </Link> */}
                 </Grid>
             </Grid>
         </Paper>
