@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="348.0" prefWidth="536.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="login.LoginController">
+   <children>
+      <PasswordField fx:id="password" layoutX="194.0" layoutY="198.0" promptText="Password" />
+      <Button fx:id="submitButton" layoutX="372.0" layoutY="198.0" mnemonicParsing="false" onMouseClicked="#submitButtonClicked" text="Submit" />
+      <TextField fx:id="username" layoutX="194.0" layoutY="149.0" promptText="Username" />
+      <Text layoutX="130.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to ClassySchedule! Please enter your username and password to continue" wrappingWidth="277.13671875" />
+   </children>
+</AnchorPane>

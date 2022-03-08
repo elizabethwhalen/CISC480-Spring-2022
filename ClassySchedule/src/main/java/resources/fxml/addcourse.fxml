@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="courses.CourseController">
+   <children>
+      <TextField fx:id="section_number" layoutX="210.0" layoutY="137.0" promptText="Section Number" />
+      <ComboBox fx:id="dept_name" layoutX="39.0" layoutY="137.0" prefWidth="150.0" promptText="Dept Name" />
+      <TextField fx:id="class_name" layoutX="388.0" layoutY="137.0" promptText="Class name" />
+      <Text layoutX="39.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please do the thing I want it to" wrappingWidth="162.134765625" />
+      <Button fx:id="submit_button" layoutX="485.0" layoutY="188.0" mnemonicParsing="false" onAction="#submitData" text="Submit" />
+   </children>
+</AnchorPane>

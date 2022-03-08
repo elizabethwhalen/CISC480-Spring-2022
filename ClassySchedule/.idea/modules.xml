@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/ClassySchedule.iml" filepath="$PROJECT_DIR$/.idea/ClassySchedule.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ClassySchedule.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ClassySchedule.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ClassySchedule.test.iml" filepath="$PROJECT_DIR$/.idea/modules/ClassySchedule.test.iml" />
     </modules>
   </component>
 </project>
