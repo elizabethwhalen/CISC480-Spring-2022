@@ -5,6 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { makeStyles } from '@material-ui/core/styles'
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -64,6 +65,8 @@ const AddClass = () => {
                     <Button variant="contained" size="large" type="submit" disableElevation>
                         Submit
                     </Button>
+                    <Link to="/Calendar">
+                        Calendar</Link>
                 </Grid>
             </Grid>
         </Paper>

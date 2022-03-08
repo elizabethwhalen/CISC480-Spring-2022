@@ -2,9 +2,6 @@ import React from 'react'
 import { Eventcalendar, getJson, toast } from '@mobiscroll/react';
 // This is just a template, adjust according to how you like
 const Calendar = () => {
-
-
-
         const [myEvents, setEvents] = React.useState([]);
     
         React.useEffect(() => {
