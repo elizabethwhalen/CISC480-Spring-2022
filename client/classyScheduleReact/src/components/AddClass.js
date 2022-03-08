@@ -5,7 +5,7 @@ const AddClass = () => {
     return (
         <div>
             <h1>
-                THIS IS ADDCLASS PAGE
+                THIS IS ADDCLASS PAGEs
             </h1>
         </div>
     )

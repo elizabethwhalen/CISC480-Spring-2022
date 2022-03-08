@@ -6,11 +6,16 @@ const db = mysql.createPool({
     host:'localhost',
     user:'root',
     password: 'root',
-    database: 'tsetdb',
+    database: 'testdb',
 });
 
 app.get('/', (req, res) => {
+    sqlquery = "insert"
     res.send('');
+})
+
+app.post('api/insert', (req, res)=>{
+    const  sqlInsert = 'INSERT INTO table (dept, dept_num, dept_name)';
 })
 
 app.listen(3001, () => {
