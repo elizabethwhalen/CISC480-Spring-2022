@@ -6,6 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { makeStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
+import Axios from 'axios';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -28,10 +29,28 @@ const useStyles = makeStyles((theme) => ({
 const AddClass = () => {
     const [code, setCode] = React.useState('');
     const [courseNum, setCourseNum] = React.useState('');
+    const [courseName, setCourseName] = React.useState('');
 
-    const handleChange = (event) => {
+    const submitForm = () => {
+        Axios.post('http://localhost:3000/AddClass', {
+            dept_code: code,
+            class_num: courseNum,
+            class_name: courseName,
+        }).then(() => {
+            alert('inserted');
+        });
+    };
+
+    const handleChangeCode = (event) => {
+        //console.log('typed => ${event.target.value}');
         setCode(event.target.value);
     };
+    const handleChangeCourseNum = (event) => {
+        setCourseNum(event.target.value);
+    }
+    const handleChangeCourseName = (event) => {
+        setCourseName(event.target.value);
+    }
     const classes = useStyles()
 
     return (
@@ -51,7 +70,7 @@ const AddClass = () => {
                             id="demo-simple-select"
                             value={code}
                             label="code"
-                            onChange={handleChange}
+                            onChange={handleChangeCode}
                             size='medium'
                             autoWidth
                         >
@@ -64,13 +83,13 @@ const AddClass = () => {
                     </FormControl>
                 </Grid>
                 <Grid item xs={4} fullWidth>
-                    <TextField fullWidth size="medium" id="outlined-basic" label="Course #" variant="outlined" />
+                    <TextField fullWidth size="medium" id="outlined-basic" label="Course #" variant="outlined" value={courseNum} onChange={handleChangeCourseNum}  />
                 </Grid>
                 <Grid item xs={4} fullWidth>
-                    <TextField fullWidth size="medium" id="outlined-basic" label="Coure Name" variant="outlined" />
+                    <TextField fullWidth size="medium" id="outlined-basic" label="Course Name" variant="outlined" value={courseName} onChange={handleChangeCourseName}  />
                 </Grid>
                 <Grid item xs={4} fullWidth>
-                    <Button variant="contained" size="large" type="submit"  disableElevation>
+                    <Button variant="contained" size="large" type="submit"  disableElevation onClick={submitForm}>
                         Submit
                     </Button>
                     {/* <Link to='/Calendar'>
