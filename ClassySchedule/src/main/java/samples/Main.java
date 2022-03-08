@@ -1,5 +1,6 @@
 package samples;
 
+import database.Database;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,6 +28,8 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 600, 450));
         primaryStage.show();
 
+
+        Database database = new Database();
 //        // Username Field
 //        TextField username = new TextField();
 //        username.setText("Username");

@@ -23,6 +23,10 @@ sourceSets {
 
 repositories {
     mavenCentral()
+    dependencies {
+        implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
+    }
+
 }
 
 dependencies {
