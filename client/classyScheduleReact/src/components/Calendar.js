@@ -2,11 +2,7 @@
 // import { Eventcalendar, getJson, toast } from '@mobiscroll/react';
 
 // const Calendar = () => {
-
-
-
-//         const [myEvents, setEvents] = React.useState([]);
-    
+//         const [myEvents, setEvents] = React.useState([]); 
 //         React.useEffect(() => {
 //             getJson('https://trial.mobiscroll.com/events/?vers=5', (events) => {
 //                 setEvents(events);
