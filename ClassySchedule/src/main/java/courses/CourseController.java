@@ -1,16 +1,19 @@
 package courses;
 
+import database.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 public class CourseController implements Initializable {
@@ -27,21 +30,29 @@ public class CourseController implements Initializable {
     @FXML
     Button submit_button;
 
-    public CourseController() {
+    @FXML
+    Text sectionWarning;
 
-    }
+    @FXML
+    Text classNameWarning;
+
+    @FXML
+    Text departmentWarning;
+
+    public CourseController() {}
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         dept_name.getItems().clear();
-
-        //TO
-        dept_name.getItems().addAll(
-                "jacob.smith@example.com",
-                "isabella.johnson@example.com",
-                "ethan.williams@example.com",
-                "emma.jones@example.com",
-                "michael.brown@example.com");
+        try {
+            Database database = new Database();
+            ResultSet rs = database.getData("dept_code", "dept");
+            while (rs.next()) {
+                dept_name.getItems().add(rs.getString(1));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setStage(Stage addCourse) {
@@ -50,19 +61,16 @@ public class CourseController implements Initializable {
 
     @FXML
     public void submitData(ActionEvent event) {
-        /* TODO: validate user entry: section number must be a 3-digit number
-            Get list of department names from the database
-        * */
         if (dept_name.getSelectionModel().isEmpty()) {
-            System.out.println("Must select dept name");
+            departmentWarning.setVisible(true);
             return;
         }
         if (section_number.getText().isBlank()) {
-            System.out.println("Must enter section number");
+            sectionWarning.setVisible(true);
             return;
         }
         if (class_name.getText().isBlank()) {
-            System.out.println("Must enter class name");
+            classNameWarning.setVisible(true);
             return;
         }
 
@@ -70,14 +78,19 @@ public class CourseController implements Initializable {
         try {
             if(section_number.getLength() == 3) {
                 Integer.parseInt(section_number.getText());
-                return;
             } else {
-                System.out.println("Must be 3 digits number");
+                sectionWarning.setVisible(true);
             }
         } catch (NumberFormatException e) {
-            System.out.println("Please enter a number");
+            sectionWarning.setVisible(true);
+            return;
         }
 
+        //made it to the end of validation, send to database and then clear fields
+        // maybe update courses already added?
+
+
+        //TODO: Send course to database
         File file = new File("test.txt");
         try {
             FileWriter fw = new FileWriter(file);
@@ -86,6 +99,12 @@ public class CourseController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
 
+        dept_name.setValue("Dept name");
+        section_number.clear();
+        class_name.clear();
+        departmentWarning.setVisible(false);
+        sectionWarning.setVisible(false);
+        classNameWarning.setVisible(false);
+    }
 }

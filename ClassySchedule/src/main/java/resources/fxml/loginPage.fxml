@@ -11,6 +11,6 @@
       <PasswordField fx:id="password" layoutX="194.0" layoutY="198.0" promptText="Password" />
       <Button fx:id="submitButton" layoutX="372.0" layoutY="198.0" mnemonicParsing="false" onMouseClicked="#submitButtonClicked" text="Submit" />
       <TextField fx:id="username" layoutX="194.0" layoutY="149.0" promptText="Username" />
-      <Text layoutX="130.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to ClassySchedule! Please enter your username and password to continue" wrappingWidth="277.13671875" />
+      <Text layoutX="130.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to ClassySchedule! Please enter your username and password to continue:" wrappingWidth="277.13671875" />
    </children>
 </AnchorPane>

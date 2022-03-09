@@ -1,13 +1,10 @@
 package database;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.Properties;
-import java.util.Scanner;
 import java.util.logging.Logger;
 
 
@@ -15,60 +12,51 @@ import java.util.logging.Logger;
 public class Database {
 
     private static final Logger log;
-    private static String password = "fA!6#_&eaU9-EaeJ";
+    private String password = "fA!6#_&eaU9-EaeJ";
+    private String url = "jdbc:mysql://classy-schedule-database.mysql.database.azure.com:3306/classy_schedule?useSSL=true";
 
+    private Connection connection;
     static {
         System.setProperty("java.util.logging.SimpleFormatter.format", "[%4$-7s] %5$s %n");
         log = Logger.getLogger(Database.class.getName());
     }
 
     public Database() throws Exception {
-        String url="jdbc:mysql://classy-schedule-database.mysql.database.azure.com:3306/classy_schedule?useSSL=true";
+        //initialize database connection
         log.info("Connecting to the database");
-        Connection myDbConn = DriverManager.getConnection(url, "db_test", password);
-        //log.info("Loading application properties");
-        //Properties properties = new Properties();
-        //properties.load(Database.class.getClassLoader().getResourceAsStream("resources/database/application.properties"));
-
-
-        //Connection connection = DriverManager.getConnection(properties.getProperty("url"), properties);
-        log.info("Database connection test: " + myDbConn.getCatalog());
-
-        Statement stmt = myDbConn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM courses");
-        log.info("result set: " + rs.toString());
-        //Scanner scanner = new Scanner(Database.class.getClassLoader().getResourceAsStream("schema.sql"));
-        //Statement statement = myDbConn.createStatement();
-        //while (scanner.hasNextLine()) {
-        //    statement.execute(scanner.nextLine());
-        //}
-
-		/*
-		Todo todo = new Todo(1L, "configuration", "congratulations, you have set up JDBC correctly!", true);
-        insertData(todo, connection);
-        todo = readData(connection);
-        todo.setDetails("congratulations, you have updated data!");
-        updateData(todo, connection);
-        deleteData(todo, connection);
-		*/
-
-        log.info("Closing database connection");
-        myDbConn.close();
+        connection = DriverManager.getConnection(url, "db_test", password);
     }
 
+    public boolean insertData() {
 
-//    final String url = "classy-schedule-database.mysql.database.azure.com";
-//    final String user = "db_test";
-//    final String password = "fA!6#_&eaU9-EaeJ";
-//
-//    public Database() {
-//        Connection conn = null;
-//        try {
-//            String url = "jdbc:mssql:path-to-db-file/chinook/chinook.db";
-//            conn = DriverManager.getConnection(url);
-//        } catch (SQLException e) {
-//            System.out.println("Connection failed");
-//        }
-//    }
+        return false;
+    }
+
+    public ResultSet getData(String requestedColumns, String table) {
+        String statement = "SELECT " + requestedColumns + " FROM " + table;
+        try {
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(statement);
+            return rs;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
+
+    public boolean updateData() {
+        return false;
+    }
+
+    public boolean deleteData() {
+        return false;
+    }
+
+    public void closeConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
 
