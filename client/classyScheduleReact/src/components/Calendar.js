@@ -1,19 +1,26 @@
 import { Grid, Paper } from '@material-ui/core'
 import React from 'react'
 
+
+// This is just a template, adjust according to how you like
+
+
+
+
 const Calendar = () => {
+    
     return (
-        <Paper elevation={0}>
+        <Paper>
             <Grid Grid item xs={12} fullWidth>
                 <div class='header'>
                     <h1>Classy Scheduler</h1>
-
+                
                 </div>
             </Grid>
-
+            
             <Grid item xs={12} fullWidth>
-
-
+                
+                
                 <table >
                     <tr>
                         <th>Time</th>
@@ -79,9 +86,18 @@ const Calendar = () => {
                         <td> class</td>
                         <td> class</td>
                     </tr>
+                                
                 </table>
+                
+                
             </Grid>
+            
+            
         </Paper>
-    )
+        
+            
+
+        
+     )
 }
-export default Calendar;
+export default Calendar
