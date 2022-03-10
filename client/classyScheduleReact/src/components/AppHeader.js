@@ -1,7 +1,6 @@
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu'
-// import LoginHeader from './LoginHeader'
 import {
   Container,
   AppBar,
@@ -99,12 +98,10 @@ export default function AppHeader(props) {
         </IconButton>
         <Container>
           <Typography variant="h4" className={classes.text} noWrap>
-            {/* <TargetLogo inline color="white" expanded /> Prepaid Services */}
             Classy Schedule
           </Typography>
         </Container>
 
-        {/* <LoginHeader></LoginHeader> */}
       </Toolbar>
     </AppBar>
   )
