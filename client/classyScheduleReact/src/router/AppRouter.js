@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import Login from '../components/Login'
 import AddClass from '../components/AddClass'
-import Calendar from  '../components/Calendar'
+import Calendar from '../components/Calendar'
 
 const AppRouter = () => {
   return (
