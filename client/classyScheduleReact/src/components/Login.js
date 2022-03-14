@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-const Login = () => {
+const Login = (props) => {
   const classes = useStyles()
   return (
     <Paper className={classes.root}>
@@ -87,8 +87,8 @@ const Login = () => {
                     </Typography>
                   </Grid>
                   <Grid item xs={12} fullWidth style={{ marginTop: '20px' }}>
-                    <Link to='/AddClass' style={{ textDecoration: 'none' }}>
-                      <Button variant="contained" disableElevation >
+                    <Link to='/' style={{ textDecoration: 'none' }}>
+                      <Button variant="contained" disableElevation onClick={props.handleLogin} >
                         Log In
                       </Button>
                     </Link>

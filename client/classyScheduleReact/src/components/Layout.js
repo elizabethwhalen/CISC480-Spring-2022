@@ -4,6 +4,7 @@ import AppRouter from '../router/AppRouter'
 import { CssBaseline } from '@material-ui/core'
 import AppSideNavBar from './AppSideNavBar'
 import AppHeader from './AppHeader'
+import Login from './Login'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,11 +22,12 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(1),
   },
- }))
+}))
 
 export default function Layout() {
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
+  const [login, setLogin] = React.useState(false)
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -34,16 +36,27 @@ export default function Layout() {
   const handleDrawerClose = () => {
     setOpen(false)
   }
+
+  const handleLogin = () =>  {
+    setLogin(true) 
+  }
+
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppHeader open={open} handleDrawerOpen={handleDrawerOpen} />
-      <AppSideNavBar handleDrawerClose={handleDrawerClose} open={open} />
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        <AppRouter></AppRouter>
-      </main>
-    </div>
-   
+    <>
+      {login ?
+        <div className={classes.root}>
+          <CssBaseline />
+          <AppHeader open={open} handleDrawerOpen={handleDrawerOpen} />
+          <AppSideNavBar handleDrawerClose={handleDrawerClose} open={open} />
+          <main className={classes.content}>
+            <div className={classes.toolbar} />
+            <AppRouter></AppRouter>
+          </main>
+        </div>
+        :
+        <Login handleLogin={handleLogin} />
+      }
+    </>
+
   )
 }
