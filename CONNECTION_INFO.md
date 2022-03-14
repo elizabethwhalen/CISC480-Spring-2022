@@ -1,6 +1,6 @@
 #MySQL Connection Information
 
-Host: classy-schedule-database.mysql.database.azure.com
-Username: db_test
-Password: fA!6#_&eaU9-EaeJ
-Database: classy_schedule
+</br>Host: classy-schedule-database.mysql.database.azure.com
+</br>Username: db_test
+</br>Password: fA!6#_&eaU9-EaeJ
+</br>Database: classy_schedule
