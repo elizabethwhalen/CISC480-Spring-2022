@@ -15,10 +15,10 @@ public class Main extends Application {
 
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/loginPage.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/scheduler.fxml"));
         Parent root = loader.load();
-        LoginController loginController = loader.getController();
-        loginController.setStage(primaryStage);
+//        LoginController loginController = loader.getController();
+//        loginController.setStage(primaryStage);
         primaryStage.setTitle("Classy-Schedule");
         primaryStage.setScene(new Scene(root, 600, 450));
         primaryStage.show();

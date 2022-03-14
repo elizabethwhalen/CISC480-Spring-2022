@@ -14,8 +14,16 @@ public class Lecture implements Course {
     private List<Object> conflicts;
     private boolean hasLab;
 
+    public Lecture() {
+    };
+
+    public Lecture (String className,int sectionNumber, String department) {
+        this.className = className;
+        this.sectionNumber = sectionNumber;
+        this.department = department;
+    }
     // Constructor Method
-    public Lecture (String className, int idNumber, int sectionNumber, String department,
+/*    public Lecture (String className, int idNumber, int sectionNumber, String department,
                     int capacity, String modality, int creditNumber, float teachLoad,
                     List<Object> prerequisites, List<Object> conflicts, boolean hasLab) {
 
@@ -30,7 +38,7 @@ public class Lecture implements Course {
         this.prerequisites = prerequisites;
         this.conflicts = conflicts;
         this.hasLab = hasLab;
-    }
+    }*/
 
     public boolean hasLab() {
         return this.hasLab;
