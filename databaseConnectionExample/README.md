@@ -1,5 +1,5 @@
-# ben_web_app_test
-Description: Add, modify, and remove courses from the list below. Uses the "ben_web_app_test" test database on our Azure MySQL server "classy-schedule-server".
+# databaseConnectionExample
+Description: Add, modify, and remove courses from the list below. Uses the "classy_schedule" test database on our Azure MySQL server "classy-schedule-server".
 
 ## Step one: Download
 
@@ -8,7 +8,7 @@ Description: Add, modify, and remove courses from the list below. Uses the "ben_
 
 ## Step two: Launch web application
 
-- To launch the web app, change directory to "ben_wep_app_test".
+- To launch the web app, change directory to "databaseConnectionExample".
 - Next, get the necessary npm modules with "$npm install".
 - Then, run the app with "$node index.js".
 
