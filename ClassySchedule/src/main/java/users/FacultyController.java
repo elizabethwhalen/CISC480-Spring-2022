@@ -109,7 +109,7 @@ public class FacultyController implements Initializable {
         // maybe update courses already added?
 
 
-        //TODO: Send course to database
+        //TODO: Send faculty info to database
         File file = new File("testfaculty.txt");
         try {
             FileWriter fw = new FileWriter(file);

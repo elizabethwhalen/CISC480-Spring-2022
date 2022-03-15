@@ -25,13 +25,10 @@ public class RoomController {
     TextField room_number;
 
     @FXML
-    TextField building;
+    ComboBox<String> building;
 
     @FXML
-    TextField campus;
-
-    //@FXML
-    //ComboBox<String> dept_name;
+    ComboBox<String> campus;
 
     @FXML
     Button submit_button;
@@ -67,11 +64,8 @@ public class RoomController {
 
     @FXML
     public void submitData(ActionEvent event) {
-        /*if (dept_name.getSelectionModel().isEmpty()) {
-            departmentWarning.setVisible(true);
-            return;
-        }*/
-        if (campus.getText().isBlank()) {
+
+        if (campus.getSelectionModel().isEmpty()) {
             campusWarning.setVisible(true);
             return;
         }
@@ -79,12 +73,12 @@ public class RoomController {
             roomWarning.setVisible(true);
             return;
         }
-        if (building.getText().isBlank()) {
+        if (building.getSelectionModel().isEmpty()) {
             buildingWarning.setVisible(true);
             return;
         }
 
-        // room number validation. Testing it out by printing right now.
+        // room number validation
         try {
             if(room_number.getLength() == 3) {
                 Integer.parseInt(room_number.getText());
@@ -104,15 +98,15 @@ public class RoomController {
         File file = new File("testroom.txt");
         try {
             FileWriter fw = new FileWriter(file);
-            fw.append("Campus: " + campus.getText() + " building: " + building.getText() + " Room number: " + room_number.getText());
+            fw.append("Campus: " + campus.getValue() + " building: " + building.getValue() + " Room number: " + room_number.getText());
             fw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        campus.clear();
+        campus.setValue(null);
         room_number.clear();
-        building.clear();
+        building.setValue(null);
         roomWarning.setVisible(false);
         buildingWarning.setVisible(false);
         campusWarning.setVisible(false);
