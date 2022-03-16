@@ -8,6 +8,7 @@ import {
   Typography,
   IconButton,
 } from '@material-ui/core'
+import LoginHeader from './LoginHeader'
 
 const drawerWidth = 300
 
@@ -101,7 +102,7 @@ export default function AppHeader(props) {
             Classy Schedule
           </Typography>
         </Container>
-
+        <LoginHeader login={props.login} ></LoginHeader>
       </Toolbar>
     </AppBar>
   )

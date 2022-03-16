@@ -1,13 +1,11 @@
-import { Paper, Grid, TextField, Button, Typography, Divider as MuiDivider  } from '@material-ui/core'
 import React from 'react'
+import { Paper, Grid, TextField, Button, Typography } from '@material-ui/core'
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { makeStyles } from '@material-ui/core/styles'
-import { Link } from 'react-router-dom'
 import Axios from 'axios';
-
 
 const useStyles = makeStyles((theme) => ({
     root:{
@@ -41,7 +39,6 @@ const AddClass = () => {
     };
 
     const handleChangeCode = (event) => {
-        //console.log('typed => ${event.target.value}');
         setCode(event.target.value);
     };
     const handleChangeCourseNum = (event) => {
@@ -59,7 +56,6 @@ const AddClass = () => {
                     <Typography variant="h6" className={classes.title} gutterBottom>
                         Add New Class
                     </Typography>
-                    {/* <MuiDivider /> */}
                 </Grid>
                 <Grid item xs={4} >
                     <FormControl fullWidth>
@@ -91,10 +87,6 @@ const AddClass = () => {
                     <Button variant="contained" size="large" type="submit"  disableElevation onClick={submitForm}>
                         Submit
                     </Button>
-                    {/* <Link to='/Calendar'>
-                        Calendar
-                    </Link> */}
-
                 </Grid>
             </Grid>
         </Paper>

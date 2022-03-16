@@ -16,7 +16,14 @@ import AddIcon from '@mui/icons-material/Add';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
+
+import ExpandLess from '@mui/icons-material/ExpandLess'
+import ExpandMore from '@mui/icons-material/ExpandMore'
+import PermIdentityIcon from '@material-ui/icons/PermIdentity'
+import ClassIcon from '@material-ui/icons/Class';
 import { Link } from 'react-router-dom'
+import Collapse from '@mui/material/Collapse'
+
 
 const drawerWidth = 300
 
@@ -89,10 +96,19 @@ const useStyles = makeStyles((theme) => ({
 const AppSideNavBar = (props) => {
   const classes = useStyles()
   const theme = useTheme()
-
+  const [open, setOpen] = React.useState(false); // expand nested list
   const [selectedIndex, setSelectedIndex] = React.useState(1)
+  
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index)
+    if (index === 2) {
+      setOpen(!open);
+    }
+  }
+
+  const handleDrawerClose = () => {
+    props.handleDrawerClose();
+    setOpen(false)
   }
 
   return (
@@ -110,7 +126,7 @@ const AppSideNavBar = (props) => {
       }}
     >
       <div className={classes.toolbar}>
-        <IconButton onClick={props.handleDrawerClose}>
+        <IconButton onClick={handleDrawerClose}>
           {theme.direction === 'rtl' ? (
             <ChevronRightIcon />
           ) : (
@@ -132,21 +148,44 @@ const AppSideNavBar = (props) => {
             <ListItemText className={classes.text}>Home</ListItemText>
           </ListItem>
         </Link>
+        <ListItem
+          button
+          selected={selectedIndex === 2}
+          onClick={(event) => handleListItemClick(event, 2)}
+        >
+          <ListItemIcon>
+            <AddIcon />
+          </ListItemIcon>
+          <ListItemText className={classes.text}>
+            Functions
+          </ListItemText>
+          {open ? <ExpandLess /> : <ExpandMore />}
+        </ListItem>
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <List disablePadding>
+            <Link exact to='/AddClass' style={{ textDecoration: 'none' }}>
+              <ListItem button style={{paddingLeft: '50px'}}>
+                <ListItemIcon>
+                  <ClassIcon />
+                </ListItemIcon>
+                <ListItemText className={classes.text}>
+                  Add Course
+                </ListItemText>
+              </ListItem>
+            </Link>
+            <Link exact to='/AddFaculty' style={{ textDecoration: 'none' }}>
+              <ListItem button  style={{paddingLeft: '50px'}}>
+                <ListItemIcon>
+                  <PermIdentityIcon />
+                </ListItemIcon>
+                <ListItemText className={classes.text}>
+                  Add Faculty
+                </ListItemText>
+              </ListItem>
+            </Link>
+          </List>
+        </Collapse>
 
-        <Link exact to="/AddClass" style={{ textDecoration: 'none' }} >
-          <ListItem
-            button
-            selected={selectedIndex === 2}
-            onClick={(event) => handleListItemClick(event, 2)}
-          >
-            <ListItemIcon>
-              <AddIcon />
-            </ListItemIcon>
-            <ListItemText className={classes.text}>
-              Add Course
-            </ListItemText>
-          </ListItem>
-        </Link>
         <Link exact to="/Calendar" style={{ textDecoration: 'none' }}>
           <ListItem
             button
@@ -154,7 +193,7 @@ const AppSideNavBar = (props) => {
             onClick={(event) => handleListItemClick(event, 3)}
           >
             <ListItemIcon>
-              <CalendarMonthIcon/>
+              <CalendarMonthIcon />
             </ListItemIcon>
             <ListItemText className={classes.text}>
               Calendar Overview
