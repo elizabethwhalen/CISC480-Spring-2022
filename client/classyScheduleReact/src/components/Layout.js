@@ -46,7 +46,7 @@ export default function Layout() {
       {login ?
         <div className={classes.root}>
           <CssBaseline />
-          <AppHeader open={open} handleDrawerOpen={handleDrawerOpen} />
+          <AppHeader open={open} login={login} handleDrawerOpen={handleDrawerOpen} />
           <AppSideNavBar handleDrawerClose={handleDrawerClose} open={open} />
           <main className={classes.content}>
             <div className={classes.toolbar} />
