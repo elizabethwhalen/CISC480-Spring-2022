@@ -1,14 +1,18 @@
 import { Grid, Paper } from '@material-ui/core'
 import React from 'react'
 
+
+
 const Calendar = () => {
+   
 
     return (
         <Paper elevation={0}>
             <Grid container>
                 <Grid item xs={12} fullWidth>
                     <div class='header'>
-                        <h1>Classy Scheduler</h1>
+                        <h1>Classy Scheduler</h1> 
+                        {/* This is the header of our classy scheduler page */}
 
                     </div>
                 </Grid>
@@ -24,7 +28,7 @@ const Calendar = () => {
                             <th> Friday</th>
                         </tr>
                         <tr>
-                            <td>8:15-9:20</td>
+                            <td>8:00</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
@@ -32,7 +36,7 @@ const Calendar = () => {
                             <td> class</td>
                         </tr>
                         <tr>
-                            <td>9:35-10:40</td>
+                            <td>9:00</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
@@ -40,7 +44,7 @@ const Calendar = () => {
                             <td> class</td>
                         </tr>
                         <tr>
-                            <td>10:55-12:00</td>
+                            <td>10:00</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
@@ -48,7 +52,7 @@ const Calendar = () => {
                             <td> class</td>
                         </tr>
                         <tr>
-                            <td>12:15-1:20</td>
+                            <td>11:00</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
@@ -56,7 +60,7 @@ const Calendar = () => {
                             <td> class</td>
                         </tr>
                         <tr>
-                            <td>1:35-2:40</td>
+                            <td>12:00</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
@@ -64,7 +68,7 @@ const Calendar = () => {
                             <td> class</td>
                         </tr>
                         <tr>
-                            <td>2:55-4:20</td>
+                            <td>1:00</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
@@ -72,7 +76,15 @@ const Calendar = () => {
                             <td> class</td>
                         </tr>
                         <tr>
-                            <td>4:35-5:40</td>
+                            <td>2:00</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                        </tr>
+                        <tr>
+                            <td>3:00</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
