@@ -21,26 +21,73 @@ const useStyles = makeStyles((theme) => ({
     left: '0px',
     right: '0px',
     top: '0px'
+  },
+  container: {
+    width: '100%'
+  },
+  gridItem1: {
+    padding: '0px',
+    margin: '0px',
+    width: 'calc(100% - 500px)'
+  },
+  gridItem2: {
+    backgroundColor: 'white',
+    padding: '0px',
+    margin: '0px',
+    width: '500px'
+  },
+  loginContainer: {
+    display: 'flex', 
+    width: '100%', 
+    padding: '0px 150px 0px 50px', 
+    margin: '0 auto -55px auto'
+  }, 
+  logoGrid: {
+    paddingTop: '30px', 
+    marginBottom: '70px'
+  },
+  logo: {
+    width: '260px', 
+    height: '50px'
+  },
+  text: {
+    marginBottom: '30px'
+  }, 
+  textBox: {
+    marginBottom: '20px'
+  },
+  forgotPass: {
+    textDecoration: 'none', 
+    color: "#646364" 
+  }, 
+  link: {
+    textDecoration: 'none', 
+  },
+  loginButtonGrid: {
+    marginTop: '20px'
   }
 }))
 
 const Login = (props) => {
   const classes = useStyles()
+  
   return (
     <Paper className={classes.root}>
-      <Grid container style={{ width: '100%' }}>
+      <Grid container className={classes.container} >
         <Grid item direction="column"
           alignItems="flex-start"
-          justify="flex-start" style={{ padding: '0px', margin: '0px', width: 'calc(100% - 500px)' }} >
+          justify="flex-start" className={classes.gridItem1} >
         </Grid>
         <Grid item direction="column"
           alignItems="flex-end"
-          justify="flex-end" style={{ backgroundColor: 'white', padding: '0px', margin: '0px', width: '500px' }}>
-          <Grid container style={{ display: 'flex', width: '100%', padding: '0px 150px 0px 50px', margin: '0 auto -55px auto' }}>
-            <Grid item xs={12} fullWidth style={{ paddingTop: '30px', marginBottom: '70px' }} >
-              <img src={logo} style={{ width: '260px', height: '50px' }} alt='logo' ></img>
+          justify="flex-end"
+          className={classes.gridItem2}
+        >
+          <Grid container className={classes.loginContainer}>
+            <Grid item xs={12} fullWidth className={classes.logoGrid} >
+              <img src={logo} className={classes.logo} alt='logo' ></img>
             </Grid>
-            <Grid item xs={12} fullWidth style={{ marginBottom: '30px' }}>
+            <Grid item xs={12} fullWidth className={classes.text}>
               Sign in with your organizational account
             </Grid>
             <Grid item xs={12} fullWidth>
@@ -74,20 +121,18 @@ const Login = (props) => {
                       //   'Invalid - It should be a 3-digit number',
                       //   'this field is required',
                       // ]}
-                      styles={{ marginBottom: '20px' }}
+                      className={classes.textBox}
                     />
-
-
                   </Grid>
                   <Grid item xs={12} fullwidth>
                     <Typography variant='h8'>
-                      <Link to='/ForgotPassword' style={{ textDecoration: 'none', color: "#646364" }}>
+                      <Link to='/ForgotPassword' className={classes.forgotPass}>
                         Forgot password?
                       </Link>
                     </Typography>
                   </Grid>
-                  <Grid item xs={12} fullWidth style={{ marginTop: '20px' }}>
-                    <Link to='/' style={{ textDecoration: 'none' }}>
+                  <Grid item xs={12} fullWidth className={classes.loginButtonGrid}>
+                    <Link to='/' className={classes.link}>
                       <Button variant="contained" disableElevation onClick={props.handleLogin} >
                         Log In
                       </Button>
