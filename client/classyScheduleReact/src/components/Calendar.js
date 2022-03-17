@@ -1,17 +1,22 @@
 import { Grid, Paper } from '@material-ui/core'
 import React from 'react'
 
+
+
 const Calendar = () => {
+   
 
     return (
         <Paper elevation={0}>
             <Grid container>
                 <Grid item xs={12} fullWidth>
                     <div class='header'>
-                        <h1>Classy Scheduler</h1>
+                        <h1>Classy Scheduler</h1> 
+                        {/* This is the header of our classy scheduler page */}
 
                     </div>
                 </Grid>
+                
                 <Grid container xs={12}>
                     <Grid item xs={2}>
                         <h3>Time</h3>
@@ -55,7 +60,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -75,7 +80,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -115,7 +120,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -135,7 +140,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -175,7 +180,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -195,7 +200,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -235,7 +240,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -255,7 +260,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -296,7 +301,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -316,7 +321,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -356,7 +361,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -376,7 +381,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -416,7 +421,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -436,7 +441,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -476,7 +481,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -496,7 +501,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -537,7 +542,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -557,7 +562,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -597,7 +602,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -617,7 +622,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -657,7 +662,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -677,7 +682,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -717,7 +722,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -737,7 +742,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -778,7 +783,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -798,7 +803,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -838,7 +843,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -858,7 +863,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -898,7 +903,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -918,7 +923,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -958,7 +963,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -978,7 +983,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -1019,7 +1024,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -1039,7 +1044,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -1079,7 +1084,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -1099,7 +1104,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -1139,7 +1144,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -1159,7 +1164,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -1199,7 +1204,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -1219,7 +1224,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -1260,7 +1265,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -1280,7 +1285,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -1320,7 +1325,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -1340,7 +1345,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -1380,7 +1385,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -1400,7 +1405,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -1440,7 +1445,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -1460,7 +1465,7 @@ const Calendar = () => {
                 </Grid>
                 <Grid container xs={12}>
                     <Grid item xs={2}>
-                        <h3></h3>
+                        <h3> </h3>
                     </Grid>
                     <Grid item xs={2}>
                         <p></p>
@@ -1499,10 +1504,11 @@ const Calendar = () => {
                         <p></p>
                     </Grid>
                 </Grid>
+                
 
-                <Grid>
-                    <table>
-                        <tr>
+                <Grid item xs={12} >{/* This Grid contains the table for our calendar*/}
+                    <table >
+                        <tr> {/* This row contains the headers for Time and each day of the week*/}
                             <th>Time</th>
                             <th>Monday</th>
                             <th> Tuesday</th>
@@ -1510,56 +1516,112 @@ const Calendar = () => {
                             <th> Thursday</th>
                             <th> Friday</th>
                         </tr>
-                        <tr>
-                            <td>8:15-9:20</td>
+                        <tr> {/* This row contians the class data for 8:00 time slot*/}
+                            <td>8:00</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
                         </tr>
-                        <tr>
-                            <td>9:35-10:40</td>
+                        <tr>{/* This row contains class data for the 9:00 time slot*/}
+                            <td>9:00</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
                         </tr>
-                        <tr>
-                            <td>10:55-12:00</td>
+                        <tr>{/* This row contains class data for the 10:00 time slot*/}
+                            <td>10:00</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
                         </tr>
-                        <tr>
-                            <td>12:15-1:20</td>
+                        <tr>{/* This row contains class data for the 11:00 time slot*/}
+                            <td>11:00</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
                         </tr>
-                        <tr>
-                            <td>1:35-2:40</td>
+                        <tr>{/* This row contains class data for the 12:00 time slot*/}
+                            <td>12:00</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
                         </tr>
-                        <tr>
-                            <td>2:55-4:20</td>
+                        <tr>{/* This row contains class data for the 1:00 time slot*/}
+                            <td>1:00</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>
                         </tr>
-                        <tr>
-                            <td>4:35-5:40</td>
+                        <tr>{/* This row contains class data for the 2:00 time slot*/}
+                            <td>2:00</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                        </tr>
+                        <tr>{/* This row contains class data for the 3:00 time slot*/}
+                            <td>3:00</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                        </tr>
+                        <tr>{/* This row contains class data for the 4:00 time slot*/}
+                            <td>4:00</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                        </tr>
+                        <tr>{/* This row contains class data for the 5:00 time slot*/}
+                            <td>5:00</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                        </tr>
+                        <tr>{/* This row contains class data for the 6:00 time slot*/}
+                            <td>6:00</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                        </tr>
+                        <tr>{/* This row contains class data for the 7:00 time slot*/}
+                            <td>7:00</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                        </tr>
+                        <tr>{/* This row contains class data for the 8:00 time slot*/}
+                            <td>8:00</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                            <td> class</td>
+                        </tr>
+                        <tr>{/* This row contains class data for the 9:00 time slot*/}
+                            <td>9:00</td>
                             <td> class</td>
                             <td> class</td>
                             <td> class</td>

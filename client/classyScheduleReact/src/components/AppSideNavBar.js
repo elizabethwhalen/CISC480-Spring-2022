@@ -96,13 +96,19 @@ const useStyles = makeStyles((theme) => ({
 const AppSideNavBar = (props) => {
   const classes = useStyles()
   const theme = useTheme()
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false); // expand nested list
   const [selectedIndex, setSelectedIndex] = React.useState(1)
+  
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index)
     if (index === 2) {
       setOpen(!open);
     }
+  }
+
+  const handleDrawerClose = () => {
+    props.handleDrawerClose();
+    setOpen(false)
   }
 
   return (
@@ -120,7 +126,7 @@ const AppSideNavBar = (props) => {
       }}
     >
       <div className={classes.toolbar}>
-        <IconButton onClick={props.handleDrawerClose}>
+        <IconButton onClick={handleDrawerClose}>
           {theme.direction === 'rtl' ? (
             <ChevronRightIcon />
           ) : (
