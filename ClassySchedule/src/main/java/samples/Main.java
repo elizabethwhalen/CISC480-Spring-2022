@@ -10,9 +10,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import users.Admin;
 import users.User;
 
@@ -22,12 +24,30 @@ public class Main extends Application {
     private Stage primaryStage;
     @Override
     public void start(Stage primaryStage) throws Exception{
+
+        /**try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/resources/fxml/Homescreen.fxml"));
+            Parent content = loader.load();
+
+            Scene scene = new Scene(content);
+
+            primaryStage.setResizable(false);
+            primaryStage.initStyle(StageStyle.UTILITY);
+
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+**/
+
         this.primaryStage = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("/resources/fxml/sample.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/resources/fxml/Homescreen.fxml"));
         primaryStage.setTitle("Classy-Schedule");
         primaryStage.setScene(new Scene(root, 1000, 700));
         primaryStage.show();
-
+    /**
         // Username Field
         TextField username = new TextField();
         username.setText("Username");
@@ -49,17 +69,15 @@ public class Main extends Application {
         Button loginButton = new Button();
         loginButton.setText("Login");
         loginButton.setOnAction(event);
-
+     **/
 
         // Layout for the login menu
         GridPane loginLayout = new GridPane();
-        loginLayout.addRow(0, new Label("Username: "), username);
-        loginLayout.addRow(1, new Label("Password: "), password);
-        loginLayout.addRow(2, loginButton);
 
 
         Scene scene = new Scene(loginLayout, 500, 300);
         primaryStage.setScene(scene);
+
 
     }
 
