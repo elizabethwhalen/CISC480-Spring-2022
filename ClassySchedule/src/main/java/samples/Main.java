@@ -17,11 +17,10 @@ public class Main extends Application {
         this.primaryStage = primaryStage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/scheduler.fxml"));
         Parent root = loader.load();
-//        LoginController loginController = loader.getController();
-//        loginController.setStage(primaryStage);
         primaryStage.setTitle("Classy-Schedule");
         primaryStage.setScene(new Scene(root, 600, 450));
         primaryStage.show();
+
     }
 
     public static void main(String[] args) {

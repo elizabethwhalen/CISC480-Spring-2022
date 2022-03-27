@@ -1,27 +1,41 @@
 package courses;
+
+import javafx.scene.control.RadioButton;
+
 import java.util.*;
 
 public class Lecture implements Course {
     private String className;
+
     private int idNumber;
+
     private int sectionNumber;
+
     private String department;
+
     private int capacity;
+
     private String modality;
+
     private int creditNumber;
+
     private float teachLoad;
+
     private List<Object> prerequisites;
+
     private List<Object> conflicts;
+
     private boolean hasLab;
 
-    public Lecture() {
-    };
-
-    public Lecture (String className,int sectionNumber, String department) {
+    // Simple 3 parameter Lecture Constrcutor for testing purposes
+    public Lecture (String className, int sectionNumber, String department) {
         this.className = className;
+
         this.sectionNumber = sectionNumber;
+
         this.department = department;
     }
+
     // Constructor Method
 /*    public Lecture (String className, int idNumber, int sectionNumber, String department,
                     int capacity, String modality, int creditNumber, float teachLoad,
@@ -148,5 +162,19 @@ public class Lecture implements Course {
     @Override
     public void setConflicts(List<Object> classes) {
         this.conflicts = classes;
+    }
+
+    /**
+     * This method return the string formatted lecture/course from the given user input
+     * @return user input in string
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClassName());
+        sb.append(getSectionNumber());
+        sb.append(getDepartment());
+        String output = sb.toString();
+        return output;
     }
 }
