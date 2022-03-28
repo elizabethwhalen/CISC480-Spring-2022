@@ -2,28 +2,18 @@ var mysql = require('mysql');
 const fs = require('fs');
 
 // Connection to the database team Azure DB
-// Note: Web Dev team, use these connection parameters but instead of
-// using the "courses" table, use "class" and "dept" for Monday's tasks.
 let host = 'classy-schedule-database.mysql.database.azure.com';
 let user = 'db_test';
 let password = 'fA!6#_&eaU9-EaeJ';
 let database = 'db_dev';
-/*
-// Local MySQL connection
-let host = '127.0.0.1';
-let user = 'root';
-let password = '';
-let database = 'benWebAppTest';
-*/
 
 var config =
 {
     host: host, // i.e. 'classy-schedule-database.mysql.database.azure.com',
     user: user, // hidden
     password: password, // hidden
-    database: database, // i.e. 'ben_web_app_test',
+    database: database,
     port: 3306,
-    ssl: {ca: fs.readFileSync("./DigiCertGlobalRootCA.crt.pem")}
 };
 
 const con = new mysql.createConnection(config);
