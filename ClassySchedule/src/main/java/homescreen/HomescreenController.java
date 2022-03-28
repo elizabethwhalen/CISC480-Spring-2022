@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -35,12 +36,6 @@ public class HomescreenController implements Initializable {
     public Button addclassroom;
     public Button addprofessor;
 
-    //@FXML
-    //public TextField username;
-
-    //@FXML
-    //public TextField password;
-
     private Stage homescreenStage;
 
     public HomescreenController() {}
@@ -55,14 +50,9 @@ public class HomescreenController implements Initializable {
         this.homescreenStage = stage;
     }
 
+
     @FXML
-    public void addCourseButtonClicked() {
-        changeScene();
-    }
-
-
-
-    public void changeScene() {
+    public void addcourseButtonClicked() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/addcourse.fxml"));
         Parent root = null;
         try {
@@ -77,4 +67,9 @@ public class HomescreenController implements Initializable {
         homescreenStage.show();
     }
 
+    public void addclassroomButtonClicked(MouseEvent mouseEvent) {
+    }
+
+    public void addprofessorButtonClicked(MouseEvent mouseEvent) {
+    }
 }
