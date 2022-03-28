@@ -1,6 +1,7 @@
 package login;
 
 import courses.CourseController;
+import homescreen.HomescreenController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -34,6 +35,7 @@ public class LoginController implements Initializable {
     }
 
     public void setStage(Stage stage) {
+
         this.loginStage = stage;
     }
 
@@ -64,11 +66,11 @@ public class LoginController implements Initializable {
     }
 
     public void changeScene() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/addcourse.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/Homescreen.fxml"));
         Parent root = null;
         try {
             root = loader.load();
-            CourseController loginController = loader.getController();
+            HomescreenController loginController = loader.getController();
             loginController.setStage(loginStage);
         } catch (IOException e) {
             e.printStackTrace();
