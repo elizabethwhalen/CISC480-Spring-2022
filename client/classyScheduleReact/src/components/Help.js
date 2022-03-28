@@ -10,6 +10,9 @@ const Help = () => {
                     <div class= "header">
                         <h1>Frequently Asked Questions</h1>
                     </div>
+                    <div>
+                        
+                    </div>
                  </Grid>
              </Grid>
          </Paper>
