@@ -30,6 +30,9 @@ import java.util.ResourceBundle;
         import java.net.URL;
         import java.util.ResourceBundle;
 
+/**
+ *
+ */
 public class HomescreenController implements Initializable {
     @FXML
     public Button addcourse;
@@ -40,11 +43,16 @@ public class HomescreenController implements Initializable {
 
     public HomescreenController() {}
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
 
+    /**
+     * Sets stage to homescreen
+     * @param stage
+     */
     public void setStage(Stage stage) {
 
         this.homescreenStage = stage;
