@@ -1,0 +1,22 @@
+{
+  "name": "benWebApp",
+  "version": "1.0.0",
+  "description": "a simple todo web application that uses node.js, express.js, mysql and handlebars JS.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "express": "^4.17.3",
+    "express-handlebars": "^6.0.2",
+    "fs": "^0.0.1-security",
+    "mysql": "^2.18.1",
+    "react": "^17.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
