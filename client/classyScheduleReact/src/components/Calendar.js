@@ -9,6 +9,7 @@ const Calendar = () => {
     return (
         <Paper elevation={0}>
             <Grid container>
+                
                 <Grid item xs={12} fullWidth>
                     <div class='header'>
                         <h1>Classy Scheduler</h1> 
@@ -18,7 +19,7 @@ const Calendar = () => {
                 </Grid>
 
                 <Grid item xs={12} >{/* This Grid contains the table for our calendar*/}
-                    <table >
+                    <table id='classes'>
                         <tr> {/* This row contains the headers for Time and each day of the week*/}
                             <th>Time</th>
                             <th>Monday</th>
@@ -142,8 +143,12 @@ const Calendar = () => {
 
                     </table>
                 </Grid>
+                
             </Grid>
+            
         </Paper>
+        
+        
     )
 }
 export default Calendar
