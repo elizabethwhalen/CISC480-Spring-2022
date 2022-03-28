@@ -1,11 +1,6 @@
-Author: Ben Frey
-Date: 2/27/22
-Overview: Instructions for setting up MySQL interactive web app on CS 480 capstone DB.
-
 File descriptions:
 
 Procfile - Used for initial state of Heroku server
-DigiCertGlobalRootCA - SSL connection for DB
 package.json - Specifies which packages are required for web app operation
 models - Contains code for MySQL connection
 views - Contains HTML templates
