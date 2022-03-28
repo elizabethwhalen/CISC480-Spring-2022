@@ -1,5 +1,4 @@
 /*
-Author: Ben Frey
 Original Source: https://www.codingpanel.com/build-a-simple-web-application-using-node-js-mysql/
 All Rights Reserved to the Original Owner
 
