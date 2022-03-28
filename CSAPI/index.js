@@ -83,12 +83,12 @@ app.post('/classes', (req, res) => {
     data = [
         [req.body.dept,req.body.num, req.body.name]
     ]
+    console.log(query)
     con.query(query, [data], (err, result) => {
-        if (err){
-            console.log("")
-        }
-        else console.log(result);
+        if (err) throw err
+        console.log(result);
     })
+    res.redirect('/classes:id')
 });
 
 // port where app is served on Heroku platform, otherwise use port 5000.
