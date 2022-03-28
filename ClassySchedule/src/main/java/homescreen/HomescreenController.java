@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-//package homescreen;
 
         import courses.CourseController;
         import homescreen.HomescreenController;

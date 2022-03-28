@@ -66,7 +66,7 @@ public class LoginController implements Initializable {
     }
 
     public void changeScene() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/Homescreen.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
         Parent root = null;
         try {
             root = loader.load();

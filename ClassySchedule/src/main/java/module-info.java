@@ -9,4 +9,5 @@ module ClassySchedule.main {
     opens courses;
     opens login;
     opens scheduler;
+    opens homescreen;
 }
