@@ -13,6 +13,12 @@ const express = require('express');
 const hbs = require('express-handlebars');
 const bodyParser = require("body-parser");
 
+// comment out for now - i thnk this isn't even deploying currently 
+// var server = express();
+// var options = { index: 'index.html'};
+// server.use('/', express.static('/home/site/wwwroot', options));
+// server.listen(env.PORT);
+
 // Initialize express as app
 const app = express();
 
@@ -43,7 +49,7 @@ app.use(bodyParser.json())
 
 app.get('/:status/:id', (req, res) => {
     console.log(req.params)
-    let query = "UPDATE Courses SET status='" + req.params.status + "' WHERE task_id=" + req.params.id
+    let query = "UPDATE Courses SET status='" + req.params.status + "' WHERE task_id='" + req.params.id + "'"
     con.query(query, (err, result) => {
         if (err) throw err;
         console.log(result)
@@ -80,7 +86,7 @@ app.post('/', (req, res) => {
 
 app.get('/:id', (req, res) => {
     console.log(req.params)
-    let query = "DELETE FROM Courses WHERE task_id=" + req.params.id
+    let query = "DELETE FROM Courses WHERE task_id='" + req.params.id + "'"
     con.query(query, (err, result) => {
         if (err) throw err;
         console.log(result)
@@ -89,7 +95,7 @@ app.get('/:id', (req, res) => {
 });
 
 // port where app is served on Heroku platform, otherwise use port 5000.
-// app.listen((process.env.PORT || 3000), () => {
-app.listen(3000, () => {
-    console.log('The web server has started on port '+3000);
+//app.listen((process.env.PORT || 3000), () => {
+app.listen(env.PORT, () => {
+    console.log('The web server has started on port '+ env.PORT);
 });
