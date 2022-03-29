@@ -96,6 +96,6 @@ app.get('/:id', (req, res) => {
 
 // port where app is served on Heroku platform, otherwise use port 5000.
 //app.listen((process.env.PORT || 3000), () => {
-app.listen(env.PORT, () => {
-    console.log('The web server has started on port '+ env.PORT);
+app.listen((80), () => {
+    console.log('The web server has started on port '+ 80);
 });
