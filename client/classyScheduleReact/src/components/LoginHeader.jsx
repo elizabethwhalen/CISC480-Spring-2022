@@ -39,7 +39,8 @@ const LoginHeader = (props) => {
           <Avatar sx={{ bgcolor: 'white', color: '#7E16A4' }}>
               KN
           </Avatar>
-          <Button  className={classes.button}>
+          
+          <Button  className={classes.button} onClick={props.handleLogOut}>
             Logout
           </Button>
         </>

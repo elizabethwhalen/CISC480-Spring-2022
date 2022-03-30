@@ -83,6 +83,7 @@ export default function AppHeader(props) {
 
   const classes = useStyles() // call the hook
 
+  // Return the main component
   return (
     <AppBar
       position="fixed"
@@ -117,7 +118,10 @@ export default function AppHeader(props) {
         </Container>
 
         {/* USER'S LOGIN INFO */}
-        <LoginHeader login={props.login} ></LoginHeader>
+        <LoginHeader 
+          login={props.login} 
+          handleLogOut={props.handleLogOut} 
+        ></LoginHeader>
 
       </Toolbar>
     </AppBar>
