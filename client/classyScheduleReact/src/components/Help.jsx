@@ -4,7 +4,7 @@ import React from 'react'
 const Help = () => {
 
      return(
-         <Paper>
+         <Paper elevation={0}>
              <Grid container>
                  <Grid item xs = {12}>
                     <div class= "header">
