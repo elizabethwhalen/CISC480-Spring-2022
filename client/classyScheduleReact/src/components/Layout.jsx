@@ -43,8 +43,15 @@ export default function Layout() {
   }
 
   // This function will set the login variable to be true
+  // A.K.A. log user in
   const handleLogin = () =>  {
     setLogin(true) 
+  }
+
+  // This function will set the login variable to be false
+  // A.K.A. log user out
+  const handleLogOut = () => {
+    setLogin(false)
   }
 
   return (
@@ -56,8 +63,15 @@ export default function Layout() {
       {login ?
         <div className={classes.root}>
           <CssBaseline />
-          <AppHeader open={open} login={login} handleDrawerOpen={handleDrawerOpen} />
+          <AppHeader 
+            open={open} 
+            login={login} 
+            handleDrawerOpen={handleDrawerOpen} 
+            handleLogOut={handleLogOut}
+          />
+
           <AppSideNavBar handleDrawerClose={handleDrawerClose} open={open} />
+
           <main className={classes.content}>
             <div className={classes.toolbar} />
             <AppRouter></AppRouter>
