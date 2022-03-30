@@ -23,35 +23,35 @@ const Calendar = () => {
     /*Submiting the Form will Update the table (Calendar) */
     const submitForm = (event) => {
         let row = -1;
-        if(Time == '8AM') {
+        if(Time === '8AM') {
             row = 1;
-        } else if (Time == '9AM') {
+        } else if (Time === '9AM') {
             row = 2;
-        } else if (Time == '10AM') {
+        } else if (Time === '10AM') {
             row = 3;
-        } else if (Time == '11AM') {
+        } else if (Time === '11AM') {
             row = 4;
-        } else if (Time == '12PM') {
+        } else if (Time === '12PM') {
             row = 5;
-        } else if (Time == '1PM') {
+        } else if (Time === '1PM') {
             row = 6;
-        } else if (Time == '2PM') {
+        } else if (Time === '2PM') {
             row = 7;
-        } else if (Time == '3PM') {
+        } else if (Time === '3PM') {
             row = 8;
-        } else if (Time == '4PM') {
+        } else if (Time === '4PM') {
             row = 9;
-        } else if (Time == '5PM') {
+        } else if (Time === '5PM') {
             row = 10;
-        } else if (Time == '6PM') {
+        } else if (Time === '6PM') {
             row = 11;
-        } else if (Time == '7PM') {
+        } else if (Time === '7PM') {
             row = 12;
-        } else if (Time == '8PM') {
+        } else if (Time === '8PM') {
             row = 13;
         }
 
-        if(row != -1) {
+        if(row !== -1) {
             var table = document.getElementById('classes');
             table.rows[row].cells[Day].innerHTML = Class;
         }
