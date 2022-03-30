@@ -25,7 +25,26 @@ const Home = () => {
         <Paper className={classes.container} elevation={0}>
             <h1>
                 HOME PAGE
+                
             </h1>
+
+            <h2>
+                
+                <button size="large" type="submit">Add New Class</button>
+            </h2>
+               
+            <h2>
+                
+                <button size="large" type="submit">Add New Faculty Member</button>
+            </h2>
+            <h2>
+                
+                <button size="large" type="submit">View Schedule</button>
+            </h2>
+            <h2>
+                
+                <button size="large" type="submit">Questions?</button>
+            </h2>
         </Paper>
 
     )
