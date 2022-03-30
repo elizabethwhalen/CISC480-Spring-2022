@@ -1,11 +1,12 @@
 import React from 'react'
 import { Button, Grid, Paper, Typography, } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import background from '../images/campus.jpg'
 import logo from '../images/ustlogo.png'
-import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import { Link } from 'react-router-dom'
 
+// Styling components using useStyles
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -21,31 +22,91 @@ const useStyles = makeStyles((theme) => ({
     left: '0px',
     right: '0px',
     top: '0px'
+  },
+  container: {
+    width: '100%'
+  },
+  gridItem1: {
+    padding: '0px',
+    margin: '0px',
+    width: 'calc(100% - 500px)'
+  },
+  gridItem2: {
+    backgroundColor: 'white',
+    padding: '0px',
+    margin: '0px',
+    width: '500px'
+  },
+  loginContainer: {
+    display: 'flex',
+    width: '100%',
+    padding: '0px 150px 0px 50px',
+    margin: '0 auto -55px auto'
+  },
+  logoGrid: {
+    paddingTop: '30px',
+    marginBottom: '70px'
+  },
+  logo: {
+    width: '260px',
+    height: '50px'
+  },
+  text: {
+    marginBottom: '30px'
+  },
+  textBox: {
+    marginBottom: '20px'
+  },
+  forgotPass: {
+    textDecoration: 'none',
+    color: "#646364"
+  },
+  link: {
+    textDecoration: 'none',
+  },
+  loginButtonGrid: {
+    marginTop: '20px'
   }
 }))
 
-const Login = () => {
-  const classes = useStyles()
+// Login page component with parameter passed under props
+const Login = (props) => {
+
+  const classes = useStyles() // use the useStyles
+
   return (
     <Paper className={classes.root}>
-      <Grid container style={{ width: '100%' }}>
+      <Grid container className={classes.container} >
+
+        {/* Empty grid item used for place holder */}
         <Grid item direction="column"
           alignItems="flex-start"
-          justify="flex-start" style={{ padding: '0px', margin: '0px', width: 'calc(100% - 500px)' }} >
+          justify="flex-start" className={classes.gridItem1} >
         </Grid>
+
         <Grid item direction="column"
           alignItems="flex-end"
-          justify="flex-end" style={{ backgroundColor: 'white', padding: '0px', margin: '0px', width: '500px' }}>
-          <Grid container style={{ display: 'flex', width: '100%', padding: '0px 150px 0px 50px', margin: '0 auto -55px auto' }}>
-            <Grid item xs={12} fullWidth style={{ paddingTop: '30px', marginBottom: '70px' }} >
-              <img src={logo} style={{ width: '260px', height: '50px' }} alt='logo' ></img>
+          justify="flex-end"
+          className={classes.gridItem2}
+        >
+          <Grid container className={classes.loginContainer}>
+
+            {/* LOGO */}
+            <Grid item xs={12} fullWidth className={classes.logoGrid} >
+              <img src={logo} className={classes.logo} alt='logo' ></img>
             </Grid>
-            <Grid item xs={12} fullWidth style={{ marginBottom: '30px' }}>
+
+            {/* Instruction line */}
+            <Grid item xs={12} fullWidth className={classes.text}>
               Sign in with your organizational account
             </Grid>
+
+            {/* Form */}
             <Grid item xs={12} fullWidth>
               <ValidatorForm onError={(errors) => console.log(errors)}>
                 <Grid container spacing={1}>
+
+                  {/* Email */}
                   <Grid item xs={12} fullWidth>
                     <TextValidator
                       size="small"
@@ -61,6 +122,8 @@ const Login = () => {
                     // ]}
                     />
                   </Grid>
+
+                  {/* Password */}
                   <Grid item xs={12} fullWidth >
                     <TextValidator
                       size="small"
@@ -74,21 +137,25 @@ const Login = () => {
                       //   'Invalid - It should be a 3-digit number',
                       //   'this field is required',
                       // ]}
-                      styles={{ marginBottom: '20px' }}
+                      validators={['required']}
+                      errorMessages={['this field is required']}
+                      className={classes.textBox}
                     />
-
-
                   </Grid>
+
+                  {/* Forgot Password link to reset password */}
                   <Grid item xs={12} fullwidth>
                     <Typography variant='h8'>
-                      <Link to='/ForgotPassword' style={{ textDecoration: 'none', color: "#646364" }}>
+                      <Link to='/ForgotPassword' className={classes.forgotPass}>
                         Forgot password?
                       </Link>
                     </Typography>
                   </Grid>
-                  <Grid item xs={12} fullWidth style={{ marginTop: '20px' }}>
-                    <Link to='/AddClass' style={{ textDecoration: 'none' }}>
-                      <Button variant="contained" disableElevation >
+
+                  {/* Submit button */}
+                  <Grid item xs={12} fullWidth className={classes.loginButtonGrid}>
+                    <Link to='/' className={classes.link}>
+                      <Button variant="contained" disableElevation onClick={props.handleLogin} >
                         Log In
                       </Button>
                     </Link>
