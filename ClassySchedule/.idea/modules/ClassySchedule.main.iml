@@ -9,6 +9,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Gradle: mysql:mysql-connector-java:8.0.28" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-fxml:win:17.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-controls:17.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-controls:win:17.0.1" level="project" />
@@ -16,5 +17,6 @@
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-graphics:win:17.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-base:17.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-base:win:17.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.protobuf:protobuf-java:3.11.4" level="project" />
   </component>
 </module>
