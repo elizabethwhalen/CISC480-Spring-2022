@@ -93,9 +93,9 @@
         </Label>
             <ButtonBar layoutX="-11.0" layoutY="82.0" prefHeight="77.0" prefWidth="647.0">
               <buttons>
-                <Button fx:id="addcourse" mnemonicParsing="false" prefHeight="25.0" onMouseClicked="#addcourseButtonClicked" text="Add Course" />
-                  <Button fx:id="addprofessor" mnemonicParsing="false" onMouseClicked="#addprofessorButtonClicked" text="Add Professor" />
-                  <Button fx:id="addclassroom" mnemonicParsing="false" onMouseClicked="#addclassroomButtonClicked" text="Add Classroom" />
+                <Button fx:id="addCourse" mnemonicParsing="false" prefHeight="25.0" onMouseClicked="#addCourseButtonClicked" text="Add Course" />
+                  <Button fx:id="addProfessor" mnemonicParsing="false" onMouseClicked="#addProfessorButtonClicked" text="Add Professor" />
+                  <Button fx:id="addClassroom" mnemonicParsing="false" onMouseClicked="#addClassroomButtonClicked" text="Add Classroom" />
                   <Button mnemonicParsing="false" text="Modify Time Slots" />
                   <Button mnemonicParsing="false" prefHeight="23.0" prefWidth="164.0" text="Generate Schedule" />
               </buttons>

@@ -15,7 +15,7 @@ public class Main extends Application {
 
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/loginPage.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/LoginPage.fxml"));
         Parent root = loader.load();
         LoginController loginController = loader.getController();
         loginController.setStage(primaryStage);

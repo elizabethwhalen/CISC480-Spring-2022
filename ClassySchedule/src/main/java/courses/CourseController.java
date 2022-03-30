@@ -16,6 +16,9 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
+/**
+ * Controls add course page, which allows the user to add a course to the database.
+ */
 public class CourseController implements Initializable {
     private Stage addCourse;
     @FXML
@@ -41,6 +44,11 @@ public class CourseController implements Initializable {
 
     public CourseController() {}
 
+    /**
+     * Retrieves department codes from database for dropdown menu
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         dept_name.getItems().clear();
@@ -59,6 +67,10 @@ public class CourseController implements Initializable {
         this.addCourse = addCourse;
     }
 
+    /**
+     * Submits data that has been entered to the database.
+     * @param event submit button clicked
+     */
     @FXML
     public void submitData(ActionEvent event) {
         if (dept_name.getSelectionModel().isEmpty()) {
@@ -74,7 +86,7 @@ public class CourseController implements Initializable {
             return;
         }
 
-        // section number validation. Testing it out by printing right now.
+        // section number validation
         try {
             if(section_number.getLength() == 3) {
                 Integer.parseInt(section_number.getText());
@@ -85,10 +97,6 @@ public class CourseController implements Initializable {
             sectionWarning.setVisible(true);
             return;
         }
-
-        //made it to the end of validation, send to database and then clear fields
-        // maybe update courses already added?
-
 
         //TODO: Send course to database
         File file = new File("test.txt");

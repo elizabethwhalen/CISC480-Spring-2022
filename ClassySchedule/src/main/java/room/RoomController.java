@@ -17,10 +17,13 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
-//public class RoomController implements Initializable {
+/**
+ * Controls the add room page, which allows a user to add a classroom to the database
+ */
 public class RoomController {
 
     private Stage addRoom;
+
     @FXML
     TextField room_number;
 
@@ -42,8 +45,10 @@ public class RoomController {
     @FXML
     Text campusWarning;
 
-    public RoomController() {}
+    public RoomController() {
+    }
 
+    //May use in the future to reach into database for room options
     /*@Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         dept_name.getItems().clear();
@@ -62,6 +67,10 @@ public class RoomController {
         this.addRoom = addRoom;
     }
 
+    /**
+     * Submits data that has been entered when submit button is clicked.
+     * @param event submit button being clicked
+     */
     @FXML
     public void submitData(ActionEvent event) {
 
@@ -91,10 +100,7 @@ public class RoomController {
         }
 
         //made it to the end of validation, send to database and then clear fields
-        // maybe update courses already added?
-
-
-        //TODO: Send course to database
+        //TODO: Send course to database instead of text file
         File file = new File("testroom.txt");
         try {
             FileWriter fw = new FileWriter(file);
