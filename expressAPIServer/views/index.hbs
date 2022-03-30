@@ -1,0 +1,54 @@
+<div class="container">
+	<h1>Classy-Schedule API Tester</h1>
+	<p>Description: view depts, courses, and add courses to db_dev (Database Team developmental scheme)</p>
+
+	<hr>
+	<!-- gets depts, current main screen -->
+	<form method="GET" action="/">
+		<button type="submit" id="submit">Show departments</button>
+	</form>
+	<hr>
+
+	<TABLE>
+	<tr><td>
+	<!-- do we need to generalize variables? -->
+	<form method="GET" action="/classes:id">
+		Department code:<input type="text" name="dept_code" id="dept_code"> <!--this is our where condiiton -->
+		</td><td><button type="submit" id="submit">Show classes</button>
+	</form>
+	</td></tr>
+	<tr><td>
+
+	</td></tr></TABLE><hr><table>
+
+	<!-- add new class, this should be good, web team will need to add dropdown for dept though -->
+	<form method="POST" action="/classes" >
+		<tr>
+		<td>
+		Department:
+		</td>
+		<td>
+		Class number:
+		</td>
+		<td>
+		Class name:
+		</td>
+		<td rowspan=2><button type="submit" id="submit">Add Course</button></td>
+		</tr>
+		<tr>
+		<td><input label="dept" type="text" name="dept" id="dept" required></td>
+		<td><input label="num" type="text" name="num" id="num" required></td>
+		<td><input label="name" type="text" name="name" id="name" required></td>
+		</tr>
+	</form>
+	</TABLE>
+	<hr>
+	<!-- this is super janky -->
+	<div id="tasks_container">
+		 <ul>
+				{{#each items}}
+				<li><b>{{dept_code}}{{class_num}}:</b> {{dept_name}}{{class_name}}</li>
+				{{/each}}
+		 </ul>
+	</div>
+</div>
