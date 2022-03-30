@@ -7,16 +7,16 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduler.SchedulerController">
    <children>
-      <TableView layoutX="1.0" layoutY="-1.0" prefHeight="400.0" prefWidth="600.0">
+      <TableView fx:id="calendar" layoutX="1.0" layoutY="-1.0" prefHeight="400.0" prefWidth="600.0">
         <columns>
-          <TableColumn fx:id="Monday" minWidth="120.0" prefWidth="75.0" text="Monday" />
-          <TableColumn fx:id="Tuesday" minWidth="120.0" prefWidth="75.0" text="Tuesday" />
-            <TableColumn fx:id="Wednesday" minWidth="120.0" prefWidth="75.0" text="Wednesday" />
-            <TableColumn fx:id="Thursday" minWidth="120.0" prefWidth="75.0" text="Thursday" />
-            <TableColumn fx:id="Friday" minWidth="120.0" prefWidth="75.0" text="Friday" />
+          <TableColumn fx:id="mondayColumn" minWidth="120.0" prefWidth="75.0" text="Monday" />
+          <TableColumn fx:id="tuesdayColumn" minWidth="120.0" prefWidth="75.0" text="Tuesday" />
+            <TableColumn fx:id="wednesdayColumn" minWidth="120.0" prefWidth="75.0" text="Wednesday" />
+            <TableColumn fx:id="thursdayColumn" minWidth="120.0" prefWidth="75.0" text="Thursday" />
+            <TableColumn fx:id="fridayColumn" minWidth="120.0" prefWidth="75.0" text="Friday" />
         </columns>
       </TableView>
-      <Button fx:id="Add" layoutX="275.0" layoutY="399.0" mnemonicParsing="false" onAction="#switchToCourse" prefHeight="26.0" prefWidth="50.0" text="Add" />
-      <Button fx:id="Delete" layoutX="275.0" layoutY="423.0" mnemonicParsing="false" text="Delete" />
+      <Button fx:id="add" layoutX="275.0" layoutY="399.0" mnemonicParsing="false" onAction="#switchToCourse" prefHeight="26.0" prefWidth="50.0" text="Add" />
+      <Button fx:id="delete" layoutX="331.0" layoutY="400.0" mnemonicParsing="false" text="Delete" />
    </children>
 </AnchorPane>
