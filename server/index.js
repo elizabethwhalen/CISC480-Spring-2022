@@ -4,7 +4,7 @@ const cors = require('cors');
 const app = express();
 const mysql = require('mysql');
 
-//
+// connection to database
 const db = mysql.createPool({
     host:'classy-schedule-database.mysql.database.azure.com',
     user:'db_test',
