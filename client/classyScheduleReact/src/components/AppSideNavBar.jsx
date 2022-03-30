@@ -103,22 +103,33 @@ const AppSideNavBar = (props) => {
 
   const classes = useStyles() // call the useStyle hook
   const theme = useTheme() // call the useTheme
-  const [open, setOpen] = React.useState(false); // variable used to indicate if the nested list is expanded
+  const [openNestedList, setOpenNestedList] = React.useState(false); // variable used to indicate if the nested list is expanded
   const [selectedIndex, setSelectedIndex] = React.useState(1) // variable used to indicated which list item is selected
 
   // This function will set the item selected as "selected"
   // If selected, the list item will change its background color
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index)
+
+    /*
+      When option 2 (functions) is selected,
+      If the header & drawer are open, then the nested list can be expanded
+      Otherwise, disable its expandable function
+    */
     if (index === 2) {
-      setOpen(!open);
+      if (props.open) {
+        setOpenNestedList(!openNestedList)
+      } else {
+        setOpenNestedList(false)
+      }
+      
     }
   }
 
   // This function will collapse the nested list when the side nav bar is closed
   const handleDrawerClose = () => {
     props.handleDrawerClose();
-    setOpen(false)
+    setOpenNestedList(false)
   }
 
   // Return the Side Nav Bar component
@@ -176,11 +187,11 @@ const AppSideNavBar = (props) => {
           <ListItemText className={classes.text}>
             Functions
           </ListItemText>
-          {open ? <ExpandLess /> : <ExpandMore />}
+          {openNestedList ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
 
         {/* NESTED LIST */}
-        <Collapse in={open} timeout="auto" unmountOnExit>
+        <Collapse in={openNestedList} timeout="auto" unmountOnExit>
 
           {/* Add course */}
           <List disablePadding>
