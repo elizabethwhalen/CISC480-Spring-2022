@@ -1,3 +1,4 @@
+import React from 'react'
 import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -10,8 +11,10 @@ import {
 } from '@material-ui/core'
 import LoginHeader from './LoginHeader'
 
-const drawerWidth = 300
+// Width of the drawer (so that the header can move to exact position as the drawer expands)
+const drawerWidth = 300 
 
+// This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -75,9 +78,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
+// Define and export the function
 export default function AppHeader(props) {
-  const classes = useStyles()
 
+  const classes = useStyles() // call the hook
+
+  // Return the main component
   return (
     <AppBar
       position="fixed"
@@ -86,6 +92,8 @@ export default function AppHeader(props) {
       })}
     >
       <Toolbar>
+
+        {/* ICON */}
         <IconButton
           color="inherit"
           aria-label="open drawer"
@@ -97,12 +105,24 @@ export default function AppHeader(props) {
         >
           <MenuIcon fontSize="large" />
         </IconButton>
+
+        {/* TITLE */}
         <Container>
-          <Typography variant="h4" className={classes.text} noWrap>
+          <Typography 
+            variant="h4" 
+            className={classes.text} 
+            noWrap
+          >
             Classy Schedule
           </Typography>
         </Container>
-        <LoginHeader login={props.login} ></LoginHeader>
+
+        {/* USER'S LOGIN INFO */}
+        <LoginHeader 
+          login={props.login} 
+          handleLogOut={props.handleLogOut} 
+        ></LoginHeader>
+
       </Toolbar>
     </AppBar>
   )

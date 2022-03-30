@@ -10,23 +10,22 @@ import {
   Divider,
   IconButton,
 } from '@material-ui/core'
-
+import { Link } from 'react-router-dom'
+import Collapse from '@mui/material/Collapse'
 import HomeIcon from '@material-ui/icons/Home'
-import AddIcon from '@mui/icons-material/Add';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import AddIcon from '@mui/icons-material/Add'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
-
+import HelpIcon from '@material-ui/icons/Help'
 import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import PermIdentityIcon from '@material-ui/icons/PermIdentity'
-import ClassIcon from '@material-ui/icons/Class';
-import { Link } from 'react-router-dom'
-import Collapse from '@mui/material/Collapse'
+import ClassIcon from '@material-ui/icons/Class'
 
+const drawerWidth = 300 // width of the drawer
 
-const drawerWidth = 300
-
+// This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -91,26 +90,49 @@ const useStyles = makeStyles((theme) => ({
   text: {
     color: '#424242',
   },
+  link: {
+    textDecoration: 'none',
+  },
+  collapseLink: {
+    paddingLeft: '50px'
+  }
 }))
 
+// MAIN COMPONENT CONTAINING THE SIDE NAV BAR
 const AppSideNavBar = (props) => {
-  const classes = useStyles()
-  const theme = useTheme()
-  const [open, setOpen] = React.useState(false); // expand nested list
-  const [selectedIndex, setSelectedIndex] = React.useState(1)
-  
+
+  const classes = useStyles() // call the useStyle hook
+  const theme = useTheme() // call the useTheme
+  const [openNestedList, setOpenNestedList] = React.useState(false); // variable used to indicate if the nested list is expanded
+  const [selectedIndex, setSelectedIndex] = React.useState(1) // variable used to indicated which list item is selected
+
+  // This function will set the item selected as "selected"
+  // If selected, the list item will change its background color
   const handleListItemClick = (event, index) => {
     setSelectedIndex(index)
+
+    /*
+      When option 2 (functions) is selected,
+      If the header & drawer are open, then the nested list can be expanded
+      Otherwise, disable its expandable function
+    */
     if (index === 2) {
-      setOpen(!open);
+      if (props.open) {
+        setOpenNestedList(!openNestedList)
+      } else {
+        setOpenNestedList(false)
+      }
+      
     }
   }
 
+  // This function will collapse the nested list when the side nav bar is closed
   const handleDrawerClose = () => {
     props.handleDrawerClose();
-    setOpen(false)
+    setOpenNestedList(false)
   }
 
+  // Return the Side Nav Bar component
   return (
     <Drawer
       variant="permanent"
@@ -134,9 +156,13 @@ const AppSideNavBar = (props) => {
           )}
         </IconButton>
       </div>
+
       <Divider />
+
       <List>
-        <Link exact to="/" style={{ textDecoration: 'none' }} >
+
+         {/* HOME */}
+        <Link exact to="/" className={classes.link} >
           <ListItem
             button
             selected={selectedIndex === 0}
@@ -148,6 +174,8 @@ const AppSideNavBar = (props) => {
             <ListItemText className={classes.text}>Home</ListItemText>
           </ListItem>
         </Link>
+
+        {/* FUNCTIONS */}
         <ListItem
           button
           selected={selectedIndex === 2}
@@ -159,12 +187,16 @@ const AppSideNavBar = (props) => {
           <ListItemText className={classes.text}>
             Functions
           </ListItemText>
-          {open ? <ExpandLess /> : <ExpandMore />}
+          {openNestedList ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <Collapse in={open} timeout="auto" unmountOnExit>
+
+        {/* NESTED LIST */}
+        <Collapse in={openNestedList} timeout="auto" unmountOnExit>
+
+          {/* Add course */}
           <List disablePadding>
-            <Link exact to='/AddClass' style={{ textDecoration: 'none' }}>
-              <ListItem button style={{paddingLeft: '50px'}}>
+            <Link exact to='/AddClass' className={classes.link} >
+              <ListItem button className={classes.collapseLink}>
                 <ListItemIcon>
                   <ClassIcon />
                 </ListItemIcon>
@@ -173,8 +205,10 @@ const AppSideNavBar = (props) => {
                 </ListItemText>
               </ListItem>
             </Link>
-            <Link exact to='/AddFaculty' style={{ textDecoration: 'none' }}>
-              <ListItem button  style={{paddingLeft: '50px'}}>
+
+            {/* Add Faculty */}
+            <Link exact to='/AddFaculty' className={classes.link} >
+              <ListItem button className={classes.collapseLink}>
                 <ListItemIcon>
                   <PermIdentityIcon />
                 </ListItemIcon>
@@ -186,7 +220,8 @@ const AppSideNavBar = (props) => {
           </List>
         </Collapse>
 
-        <Link exact to="/Calendar" style={{ textDecoration: 'none' }}>
+        {/* CALENDAR */} 
+        <Link exact to="/Calendar" className={classes.link} >
           <ListItem
             button
             selected={selectedIndex === 3}
@@ -200,8 +235,26 @@ const AppSideNavBar = (props) => {
             </ListItemText>
           </ListItem>
         </Link>
+
+        {/* HELP */}
+        <Link exact to="/Help" className={classes.link} >
+          <ListItem
+            button
+            selected={selectedIndex === 4}
+            onClick={(event) => handleListItemClick(event, 4)}
+          >
+            <ListItemIcon>
+              <HelpIcon />
+            </ListItemIcon>
+            <ListItemText className={classes.text}>
+              Help
+            </ListItemText>
+          </ListItem>
+        </Link>
       </List>
     </Drawer>
   )
 }
+
+// Export the component as default
 export default AppSideNavBar

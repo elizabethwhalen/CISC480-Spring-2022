@@ -1,11 +1,12 @@
 import React from 'react'
 import { Button, Grid, Paper, Typography, } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import background from '../images/campus.jpg'
 import logo from '../images/ustlogo.png'
-import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import { Link } from 'react-router-dom'
 
+// Styling components using useStyles
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -37,62 +38,75 @@ const useStyles = makeStyles((theme) => ({
     width: '500px'
   },
   loginContainer: {
-    display: 'flex', 
-    width: '100%', 
-    padding: '0px 150px 0px 50px', 
+    display: 'flex',
+    width: '100%',
+    padding: '0px 150px 0px 50px',
     margin: '0 auto -55px auto'
-  }, 
+  },
   logoGrid: {
-    paddingTop: '30px', 
+    paddingTop: '30px',
     marginBottom: '70px'
   },
   logo: {
-    width: '260px', 
+    width: '260px',
     height: '50px'
   },
   text: {
     marginBottom: '30px'
-  }, 
+  },
   textBox: {
     marginBottom: '20px'
   },
   forgotPass: {
-    textDecoration: 'none', 
-    color: "#646364" 
-  }, 
+    textDecoration: 'none',
+    color: "#646364"
+  },
   link: {
-    textDecoration: 'none', 
+    textDecoration: 'none',
   },
   loginButtonGrid: {
     marginTop: '20px'
   }
 }))
 
+// Login page component with parameter passed under props
 const Login = (props) => {
-  const classes = useStyles()
-  
+
+  const classes = useStyles() // use the useStyles
+
   return (
     <Paper className={classes.root}>
       <Grid container className={classes.container} >
+
+        {/* Empty grid item used for place holder */}
         <Grid item direction="column"
           alignItems="flex-start"
           justify="flex-start" className={classes.gridItem1} >
         </Grid>
+
         <Grid item direction="column"
           alignItems="flex-end"
           justify="flex-end"
           className={classes.gridItem2}
         >
           <Grid container className={classes.loginContainer}>
+
+            {/* LOGO */}
             <Grid item xs={12} fullWidth className={classes.logoGrid} >
               <img src={logo} className={classes.logo} alt='logo' ></img>
             </Grid>
+
+            {/* Instruction line */}
             <Grid item xs={12} fullWidth className={classes.text}>
               Sign in with your organizational account
             </Grid>
+
+            {/* Form */}
             <Grid item xs={12} fullWidth>
               <ValidatorForm onError={(errors) => console.log(errors)}>
                 <Grid container spacing={1}>
+
+                  {/* Email */}
                   <Grid item xs={12} fullWidth>
                     <TextValidator
                       size="small"
@@ -108,6 +122,8 @@ const Login = (props) => {
                     // ]}
                     />
                   </Grid>
+
+                  {/* Password */}
                   <Grid item xs={12} fullWidth >
                     <TextValidator
                       size="small"
@@ -121,9 +137,13 @@ const Login = (props) => {
                       //   'Invalid - It should be a 3-digit number',
                       //   'this field is required',
                       // ]}
+                      validators={['required']}
+                      errorMessages={['this field is required']}
                       className={classes.textBox}
                     />
                   </Grid>
+
+                  {/* Forgot Password link to reset password */}
                   <Grid item xs={12} fullwidth>
                     <Typography variant='h8'>
                       <Link to='/ForgotPassword' className={classes.forgotPass}>
@@ -131,6 +151,8 @@ const Login = (props) => {
                       </Link>
                     </Typography>
                   </Grid>
+
+                  {/* Submit button */}
                   <Grid item xs={12} fullWidth className={classes.loginButtonGrid}>
                     <Link to='/' className={classes.link}>
                       <Button variant="contained" disableElevation onClick={props.handleLogin} >
