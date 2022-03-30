@@ -24,8 +24,28 @@ const Home = () => {
     return (
         <Paper className={classes.container} elevation={0}>
             <h1>
-                HOME PAGE
+                {/* Place holder home page header*/}
+                Welcome to Classy Scheduler 
+                <h3>The place for all of your scheduling needs</h3>
             </h1>
+
+            <h2>
+                {/*This button will take you to the add new class tab*/}
+                <button size="large" type="submit">Add New Class</button>
+            </h2>
+               
+            <h2>
+                {/*This button will take you to the add New Faculty tab*/}
+                <button size="large" type="submit">Add New Faculty Member</button>
+            </h2>
+            <h2>
+                {/*This button will take you to the Calendar */}
+                <button size="large" type="submit">View Schedule</button>
+            </h2>
+            <h2>
+                {/*This button will take you to the Questions tab*/}
+                <button size="large" type="submit">Questions?</button>
+            </h2>
         </Paper>
 
     )
