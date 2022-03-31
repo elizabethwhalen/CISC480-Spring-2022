@@ -9,33 +9,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.scene.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 
-        import courses.CourseController;
-        import homescreen.HomescreenController;
-        import javafx.fxml.FXML;
-        import javafx.fxml.FXMLLoader;
-        import javafx.fxml.Initializable;
-        import javafx.scene.Parent;
-        import javafx.scene.Scene;
-        import javafx.scene.control.Button;
-        import javafx.scene.control.TextField;
-        import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import courses.CourseController;
+        import courses.AddCourseToDatabaseController;
 
 /**
  *Controls the homescreen page, which allows the user to navigate to add course, add professor, add classroom, and view
@@ -70,11 +50,11 @@ public class HomescreenController implements Initializable {
      */
     @FXML
     public void addCourseButtonClicked() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/AddCourse.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/AddCourseToDatabase.fxml"));
         Parent root = null;
         try {
             root = loader.load();
-            CourseController homescreenController = loader.getController();
+            AddCourseToDatabaseController homescreenController = loader.getController();
             homescreenController.setStage(homescreenStage);
         } catch (IOException e) {
             e.printStackTrace();
@@ -84,21 +64,6 @@ public class HomescreenController implements Initializable {
         homescreenStage.show();
     }
 
-
-    /*public void addClassroomButtonClicked(MouseEvent mouseEvent) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/ClassroomNew.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-            CourseController homescreenController = loader.getController();
-            homescreenController.setStage(homescreenStage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        homescreenStage.setTitle("Classy-Schedule");
-        homescreenStage.setScene(new Scene(root, 600, 400));
-        homescreenStage.show();
-    }*/
 
     /**
      * Changes scene to add classroom page when 'Add CLassroom' button is clicked

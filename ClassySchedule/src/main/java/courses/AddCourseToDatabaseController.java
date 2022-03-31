@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 /**
  * Controls add course page, which allows the user to add a course to the database.
  */
-public class CourseController implements Initializable {
+public class AddCourseToDatabaseController implements Initializable {
     private Stage addCourse;
     @FXML
     TextField section_number;
@@ -42,7 +42,7 @@ public class CourseController implements Initializable {
     @FXML
     Text departmentWarning;
 
-    public CourseController() {}
+    public AddCourseToDatabaseController() {}
 
     /**
      * Retrieves department codes from database for dropdown menu

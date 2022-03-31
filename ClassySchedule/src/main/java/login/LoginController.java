@@ -1,6 +1,5 @@
 package login;
 
-import courses.CourseController;
 import homescreen.HomescreenController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
