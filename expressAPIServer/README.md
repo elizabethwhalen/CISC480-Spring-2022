@@ -1,10 +1,12 @@
 # Express API Server
 **Classy-Schedule Express API Server Development Repository**
+PLEASE NOTE: This directory (along with expressWebServerExample) do not currently work properly. Will be fixed by tomorrow night.
+</br>
 The Database Team's Express API Server accepts HTTP requests from other teams. Based
 on the received HTTP requests, the API then queries one of the Database Team's MySQL
 database schemeas. The resulting data is return to the API where it is then sent to
 the requesting client in the form of a JSON list.
-<br>
+</br>
 To deploy this folder locally or to Azure, please follow the guide below.
 
 ## Local Deployment
@@ -26,5 +28,8 @@ To deploy the Express API Server to an Azure Web Service owned by the Database t
 6. $code .
 7. Select the "expressAPIServer" folder
 8. Click the "Deploy to Web App" icon and select "classy-schedule-api"
+9. From another terminal, submit HTTP requests to http://classy-schedule-api.ddns.net
+  - Ex1: $curl -X GET "http://classy-schedule-api.ddns.net/classes:id"
+  - Ex2:
 
 Note: We followed this guide for Node.js application deployment to Azure: https://docs.microsoft.com/en-us/azure/app-service/quickstart-nodejs?tabs=linux&pivots=development-environment-azure-portal
