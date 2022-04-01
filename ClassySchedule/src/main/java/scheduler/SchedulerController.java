@@ -1,98 +1,78 @@
 package scheduler;
 
-import courses.CourseController;
-import courses.Display;
-import courses.DisplayCourse;
-import courses.Lecture;
-import javafx.beans.Observable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import jfxtras.scene.control.agenda.Agenda;
+
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
+// TODO: Add comments, persist appointments
 public class SchedulerController implements Initializable {
 
-    private Stage stage;
-
-    private Scene scene;
-
-    private Parent parent;
+    @FXML
+    BorderPane borderPane;
 
     @FXML
-    private Button add;
+    Button addCourseButton;
 
     @FXML
-    private TableView<DisplayCourse> calendar;
+    Button homeButton;
 
     @FXML
-    private Button delete;
+    Button anotherButton;
 
-    @FXML
-    private TableColumn<DisplayCourse, String> fridayColumn;
+    Stage stage;
 
-    @FXML
-    private TableColumn<DisplayCourse, String> mondayColumn;
-
-    @FXML
-    private TableColumn<DisplayCourse, String> thursdayColumn;
-
-    @FXML
-    private TableColumn<DisplayCourse, String> tuesdayColumn;
-
-    @FXML
-    private TableColumn<DisplayCourse, String> wednesdayColumn;
-
-    @FXML
-    private void switchToCourse(ActionEvent event) throws IOException {
-      parent = FXMLLoader.load(getClass().getResource("/resources/fxml/addcourse.fxml"));
-      scene = new Scene(parent);
-      stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-      stage.setScene(scene);
-      stage.show();
-    }
+    Agenda agenda;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Set each column type
-        mondayColumn.setCellValueFactory(new PropertyValueFactory<DisplayCourse, String>("monday"));
-        tuesdayColumn.setCellValueFactory(new PropertyValueFactory<DisplayCourse, String>("tuesday"));
-        wednesdayColumn.setCellValueFactory(new PropertyValueFactory<DisplayCourse, String>("wednesday"));
-        thursdayColumn.setCellValueFactory(new PropertyValueFactory<DisplayCourse, String>("thursday"));
-        fridayColumn.setCellValueFactory(new PropertyValueFactory<DisplayCourse, String>("friday"));
+        this.agenda = new Agenda();
+        borderPane.setCenter(agenda);
+    }
 
-        calendar.setItems(getCourse());
+    @FXML
+    public void goToAddCourse(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/AddCourseToSchedule.fxml"));
+        Parent root = loader.load();
+        AddCourseToScheduleController schedulerController = loader.getController();
+        schedulerController.setStage(stage);
+        stage.setTitle("Classy-Schedule");
+        stage.setScene(new Scene(root, 600, 450));
+        stage.show();
+    }
+
+    @FXML
+    public void goToHomeScreen(ActionEvent actionEvent) throws IOException {
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
+//        Parent root = loader.load();
+//        HomescreenController hsController = loader.getController();
+//        hsController.setStage(stage);
+//        stage.setTitle("Classy-Schedule");
+//        stage.setScene(new Scene(root, 600, 450));
+//        stage.show();
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     /**
-     * This method receive the data from the database and insert into the calendar
-     * @param givenDisplay the given display object information from the user's input
+     * This method receive the data from the user and insert into the calendar
+     * @param appointments the created appoints to add to the scheduler
      */
-    public void addCourse(DisplayCourse givenDisplay) {
-      DisplayCourse display = new DisplayCourse(givenDisplay.getMonday(), givenDisplay.getTuesday(), givenDisplay.getWednesday(), givenDisplay.getThursday(), givenDisplay.getFriday());
-      calendar.getItems().add(display);
+    public void addCourse(List<Agenda.Appointment> appointments) {
+        agenda.appointments().addAll(appointments);
     }
 
-    /**
-     * This method is to insert a test list of courses into the tableview during initialization.
-     * @return a fixed ObservableList
-     */
-    private ObservableList<DisplayCourse> getCourse() {
-        ObservableList<DisplayCourse> test = FXCollections.observableArrayList();
-        test.add(new DisplayCourse("Intro to Programming \n" + "131 \n" + "CISC", "", "Intro to Programming \n" + "131 \n" + "CISC", "", "Intro to Programming \n" + "131 \n" + "CISC"));
-        test.add(new DisplayCourse("Object-Oriented Programming \n" + "230 \n" + "CISC", "", "Object-Oriented Programming \n" + "230 \n" + "CISC", "", "Object-Oriented Programming \n" + "230 \n" + "CISC"));
-        return test;
-    }
 }

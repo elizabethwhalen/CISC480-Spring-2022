@@ -1,6 +1,6 @@
 package login;
 
-import courses.CourseController;
+import scheduler.AddCourseToScheduleController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -64,12 +64,13 @@ public class LoginController implements Initializable {
     }
 
     public void changeScene() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/addcourse.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/AddCourseToSchedule.fxml"));
         Parent root = null;
         try {
             root = loader.load();
-            CourseController loginController = loader.getController();
+            AddCourseToScheduleController loginController = loader.getController();
             loginController.setStage(loginStage);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
