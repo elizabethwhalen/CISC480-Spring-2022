@@ -46,24 +46,17 @@ app.use(function(err, req, res, next) {
 // We are no longer connecting directly to the database, but now we are connecting to the api.
 var http = require("http");
 
-// Joe, we need each of these function names (~64) written out (with the variable options
-// customized to the proper path and method you don't mind.
+// 
 function getClasses(){
   var options = {
     host: 'http:/localhost:4000',
-    port: 80,
-    path: '/classes:id',
+    path: '/getClasses',
     method: 'GET'
   };
 
+
   var req = http.request(options, function(res) {
-    console.log('I AM HERE');
-    console.log('STATUS: ' + res.statusCode);
-    console.log('HEADERS: ' + JSON.stringify(res.headers));
-    res.setEncoding('utf8');
-    res.on('data', function (chunk) {
-      console.log('BODY: ' + chunk);
-    });
+
   });
 
   req.on('error', function(e) {
