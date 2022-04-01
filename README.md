@@ -14,7 +14,7 @@ API access: http://classy-schedule-api.ddns.net
 **expressWebServerExample** : Express-based developmental web server that connects to the expressAPIServer (hosted on DB team azure). Web development team, please look at this example.
   - Access via browser at http://cs-dev.ddns.net
 
-**expressWebServerExampleStandalone** : Express-based web server that connects directly to a developmental database scheme. Please disregard this example for your own team development.
+**expressWebServerExampleStandalone** : Express-based web server that connects directly to a developmental database scheme. Please disregard this example for your own team development. We are trying to phase out this design and have expressAPIServer and expressWebServerExample separated.
 
 ## Web Development Team
 - Folders???
