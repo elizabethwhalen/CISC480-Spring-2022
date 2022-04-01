@@ -1,9 +1,9 @@
 # Express Web Server Example
 **Classy-Schedule Express Web Server Example Development Repository**
 PLEASE NOTE: This directory (along with expressAPIServer) do not currently work properly. Will be fixed by tomorrow night.
-<br>
+</br>
 The Database Team's Express Web Server Example (Standalone) is a first version prototype that has no separation between the web interface and the API. Please see the diagram within the README for "CISC480-Spring-2022". Ideally, we hope to remove this repository by the week of 04/04/2022.
-<br>
+</br>
 To deploy this folder locally or to Azure, please follow the guide below.
 
 ## Local Deployment
