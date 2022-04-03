@@ -1,0 +1,22 @@
+body {
+    min-width: 60%;
+    width: 80%;
+    margin: auto;
+}
+.container {
+    background-color: lightblue;
+    padding: 2%
+}
+h1 {
+    color: navy;
+}
+#task {
+    padding: 1% 2%;
+    border-color: navy;
+}
+#submit {
+    padding: 1% 2%;
+    border-color: navy;
+    background-color: navy;
+    color: white;
+}
