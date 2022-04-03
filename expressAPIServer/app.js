@@ -3,7 +3,6 @@
 
 // Load in NPM modules for express app and MySQL connection
 var express = require('express');
-var logger = require('morgan');
 let cors = require('cors');
 var mysql = require('mysql');
 
@@ -16,10 +15,10 @@ app.use(cors());
 // Eventually we would like to replace this authentificaiton with tokens
 var config =
 {
-    host: 'classy-schedule-database.mysql.database.azure.com';,
-    user: 'db_test';,
-    password: 'fA!6#_&eaU9-EaeJ';,
-    database: 'db_dev';,
+    host: 'classy-schedule-database.mysql.database.azure.com',
+    user: 'db_test',
+    password: 'fA!6#_&eaU9-EaeJ',
+    database: 'db_dev',
     port: 3306,
 };
 
@@ -27,7 +26,7 @@ var config =
 const con = new mysql.createConnection(config);
 con.connect(function(err) {
   if (err) throw err;
-  console.log("Connected to the database!");
+  console.log("Connected to the MySQL database!");
 });
 
 /*
@@ -35,99 +34,59 @@ con.connect(function(err) {
   and DELETE requests from the user.
 */
 
-app.get('/getClasses', (req, res) => {
-    // Construct the classes
-    let query = "SELECT * FROM classes";
-
-    // Make the database query
-    new Promise( (resolve, reject) => {
-      con.query(query, (err, result) => {
-          if (err) {
-            reject();
-          } else {
-            resolve(result)
-          }
-      });
-    })
-    .then(rows => {
-      res.status(200).type('application/json').send(rows);
-    }).catch(err => {
-      res.status(500).send("Error querying database");
-    });
-});
-
 app.get('/getDept', (req, res) => {
-    // Construct the database
+    // Construct the query
     let query = "SELECT * FROM dept";
 
-    // Make the database query
+    // Make the SQL query
+    makeSQLQuery(res, query);
+});
+
+app.get('/getClass', (req, res) => {
+    // Construct the query
+    let query = "SELECT * FROM class";
+
+    // Condition where dept_code was provided
+    if (req.query.dept_code){
+        let myArray = req.query.dept_code.split(",");
+        query = query + " WHERE dept_code = '" + myArray.join("' OR dept_code = '")+ "'";
+    }
+
+    // Make the SQL query
+    makeSQLQuery(res, query);
+});
+
+app.post('/addClass', (req, res) => {
+    // Construct the query
+    let query = "INSERT INTO class (dept_code, class_num, class_name) VALUES (?, ?, ?)";
+
+    // Data from user HTTP request. We pass into makeSQLQuery to prevent injection.
+    data = [req.query.dept_code, req.query.class_num, req.query.class_name];
+
+    makeSQLQuery(res, query, data);
+});
+
+// Make an SQL query
+function makeSQLQuery(res, query, data) {
+    // Promise allows for other items to be completed simulatenously. Check out Javascript
+    // promises for more information.
     new Promise( (resolve, reject) => {
-      con.query(query, (err, result) => {
-          if (err) {
-            reject();
-          } else {
-            resolve(result)
-          }
-      });
+        con.query(query, data, (err, result) => {
+            if (err) {
+                console.log(err)
+                reject();
+            } else {
+                resolve(result)
+            }
+        });
     })
     .then(rows => {
-      res.status(200).type('application/json').send(rows);
+        // Successful, send status 200 and resulting rows
+        res.status(200).type('application/json').send(rows);
     }).catch(err => {
-      res.status(500).send("Error querying database");
+        // Not successful, send status 500, error
+        res.status(500).send("Error querying database");
     });
-});
-
-/* Need to rewrite these functions to return JSON instead of modifying view
-app.get('/', (req, res) => {
-    let query = "SELECT * FROM dept";
-    let items = []
-    con.query(query, (err, result) => {
-        if (err) throw err;
-        items = result
-        console.log(items)
-        res.render('index', {
-            items: items
-        })
-    })
-    console.log(items);
-});
-
-app.get('/classes:id', (req, res) => {
-    let query = "SELECT * FROM class";
-    let items = []
-    console.log(req)
-    let condition = req.query.dept_code
-    if (condition){
-        console.log(condition)
-        condArray = condition.split(",");
-        // Add to sql query
-        query = query + " WHERE dept_code = '" + condArray.join("' OR dept_code = '")+ "'";
-      }
-    console.log(query)
-    con.query(query, (err, result) => {
-        if (err) throw err;
-        items = result
-        console.log(items)
-        res.render('index', {
-            items: items
-        })
-    })
-    console.log(items);
-});
-
-app.post('/classes', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO class (dept_code, class_num, class_name) VALUES ?";
-    data = [
-        [req.body.dept,req.body.num, req.body.name]
-    ]
-    console.log(query)
-    con.query(query, [data], (err, result) => {
-        if (err) throw err
-        console.log(result);
-    })
-    res.redirect('/classes:id')
-});
-*/
+}
 
 module.exports = app;
