@@ -10,6 +10,7 @@ var logger = require('morgan');               // Log
 let fs = require('fs');                       // Filesystem access
 const hbs = require('express-handlebars');    // Dynamic HTML
 const bodyParser = require("body-parser");    // Body parser
+var https = require("https");
 var http = require("http");
 
 // Define vars
@@ -19,10 +20,10 @@ var app = express();
 
 // Local host testing or Azure - please check deployment var before deploying to Azure!!!
 var deployment = "local" // "azure" when deployed to cloud
-let apiHost = "http://classy-schedule-api.ddns.net";
+var apiHost = "http://classy-schedule-api.ddns.net";
 
 // If we are connecting to local hosted API server
-if deployment == "local" {
+if (deployment == "local") {
     apiHost = "http://localhost:4000"
 }
 
@@ -63,10 +64,124 @@ app.use(bodyParser.json())
 // We are no longer connecting directly to the database, but now we are connecting to the api.
 //
 
+app.get('/', (req, res) => {
+    // Build the HTTP request
+    let path = apiHost+"/getDept";
+
+    // Declare vars
+    var items = [];
+    var data = [];
+
+    // Make HTTP request (see https://blog.logrocket.com/5-ways-to-make-http-requests-in-node-js/)
+    http.get(path, result => {
+        result.on('data', chunk => {
+            data.push(chunk);
+        });
+
+        result.on('end', () => {
+            console.log('Response ended: ');
+            //console.log(data);
+            items = JSON.parse(Buffer.concat(data).toString());
+            console.log(items);
+        });
+    }).on('error', err => {
+      console.log('Error: ', err.message);
+    });
+
+    res.render('index', {
+        items: items
+    });
+});
+
+app.get('/classes', (req, res) => {
+    // Build the HTTP request
+    let path = apiHost+"/getClass";
+
+    // Departments where added to input box, need to add to HTTP path
+    let depts = req.body.codeTextbox
+    if (depts) {
+        path = path + "?" + depts;
+    }
+
+    // Declare vars
+    var items = [];
+    var data = [];
+
+    // Make HTTP request (see https://blog.logrocket.com/5-ways-to-make-http-requests-in-node-js/)
+    http.get(path, result => {
+        result.on('data', chunk => {
+            data.push(chunk);
+        });
+
+        result.on('end', () => {
+            console.log('Response ended: ');
+            //console.log(data);
+            items = JSON.parse(Buffer.concat(data).toString());
+            console.log(items);
+        });
+    }).on('error', err => {
+      console.log('Error: ', err.message);
+    });
+
+    res.render('index', {
+        items: items
+    });
+});
+
+app.get('/newClass', (req, res) => {
+    // Build the HTTP request from data in the HTML body
+    let path = apiHost+"/addClass?dept_code="+req.body.deptTextbox+"&class_num="+req.body.numTextbox+"&class_name="+req.body.nameTextbox;
+
+    // Make HTTP request (see https://blog.logrocket.com/5-ways-to-make-http-requests-in-node-js/)
+    http.get(path, result => {
+        result.on('data', chunk => {
+            data.push(chunk);
+        });
+
+        result.on('end', () => {
+            console.log('Response ended: ');
+            //console.log(data);
+            items = JSON.parse(Buffer.concat(data).toString());
+            console.log(items);
+        });
+    }).on('error', err => {
+      console.log('Error: ', err.message);
+    });
+
+    res.redirect('/classes')
+});
+
+/* Working!!! (see https://blog.logrocket.com/5-ways-to-make-http-requests-in-node-js/)
+function getTest() {
+    https.get('https://jsonplaceholder.typicode.com/users', res => {
+      let data = [];
+      const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
+      console.log('Status Code:', res.statusCode);
+      console.log('Date in Response header:', headerDate);
+
+      res.on('data', chunk => {
+        data.push(chunk);
+      });
+
+      res.on('end', () => {
+        console.log('Response ended: ');
+        const users = JSON.parse(Buffer.concat(data).toString());
+
+        for(user of users) {
+          console.log(`Got user with id: ${user.id}, name: ${user.name}`);
+        }
+      });
+    }).on('error', err => {
+      console.log('Error: ', err.message);
+    });
+}
+*/
+
 //
-// HELPER FUNCTION SECTION
+// HELPER FUNCTION SECTION (DISREGARD FOR THIS WEEK)
 //
 
+/*
 // Example of how Web dev team may get depts
 function getDept(){
     // Make HTTP connection settings
@@ -75,34 +190,10 @@ function getDept(){
         path: '/getDept',
         method: 'GET'
     };
-
-    // Make HTTP request
-    let req = http.request(options, (err, res) => {
-        if (err) {
-            console.log('problem with request: ' + e.message);
-        }
-    });
-
-    // Print request result
-    console.log(req);
-
-    // write data to request body
-    //req.write('data\n');
-    //req.write('data\n');
-    //req.end();
 };
 
 // Example of how Web dev team may view classes from a certain department
 function getClass(dept_code){
-    /**
-    * Get class(es) via a HTTP request.
-    *
-    * See API documentation for full usage. The HTTP request will look something
-    * like this: "http://getClass?dept_code=STAT,CISC,MATH"
-    *
-    * @param    {array}    dept_code    Deptartment codes of classes (can be a list with one element or no elements)
-    * @return   ?
-    */
     let path = "/getClass";
 
     // Condition where dept_code was provided
@@ -116,39 +207,10 @@ function getClass(dept_code){
         path: '/getClass',
         method: 'GET'
     };
-
-    // Make HTTP request
-    let req = http.request(options, (err, res) => {
-        if (err) {
-            console.log('problem with request: ' + e.message);
-        }
-    });
-
-    // Print request result
-    console.log(req);
-
-    /* Make HTTP request
-    let req = http.request(options, (err, res) => {
-        if (err) {
-            console.log('problem with request: ' + e.message);
-        }
-    });*/
 }
 
 // Example of how web dev team may insert a class
 function addClass(dept_code, class_num, class_name) {
-    /**
-    * Add a class via a HTTP request.
-    *
-    * See API documentation for full usage. The HTTP request will look something
-    * like this: "http://addClass?dept_code=STAT&class_num=101&class_name='Introduction to Statistics'"
-    *
-    * @param    {string}     dept_code   Deptartment code of class
-    * @param    {string}     class_num   Class number
-    * @param    {string}     class_name   Class name
-    * @return   Path string for access
-    */
-
     let path = "/dept_code="+dept_code+"&class_num="+class_num+"&class_name="+class_name;
 
     let options = {
@@ -171,65 +233,5 @@ function addClass(dept_code, class_num, class_name) {
         console.log('problem with request: ' + e.message);
     });
 }
-
-// Check for update (button click) in body...
-//getDept();
-//getClass();
-//addClass();
-
-
-
-// OLD DB requests
-/*
-app.get('/', (req, res) => {
-    let query = "SELECT * FROM dept";
-    let items = []
-    con.query(query, (err, result) => {
-        if (err) throw err;
-        items = result
-        console.log(items)
-        res.render('index', {
-            items: items
-        })
-    })
-    console.log(items);
-});
-
-app.get('/classes:id', (req, res) => {
-    let query = "SELECT * FROM class";
-    let items = []
-    console.log(req)
-    let condition = req.query.dept_code
-    if (condition){
-        console.log(condition)
-        condArray = condition.split(",");
-        // Add to sql query
-        query = query + " WHERE dept_code = '" + condArray.join("' OR dept_code = '")+ "'";
-      }
-    console.log(query)
-    con.query(query, (err, result) => {
-        if (err) throw err;
-        items = result
-        console.log(items)
-        res.render('index', {
-            items: items
-        })
-    })
-    console.log(items);
-});
-
-app.post('/classes', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO class (dept_code, class_num, class_name) VALUES ?";
-    data = [
-        [req.body.dept,req.body.num, req.body.name]
-    ]
-    console.log(query)
-    con.query(query, [data], (err, result) => {
-        if (err) throw err
-        console.log(result);
-    })
-    res.redirect('/classes:id')
-});
 */
 module.exports = app;
