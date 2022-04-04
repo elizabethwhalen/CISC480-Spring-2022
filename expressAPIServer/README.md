@@ -1,8 +1,6 @@
 # Express API Server
 **Classy-Schedule Express API Server Development Repository**
-</br></br>
-NOTE: PLEASE CONECT TO THE API SERVER WITH THE FOLLOWING LINK: databaseconnectionexample.azurewebsites.net
-</br></br>
+</br>
 The Database Team's Express API Server accepts HTTP requests from other teams. Based
 on the received HTTP requests, the API then queries one of the Database Team's MySQL
 database schemeas. The resulting data is return to the API where it is then sent to
@@ -17,11 +15,13 @@ To run the Express API Server locally, please complete the following steps:
 3. $npm start
 
 ### Connection via cURL
-From another terminal, submit HTTP requests to "http://localhost:4000". Here are some examples to connect to the API via [cURL](https://curl.se/):
-- **View something** (i.e. GET): $curl -X GET "http://localhost:4000/getDept"
-- **View something** (i.e. GET): $curl -X GET "http://localhost:4000/getClass?dept_code=STAT"
-- **Add something** (i.e. POST): $curl -X POST "http://localhost:4000/addClass?dept_code=STAT&class_num=101&class_name=Introduction+to+Statistics"
-    - Note: If an error from database is the response, the entry probably already exists or something more serious happened. Either way, we are working to increase error verbosity.
+From another terminal, submit HTTP requests to "http://localhost:3000". Here are some examples to connect to the API via [cURL](https://curl.se/):
+- **View something** $curl -X GET "http://localhost:3000/dept"
+- **View something** $curl -X GET "http://localhost:3000/dept?dept_code=CISC"
+- **Add something**  $curl -X POST "http://localhost:3000/class" -d "dept_code=CISC&class_num=340&class_name=Architecture"
+- **Update something** $curl -X PUT "http://localhost:3000/class?dept_code=CISC&class_num=340&new_class_name=Architecture"
+- **Delete something** $curl -X DELETE "http:localhost:3000/class?dept_code=CISC&class_num=340"
+    - Note: If an error from database is the response, the entry probably already exists or something more serious happened. Either way, we are working to improve error messages.
 
 
 ## Azure Deployment
@@ -41,7 +41,9 @@ Note: We followed this guide for Node.js application deployment to Azure: https:
 
 ### Connection via cURL
 From another terminal, submit HTTP requests to "http://classy-api.ddns.net". Here are some examples to connect to the API via [cURL](https://curl.se/):
-- **View something** (i.e. GET): $curl -X GET "http://classy-api.ddns.net/getDept"
-- **View something** (i.e. GET): $curl -X GET "http://classy-api.ddns.net/getClass?dept_code=STAT"
-- **Add something** (i.e. POST): $curl -X POST "http://classy-api.ddns.net/addClass?dept_code=STAT&class_num=101&class_name=Introduction+to+Statistics"
+- **View something** $curl -X GET "https://databaseconnectionexample.azurewebsites.net/dept"
+- **View something** $curl -X GET "https://databaseconnectionexample.azurewebsites.net/dept?dept_code=CISC"
+- **Add something**  $curl -X POST "https://databaseconnectionexample.azurewebsites.net/class" -d "dept_code=CISC&class_num=340&class_name=Architecture"
+- **Update something** $curl -X PUT "https://databaseconnectionexample.azurewebsites.net/class?dept_code=CISC&class_num=340&new_class_name=Architecture"
+- **Delete something** $curl -X DELETE "https://databaseconnectionexample.azurewebsites.net/class?dept_code=CISC&class_num=340"
   - Note: If an error from database is the response, the entry probably already exists or something more serious happened. Either way, we are working to increase error verbosity.
