@@ -30,7 +30,10 @@ app.post('/AddClass', (req, res) => {
     db.query(sqlInsert, [dept_code, class_num, class_name], (err, result) => {
         console.log(err)
     });
+    
 });
+
+
 
 // activates when server starts. logs the port that the server is running on, planning to switch to azure port.
 app.listen(3000, () => {
