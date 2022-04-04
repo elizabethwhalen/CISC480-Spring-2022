@@ -5,8 +5,8 @@ The Database Team's Express API Server accepts HTTP requests from other teams. B
 on the received HTTP requests, the API then queries one of the Database Team's MySQL
 database schemeas. The resulting data is return to the API where it is then sent to
 the requesting client in the form of a JSON list.
-</br>
-To deploy this folder locally or to Azure, please follow the guide below.
+</br></br>
+To deploy this folder locally or to Azure, please follow the guide below:
 
 ## Local Deployment
 To run the Express API Server locally, please complete the following steps:
