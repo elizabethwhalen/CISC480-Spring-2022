@@ -5,7 +5,8 @@ const fs = require('fs');
 let host = 'classy-schedule-database.mysql.database.azure.com';
 let user = 'db_test';
 let password = 'fA!6#_&eaU9-EaeJ';
-let database = 'db_dev';
+let database = 'cs_dev';
+//let database = 'db_dev'; Only use for development Database Team
 
 var config =
 {
