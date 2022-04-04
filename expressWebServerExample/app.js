@@ -10,8 +10,8 @@ var logger = require('morgan');               // Log
 let fs = require('fs');                       // Filesystem access
 const hbs = require('express-handlebars');    // Dynamic HTML
 const bodyParser = require("body-parser");    // Body parser
-var https = require("https");
-var http = require("http");
+var https = require("https");                 // For HTTPS requests
+var http = require("http");                   // For HTTP requests
 
 // Define vars
 var indexRouter = require('./routes/index');
@@ -31,6 +31,8 @@ if (deployment == "local") {
 // I think some of this can be trimmed down
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+app.use(logger('dev'));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -53,6 +55,7 @@ app.engine('hbs', hbs.engine({
         allowProtoMethodsByDefault: true
     }
 }));
+app.set('view engine', 'hbs');
 app.use(bodyParser.urlencoded({
     extended: true
 }))
@@ -71,6 +74,9 @@ app.get('/', (req, res) => {
     // Declare vars
     var items = [];
     var data = [];
+    //var rowItems = [];
+
+    console.log(path);
 
     // Make HTTP request (see https://blog.logrocket.com/5-ways-to-make-http-requests-in-node-js/)
     http.get(path, result => {
@@ -79,17 +85,17 @@ app.get('/', (req, res) => {
         });
 
         result.on('end', () => {
-            console.log('Response ended: ');
-            //console.log(data);
+            console.log('HTTP API Response ended: ');
             items = JSON.parse(Buffer.concat(data).toString());
             console.log(items);
+
+            // Render HTTP response to web page (its not janky HTML, its just express)
+            res.render('index', {
+                items: items
+            });
         });
     }).on('error', err => {
       console.log('Error: ', err.message);
-    });
-
-    res.render('index', {
-        items: items
     });
 });
 
@@ -97,16 +103,21 @@ app.get('/classes', (req, res) => {
     // Build the HTTP request
     let path = apiHost+"/getClass";
 
-    // Departments where added to input box, need to add to HTTP path
-    let depts = req.body.codeTextbox
-    if (depts) {
-        path = path + "?" + depts;
+    // Department was added to input box, need to add to HTTP path
+    let condition = req.query.dept_code
+    if (condition){
+        console.log(condition);
+        let condArray = condition.split(",");
+        // Add to path
+        path = path + "?dept_code=" + condArray.join(",");
     }
 
     // Declare vars
     var items = [];
     var data = [];
 
+    console.log(path);
+
     // Make HTTP request (see https://blog.logrocket.com/5-ways-to-make-http-requests-in-node-js/)
     http.get(path, result => {
         result.on('data', chunk => {
@@ -114,23 +125,29 @@ app.get('/classes', (req, res) => {
         });
 
         result.on('end', () => {
-            console.log('Response ended: ');
-            //console.log(data);
+            console.log('HTTP API Response ended: ');
             items = JSON.parse(Buffer.concat(data).toString());
             console.log(items);
+
+            // Render HTTP response to web page (its not janky HTML, its just express)
+            res.render('index', {
+                items: items
+            });
         });
     }).on('error', err => {
       console.log('Error: ', err.message);
-    });
-
-    res.render('index', {
-        items: items
     });
 });
 
-app.get('/newClass', (req, res) => {
+app.post('/newClass', (req, res) => {
     // Build the HTTP request from data in the HTML body
-    let path = apiHost+"/addClass?dept_code="+req.body.deptTextbox+"&class_num="+req.body.numTextbox+"&class_name="+req.body.nameTextbox;
+    let path = apiHost+"/addClass?dept_code="+req.body.dept_code+"&class_num="+req.body.class_num+"&class_name="+req.body.class_name;
+
+    // Declare vars
+    var data = [];
+    var items = [];
+
+    console.log(path);
 
     // Make HTTP request (see https://blog.logrocket.com/5-ways-to-make-http-requests-in-node-js/)
     http.get(path, result => {
@@ -139,16 +156,15 @@ app.get('/newClass', (req, res) => {
         });
 
         result.on('end', () => {
-            console.log('Response ended: ');
-            //console.log(data);
-            items = JSON.parse(Buffer.concat(data).toString());
-            console.log(items);
+            console.log('HTTP API Response ended: ');
+            //items = JSON.parse(Buffer.concat(data).toString());
+            //console.log(items);
+
+            res.redirect('/classes')
         });
     }).on('error', err => {
       console.log('Error: ', err.message);
     });
-
-    res.redirect('/classes')
 });
 
 /* Working!!! (see https://blog.logrocket.com/5-ways-to-make-http-requests-in-node-js/)
@@ -234,4 +250,5 @@ function addClass(dept_code, class_num, class_name) {
     });
 }
 */
+
 module.exports = app;

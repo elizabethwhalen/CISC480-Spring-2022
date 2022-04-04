@@ -84,7 +84,9 @@ app.get('/', (req, res) => {
     let items = []
     con.query(query, (err, result) => {
         if (err) throw err;
-        items = result
+        //items = result
+        //console.log(result);
+        items = Object.values(JSON.parse(JSON.stringify(result))); // test
         console.log(items)
         res.render('index', {
             items: items
@@ -107,8 +109,8 @@ app.get('/classes:id', (req, res) => {
     console.log(query)
     con.query(query, (err, result) => {
         if (err) throw err;
-        items = result
-        console.log(items)
+        items = result;
+        console.log(items);
         res.render('index', {
             items: items
         })
