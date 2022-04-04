@@ -1,115 +1,92 @@
-var createError = require('http-errors');
+// Filename: app.js
+// Description: Main file for API server. Connects to MySQL database and facilitates HTTP requests.
+
+// Load in NPM modules for express app and MySQL connection
 var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
 let cors = require('cors');
+var mysql = require('mysql');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
+// Create the express app
 var app = express();
 app.use(express.json());
 app.use(cors());
 
+// Connection to the database team Azure DB
+// Eventually we would like to replace this authentificaiton with tokens
+var config =
+{
+    host: 'classy-db.ddns.net',
+    user: 'db_test',
+    password: 'fA!6#_&eaU9-EaeJ',
+    database: 'db_dev',
+    port: 3306,
+};
+
+// Connect to the database
+const con = new mysql.createConnection(config);
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected to the MySQL database!");
+});
+
 /*
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+  HTTP request handling section is below. This is where we handle GET, POST, PUT,
+  and DELETE requests from the user.
+*/
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});*/
-
-
-/**
-Date: 03/29/22
-Additional items below for DB connection
-**/
-
-// Need to make connection
-const con = require('./models/taskModel');
-
-app.get('/', (req, res) => {
+app.get('/getDept', (req, res) => {
+    // Construct the query
     let query = "SELECT * FROM dept";
-    let items = [];
 
-    console.log(items);
-
-    // Make the database query
-    new Promise( (resolve, reject) => {
-      con.query(query, (err, result) => {
-          if (err) {
-            reject();
-          } else {
-            resolve(result)
-          }
-      });
-    })
-    .then(rows => {
-      res.status(200).type('application/json').send(rows);
-    }).catch(err => {
-      res.status(500).send("Error querying database");
-    });
+    // Make the SQL query
+    makeSQLQuery(res, query);
 });
 
-app.get('/classes:id', (req, res) => {
+app.get('/getClass', (req, res) => {
+    // Construct the query
     let query = "SELECT * FROM class";
-    let items = []
 
-    let condition = req.query.dept_code
-    if (condition){
-        condArray = condition.split(",");
-        // Add to sql query
-        query = query + " WHERE dept_code = '" + condArray.join("' OR dept_code = '")+ "'";
-    };
+    // Condition where dept_code was provided
+    if (req.query.dept_code){
+        let myArray = req.query.dept_code.split(",");
+        query = query + " WHERE dept_code = '" + myArray.join("' OR dept_code = '")+ "'";
+    }
 
-    // Make the database query
-    new Promise( (resolve, reject) => {
-      con.query(query, (err, result) => {
-          if (err) {
-            reject();
-          } else {
-            resolve(result)
-          }
-      });
-    })
-    .then(rows => {
-      res.status(200).type('application/json').send(rows);
-    }).catch(err => {
-      res.status(500).send("Error querying database");
-    });
+    // Make the SQL query
+    makeSQLQuery(res, query);
 });
 
-app.post('/classes', (req, res) => {
-    let query = "INSERT INTO class (dept_code, class_num, class_name) VALUES ?";
-    data = [[req.body.dept,req.body.num, req.body.name]];
+app.post('/addClass', (req, res) => {
+    // Construct the query
+    let query = "INSERT INTO class (dept_code, class_num, class_name) VALUES (?, ?, ?)";
 
-    // Make the database query
+    // Data from user HTTP request. We pass into makeSQLQuery to prevent injection.
+    data = [req.query.dept_code, req.query.class_num, req.query.class_name];
+
+    makeSQLQuery(res, query, data);
+});
+
+// Make an SQL query
+function makeSQLQuery(res, query, data) {
+    // Promise allows for other items to be completed simulatenously. Check out Javascript
+    // promises for more information.
     new Promise( (resolve, reject) => {
-      con.query(query, (err, result) => {
-          if (err) {
-            reject();
-          } else {
-            resolve(result)
-          }
-      });
+        con.query(query, data, (err, result) => {
+            if (err) {
+                console.log(err)
+                reject();
+            } else {
+                resolve(result)
+            }
+        });
     })
     .then(rows => {
-      res.status(200).type('application/json').send(rows);
+        // Successful, send status 200 and resulting rows
+        res.status(200).type('application/json').send(rows);
     }).catch(err => {
-      res.status(500).send("Error querying database");
+        // Not successful, send status 500, error
+        res.status(500).send("Error querying database");
     });
-
-    res.redirect('/classes:id')
-});
+}
 
 module.exports = app;
