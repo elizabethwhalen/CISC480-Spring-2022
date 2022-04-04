@@ -1,6 +1,7 @@
 import React from "react"
 import { makeStyles } from '@material-ui/core/styles'
-import { Paper } from "@mui/material"
+import { Grid, Paper } from "@mui/material"
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
     root:{
@@ -31,21 +32,39 @@ const Home = () => {
 
             <h2>
                 {/*This button will take you to the add new class tab*/}
-                <button size="large" type="submit">Add New Class</button>
+                <Grid>
+                    <Link to='/AddClass' className={classes.link}>
+                        <button size="large" type="submit">Add New Class</button>
+                    </Link>
+                </Grid> 
             </h2>
                
             <h2>
                 {/*This button will take you to the add New Faculty tab*/}
-                <button size="large" type="submit">Add New Faculty Member</button>
+                <Grid>
+                    <Link to='/AddFaculty' className={classes.link}>
+                        <button size="large" type="submit">Add New Faculty Member</button>
+                    </Link>
+                </Grid> 
             </h2>
             <h2>
                 {/*This button will take you to the Calendar */}
-                <button size="large" type="submit">View Schedule</button>
+                <Grid>
+                    <Link to='/Calendar' className={classes.link}>
+                        <button size="large" type="submit">View Schedule</button>
+                    </Link>
+                </Grid>
             </h2>
             <h2>
                 {/*This button will take you to the Questions tab*/}
-                <button size="large" type="submit">Questions?</button>
+                <Grid>
+                    <Link to='/Help' className={classes.link}>
+                        <button size="large" type="submit">Questions?</button>
+                    </Link>
+                </Grid>
+                
             </h2>
+            {/* Add a footer that talks about classy scheduler*/}
         </Paper>
 
     )
