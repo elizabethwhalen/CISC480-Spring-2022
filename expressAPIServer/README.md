@@ -1,7 +1,7 @@
 # Express API Server
 **Classy-Schedule Express API Server Development Repository**
 </br></br>
-![#f03c15]NOTE: PLEASE CONNECTION TO THE API SERVER WITH THE FOLLOWING LINK: databaseconnectionexample.azurewebsites.net
+NOTE: PLEASE CONECT TO THE API SERVER WITH THE FOLLOWING LINK: databaseconnectionexample.azurewebsites.net
 </br></br>
 The Database Team's Express API Server accepts HTTP requests from other teams. Based
 on the received HTTP requests, the API then queries one of the Database Team's MySQL
