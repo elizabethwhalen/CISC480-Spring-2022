@@ -21,6 +21,6 @@ To deploy the Express Wen Server Example (Standalone) to an Azure Web Service ow
 6. $code .
 7. Select the "expressWebServerExampleStandalone" folder
 8. Click the "Deploy to Web App" icon and select "databaseconnectionexample"
-9. Use a web browser to visit http://cs-dev.ddns.net
+9. Use a web browser to visit http://classy-schedule.ddns.net (CNAME for https://databaseconnectionexample.azurewebsites.net)
 
 Note: We followed this guide for Node.js application deployment to Azure: https://docs.microsoft.com/en-us/azure/app-service/quickstart-nodejs?tabs=linux&pivots=development-environment-azure-portal
