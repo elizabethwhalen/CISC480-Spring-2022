@@ -24,7 +24,7 @@ To deploy the Express Web Server Example to an Azure Web Service owned by the Da
 5. Sign into your Azure account (Database Team members)
 6. $code .
 7. Select the "expressWebServerExample" folder
-8. Click the "Deploy to Web App" icon and select "databaseconnectionexample"
+8. Click the "Deploy to Web App" icon and select "classy-schedule-dev"
 9. Use a web browser to visit http://classy-dev.ddns.net
 
 Note: We followed this guide for Node.js application deployment to Azure: https://docs.microsoft.com/en-us/azure/app-service/quickstart-nodejs?tabs=linux&pivots=development-environment-azure-portal
