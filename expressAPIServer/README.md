@@ -1,6 +1,5 @@
 # Express API Server
 **Classy-Schedule Express API Server Development Repository**
-PLEASE NOTE: This directory (along with expressWebServerExample) do not currently work properly. Will be fixed by tomorrow night.
 </br>
 The Database Team's Express API Server accepts HTTP requests from other teams. Based
 on the received HTTP requests, the API then queries one of the Database Team's MySQL
