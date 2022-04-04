@@ -20,7 +20,7 @@ var app = express();
 
 // Local host testing or Azure - please check deployment var before deploying to Azure!!!
 var deployment = "local" // "azure" when deployed to cloud
-var apiHost = "http://classy-schedule-api.ddns.net";
+var apiHost = "http://classy-api.ddns.net";
 
 // If we are connecting to local hosted API server
 if (deployment == "local") {

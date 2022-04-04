@@ -15,7 +15,7 @@ app.use(cors());
 // Eventually we would like to replace this authentificaiton with tokens
 var config =
 {
-    host: 'classy-schedule-database.mysql.database.azure.com',
+    host: 'classy-db.ddns.net',
     user: 'db_test',
     password: 'fA!6#_&eaU9-EaeJ',
     database: 'db_dev',

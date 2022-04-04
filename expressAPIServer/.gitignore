@@ -6,7 +6,6 @@ package-lock.json
 # Other apps #
 #####################
 *.vscode
-.deployment
 
 # Logs and databases #
 ######################
