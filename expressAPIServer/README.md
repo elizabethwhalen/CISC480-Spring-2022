@@ -27,13 +27,12 @@ From another terminal, submit HTTP requests to "http://localhost:3000". Here are
 ## Azure Deployment
 To deploy the Express API Server to an Azure Web Service owned by the Database team, please complete the following steps:
 1. $cd expressAPIServer
-2. $npm install
-3. Install Visual Studio Code
-4. Install Azure App Service extension for Visual Studio Code
-5. Sign into your Azure account (Database Team members)
-6. $code .
-7. Select the "expressAPIServer" folder
-8. Click the "Deploy to Web App" icon and select "classy-schedule-api"
+2. Install Visual Studio Code
+3. Install Azure App Service extension for Visual Studio Code
+4. Sign into your Azure account (Database Team members)
+5. $code .
+6. Select the "expressAPIServer" folder
+7. Click the "Deploy to Web App" icon and select "classy-schedule-api"
 </br>
 Note: Before deploying to Azure, make sure to change the 
 </br></br>
