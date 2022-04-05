@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     message: {
         color: 'red',
         fontWeight: 600,
-      },
+    },
 }))
 
 // Main component
@@ -47,7 +47,8 @@ const AddClass = () => {
 
     // This function will create a Axios request when the form is submitted
     // It will send all information in the form to the database through the call
-    const submitForm = () => {
+    const submitForm = (event) => {
+        event.preventDefault();
         if (code === '' || courseNum === '' || courseName === '') {
             setError(true);
         } else {
@@ -59,6 +60,9 @@ const AddClass = () => {
                 alert('inserted');
             });
             setError(false);
+            setCode('');
+            setCourseNum('');
+            setCourseName('');
         }
     };
 
@@ -100,7 +104,7 @@ const AddClass = () => {
                         <Grid container spacing={1}>
 
                             {/* DEPARTMENT CODE */}
-                            <Grid item xs={4} >
+                            <Grid item xs={3} >
                                 <FormControl fullWidth>
                                     <InputLabel id="demo-simple-select-label">Department Code</InputLabel>
                                     <Select
@@ -120,7 +124,7 @@ const AddClass = () => {
                             </Grid>
 
                             {/* COURSE NUMBER */}
-                            <Grid item xs={4}>
+                            <Grid item xs={3}>
                                 <TextValidator
                                     size="medium"
                                     variant="outlined"
@@ -129,10 +133,13 @@ const AddClass = () => {
                                     name="coursenum"
                                     type="text"
                                     value={courseNum}
-                                    validators={['matchRegexp:^[0-9]{1,4}$', 'required']}
                                     onInput={(e) => {
                                         e.target.value = e.target.value.slice(0, 4)
                                     }}
+                                    validators={[
+                                        'matchRegexp:^[0-9]{1,4}$',
+                                        'required'
+                                    ]}
                                     errorMessages={[
                                         'Invalid - It should be a 3-digit number',
                                         'this field is required',
@@ -142,7 +149,7 @@ const AddClass = () => {
                             </Grid>
 
                             {/* COURSE NAME */}
-                            <Grid item xs={4} fullWidth >
+                            <Grid item xs={6} fullWidth >
                                 <TextValidator
                                     size="medium"
                                     variant="outlined"
@@ -191,7 +198,6 @@ const AddClass = () => {
                         Submit
                     </Button>
                 </Grid>
-
             </Grid>
         </Paper>
     )
