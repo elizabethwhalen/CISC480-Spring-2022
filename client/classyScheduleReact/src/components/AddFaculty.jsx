@@ -8,11 +8,7 @@ import {
 } from '@material-ui/core'
 
 import {
-    InputLabel,
-    MenuItem,
     FormControl,
-    Select,
-    Box,
     FormGroup,
     FormControlLabel,
     Checkbox,
@@ -29,23 +25,32 @@ const useStyles = makeStyles((theme) => ({
         color: '#7E16A4',
         fontWeight: '600',
     },
+    subHeader: {
+        fontWeight: '600'
+    }
 }))
 
 const AddFaculty = () => {
-    const [facultyTitle, setFacultyTitle] = React.useState('');
     const [teachLoad, setTeachLoad] = React.useState('');
-    const [prefClasses, setPrefClasses] = React.useState('');
+    const [state, setState] = React.useState({
+        intro: false,
+        security: false,
+        ai: false,
+    });
 
-    const handleTitleChange = (event) => {
-        setFacultyTitle(event.target.value);
-    };
     const handleTeachLoadChange = (event) => {
         setTeachLoad(event.target.value);
     };
-    const handlePrefClassesChange = (event) => {
-        setPrefClasses(event.target.value);
-    }
 
+
+    const handleChange = (event) => {
+        setState({
+            ...state,
+            [event.target.name]: event.target.checked,
+        });
+    };
+
+    const { intro, security, ai } = state;
 
     const classes = useStyles()
 
@@ -57,74 +62,57 @@ const AddFaculty = () => {
                         Add New Faculty Member
                     </Typography>
                 </Grid>
-                {/* Title (Dr. / Prof.) */}
-                <Grid item xs={2} >
-                    <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Title</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={facultyTitle}
-                            label="Faculty Title"
-                            onChange={handleTitleChange}
-                            size='medium'
-                            autoWidth
-                        >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={'Prof'}>Prof.</MenuItem>
-                            <MenuItem value={'Dr'}>Dr.</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Grid>
+
                 {/* First name */}
                 <Grid item xs={4} fullWidth>
                     <TextField fullWidth size="medium" id="outlined-basic" label="First Name" variant="outlined" />
                 </Grid>
+
                 {/* Last name */}
                 <Grid item xs={4} fullWidth>
                     <TextField fullWidth size="medium" id="outlined-basic" label="Last Name" variant="outlined" />
                 </Grid>
+
                 {/* Teach Load */}
                 <Grid item xs={4}>
                     <TextField fullWidth size="medium" id="outlined-basic" label="Teach Load" variant="outlined" value={teachLoad} onChange={handleTeachLoadChange} />
                 </Grid>
-                <Grid item xs={8}>
-                    <p>(Standard Full-time Faculty are assigned 6.0 teach-load hours per year.)</p>
-                </Grid>
-                {/* Preferred Classes checkboxes */}
+
                 <Grid item xs={12} fullWidth>
-                    <Typography variant="h6" className={classes.title} gutterBottom>
-                        Please Select Preferred Classes for Faculty to Instruct
-                    </Typography>
+                    <Grid container spacing={1}>
+                        {/* Preferred Classes checkboxes */}
+                        <Grid item xs={12} fullWidth>
+                            <Typography className={classes.subHeader}>
+                                Please Select Preferred Classes for Faculty to Instruct
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12} fullWidth>
+                            <FormControl component="fieldset" variant="standard">
+                                <FormGroup>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox checked={intro} onChange={handleChange} name="intro" />
+                                        }
+                                        label="Intro to CS"
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox checked={security} onChange={handleChange} name="security" />
+                                        }
+                                        label="Information Security"
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox checked={ai} onChange={handleChange} name="ai" />
+                                        }
+                                        label="Artifical Intelligence"
+                                    />
+                                </FormGroup>
+                            </FormControl>
+                        </Grid>
+                    </Grid>
                 </Grid>
-                <Grid item xs={12} fullWidth>
-                    <Box sx={{ display: 'flex' }}>
-                        <FormControl component="fieldset" variant="standard">
-                            <FormGroup>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox onChange={handlePrefClassesChange} name="intro to cs" />
-                                    }
-                                    label="Intro to CS"
-                                />
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox onChange={handlePrefClassesChange} name="info sec" />
-                                    }
-                                    label="Information Security"
-                                />
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox onChange={handlePrefClassesChange} name="ai" />
-                                    }
-                                    label="Artifical Intelligence"
-                                />
-                            </FormGroup>
-                        </FormControl>
-                    </Box>
-                </Grid>
+                
                 <Grid item xs={12} fullWidth>
                     <Button variant="contained" size="large" type="submit" disableElevation>
                         Submit

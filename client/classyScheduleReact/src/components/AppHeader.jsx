@@ -10,9 +10,10 @@ import {
   IconButton,
 } from '@material-ui/core'
 import LoginHeader from './LoginHeader'
+import { Link } from 'react-router-dom'
 
 // Width of the drawer (so that the header can move to exact position as the drawer expands)
-const drawerWidth = 300 
+const drawerWidth = 300
 
 // This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles((theme) => ({
@@ -75,7 +76,11 @@ const useStyles = makeStyles((theme) => ({
   text: {
     textAlign: 'center',
     fontWeight: '600',
+    color: 'white'
   },
+  link: {
+    textDecoration: 'none'
+  }
 }))
 
 // Define and export the function
@@ -108,19 +113,21 @@ export default function AppHeader(props) {
 
         {/* TITLE */}
         <Container>
-          <Typography 
-            variant="h4" 
-            className={classes.text} 
-            noWrap
-          >
-            Classy Schedule
-          </Typography>
+          <Link to='/' className={classes.link}>
+            <Typography
+              variant="h4"
+              className={classes.text}
+              noWrap
+            >
+              Classy Schedule
+            </Typography>
+          </Link>
         </Container>
 
         {/* USER'S LOGIN INFO */}
-        <LoginHeader 
-          login={props.login} 
-          handleLogOut={props.handleLogOut} 
+        <LoginHeader
+          login={props.login}
+          handleLogOut={props.handleLogOut}
         ></LoginHeader>
 
       </Toolbar>
