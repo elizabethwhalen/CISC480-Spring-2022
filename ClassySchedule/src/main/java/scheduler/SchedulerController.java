@@ -43,13 +43,25 @@ public class SchedulerController implements Initializable {
 
     @FXML
     public void goToAddCourse(ActionEvent actionEvent) throws IOException {
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/AddCourseToSchedule.fxml"));
+//        Parent root = loader.load();
+//        AddCourseToScheduleController schedulerController = loader.getController();
+//        schedulerController.setStage(stage);
+//        stage.setTitle("Classy-Schedule");
+//        stage.setScene(new Scene(root, 600, 450));
+//        stage.show();
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/AddCourseToSchedule.fxml"));
-        Parent root = loader.load();
-        AddCourseToScheduleController schedulerController = loader.getController();
-        schedulerController.setStage(stage);
-        stage.setTitle("Classy-Schedule");
-        stage.setScene(new Scene(root, 600, 450));
-        stage.show();
+        Stage stage = new Stage();
+        stage.initOwner(addCourseButton.getScene().getWindow());
+        stage.setScene(new Scene((Parent) loader.load()));
+        AddCourseToScheduleController controller = loader.getController();
+        controller.setParent(this);
+
+        // showAndWait will block execution until the window closes...
+        stage.showAndWait();
+
+
     }
 
     @FXML

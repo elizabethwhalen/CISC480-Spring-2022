@@ -4,10 +4,7 @@ import courses.Lecture;
 import database.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
@@ -26,6 +23,7 @@ import java.util.*;
 
 public class AddCourseToScheduleController implements Initializable {
     private Stage currentStage;
+    private SchedulerController parentController;
 
     @FXML
     private ComboBox<String> section_number;
@@ -64,7 +62,7 @@ public class AddCourseToScheduleController implements Initializable {
     private ComboBox<String> classNumber;
 
     @FXML
-    private Button backButton;
+    private Button closeButton;
 
     @FXML
     private ComboBox<String> room;
@@ -113,16 +111,11 @@ public class AddCourseToScheduleController implements Initializable {
         // Create appointment from fields
         List<Agenda.Appointment> appointmentList = createAppointment();
 
+        parentController.addCourse(appointmentList);
 
         // return to Scheduler
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/scheduler.fxml"));
-        Parent root = loader.load();
-        SchedulerController schedulerController = loader.getController();
-        schedulerController.setStage(currentStage);
-        schedulerController.addCourse(appointmentList);
-        currentStage.setTitle("Classy-Schedule");
-        currentStage.setScene(new Scene(root, 600, 450));
-        currentStage.show();
+        section_number.getScene().getWindow().hide();
+
     }
 
     private List<Agenda.Appointment> createAppointment() throws ParseException {
@@ -132,10 +125,15 @@ public class AddCourseToScheduleController implements Initializable {
                 selectedDates.add(radioButton.getText());
             }
         }
+        List<LocalDateTime> startDaysAndTimes = new ArrayList<>();
+        List<LocalDateTime> endDaysAndTimes = new ArrayList<>();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date startDate = df.parse("2022-03-31" + " " + start_time.getText() + ":00");
-        Date endDate = df.parse("2022-03-31" + " " + end_time.getText() + ":00");
-        AppointmentFactory appointmentFactory = new AppointmentFactory(selectedDates, startDate, endDate, classNumber.getSelectionModel().getSelectedItem(), room.getSelectionModel().getSelectedItem(), "test",section_number.getSelectionModel().getSelectedItem(), class_name.getSelectionModel().getSelectedItem());
+        for(String day: selectedDates) {
+            startDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + start_time.getText() + ":00")));
+            endDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + end_time.getText() + ":00")));
+        }
+
+        AppointmentFactory appointmentFactory = new AppointmentFactory(startDaysAndTimes, endDaysAndTimes, classNumber.getSelectionModel().getSelectedItem(), room.getSelectionModel().getSelectedItem(), "test",section_number.getSelectionModel().getSelectedItem(), class_name.getSelectionModel().getSelectedItem());
 
         return appointmentFactory.createAppointments();
     }
@@ -169,5 +167,9 @@ public class AddCourseToScheduleController implements Initializable {
         output = sb.toString();
         System.out.println(output);
         return output;
+    }
+
+    public void setParent(SchedulerController controller) {
+        this.parentController = controller;
     }
 }

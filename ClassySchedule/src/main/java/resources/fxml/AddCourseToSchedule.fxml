@@ -20,7 +20,7 @@
         <TextField fx:id="end_time" layoutX="123.0" layoutY="142.0" prefHeight="26.0" prefWidth="80.0" promptText="End Time" />
         <ComboBox fx:id="class_name" layoutX="373.0" layoutY="101.0" prefWidth="150.0" promptText="Class Name" />
       <ComboBox fx:id="section_number" layoutX="214.0" layoutY="143.0" prefWidth="150.0" promptText="Class Section" />
-      <Button fx:id="backButton" layoutX="466.0" layoutY="360.0" mnemonicParsing="false" onAction="#submitData" text="Back" />
+      <Button fx:id="closeButton" layoutX="466.0" layoutY="360.0" mnemonicParsing="false" onAction="#submitData" text="Back" />
       <ComboBox fx:id="room" layoutX="384.0" layoutY="143.0" prefWidth="150.0" promptText="Room" />
     </children>
 </AnchorPane>

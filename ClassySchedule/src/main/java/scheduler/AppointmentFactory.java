@@ -2,9 +2,8 @@ package scheduler;
 
 import jfxtras.scene.control.agenda.Agenda;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,19 +11,17 @@ import java.util.List;
  * and transforms it into a workable appointment.
  */
 public class AppointmentFactory {
-    private List<String> days;
-    private Date startTime;
-    private Date endTime;
+    List<LocalDateTime> startTimes;
+    List<LocalDateTime> endTimes;
     private String classNumber;
     private String room;
     private String professor;
     private String classSection;
     private String className;
 
-    public AppointmentFactory(List<String> days, Date startTime, Date endTime, String classNumber, String room, String professor, String classSection, String className) {
-        this.days = days;
-        this.startTime = startTime;
-        this.endTime = endTime;
+    public AppointmentFactory(List<LocalDateTime> startTimes, List<LocalDateTime> endTimes, String classNumber, String room, String professor, String classSection, String className) {
+        this.startTimes = startTimes;
+        this.endTimes = endTimes;
         this.classNumber = classNumber;
         this.room = room;
         this.professor = professor;
@@ -34,10 +31,10 @@ public class AppointmentFactory {
 
     public List<Agenda.Appointment> createAppointments() {
         List<Agenda.Appointment> appointments = new ArrayList<>();
-        for (String day: days) {
+        for (int i = 0; i < startTimes.size(); i++) {
             Agenda.AppointmentImplLocal appointment = new Agenda.AppointmentImplLocal()
-                    .withStartLocalDateTime(LocalDate.now().atTime(4,00))
-                    .withEndLocalDateTime(LocalDate.now().atTime(6,00))
+                    .withStartLocalDateTime(startTimes.get(i))
+                    .withEndLocalDateTime(endTimes.get(i))
                     .withDescription(classNumber + " " + className + " " + classSection + " " + professor + " " + room)
                     .withAppointmentGroup(new Agenda.AppointmentGroupImpl().withStyleClass("group2"));
             appointments.add(appointment);

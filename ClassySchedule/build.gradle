@@ -26,6 +26,7 @@ repositories {
     dependencies {
         implementation group: 'org.jfxtras', name: 'jfxtras-icalendaragenda', version: '14-r2'
         implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
+        runtime files('lib/jfxtras-agenda-22.4.4.jar')
     }
 }
 
