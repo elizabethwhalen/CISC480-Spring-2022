@@ -1,17 +1,17 @@
 package scheduler;
 
+import alert.AlertBox;
 import courses.Lecture;
 import database.Database;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import jfxtras.scene.control.agenda.Agenda;
 
@@ -148,11 +148,118 @@ public class AddCourseToScheduleController implements Initializable {
 
     /**
      * This method validates that each data field necessary has the required and correct data type
+     * by calling all the validating methods.
      */
     private void validateData() {
-
+        validateDates();
+        validateDepartment();
+        validateClassName();
     }
 
+    /**
+     * This function validates the section number. If nothing is selected, then it will prompt the user
+     * to select a section number
+     */
+    private void validateSectionNumber() {
+        // If the section number has not been selected
+        if(this.section_number.getSelectionModel().isEmpty()) {
+            // Set the submit button to return an error
+            submit_button.setOnAction(e -> AlertBox.display("Please select a section number."));
+        } else {
+            // Remove the error property so that submit can function as normal
+            submit_button.disarm();
+        }
+    }
+
+    /**
+     * This function validates the class name. If nothing is selected, then it will prompt the user
+     * to select a class name.
+     */
+    private void validateClassName() {
+        // If the class name has not been selected
+        if(this.class_name.getSelectionModel().isEmpty()) {
+            // Set the submit button to return an error
+            submit_button.setOnAction(e -> AlertBox.display("Please select a class name."));
+        } else {
+            // Remove the error property so that submit can function as normal
+            submit_button.disarm();
+        }
+        // Probably need to find a way to bind class number and class name??
+    }
+
+    /**
+     * This function validate the class number. If nothing is selected, then it will prompt the user
+     * to select a class number.
+     */
+    private void validateClassNumber() {
+        // If the class number has not been selected
+        if(this.classNumber.getSelectionModel().isEmpty()) {
+            // Set the submit button to return an error
+            submit_button.setOnAction(e -> AlertBox.display("Please select a class number."));
+        } else {
+            // Remove the error property so that submit can function as normal
+            submit_button.disarm();
+        }
+    }
+
+    /**
+     * This function validate the department of the newly added class. If nothing is selected,
+     * then it will prompt the user to select a department.
+     */
+    private void validateDepartment() {
+        // If the department has not been selected
+        if(this.dept_name.getSelectionModel().isEmpty()) {
+            // Set the submit button to return an error
+            submit_button.setOnAction(e -> AlertBox.display("Please select a department."));
+        } else {
+            // Remove the error property so that submit can function as normal
+            submit_button.disarm();
+        }
+    }
+
+    /**
+     * This function validate a classroom. If nothing is selected, then it will prompt
+     * the user to select a room.
+     */
+    private void validateRoom() {
+        // If the room has not been selected
+        if(this.room.getSelectionModel().isEmpty()) {
+            // Set the submit button to return an error
+            submit_button.setOnAction(e -> AlertBox.display("Please select a room."));
+        } else {
+            // Remove the error property so that submit can function as normal
+            submit_button.disarm();
+        }
+    }
+
+    /**
+     * This function validate that at least 1 of the day of the week is selected. If not
+     * then it will prompt the user to click on at least 1 or more day/days of the week.
+     */
+    private void validateDates() {
+        boolean result;
+
+        result = false;
+
+        // Iterate through all 5 days to check if at least 1 day is checked.
+        // If so, set the boolean to true and break.
+        for(RadioButton day : datesSelected) {
+            if(day.isSelected()) {
+                result = true;
+                break;
+            }
+        }
+
+        // boolean outcome is false, meaning none of the days has been selected, so
+        // use JavaFX to prompt the user to select at least 1 day of the week.
+        if(result == false) {
+            // Set the submit button to return an error
+            submit_button.setOnAction(e -> AlertBox.display("Please select the day/days of the week the class will have."));
+        } else {
+            // Remove the error property so that submit can function as normal
+            submit_button.disarm();
+        }
+    }
     /**
      * This method takes a given lecture object turn it into a string using StringBuilder to use
      * for setting the displayCourse object strings.

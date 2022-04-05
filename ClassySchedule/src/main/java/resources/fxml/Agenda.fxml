@@ -12,7 +12,7 @@
 <?import jfxtras.scene.control.LocalTimeTextField?>
 <?import jfxtras.scene.control.agenda.Agenda?>
 
-<GridPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduler.AgendaController">
+<GridPane xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduler.SchedulerController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="60.0" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="800.0" minWidth="10.0" percentWidth="40.0" />
