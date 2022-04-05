@@ -15,6 +15,7 @@ import {
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import { makeStyles } from '@material-ui/core/styles'
 import Axios from 'axios'
+import axios from 'axios'
 
 // This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles((theme) => ({
@@ -51,7 +52,20 @@ const AddClass = () => {
         if (code === '' || courseNum === '' || courseName === '') {
             setError(true);
         } else {
-            Axios.post('http://localhost:3000/AddClass', {
+            let data = JSON.stringify({dept_code: code, class_num: courseNum, class_name: courseName });
+            let config = {
+                method: 'post',
+                url: 'http://databaseconnectionexample.azurewebsites.net/class',
+                headers: { 'Content-Type': 'application/json'},
+                data: data
+            };
+            axios(config).then((response) => {
+                console.log(JSON.stringify(response.data));
+            }).catch((error) => {
+                console.log(error);
+            });
+            /*
+            Axios.post('http://databaseconnectionexample.azurewebsites.net/class', {
                 dept_code: code,
                 class_num: courseNum,
                 class_name: courseName,
@@ -59,9 +73,10 @@ const AddClass = () => {
                 alert('inserted');
             });
             setError(false);
+            */
         }
     };
-
+    
     // This function will retrieve the value selected in the dept. code field whenever it changes
     const handleChangeCode = (event) => {
         setCode(event.target.value);
