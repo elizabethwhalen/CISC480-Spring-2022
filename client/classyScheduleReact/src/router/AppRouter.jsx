@@ -4,6 +4,7 @@ import Calendar from '../components/Calendar'
 import Home from '../components/Home'
 import AddFaculty from '../components/AddFaculty'
 import Help from '../components/Help'
+import AddRoom from '../components/AddRoom'
 
 const AppRouter = () => {
   return (
@@ -13,6 +14,7 @@ const AppRouter = () => {
       <Route exact path="/Calendar" element={<Calendar/>} />
       <Route exact path="/AddFaculty" element={<AddFaculty/>} />
       <Route exact path="/Help" element={<Help/>}/>
+      <Route exact path='/AddRoom' element={<AddRoom/>}/>
     </Routes>
   )
 }

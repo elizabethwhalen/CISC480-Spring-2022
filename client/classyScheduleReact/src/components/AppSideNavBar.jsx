@@ -217,6 +217,17 @@ const AppSideNavBar = (props) => {
                 </ListItemText>
               </ListItem>
             </Link>
+            {/* Add Room*/}
+            <Link exact to='/AddRoom' className={classes.link} >
+              <ListItem button className={classes.collapseLink}>
+                <ListItemIcon>
+                  <PermIdentityIcon />
+                </ListItemIcon>
+                <ListItemText className={classes.text}>
+                  Add Room
+                </ListItemText>
+              </ListItem>
+            </Link>
           </List>
         </Collapse>
 
