@@ -101,7 +101,7 @@ const Calendar = () => {
                         </thead>
                         <tbody>
                             <tr> {/* This row contians the class data for 8:00 time slot*/}
-                                <td>8:00</td>
+                                <td>8:00AM</td>
                                 <td> </td>
                                 <td> </td>
                                 <td> </td>
@@ -109,7 +109,7 @@ const Calendar = () => {
                                 <td> </td>
                             </tr>
                             <tr>{/* This row contains class data for the 9:00 time slot*/}
-                                <td>9:00</td>
+                                <td>9:00AM</td>
                                 <td> </td>
                                 <td> </td>
                                 <td> </td>
@@ -117,7 +117,7 @@ const Calendar = () => {
                                 <td> </td>
                             </tr>
                             <tr>{/* This row contains class data for the 10:00 time slot*/}
-                                <td>10:00</td>
+                                <td>10:00AM</td>
                                 <td> </td>
                                 <td> </td>
                                 <td> </td>
@@ -125,7 +125,7 @@ const Calendar = () => {
                                 <td> </td>
                             </tr>
                             <tr>{/* This row contains class data for the 11:00 time slot*/}
-                                <td>11:00</td>
+                                <td>11:00AM</td>
                                 <td> </td>
                                 <td> </td>
                                 <td> </td>
@@ -133,7 +133,7 @@ const Calendar = () => {
                                 <td> </td>
                             </tr>
                             <tr>{/* This row contains class data for the 12:00 time slot*/}
-                                <td>12:00</td>
+                                <td>12:00PM</td>
                                 <td> </td>
                                 <td> </td>
                                 <td> </td>
@@ -141,7 +141,7 @@ const Calendar = () => {
                                 <td> </td>
                             </tr>
                             <tr>{/* This row contains class data for the 1:00 time slot*/}
-                                <td>1:00</td>
+                                <td>1:00PM</td>
                                 <td> </td>
                                 <td> </td>
                                 <td> </td>
@@ -149,7 +149,7 @@ const Calendar = () => {
                                 <td> </td>
                             </tr>
                             <tr>{/* This row contains class data for the 2:00 time slot*/}
-                                <td>2:00</td>
+                                <td>2:00PM</td>
                                 <td> </td>
                                 <td> </td>
                                 <td> </td>
@@ -157,7 +157,7 @@ const Calendar = () => {
                                 <td> </td>
                             </tr>
                             <tr>{/* This row contains class data for the 3:00 time slot*/}
-                                <td>3:00</td>
+                                <td>3:00PM</td>
                                 <td> </td>
                                 <td> </td>
                                 <td> </td>
@@ -165,7 +165,7 @@ const Calendar = () => {
                                 <td> </td>
                             </tr>
                             <tr>{/* This row contains class data for the 4:00 time slot*/}
-                                <td>4:00</td>
+                                <td>4:00PM</td>
                                 <td> </td>
                                 <td> </td>
                                 <td> </td>
@@ -173,7 +173,7 @@ const Calendar = () => {
                                 <td> </td>
                             </tr>
                             <tr>{/* This row contains class data for the 5:00 time slot*/}
-                                <td>5:00</td>
+                                <td>5:00PM</td>
                                 <td> </td>
                                 <td> </td>
                                 <td> </td>
@@ -181,7 +181,7 @@ const Calendar = () => {
                                 <td> </td>
                             </tr>
                             <tr>{/* This row contains class data for the 6:00 time slot*/}
-                                <td>6:00</td>
+                                <td>6:00PM</td>
                                 <td> </td>
                                 <td> </td>
                                 <td> </td>
@@ -189,7 +189,7 @@ const Calendar = () => {
                                 <td> </td>
                             </tr>
                             <tr>{/*This row contains class data for the 7:00 time slot*/}
-                                <td>7:00</td>
+                                <td>7:00PM</td>
                                 <td> </td>
                                 <td> </td>
                                 <td> </td>
