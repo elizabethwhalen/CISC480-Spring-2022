@@ -22,19 +22,19 @@ import java.util.ResourceBundle;
 public class AddCourseToDatabaseController implements Initializable {
     private Stage addCourse;
     @FXML
-    TextField section_number;
+    TextField classNum;
 
     @FXML
-    TextField class_name;
+    TextField className;
 
     @FXML
-    ComboBox<String> dept_name;
+    ComboBox<String> deptName;
 
     @FXML
     Button submit_button;
 
     @FXML
-    Text sectionWarning;
+    Text classNumWarning;
 
     @FXML
     Text classNameWarning;
@@ -51,12 +51,12 @@ public class AddCourseToDatabaseController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        dept_name.getItems().clear();
+        deptName.getItems().clear();
         try {
             Database database = new Database();
             ResultSet rs = database.getData("dept_code", "dept");
             while (rs.next()) {
-                dept_name.getItems().add(rs.getString(1));
+                deptName.getItems().add(rs.getString(1));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,46 +73,48 @@ public class AddCourseToDatabaseController implements Initializable {
      */
     @FXML
     public void submitData(ActionEvent event) {
-        if (dept_name.getSelectionModel().isEmpty()) {
+        //checking if user inputs are entered:
+        if (deptName.getSelectionModel().isEmpty()) {
             departmentWarning.setVisible(true);
             return;
         }
-        if (section_number.getText().isBlank()) {
-            sectionWarning.setVisible(true);
+        if (classNum.getText().isBlank()) {
+            classNumWarning.setVisible(true);
             return;
         }
-        if (class_name.getText().isBlank()) {
+        if (className.getText().isBlank()) {
             classNameWarning.setVisible(true);
             return;
         }
-
-        // section number validation
-        try {
-            if(section_number.getLength() == 3) {
-                Integer.parseInt(section_number.getText());
-            } else {
-                sectionWarning.setVisible(true);
+        //checking if length of course code is 3 and course code is type int:
+        if (classNum.getLength() == 3) {
+            try {
+                Integer.parseInt(classNum.getText());
+            } catch (NumberFormatException e) {
+                classNumWarning.setVisible(true);
+                return;
             }
-        } catch (NumberFormatException e) {
-            sectionWarning.setVisible(true);
+        } else {
+            classNumWarning.setVisible(true);
             return;
         }
+
 
         //TODO: Send course to database
         File file = new File("test.txt");
         try {
             FileWriter fw = new FileWriter(file);
-            fw.append("classname: " + class_name.getText() + " deptname: " + dept_name.getValue() + " section number: " + section_number.getText());
+            fw.append("classname: " + className.getText() + " deptname: " + deptName.getValue() + " class number: " + classNum.getText());
             fw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        dept_name.setValue("Dept name");
-        section_number.clear();
-        class_name.clear();
+        deptName.setValue("Dept name");
+        classNum.clear();
+        className.clear();
         departmentWarning.setVisible(false);
-        sectionWarning.setVisible(false);
+        classNumWarning.setVisible(false);
         classNameWarning.setVisible(false);
     }
 }

@@ -1,9 +1,7 @@
 package room;
 
-import database.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -13,9 +11,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
-import java.sql.ResultSet;
-import java.util.ResourceBundle;
 
 /**
  * Controls the add room page, which allows a user to add a classroom to the database
@@ -25,16 +20,16 @@ public class RoomController {
     private Stage addRoom;
 
     @FXML
-    TextField room_number;
+    TextField roomNum;
 
     @FXML
-    ComboBox<String> building;
+    ComboBox<String> buildingCode;
 
     @FXML
-    ComboBox<String> campus;
+    ComboBox<String> campusID;
 
     @FXML
-    Button submit_button;
+    Button submitButton;
 
     @FXML
     Text roomWarning;
@@ -74,23 +69,23 @@ public class RoomController {
     @FXML
     public void submitData(ActionEvent event) {
 
-        if (campus.getSelectionModel().isEmpty()) {
+        if (campusID.getSelectionModel().isEmpty()) {
             campusWarning.setVisible(true);
             return;
         }
-        if (room_number.getText().isBlank()) {
+        if (roomNum.getText().isBlank()) {
             roomWarning.setVisible(true);
             return;
         }
-        if (building.getSelectionModel().isEmpty()) {
+        if (buildingCode.getSelectionModel().isEmpty()) {
             buildingWarning.setVisible(true);
             return;
         }
 
         // room number validation
         try {
-            if(room_number.getLength() == 3) {
-                Integer.parseInt(room_number.getText());
+            if(roomNum.getLength() == 3) {
+                Integer.parseInt(roomNum.getText());
             } else {
                 roomWarning.setVisible(true);
             }
@@ -104,15 +99,15 @@ public class RoomController {
         File file = new File("testroom.txt");
         try {
             FileWriter fw = new FileWriter(file);
-            fw.append("Campus: " + campus.getValue() + " building: " + building.getValue() + " Room number: " + room_number.getText());
+            fw.append("Campus: " + campusID.getValue() + " building: " + buildingCode.getValue() + " Room number: " + roomNum.getText());
             fw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        campus.setValue(null);
-        room_number.clear();
-        building.setValue(null);
+        campusID.setValue(null);
+        roomNum.clear();
+        buildingCode.setValue(null);
         roomWarning.setVisible(false);
         buildingWarning.setVisible(false);
         campusWarning.setVisible(false);
