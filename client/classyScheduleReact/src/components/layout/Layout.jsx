@@ -2,7 +2,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { CssBaseline } from '@material-ui/core'
 import AppRouter from '../../router/AppRouter'
-import AppSideNavBar from '../nav/AppSideNavBar'
+import AppSideNavBar from '../../nav/AppSideNavBar'
 import AppHeader from '../header/AppHeader'
 import Login from '../logging/Login'
 
