@@ -11,6 +11,9 @@ var app = express();
 app.use(express.json());
 app.use(cors());
 
+// Determine which schema we are modifying
+let schema = "cs_dev" // "db_dev" use for development Database Team
+
 // Connection to the database team Azure DB
 // Eventually we would like to replace this authentificaiton with tokens
 var config =
@@ -18,7 +21,7 @@ var config =
     host: 'classy-schedule-database.mysql.database.azure.com',
     user: 'db_test',
     password: 'fA!6#_&eaU9-EaeJ',
-    database: 'cs_dev',
+    database: schema,
     port: 3306,
 };
 
