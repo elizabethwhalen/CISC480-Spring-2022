@@ -2,8 +2,8 @@ import React from 'react'
 import { Button, Grid, Paper, Typography, } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
-import background from '../images/campus.jpg'
-import logo from '../images/ustlogo.png'
+import background from '../../images/campus.jpg'
+import logo from '../../images/ustlogo.png'
 import { Link } from 'react-router-dom'
 
 // Styling components using useStyles
