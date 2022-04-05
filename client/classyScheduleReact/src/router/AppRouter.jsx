@@ -1,10 +1,10 @@
 import { Route, Routes } from 'react-router-dom'
-import AddClass from '../components/AddClass'
+import AddClass from '../components/functions/AddClass'
 import Calendar from '../components/Calendar'
-import Home from '../components/Home'
-import AddFaculty from '../components/AddFaculty'
-import Help from '../components/Help'
-import AddRoom from '../components/AddRoom'
+import Home from '../components/layout/Home'
+import AddFaculty from '../components/functions/AddFaculty'
+import Help from '../components/tools/Help'
+import AddRoom from '../components/functions/AddRoom'
 
 const AppRouter = () => {
   return (
