@@ -48,6 +48,14 @@ const Home = () => {
                 </Grid> 
             </h2>
             <h2>
+                {/*This button will take you to the add New Room tab*/}
+                <Grid>
+                    <Link to='/AddRoom' className={classes.link}>
+                        <button size="large" type="submit">Add New Room</button>
+                    </Link>
+                </Grid> 
+            </h2>
+            <h2>
                 {/*This button will take you to the Calendar */}
                 <Grid>
                     <Link to='/Calendar' className={classes.link}>
