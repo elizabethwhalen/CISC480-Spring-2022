@@ -204,6 +204,7 @@ const Calendar = () => {
             </Grid>
 
             {/*This is the demo form to add classes to the table*/}
+            {/* try using aside and a seperate grid for this then use the form*/}
             <Grid container xs={4} fullWidth>
                 
                 {/*This Section controls the time to input*/}
@@ -261,6 +262,7 @@ const Calendar = () => {
                 </FormControl>
 
                 {/*This controls the class to input into the calendar*/}
+                
                 <FormControl>
                     <InputLabel id="demo-simple-select-label">Class</InputLabel>
                     <Select
