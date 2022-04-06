@@ -1,10 +1,10 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { CssBaseline } from '@material-ui/core'
-import AppRouter from '../router/AppRouter'
-import AppSideNavBar from './AppSideNavBar'
-import AppHeader from './AppHeader'
-import Login from './Login'
+import AppRouter from '../../router/AppRouter'
+import AppSideNavBar from '../../nav/AppSideNavBar'
+import AppHeader from '../header/AppHeader'
+import Login from '../logging/Login'
 
 // This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles((theme) => ({

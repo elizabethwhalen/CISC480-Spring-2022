@@ -10,11 +10,11 @@ import {
     InputLabel,
     MenuItem,
     FormControl,
-    Select
+    Select,
+    FormHelperText
 } from '@mui/material'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import { makeStyles } from '@material-ui/core/styles'
-import Axios from 'axios'
 import axios from 'axios'
 
 // This is a React hook used for organizing the styling of each element in this component
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     message: {
         color: 'red',
         fontWeight: 600,
-      },
+    },
 }))
 
 // Main component
@@ -44,19 +44,17 @@ const AddClass = () => {
     const [code, setCode] = React.useState(''); // Department code (e.g., CISC, STAT, etc.)
     const [courseNum, setCourseNum] = React.useState(''); // Course number (e.g., 420, 350, etc.)
     const [courseName, setCourseName] = React.useState(''); // Course name (e.g., Info Sec, Computer Graphics, etc.)
-    const [error, setError] = React.useState(false);
 
     // This function will create a Axios request when the form is submitted
     // It will send all information in the form to the database through the call
-    const submitForm = () => {
-        if (code === '' || courseNum === '' || courseName === '') {
-            setError(true);
-        } else {
-            let data = JSON.stringify({dept_code: code, class_num: courseNum, class_name: courseName });
+    const submitForm = (event) => {
+        event.preventDefault();
+        if (code !== '' && courseNum !== '' && courseName !== '') {
+            let data = JSON.stringify({ dept_code: code, class_num: courseNum, class_name: courseName });
             let config = {
                 method: 'post',
                 url: 'http://databaseconnectionexample.azurewebsites.net/class',
-                headers: { 'Content-Type': 'application/json'},
+                headers: { 'Content-Type': 'application/json' },
                 data: data
             };
             axios(config).then((response) => {
@@ -64,19 +62,14 @@ const AddClass = () => {
             }).catch((error) => {
                 console.log(error);
             });
-            /*
-            Axios.post('http://databaseconnectionexample.azurewebsites.net/class', {
-                dept_code: code,
-                class_num: courseNum,
-                class_name: courseName,
-            }).then(() => {
-                alert('inserted');
-            });
-            setError(false);
-            */
+
+            setCode('')
+            setCourseNum('')
+            setCourseName('')
+
         }
     };
-    
+
     // This function will retrieve the value selected in the dept. code field whenever it changes
     const handleChangeCode = (event) => {
         setCode(event.target.value);
@@ -111,12 +104,12 @@ const AddClass = () => {
                 </Grid>
 
                 <Grid item xs={12} fullWidth>
-                    <ValidatorForm onError={(errors) => console.log(errors)}>
-                        <Grid container spacing={1}>
+                    <ValidatorForm onSubmit={submitForm}>
+                        <Grid container spacing={2}>
 
                             {/* DEPARTMENT CODE */}
-                            <Grid item xs={4} >
-                                <FormControl fullWidth>
+                            <Grid item xs={3} >
+                                {/* <FormControl fullWidth>
                                     <InputLabel id="demo-simple-select-label">Department Code</InputLabel>
                                     <Select
                                         labelId="demo-simple-select-label"
@@ -131,11 +124,33 @@ const AddClass = () => {
                                         <MenuItem value={'CISC'}>CISC</MenuItem>
                                         <MenuItem value={'STAT'}>STAT</MenuItem>
                                     </Select>
-                                </FormControl>
+                                    {error && <FormHelperText>this field is required</FormHelperText>}
+                                </FormControl> */}
+                                <TextValidator
+                                    size="medium"
+                                    variant="outlined"
+                                    label="Department Code"
+                                    fullWidth
+                                    name="code"
+                                    type="text"
+                                    value={code}
+                                    onInput={(e) => {
+                                        e.target.value = e.target.value.slice(0, 4)
+                                    }}
+                                    validators={[
+                                        'matchRegexp:^[a-zA-Z]{1,4}$',
+                                        'required'
+                                    ]}
+                                    errorMessages={[
+                                        'Invalid - It should have 4 characters',
+                                        'this field is required',
+                                    ]}
+                                    onChange={handleChangeCode}
+                                />
                             </Grid>
 
                             {/* COURSE NUMBER */}
-                            <Grid item xs={4}>
+                            <Grid item xs={3}>
                                 <TextValidator
                                     size="medium"
                                     variant="outlined"
@@ -144,10 +159,13 @@ const AddClass = () => {
                                     name="coursenum"
                                     type="text"
                                     value={courseNum}
-                                    validators={['matchRegexp:^[0-9]{1,4}$', 'required']}
                                     onInput={(e) => {
                                         e.target.value = e.target.value.slice(0, 4)
                                     }}
+                                    validators={[
+                                        'matchRegexp:^[0-9]{1,4}$',
+                                        'required'
+                                    ]}
                                     errorMessages={[
                                         'Invalid - It should be a 3-digit number',
                                         'this field is required',
@@ -157,7 +175,7 @@ const AddClass = () => {
                             </Grid>
 
                             {/* COURSE NAME */}
-                            <Grid item xs={4} fullWidth >
+                            <Grid item xs={6} fullWidth >
                                 <TextValidator
                                     size="medium"
                                     variant="outlined"
@@ -178,33 +196,19 @@ const AddClass = () => {
                                     onChange={handleChangeCourseName}
                                 />
                             </Grid>
+                            {/* BUTTON */}
+                            <Grid item xs={4} fullWidth>
+                                <Button
+                                    variant="contained"
+                                    size="large"
+                                    type="submit"
+                                    disableElevation
+                                >
+                                    Submit
+                                </Button>
+                            </Grid>
                         </Grid>
                     </ValidatorForm>
-                </Grid>
-
-                {/* 
-                    If any field is missing, then display the error message
-                    Otherwise, display nothing
-                 */}
-                {error && (
-                    <Grid item xs={12}>
-                        <Typography variant="body1" className={classes.message}>
-                            * Please enter valid inputs.
-                        </Typography>
-                    </Grid>
-                )}
-
-                {/* BUTTON */}
-                <Grid item xs={4} fullWidth>
-                    <Button
-                        variant="contained"
-                        size="large"
-                        type="submit"
-                        disableElevation
-                        onClick={submitForm}
-                    >
-                        Submit
-                    </Button>
                 </Grid>
 
             </Grid>

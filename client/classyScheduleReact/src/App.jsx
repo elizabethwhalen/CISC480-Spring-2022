@@ -1,5 +1,5 @@
 import './App.css';
-import Layout from './components/Layout';
+import Layout from './components/layout/Layout';
 import {BrowserRouter} from "react-router-dom";
 
 const App = () => {
