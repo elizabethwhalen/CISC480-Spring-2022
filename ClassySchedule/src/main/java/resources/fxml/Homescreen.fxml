@@ -106,7 +106,7 @@
                   <Button mnemonicParsing="false" text="Edit Professor" />
                   <Button mnemonicParsing="false" text="Edit Classroom" />
                   <Button mnemonicParsing="false" text="Edit Preferences" />
-                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="176.0" text="View Schedule" />
+                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="176.0" text="View Schedule" onMouseClicked="#viewScheduleClicked"/>
               </buttons>
             </ButtonBar>
       </children>

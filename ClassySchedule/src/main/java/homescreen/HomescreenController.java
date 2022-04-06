@@ -1,5 +1,6 @@
 package homescreen;
 
+import courses.AddCourseToDatabaseController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -9,13 +10,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import scheduler.SchedulerController;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-
-        import courses.AddCourseToDatabaseController;
 
 /**
  *Controls the homescreen page, which allows the user to navigate to add course, add professor, add classroom, and view
@@ -93,5 +92,19 @@ public class HomescreenController implements Initializable {
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void viewScheduleClicked(MouseEvent mouseEvent) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/scheduler.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        SchedulerController schedulerController = loader.getController();
+        schedulerController.setStage(homescreenStage);
+        homescreenStage.setScene(new Scene(root, 600, 450));
+        homescreenStage.show();
     }
 }
