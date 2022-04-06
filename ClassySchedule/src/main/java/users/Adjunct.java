@@ -9,6 +9,8 @@ public class Adjunct implements User {
     private String password;
     //TODO: Add list of preferences
 
+    //TODO: add comments
+
     public Adjunct (String firstName, String lastName, int id, float remainingTeachLoad, int prepNum, String password) {
         this.firstName = firstName;
         this.lastName = lastName;

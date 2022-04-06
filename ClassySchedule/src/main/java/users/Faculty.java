@@ -10,6 +10,8 @@ public class Faculty implements User {
     private String password;
     //TODO: Add list of preferences
 
+    //TODO: add comments
+
     public Faculty (String firstName, String lastName, int id, float remainingTeachLoad, int prepNum, String password) {
         this.firstName = firstName;
         this.lastName = lastName;

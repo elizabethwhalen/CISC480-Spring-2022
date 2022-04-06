@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduler.SchedulerController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduler.SchedulerController">
    <children>
-      <TableView layoutX="1.0" layoutY="-1.0" prefHeight="400.0" prefWidth="600.0">
-        <columns>
-          <TableColumn fx:id="Monday" minWidth="120.0" prefWidth="75.0" text="Monday" />
-          <TableColumn fx:id="Tuesday" minWidth="120.0" prefWidth="75.0" text="Tuesday" />
-            <TableColumn fx:id="Wednesday" minWidth="120.0" prefWidth="75.0" text="Wednesday" />
-            <TableColumn fx:id="Thursday" minWidth="120.0" prefWidth="75.0" text="Thursday" />
-            <TableColumn fx:id="Friday" minWidth="120.0" prefWidth="75.0" text="Friday" />
-        </columns>
-      </TableView>
-      <Button fx:id="Add" layoutX="275.0" layoutY="399.0" mnemonicParsing="false" onAction="#switchToCourse" prefHeight="26.0" prefWidth="50.0" text="Add" />
-      <Button fx:id="Delete" layoutX="275.0" layoutY="423.0" mnemonicParsing="false" text="Delete" />
+      <BorderPane fx:id="borderPane" layoutX="65.0" layoutY="36.0" prefHeight="800" prefWidth="1000">
+         <left>
+            <VBox prefHeight="200.0" prefWidth="10.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="addCourseButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#goToAddCourse" prefHeight="25.0" prefWidth="102.0" text="Add Course" />
+                  <Button fx:id="homeButton" mnemonicParsing="false" onAction="#goToHomeScreen" prefHeight="25.0" prefWidth="103.0" text="Home" />
+                  <Button fx:id="anotherButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0" text="Another Button?" />
+               </children>
+            </VBox>
+         </left>
+      </BorderPane>
    </children>
 </AnchorPane>
