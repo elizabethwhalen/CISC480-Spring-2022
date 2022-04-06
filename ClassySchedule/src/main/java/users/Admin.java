@@ -11,6 +11,7 @@ public class Admin implements User {
     private String password;
     //TODO: Add list of preferences
 
+    //TODO: Add comments
     public Admin(String firstName, String lastName, int id, float remainingTeachLoad, int prepNum, String password) {
         this.firstName = firstName;
         this.lastName = lastName;

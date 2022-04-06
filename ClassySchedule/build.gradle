@@ -24,15 +24,18 @@ sourceSets {
 repositories {
     mavenCentral()
     dependencies {
+        implementation group: 'org.jfxtras', name: 'jfxtras-icalendaragenda', version: '14-r2'
         implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
+        runtime files('lib/jfxtras-agenda-22.4.4.jar')
     }
-
 }
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-}
+//dependencies {
+//    repositories {
+//        mavenCentral()
+//    }
+//
+//}
 
 test {
     useJUnitPlatform()
@@ -49,7 +52,7 @@ task copyResources (type: Copy) {
 
 javafx {
     version = "17.0.1"
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.base', 'javafx.web']
 }
 
 build.finalizedBy copyResources

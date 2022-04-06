@@ -1,6 +1,7 @@
 package login;
 
 import homescreen.HomescreenController;
+import scheduler.AddCourseToScheduleController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,31 +21,51 @@ import java.util.ResourceBundle;
  */
 
 public class LoginController implements Initializable {
+
+    /**
+     * The button to submit the login credentials
+     */
     @FXML
     public Button submitButton;
 
+    /**
+     * The username input field
+     */
     @FXML
     public TextField username;
 
+    /**
+     * The passowrd input field
+     */
     @FXML
     public TextField password;
 
+    /**
+     * The login stage
+     */
     private Stage loginStage;
 
+    /**
+     * The constructor for the login page
+     */
     public LoginController() {}
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
     }
 
-
+    /**
+     * Sets the stage
+     * @param stage the stage to be set
+     */
     public void setStage(Stage stage) {
         this.loginStage = stage;
     }
 
-
     /**
-     * Checks password validation (TBD) when submit button is clicked. Changes scene to homescreen if password is correct.
+     * Sends the username and password for validation
+     * If the username or password is incorrect, it will create a popup dialog
      */
     @FXML
     public void submitButtonClicked() {
@@ -52,9 +73,11 @@ public class LoginController implements Initializable {
         if (usernameCorrect) {
             final boolean passwordCorrect = validatePassword(username.getText(), password.getText());
             if (passwordCorrect) {
+                // TODO: decide on what scene to show, for now just add course
                 changeScene();
             }
         }
+
     }
 
     // TODO: Create validation for username and password: validateUsername and validatePassword functions
@@ -91,6 +114,7 @@ public class LoginController implements Initializable {
             root = loader.load();
             HomescreenController loginController = loader.getController();
             loginController.setStage(loginStage);
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -5,14 +5,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import login.LoginController;
+import scheduler.SchedulerController;
 
 
 public class Main extends Application {
 
-    private Stage primaryStage;
-    @Override
 
+    private Stage primaryStage;
+
+    @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/LoginPage.fxml"));

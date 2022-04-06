@@ -2,6 +2,7 @@ package users;
 
 public interface User {
 
+    //TODO: add comments
     String getFirstName();
 
     void setFirstName(String firstName);
