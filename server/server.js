@@ -36,6 +36,6 @@ app.post('/AddClass', (req, res) => {
 
 
 // activates when server starts. logs the port that the server is running on, planning to switch to azure port.
-app.listen(3000, () => {
-    console.log("running on port 3000");
+app.listen(8080, () => {
+    console.log("running on port 8080");
 });
