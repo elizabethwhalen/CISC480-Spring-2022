@@ -1,7 +1,7 @@
 # CISC480-Spring-2022
 **Classy-Schedule Development Repository**
 </br>
-expressAPIServer - API access: http://classy-api.ddns.net (access via HTTP requests - please see /expressAPIServer directory for access examples)
+expressAPIServer - API access: http://classy-api.ddns.net (please see *expressAPIServer* directory for access examples)
 </br>
 expressWebServerExample - Online web app: http://classy-dev.ddns.net
 </br>
