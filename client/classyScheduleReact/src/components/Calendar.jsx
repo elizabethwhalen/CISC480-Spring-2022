@@ -35,6 +35,8 @@ const Calendar = () => {
     const [Time, SetTime] = React.useState('');
     const [Day, SetDay] = React.useState('');
     const [Class, SetClass] = React.useState('');
+    const [Room, SetRoom] = React.useState('');
+    const [Instructor, SetInstructor] = React.useState('');
 
     /*Submiting the Form will Update the table (Calendar) */
     const submitForm = (event) => {
@@ -69,7 +71,7 @@ const Calendar = () => {
 
         if (row !== -1) {
             var table = document.getElementById('classes');
-            table.rows[row].cells[Day].innerHTML = Class;
+            table.rows[row].cells[Day].innerHTML = Class + " Room: " + Room + " Instructor: " + Instructor;
         }
     }
 
@@ -86,6 +88,15 @@ const Calendar = () => {
     // This function will retrieve the value entered in the class field whenever it changes
     const handleChangeClass = (event) => {
         SetClass(event.target.value);
+    }
+
+    // This function will retrieve the value entered in the time field whenever it changes
+    const handleChangeRoom = (event) => {
+        SetRoom(event.target.value)
+    }
+    // This function will retrieve the value entered in the time field whenever it changes
+    const handleChangeInstructor = (event) => {
+        SetInstructor(event.target.value)
     }
 
     const classes = useStyles();
@@ -250,7 +261,7 @@ const Calendar = () => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={2}>
                     {/*This controls the time being inputted into the calendar*/}
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">Day</InputLabel>
@@ -274,7 +285,57 @@ const Calendar = () => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={2}>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Room</InputLabel>
+                        <Select 
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={Room}
+                            label="Room"
+                            onChange={handleChangeRoom}
+                            size='medium'
+                            autoWidth>
+
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={428}>428</MenuItem>
+                            <MenuItem value={429}>429</MenuItem>
+                            <MenuItem value={430}>430</MenuItem>
+                            <MenuItem value={431}>431</MenuItem>
+                            <MenuItem value={432}>432</MenuItem>
+
+                        </Select>
+
+                    </FormControl>
+                </Grid>
+                <Grid item xs={2}>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Instructor</InputLabel>
+                        <Select 
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={Instructor}
+                            label="Instructor"
+                            onChange={handleChangeInstructor}
+                            size='medium'
+                            autoWidth>
+
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={'Chaz'}>Chaz</MenuItem>
+                            <MenuItem value={"Carl"}>Carl</MenuItem>
+                            <MenuItem value={"Sue"}>Sue</MenuItem>
+                            <MenuItem value={"Kevin"}>Kevin</MenuItem>
+                            <MenuItem value={"Howard"}>Howard</MenuItem>
+
+                        </Select>
+
+                    </FormControl>
+                </Grid>
+                <Grid item xs={2}>
                     {/*This controls the class to input into the calendar*/}
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">Class</InputLabel>
