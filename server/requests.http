@@ -7,3 +7,6 @@ curl -X POST "http://databaseconnectionexample.azurewebsites.net/class" -H "Cont
 }'
 ###
 curl "http://databaseconnectionexample.azurewebsites.net/class" 
+
+###
+curl "http://databaseconnectionexample.azurewebsites.net/faculty"

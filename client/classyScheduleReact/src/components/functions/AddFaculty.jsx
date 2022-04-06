@@ -31,19 +31,52 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const AddFaculty = () => {
+    const [firstName, setFirstName] = React.useState('');
+    const [lastName, setLastName] = React.useState('');
     const [teachLoad, setTeachLoad] = React.useState('');
     const [state, setState] = React.useState({
         intro: false,
         security: false,
         ai: false,
     });
+    // promise for our AddFaculty button
+    const submitFrom = (event) => {
+        event.preventDefault();
+        if(firstName !== '' | lastName !== '' | teachLoad != ''){
+            let data = JSON.stringify({faculty_id: 99, faculty_first: firstName, faculty_last: lastName, 
+            title_id: 99, prev_load: 0, curr_load: teachLoad});
+            let config = {
+                method: 'post',
+                url: 'http://databaseconnectionexample.azurewebsites.net/faculty',
+                headers: {'Content-Type': 'application/json'},
+                data: data
+            };
+            axios(config).then((response) => {
+                console.log(JSON.stringify(response.data));
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
+        setFirstName('');
+        setLastName('');
+        setTeachLoad('');
+        setState(false);
+    };
+
+    const handleFirstNameChange = (event) => {
+        setFirstName(event.target.value);
+    }
+
+    const handleLastNameChange = (event) => {
+        setLastName(event.target.value);
+    }
 
     const handleTeachLoadChange = (event) => {
         setTeachLoad(event.target.value);
     };
 
 
-    const handleChange = (event) => {
+    const handleChangeClassType = (event) => {
         setState({
             ...state,
             [event.target.name]: event.target.checked,
@@ -65,12 +98,12 @@ const AddFaculty = () => {
 
                 {/* First name */}
                 <Grid item xs={4} fullWidth>
-                    <TextField fullWidth size="medium" id="outlined-basic" label="First Name" variant="outlined" />
+                    <TextField fullWidth size="medium" id="outlined-basic" label="First Name" variant="outlined" value={firstName} onChange={handleFirstNameChange} />
                 </Grid>
 
                 {/* Last name */}
                 <Grid item xs={4} fullWidth>
-                    <TextField fullWidth size="medium" id="outlined-basic" label="Last Name" variant="outlined" />
+                    <TextField fullWidth size="medium" id="outlined-basic" label="Last Name" variant="outlined" value={lastName} onChange={handleLastNameChange} />
                 </Grid>
 
                 {/* Teach Load */}
@@ -91,19 +124,19 @@ const AddFaculty = () => {
                                 <FormGroup>
                                     <FormControlLabel
                                         control={
-                                            <Checkbox checked={intro} onChange={handleChange} name="intro" />
+                                            <Checkbox checked={intro} onChange={handleChangeClassType} name="intro" />
                                         }
                                         label="Intro to CS"
                                     />
                                     <FormControlLabel
                                         control={
-                                            <Checkbox checked={security} onChange={handleChange} name="security" />
+                                            <Checkbox checked={security} onChange={handleChangeClassType} name="security" />
                                         }
                                         label="Information Security"
                                     />
                                     <FormControlLabel
                                         control={
-                                            <Checkbox checked={ai} onChange={handleChange} name="ai" />
+                                            <Checkbox checked={ai} onChange={handleChangeClassType} name="ai" />
                                         }
                                         label="Artifical Intelligence"
                                     />
