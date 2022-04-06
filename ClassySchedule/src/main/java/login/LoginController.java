@@ -1,5 +1,6 @@
 package login;
 
+import homescreen.HomescreenController;
 import scheduler.AddCourseToScheduleController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,8 +16,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * The controller for the login page
+ * Controller for the login page, which is the fist page a user sees. If the login is successful, users will be taken to
+ * the homepage.
  */
+
 public class LoginController implements Initializable {
 
     /**
@@ -74,14 +77,15 @@ public class LoginController implements Initializable {
                 changeScene();
             }
         }
+
     }
 
-    // TODO: Create validation for username and password
+    // TODO: Create validation for username and password: validateUsername and validatePassword functions
 
     /**
-     * Validates the username
-     * @param text the text to check
-     * @return true if the username exists in the database, false if not
+     * Checks if the user exists in the database
+     * @param text user entered username to be checked
+     * @return true if username exists, false if not
      */
     private boolean validateUsername(String text) {
         //check if user exists in the database
@@ -89,26 +93,26 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Checks that the password matches the username
-     * @param username the username to check
-     * @param password the password to check
-     * @return true if the username and password are correct, false if otherwise
+     * Checks if password matches username
+     * @param username username of user
+     * @param password user entered password to be validated
+     * @return true if password is correct for username, false if not
      */
     private boolean validatePassword(String username, String password) {
         //get user with username
-        // check if password matches username
+        //check if password matches username
         return true;
     }
 
     /**
-     * Changes the scene to add course to homescreen
+     * Changes the view to the homescreen page
      */
     public void changeScene() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/AddCourseToSchedule.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
         Parent root = null;
         try {
             root = loader.load();
-            AddCourseToScheduleController loginController = loader.getController();
+            HomescreenController loginController = loader.getController();
             loginController.setStage(loginStage);
 
         } catch (IOException e) {

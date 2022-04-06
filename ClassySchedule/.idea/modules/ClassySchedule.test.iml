@@ -7,6 +7,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="ClassySchedule.main" />
+    <orderEntry type="library" name="Gradle: mysql:mysql-connector-java:8.0.28" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-fxml:win:17.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-controls:17.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-controls:win:17.0.1" level="project" />
@@ -15,6 +16,7 @@
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-base:17.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-base:win:17.0.1" level="project" />
     <orderEntry type="library" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.6.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.protobuf:protobuf-java:3.11.4" level="project" />
     <orderEntry type="library" name="Gradle: org.junit.platform:junit-platform-commons:1.6.0" level="project" />
     <orderEntry type="library" name="Gradle: org.apiguardian:apiguardian-api:1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.opentest4j:opentest4j:1.2.0" level="project" />

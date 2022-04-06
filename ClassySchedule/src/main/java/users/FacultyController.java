@@ -22,22 +22,24 @@ public class FacultyController implements Initializable {
 
     private Stage addFaculty;
     @FXML
-    TextField name;
+    TextField facultyName;
 
     @FXML
-    TextField ID_number;
+    TextField facultyID;
 
+    //not in database
     @FXML
     TextField email;
 
     @FXML
-    ComboBox<String> dept_name;
+    ComboBox<String> deptName;
 
+    //not in database
     @FXML
     ComboBox<String> type;
 
     @FXML
-    Button submit_button;
+    Button submitButton;
 
     @FXML
     Text nameWarning;
@@ -58,12 +60,12 @@ public class FacultyController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        dept_name.getItems().clear();
+        deptName.getItems().clear();
         try {
             Database database = new Database();
             ResultSet rs = database.getData("dept_code", "dept");
             while (rs.next()) {
-                dept_name.getItems().add(rs.getString(1));
+                deptName.getItems().add(rs.getString(1));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,15 +78,15 @@ public class FacultyController implements Initializable {
 
     @FXML
     public void submitData(ActionEvent event) {
-        if (dept_name.getSelectionModel().isEmpty()) {
+        if (deptName.getSelectionModel().isEmpty()) {
             departmentWarning.setVisible(true);
             return;
         }
-        if (name.getText().isBlank()) {
+        if (facultyName.getText().isBlank()) {
             nameWarning.setVisible(true);
             return;
         }
-        if (ID_number.getText().isBlank()) {
+        if (facultyID.getText().isBlank()) {
             IDWarning.setVisible(true);
             return;
         }
@@ -99,7 +101,7 @@ public class FacultyController implements Initializable {
 
         // ID number validation
         try {
-            Integer.parseInt(ID_number.getText());
+            Integer.parseInt(facultyID.getText());
         } catch (NumberFormatException e) {
             IDWarning.setVisible(true);
             return;
@@ -113,16 +115,16 @@ public class FacultyController implements Initializable {
         File file = new File("testfaculty.txt");
         try {
             FileWriter fw = new FileWriter(file);
-            fw.append("Name: " + name.getText() + " ID: " + ID_number.getText() + " email: " + email.getText() + " department: " + dept_name.getValue() + " type: " + type.getValue());
+            fw.append("Name: " + facultyName.getText() + " ID: " + facultyID.getText() + " email: " + email.getText() + " department: " + deptName.getValue() + " type: " + type.getValue());
             fw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        name.clear();
-        ID_number.clear();
+        facultyName.clear();
+        facultyID.clear();
         email.clear();
-        dept_name.setValue("Dept name");
+        deptName.setValue("Dept name");
         type.setValue(null);
         nameWarning.setVisible(false);
         IDWarning.setVisible(false);

@@ -5,7 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import scheduler.SchedulerController;
+import login.LoginController;
 
 
 public class Main extends Application {
@@ -16,14 +16,13 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/scheduler.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/LoginPage.fxml"));
         Parent root = loader.load();
-        SchedulerController schedulerController = loader.getController();
-        schedulerController.setStage(primaryStage);
-        this.primaryStage.setTitle("Classy-Schedule");
-        this.primaryStage.setScene(new Scene(root, 600, 450));
-        this.primaryStage.show();
-
+        LoginController loginController = loader.getController();
+        loginController.setStage(primaryStage);
+        primaryStage.setTitle("Classy-Schedule");
+        primaryStage.setScene(new Scene(root, 600, 450));
+        primaryStage.show();
     }
 
     public static void main(String[] args) {

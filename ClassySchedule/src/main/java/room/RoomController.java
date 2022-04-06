@@ -1,9 +1,7 @@
 package room;
 
-import database.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -13,25 +11,25 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
-import java.sql.ResultSet;
-import java.util.ResourceBundle;
 
-//public class RoomController implements Initializable {
+/**
+ * Controls the add room page, which allows a user to add a classroom to the database
+ */
 public class RoomController {
 
     private Stage addRoom;
-    @FXML
-    TextField room_number;
 
     @FXML
-    ComboBox<String> building;
+    TextField roomNum;
 
     @FXML
-    ComboBox<String> campus;
+    ComboBox<String> buildingCode;
 
     @FXML
-    Button submit_button;
+    ComboBox<String> campusID;
+
+    @FXML
+    Button submitButton;
 
     @FXML
     Text roomWarning;
@@ -42,8 +40,10 @@ public class RoomController {
     @FXML
     Text campusWarning;
 
-    public RoomController() {}
+    public RoomController() {
+    }
 
+    //May use in the future to reach into database for room options
     /*@Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         dept_name.getItems().clear();
@@ -62,26 +62,30 @@ public class RoomController {
         this.addRoom = addRoom;
     }
 
+    /**
+     * Submits data that has been entered when submit button is clicked.
+     * @param event submit button being clicked
+     */
     @FXML
     public void submitData(ActionEvent event) {
 
-        if (campus.getSelectionModel().isEmpty()) {
+        if (campusID.getSelectionModel().isEmpty()) {
             campusWarning.setVisible(true);
             return;
         }
-        if (room_number.getText().isBlank()) {
+        if (roomNum.getText().isBlank()) {
             roomWarning.setVisible(true);
             return;
         }
-        if (building.getSelectionModel().isEmpty()) {
+        if (buildingCode.getSelectionModel().isEmpty()) {
             buildingWarning.setVisible(true);
             return;
         }
 
         // room number validation
         try {
-            if(room_number.getLength() == 3) {
-                Integer.parseInt(room_number.getText());
+            if(roomNum.getLength() == 3) {
+                Integer.parseInt(roomNum.getText());
             } else {
                 roomWarning.setVisible(true);
             }
@@ -91,22 +95,19 @@ public class RoomController {
         }
 
         //made it to the end of validation, send to database and then clear fields
-        // maybe update courses already added?
-
-
-        //TODO: Send course to database
+        //TODO: Send course to database instead of text file
         File file = new File("testroom.txt");
         try {
             FileWriter fw = new FileWriter(file);
-            fw.append("Campus: " + campus.getValue() + " building: " + building.getValue() + " Room number: " + room_number.getText());
+            fw.append("Campus: " + campusID.getValue() + " building: " + buildingCode.getValue() + " Room number: " + roomNum.getText());
             fw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        campus.setValue(null);
-        room_number.clear();
-        building.setValue(null);
+        campusID.setValue(null);
+        roomNum.clear();
+        buildingCode.setValue(null);
         roomWarning.setVisible(false);
         buildingWarning.setVisible(false);
         campusWarning.setVisible(false);
