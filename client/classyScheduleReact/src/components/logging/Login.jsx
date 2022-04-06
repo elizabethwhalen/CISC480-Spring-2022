@@ -2,8 +2,8 @@ import React from 'react'
 import { Button, Grid, Paper, Typography, } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
-import background from '../images/campus.jpg'
-import logo from '../images/ustlogo.png'
+import background from '../../images/campus.jpg'
+import logo from '../../images/ustlogo.png'
 import { Link } from 'react-router-dom'
 
 // Styling components using useStyles
@@ -66,13 +66,38 @@ const useStyles = makeStyles((theme) => ({
   },
   loginButtonGrid: {
     marginTop: '20px'
-  }
+  },
+  message: {
+    color: 'red',
+    fontWeight: 600,
+  },
 }))
 
 // Login page component with parameter passed under props
 const Login = (props) => {
 
-  const classes = useStyles() // use the useStyles
+  const classes = useStyles(); // use the useStyles
+  const [email, setEmail] = React.useState(''); // email
+  const [password, setPassword] = React.useState(''); // password
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+
+    // If either email or password is empty, then don't log user in
+    if (email !== '' && password !== ''){
+      props.handleLogin();
+    }
+  }
+
+  // This function will assign input value to email variable
+  const handleChangeEmail = (event) => {
+    setEmail(event.target.value);
+  }
+
+  // This function will assign input value to password variable
+  const handleChangePassword = (event) => {
+    setPassword(event.target.value);
+  }
 
   return (
     <Paper className={classes.root}>
@@ -103,7 +128,7 @@ const Login = (props) => {
 
             {/* Form */}
             <Grid item xs={12} fullWidth>
-              <ValidatorForm onError={(errors) => console.log(errors)}>
+              <ValidatorForm onSubmit={handleLogin}>
                 <Grid container spacing={1}>
 
                   {/* Email */}
@@ -114,12 +139,10 @@ const Login = (props) => {
                       label="Email"
                       fullWidth
                       name="email"
-                      type="text"
-                    // validators={['matchRegexp:^[0-9]{1,9}$', 'required']}
-                    // errorMessages={[
-                    //   'Invalid - It should be a 9-digit number',
-                    //   'this field is required',
-                    // ]}
+                      value={email}
+                      onChange={handleChangeEmail}
+                      validators={['required', 'isEmail']}
+                      errorMessages={['this field is required', 'email is not valid']}
                     />
                   </Grid>
 
@@ -132,11 +155,8 @@ const Login = (props) => {
                       fullWidth
                       name="password"
                       type="password"
-                      // validators={['matchRegexp:^[0-9]{1,3}$', 'required']}
-                      // errorMessages={[
-                      //   'Invalid - It should be a 3-digit number',
-                      //   'this field is required',
-                      // ]}
+                      value={password}
+                      onChange={handleChangePassword}
                       validators={['required']}
                       errorMessages={['this field is required']}
                       className={classes.textBox}
@@ -154,11 +174,9 @@ const Login = (props) => {
 
                   {/* Submit button */}
                   <Grid item xs={12} fullWidth className={classes.loginButtonGrid}>
-                    <Link to='/' className={classes.link}>
-                      <Button variant="contained" disableElevation onClick={props.handleLogin} >
+                      <Button variant="contained" disableElevation type='submit' >
                         Log In
-                      </Button>
-                    </Link>
+                      </Button>                   
                   </Grid>
                 </Grid>
               </ValidatorForm>
