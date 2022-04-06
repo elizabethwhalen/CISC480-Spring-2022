@@ -232,24 +232,6 @@ public class AddCourseToScheduleController implements Initializable {
 
     }
 
-    /**
-     * This method takes a given lecture object turn it into a string using StringBuilder to use
-     * for setting the displayCourse object strings.
-     *
-     * @param lecture a given lecture object to reference its necessary information
-     * @return a string output of the necessary lecture information
-     */
-    private String lectureToDisplayCourse(Lecture lecture) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(lecture.getClassName() + "\n");
-        sb.append(lecture.getSectionNumber() + "\n");
-        sb.append(lecture.getDepartment());
-        String output;
-        output = sb.toString();
-        System.out.println(output);
-        return output;
-    }
-
     public void setParent(SchedulerController controller) {
         this.parentController = controller;
     }
