@@ -3,7 +3,7 @@
 </br>
 Online web app: http://classy-dev.ddns.net | NOTE: I cannot deploy to Azure tonight and will fix soon.
 </br>
-API access: http://classy-api.ddns.net | NOTE: I cannot deploy to Azure tonight and will fix soon.
+API access: http://classy-api.ddns.net (access via HTTP requests - please see /expressAPIServer directory for access examples)
 </br>
 Standalone web app (deprecated): http://classy-schedule.ddns.net
 
