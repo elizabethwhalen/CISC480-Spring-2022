@@ -14,7 +14,6 @@ import {
 } from '@mui/material'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import { makeStyles } from '@material-ui/core/styles'
-import Axios from 'axios'
 import axios from 'axios'
 
 // This is a React hook used for organizing the styling of each element in this component
@@ -52,11 +51,14 @@ const AddClass = () => {
         if (code === '' || courseNum === '' || courseName === '') {
             setError(true);
         } else {
-            let data = JSON.stringify({dept_code: code, class_num: courseNum, class_name: courseName });
+            let data = JSON.stringify({"dept_code": code, "class_num": courseNum, "class_name": courseName });
             let config = {
                 method: 'post',
                 url: 'http://databaseconnectionexample.azurewebsites.net/class',
-                headers: { 'Content-Type': 'application/json'},
+                headers: { 'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': 'http://localhost:3000',
+                'Access-Control-Allow-Credentials': 'true',
+            },
                 data: data
             };
             axios(config).then((response) => {
