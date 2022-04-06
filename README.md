@@ -1,11 +1,11 @@
 # CISC480-Spring-2022
 **Classy-Schedule Development Repository**
 </br>
-Online web app: http://classy-dev.ddns.net | NOTE: I cannot deploy to Azure tonight and will fix soon.
+expressAPIServer - API access: http://classy-api.ddns.net (access via HTTP requests - please see /expressAPIServer directory for access examples)
 </br>
-API access: http://classy-api.ddns.net (access via HTTP requests - please see /expressAPIServer directory for access examples)
+expressWebServerExample - Online web app: http://classy-dev.ddns.net
 </br>
-~~Standalone web app (deprecated): http://classy-schedule.ddns.net~~
+~~expressWebServerExampleStandalone - Standalone web app (deprecated)~~
 
 ## Network Structure
 ![Alt text](documentation/classy-schedule-network-layout.png?raw=true "Title")
