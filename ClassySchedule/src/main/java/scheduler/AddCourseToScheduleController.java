@@ -21,54 +21,113 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
+/**
+ * The controller for adding the course to the scheduler
+ */
 public class AddCourseToScheduleController implements Initializable {
+
+    /**
+     * The current stage
+     */
     private Stage currentStage;
+
+    /**
+     * The parent controller
+     */
     private SchedulerController parentController;
 
+    /**
+     * The section number of the class
+     */
     @FXML
     private ComboBox<String> section_number;
 
+    /**
+     * The class name
+     */
     @FXML
     private ComboBox<String> class_name;
 
+    /**
+     * The department name
+     */
     @FXML
     private ComboBox<String> dept_name;
 
+    /**
+     * The submit button
+     */
     @FXML
     private Button submit_button;
 
+    /**
+     * A button to specify Monday
+     */
     @FXML
     private RadioButton monday;
 
+    /**
+     * A button to specify Tuesday
+     */
     @FXML
     private RadioButton tuesday;
 
+    /**
+     * A button to specify Wednesday
+     */
     @FXML
     private RadioButton wednesday;
 
+    /**
+     * A button to specify Thursday
+     */
     @FXML
     private RadioButton thursday;
 
+    /**
+     * A button to specify Friday
+     */
     @FXML
     private RadioButton friday;
 
+    /**
+     * The start time of the appointment
+     */
     @FXML
     private TextField start_time;
 
+    /**
+     * The end time of the appointment
+     */
     @FXML
     private TextField end_time;
 
+    /**
+     * The class number
+     */
     @FXML
     private ComboBox<String> classNumber;
 
+    /**
+     * The close button
+     */
     @FXML
     private Button closeButton;
 
+    /**
+     * The room for the class
+     */
     @FXML
     private ComboBox<String> room;
 
+    /**
+     * The list of the select days
+     */
     List<RadioButton> datesSelected;
 
+    /**
+     * The constructor for the add course to schedule controller
+     */
     public AddCourseToScheduleController() {
     }
 
@@ -93,16 +152,28 @@ public class AddCourseToScheduleController implements Initializable {
         class_name.getItems().add("Object-Oriented Programming");
         class_name.getItems().add("Data Structure");
         class_name.getItems().add("Information Security");
-        section_number.getItems().add("131");
-        section_number.getItems().add("230");
-        section_number.getItems().add("231");
-        section_number.getItems().add("350");
+        classNumber.getItems().add("131");
+        classNumber.getItems().add("230");
+        classNumber.getItems().add("231");
+        classNumber.getItems().add("350");
     }
 
+    /**
+     * Sets the stage
+     * @param stage the stage to be set
+     */
     public void setStage(Stage stage) {
         this.currentStage = stage;
     }
 
+    /**
+     * Validates the data inputs
+     * Creates a list of class times
+     * Adds the classes to the schedule
+     * @param event
+     * @throws IOException
+     * @throws ParseException
+     */
     @FXML
     public void submitData(ActionEvent event) throws IOException, ParseException {
         // Validate needed data is present
@@ -118,6 +189,11 @@ public class AddCourseToScheduleController implements Initializable {
 
     }
 
+    /**
+     * Creates the appointments
+     * @return a list of appointments
+     * @throws ParseException
+     */
     private List<Agenda.Appointment> createAppointment() throws ParseException {
         List<String> selectedDates = new ArrayList<>();
         for (RadioButton radioButton: datesSelected) {
@@ -138,6 +214,11 @@ public class AddCourseToScheduleController implements Initializable {
         return appointmentFactory.createAppointments();
     }
 
+    /**
+     * Converts a date to local date time
+     * @param dateToConvert the date to be converted
+     * @return a date in local date time formatx
+     */
     public LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
@@ -171,5 +252,9 @@ public class AddCourseToScheduleController implements Initializable {
 
     public void setParent(SchedulerController controller) {
         this.parentController = controller;
+    }
+
+    @FXML
+    public void close(ActionEvent actionEvent) {
     }
 }

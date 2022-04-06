@@ -12,8 +12,8 @@ public class Main extends Application {
 
 
     private Stage primaryStage;
-    @Override
 
+    @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/scheduler.fxml"));

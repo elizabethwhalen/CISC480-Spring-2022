@@ -19,6 +19,16 @@ public class AppointmentFactory {
     private String classSection;
     private String className;
 
+    /**
+     * Constructor for an appointment factory
+     * @param startTimes the days and start times appointments will be placed
+     * @param endTimes the days and end times appointments will be placed
+     * @param classNumber the class number ex. 131 for CISC 131
+     * @param room the room the class will be placed in
+     * @param professor the professor teaching the class
+     * @param classSection the section number of the class
+     * @param className the name of the class
+     */
     public AppointmentFactory(List<LocalDateTime> startTimes, List<LocalDateTime> endTimes, String classNumber, String room, String professor, String classSection, String className) {
         this.startTimes = startTimes;
         this.endTimes = endTimes;
@@ -29,14 +39,17 @@ public class AppointmentFactory {
         this.className = className;
     }
 
+    /**
+     * This creates the appointments from the given information
+     * @return a list of appointments to be added to the calendar
+     */
     public List<Agenda.Appointment> createAppointments() {
         List<Agenda.Appointment> appointments = new ArrayList<>();
         for (int i = 0; i < startTimes.size(); i++) {
             Agenda.AppointmentImplLocal appointment = new Agenda.AppointmentImplLocal()
                     .withStartLocalDateTime(startTimes.get(i))
                     .withEndLocalDateTime(endTimes.get(i))
-                    .withDescription(classNumber + " " + className + " " + classSection + " " + professor + " " + room)
-                    .withAppointmentGroup(new Agenda.AppointmentGroupImpl().withStyleClass("group2"));
+                    .withSummary(classNumber + " " + className + " " + classSection + " " + professor + " " + room);
             appointments.add(appointment);
         }
         return appointments;

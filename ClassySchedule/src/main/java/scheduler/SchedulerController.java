@@ -19,20 +19,38 @@ import java.util.ResourceBundle;
 // TODO: Add comments, persist appointments
 public class SchedulerController implements Initializable {
 
+    /**
+     * The border pane
+     */
     @FXML
     BorderPane borderPane;
 
+    /**
+     * The button to add the course
+     */
     @FXML
     Button addCourseButton;
 
+    /**
+     * The home button
+     */
     @FXML
     Button homeButton;
 
+    /**
+     * Another button for possible future functionality
+     */
     @FXML
     Button anotherButton;
 
+    /**
+     * The stage
+     */
     Stage stage;
 
+    /**
+     * The agenda to manipulate
+     */
     Agenda agenda;
 
     @Override
@@ -41,16 +59,13 @@ public class SchedulerController implements Initializable {
         borderPane.setCenter(agenda);
     }
 
+    /**
+     * Opens the popup dialog
+     * @param actionEvent
+     * @throws IOException
+     */
     @FXML
     public void goToAddCourse(ActionEvent actionEvent) throws IOException {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/AddCourseToSchedule.fxml"));
-//        Parent root = loader.load();
-//        AddCourseToScheduleController schedulerController = loader.getController();
-//        schedulerController.setStage(stage);
-//        stage.setTitle("Classy-Schedule");
-//        stage.setScene(new Scene(root, 600, 450));
-//        stage.show();
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/AddCourseToSchedule.fxml"));
         Stage stage = new Stage();
         stage.initOwner(addCourseButton.getScene().getWindow());
@@ -60,10 +75,13 @@ public class SchedulerController implements Initializable {
 
         // showAndWait will block execution until the window closes...
         stage.showAndWait();
-
-
     }
 
+    /**
+     * Returns to the homescreen
+     * @param actionEvent
+     * @throws IOException
+     */
     @FXML
     public void goToHomeScreen(ActionEvent actionEvent) throws IOException {
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
@@ -75,6 +93,10 @@ public class SchedulerController implements Initializable {
 //        stage.show();
     }
 
+    /**
+     * Sets the stage
+     * @param stage the stage to be set
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
