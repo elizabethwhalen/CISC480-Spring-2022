@@ -5,7 +5,7 @@ Online web app: http://classy-dev.ddns.net | NOTE: I cannot deploy to Azure toni
 </br>
 API access: http://classy-api.ddns.net (access via HTTP requests - please see /expressAPIServer directory for access examples)
 </br>
-Standalone web app (deprecated): http://classy-schedule.ddns.net
+~~Standalone web app (deprecated): http://classy-schedule.ddns.net~~
 
 ## Network Structure
 ![Alt text](documentation/classy-schedule-network-layout.png?raw=true "Title")
