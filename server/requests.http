@@ -23,4 +23,4 @@ curl -X POST "http://databaseconnectionexample.azurewebsites.net/faculty" -H "Co
 }'
 
 ###
-curl "classy-api.ddns.net/class"
+curl "classy-api.ddns.net/faculty"
