@@ -228,6 +228,19 @@ const Calendar = () => {
             </Grid>
 
             {/*This is the demo form to add classes to the table*/}
+            <Popover
+            open={popOverVisible}
+            anchorEl={ref}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+            }}
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+        >
+            {/*This is the demo form to add classes to the table*/}
             <Grid container spacing={2}>
                 <Grid item xs={2}>
                     {/*This Section controls the time to input*/}
@@ -264,25 +277,13 @@ const Calendar = () => {
                 <Grid item xs={2}>
                     {/*This controls the time being inputted into the calendar*/}
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Day</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={Day}
-                            label="Day"
-                            onChange={handleChangeDay}
-                            size='medium'
-                            autoWidth
-                        >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={1}>Monday</MenuItem>
-                            <MenuItem value={2}>Tuesday</MenuItem>
-                            <MenuItem value={3}>Wednesday</MenuItem>
-                            <MenuItem value={4}>Thursday</MenuItem>
-                            <MenuItem value={5}>Friday</MenuItem>
-                        </Select>
+                    <FormGroup>
+                        <FormControlLabel control={<Checkbox name="WorkA" id="Monday" value={"yes"}/>} label="Monday"/>
+                        <FormControlLabel control={<Checkbox name="WorkB" id="Tuesday" value={"yes"}/>} label="Tuesday"/>
+                        <FormControlLabel control={<Checkbox name="WorkC" id="Wednesday" value={"yes"}/>} label="Wednesday"/>
+                        <FormControlLabel control={<Checkbox name="WorkD" id="Thursday" value={"yes"}/>} label="Thursday"/>
+                        <FormControlLabel control={<Checkbox name="WorkE" id="Friday" value={"yes"}/>} label="Friday"/>
+                    </FormGroup>
                     </FormControl>
                 </Grid>
                 <Grid item xs={2}>
@@ -370,7 +371,16 @@ const Calendar = () => {
                     </Button>
                 </Grid>
             </Grid>
-        </Paper>
+            <Button
+                ref={ref}
+                variant="contained"
+                color="primary"
+                onClick={togglePopOver}
+            >
+                Close Popover
+            </Button> 
+        </Popover>    
+    </Paper>
 
 
     )
