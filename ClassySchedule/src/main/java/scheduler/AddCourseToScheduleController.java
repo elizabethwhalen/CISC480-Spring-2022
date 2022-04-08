@@ -3,12 +3,12 @@ package scheduler;
 import courses.Lecture;
 import database.Database;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import jfxtras.scene.control.agenda.Agenda;
 
@@ -131,6 +131,31 @@ public class AddCourseToScheduleController implements Initializable {
     public AddCourseToScheduleController() {
     }
 
+    /**
+     * The invalid class name alert error
+     */
+    Alert invalidClassName = new Alert(Alert.AlertType.ERROR);
+
+    /**
+     * The invalid department alert error
+     */
+    Alert invalidDepartment = new Alert(Alert.AlertType.ERROR);
+
+    /**
+     * The invalid class number alert error
+     */
+    Alert invalidClassNumber = new Alert(Alert.AlertType.ERROR);
+
+    /**
+     * The invalid dates alert error
+     */
+    Alert invalidDays = new Alert(Alert.AlertType.ERROR);
+
+    /**
+     * The invalid start and end time alert error
+     */
+    Alert invalidStartAndEndTime = new Alert(Alert.AlertType.ERROR);
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         datesSelected = Arrays.asList(monday, tuesday, wednesday, thursday, friday);
@@ -146,6 +171,29 @@ public class AddCourseToScheduleController implements Initializable {
             e.printStackTrace();
         }
 
+        // Initialize the invalid error and hide them.
+        invalidClassName.setTitle("Invalid Class Name Error");
+        invalidClassName.setContentText("Please select a valid class name");
+        invalidClassName.hide();
+
+        invalidDepartment.setTitle("Invalid Department Error");
+        invalidDepartment.setContentText("Please select a valid department");
+        invalidDepartment.hide();
+
+        invalidClassNumber.setTitle("Invalid Class Number Error");
+        invalidClassNumber.setContentText("Please select a valid class number");
+        invalidClassNumber.hide();
+
+        invalidDays.setTitle("Invalid Day/Days Error");
+        invalidDays.setContentText("Please select at least one or more day/days of the week");
+        invalidDays.hide();
+
+        invalidStartAndEndTime.setTitle("Invalid Time");
+        invalidStartAndEndTime.setContentText("Please make sure to enter time in 24-hour time format \n" +
+                "Make sure to also have ':' in between the hour and minute \n" +
+                "Last but not least, make sure that end time is after start time");
+        invalidStartAndEndTime.hide();
+
         // Testing; Hard-coded courses into the drop-down boxes
         // TODO: Get class name, class sections, available rooms from database
         class_name.getItems().add("Intro to Programming");
@@ -156,6 +204,7 @@ public class AddCourseToScheduleController implements Initializable {
         classNumber.getItems().add("230");
         classNumber.getItems().add("231");
         classNumber.getItems().add("350");
+
     }
 
     /**
@@ -177,15 +226,15 @@ public class AddCourseToScheduleController implements Initializable {
     @FXML
     public void submitData(ActionEvent event) throws IOException, ParseException {
         // Validate needed data is present
-        validateData();
+        if(validateData()) {
+            // Create appointment from fields
+            List<Agenda.Appointment> appointmentList = createAppointment();
 
-        // Create appointment from fields
-        List<Agenda.Appointment> appointmentList = createAppointment();
+            parentController.addCourse(appointmentList);
 
-        parentController.addCourse(appointmentList);
-
-        // return to Scheduler
-        section_number.getScene().getWindow().hide();
+            // return to Scheduler
+            section_number.getScene().getWindow().hide();
+        }
 
     }
 
@@ -225,12 +274,218 @@ public class AddCourseToScheduleController implements Initializable {
                 .toLocalDateTime();
     }
 
+
     /**
      * This method validates that each data field necessary has the required and correct data type
+     * @return false if any test is invalid, else true
      */
-    private void validateData() {
+    private boolean validateData() {
+        // The final outcome of the validation
+        boolean result = true;
 
+        // Validation outcome for class number
+        boolean testDaysOfTheWeek = true;
+        testDaysOfTheWeek = validateDates();
+
+        // Validation outcome for department
+        boolean testDepartmentName = true;
+        testDepartmentName = validateDepartment();
+
+        // Validation outcome for class number
+        boolean testClassNumber = true;
+        testClassNumber = validateClassNumber();
+
+        // Validation outcome for class name
+        boolean testClassName = true;
+        testClassName = validateClassName();
+
+        // Validation outcome for the start and end time
+        boolean testTime = true;
+        testTime = validateTime();
+
+        // Check all final validation outcome, if any result to false, then set final result to false
+        if(testDaysOfTheWeek == false || testDepartmentName == false || testClassNumber == false || testClassName == false || validateTime() == false) {
+            result = false;
+        }
+
+        // Return result
+        return result;
     }
+
+    /**
+     * This function validates the class name. If nothing is selected, then it will prompt the user
+     * to select a class name.
+     * @return false is nothing is selected, else return true
+     */
+    private boolean validateClassName() {
+        boolean result = true;
+        // If the class name has not been selected
+        if(class_name.getSelectionModel().isEmpty()) {
+            invalidClassName.showAndWait();
+            result = false;
+        }
+        // Probably need to find a way to bind class number and class name??
+        return result;
+    }
+
+    /**
+     * This function validate the class number. If nothing is selected, then it will prompt the user
+     * to select a class number.
+     * @return false is nothing is selected, else return true
+     */
+    private boolean validateClassNumber() {
+        boolean result = true;
+        // If the class name has not been selected
+        if(classNumber.getSelectionModel().isEmpty()) {
+            invalidClassNumber.showAndWait();
+            result = false;
+        }
+        // Probably need to find a way to bind class number and class name??
+        return result;
+    }
+
+    /**
+     * This function validate the department of the newly added class. If nothing is selected,
+     * then it will prompt the user to select a department.
+     * @return false is nothing is selected, else return true
+     */
+    private boolean validateDepartment() {
+        boolean result = true;
+        // If the class name has not been selected
+        if(dept_name.getSelectionModel().isEmpty()) {
+            invalidDepartment.showAndWait();
+            result = false;
+        }
+        // Probably need to find a way to bind class number and class name??
+        return result;
+    }
+
+    /**
+     * This function validate that at least 1 of the day of the week is selected. If not
+     * then it will prompt the user to click on at least 1 or more day/days of the week.
+     * @return false is nothing is selected, else return true
+     */
+    private boolean validateDates() {
+        boolean result = false;
+        // Iterate through all 5 days to check if at least 1 day is checked.
+        // If so, set the boolean to true and break.
+        for(RadioButton day : datesSelected) {
+            if(day.isSelected()) {
+                result = true;
+                break;
+            }
+        }
+
+        // boolean outcome is false, meaning none of the days has been selected, so
+        // use JavaFX to prompt the user to select at least 1 day of the week.
+        if(result == false) {
+            invalidDays.showAndWait();
+        }
+
+        return result;
+    }
+
+    /**
+     * This function validate that the user has inputed the start and end time in the correct 24-hour time format
+     * and that end time must be after start time. Otherwise, it will be invalid.
+     * @return false is time is incorrect, else return true
+     */
+    private boolean validateTime() {
+        // TODO: time error showing up twice. Also need to validate that end time must be after start time and that it is an integer that is being entered
+        boolean result = true;
+        String startTime = start_time.getText();
+        int startTimeValue = -1;
+
+        if(startTime.length() == 0) {
+            result = false;
+        }
+
+        if(startTime.length() > 5) {
+            result = false;
+        } else {
+            if(startTime.length() == 5) {
+                if(startTime.charAt(2) != ':') {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(startTime,0, 2);
+                    startTimeValue = Integer.parseInt(sb.toString());
+                    result = false;
+                } else {
+                    if(startTime.charAt(1) != ':') {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(startTime, 0, 1);
+                        startTimeValue = Integer.parseInt(sb.toString());
+                        result = false;
+                    }
+                }
+            }
+        }
+
+        String endTime = end_time.getText();
+        int endTimeValue = -1;
+
+        if(endTime.length() == 0) {
+            result = false;
+        }
+
+        if(endTime.length() > 5) {
+            result = false;
+        } else {
+            if(endTime.length() == 5) {
+                if(endTime.charAt(2) != ':') {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(endTime,0, 2);
+                    endTimeValue = Integer.parseInt(sb.toString());
+                    result = false;
+                } else {
+                    if(endTime.charAt(1) != ':') {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(endTime, 0, 1);
+                        endTimeValue = Integer.parseInt(sb.toString());
+                        result = false;
+                    }
+                }
+            }
+        }
+
+
+        if(startTimeValue > endTimeValue) {
+            result = false;
+        }
+
+        if(result == false) {
+            invalidStartAndEndTime.showAndWait();
+        }
+
+        return result;
+    }
+
+    // 1:00, 12:00
+   /* *//**
+     * This function validate a classroom. If nothing is selected, then it will prompt
+     * the user to select a room.
+     *//*
+    private void validateRoom() {
+        // If the room has not been selected
+        if(this.room.getSelectionModel().isEmpty()) {
+            // Set the submit button to return an error
+        } else {
+            // Remove the error property so that submit can function as normal
+            submit_button.disarm();
+        }
+    }
+
+    *//**
+     * This function validates the section number. If nothing is selected, then it will prompt the user
+     * to select a section number
+     *//*
+    private void validateSectionNumber() {
+        // If the section number has not been selected
+        if(this.section_number.getSelectionModel().isEmpty()) {
+            // Set the submit button to return an error
+        } else {
+            // Remove the error property so that submit can function as normal
+        }
+    }*/
 
     public void setParent(SchedulerController controller) {
         this.parentController = controller;
