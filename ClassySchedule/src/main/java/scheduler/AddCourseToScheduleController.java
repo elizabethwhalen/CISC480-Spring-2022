@@ -156,6 +156,11 @@ public class AddCourseToScheduleController implements Initializable {
      */
     Alert invalidStartAndEndTime = new Alert(Alert.AlertType.ERROR);
 
+    /**
+     * The confirmation alert to go back to the scheduler
+     */
+    Alert confirmBackButton = new Alert(Alert.AlertType.CONFIRMATION);
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         datesSelected = Arrays.asList(monday, tuesday, wednesday, thursday, friday);
@@ -193,6 +198,26 @@ public class AddCourseToScheduleController implements Initializable {
                 "Make sure to also have ':' in between the hour and minute \n" +
                 "Last but not least, make sure that end time is after start time");
         invalidStartAndEndTime.hide();
+
+        // This is the confirmation to go back alert
+        confirmBackButton.setTitle("Back to Scheduler");
+        confirmBackButton.setContentText("Go back to the scheduler page");
+        // Set event to go back to previous scheduler screen if user click "Ok", else do nothing
+        EventHandler<ActionEvent> confirmBack = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                // Set button Ok to be the output button that the user clicked
+                // It is either "Cancel" or "Ok"
+                Optional<ButtonType> Ok = confirmBackButton.showAndWait();
+                // If button is "Ok", then go back to scheduler
+                if(Ok.get().getText().equals("OK")) {
+                    // Go back to scheduler
+                    section_number.getScene().getWindow().hide();
+                }
+            }
+        };
+
+        closeButton.setOnAction(confirmBack);
 
         // Testing; Hard-coded courses into the drop-down boxes
         // TODO: Get class name, class sections, available rooms from database
