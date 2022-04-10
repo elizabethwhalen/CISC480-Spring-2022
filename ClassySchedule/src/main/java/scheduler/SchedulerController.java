@@ -1,4 +1,6 @@
 package scheduler;
+
+import homescreen.HomescreenController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -79,17 +81,21 @@ public class SchedulerController implements Initializable {
     /**
      * Returns to the homescreen
      * @param actionEvent
-     * @throws IOException
      */
     @FXML
-    public void goToHomeScreen(ActionEvent actionEvent) throws IOException {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
-//        Parent root = loader.load();
-//        HomescreenController hsController = loader.getController();
-//        hsController.setStage(stage);
-//        stage.setTitle("Classy-Schedule");
-//        stage.setScene(new Scene(root, 600, 450));
-//        stage.show();
+    public void goToHomeScreen(ActionEvent actionEvent) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        HomescreenController hsController = loader.getController();
+        hsController.setStage(stage);
+        stage.setTitle("Classy-Schedule");
+        stage.setScene(new Scene(root, 600, 450));
+        stage.show();
     }
 
     /**

@@ -69,7 +69,7 @@ public class HomescreenController implements Initializable {
      */
     public void addClassroomButtonClicked(MouseEvent mouseEvent) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/resources/fxml/ClassroomNew.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("ClassroomNew.fxml"));
             homescreenStage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             homescreenStage.setScene(scene);

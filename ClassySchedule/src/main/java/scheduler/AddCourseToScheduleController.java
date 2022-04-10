@@ -12,9 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import jfxtras.scene.control.agenda.Agenda;
 
-import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -137,11 +135,6 @@ public class AddCourseToScheduleController implements Initializable {
         dept_name.getItems().clear();
         try {
             Database database = new Database();
-
-            ResultSet rs = database.getData("dept_code", "dept");
-            while (rs.next()) {
-                dept_name.getItems().add(rs.getString(1));
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -171,11 +164,10 @@ public class AddCourseToScheduleController implements Initializable {
      * Creates a list of class times
      * Adds the classes to the schedule
      * @param event
-     * @throws IOException
      * @throws ParseException
      */
     @FXML
-    public void submitData(ActionEvent event) throws IOException, ParseException {
+    public void submitData(ActionEvent event) throws ParseException {
         // Validate needed data is present
         validateData();
 
@@ -256,5 +248,6 @@ public class AddCourseToScheduleController implements Initializable {
 
     @FXML
     public void close(ActionEvent actionEvent) {
+        section_number.getScene().getWindow().hide();
     }
 }

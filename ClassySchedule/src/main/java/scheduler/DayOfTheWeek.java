@@ -18,7 +18,7 @@ public enum DayOfTheWeek {
      * Returns the value of the day
      * @param label the day of the week
      */
-    private DayOfTheWeek(String label) {
+    DayOfTheWeek(String label) {
         this.label = label;
     }
 }
