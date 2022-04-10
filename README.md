@@ -13,6 +13,7 @@ DELETE: `curl "http://databaseconnectionexample.azurewebsites.net/[table]?table_
 
 
 Examples for class table:
+
 VIEW ALL CLASSES: `curl "http://databaseconnectionexample.azurewebsites.net/class"`
 ADD CISC 975: `curl "http://databaseconnectionexample.azurewebsites.net/class" -X POST -d "dept_code=CISC&class_num=975&class_name=Example+Class"`
 DELETE CISC 976: `curl "http://databaseconnectionexample.azurewebsites.net/class?dept_code=CISC&class_num=976" -X DELETE`
@@ -29,6 +30,7 @@ DELETE: `curl "http://databaseconnectionexample.azurewebsites.net/[table]/table_
 
 
 Examples for class table:
+
 VIEW ALL CLASSES: `curl "http://databaseconnectionexample.azurewebsites.net/class"`
 ADD CISC 975: `curl "http://databaseconnectionexample.azurewebsites.net/class" -X POST -d "dept_code=CISC&class_num=975&class_name=Example+Class"`
 UPDATE CISC 975 to CISC 976: `curl "http://databaseconnectionexample.azurewebsites.net/class/CISC/480" -X PUT -d "class_num=976"`
