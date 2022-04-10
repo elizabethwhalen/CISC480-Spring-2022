@@ -376,21 +376,21 @@ public class AddCourseToScheduleController implements Initializable {
         String startTime = start_time.getText();
         int startTimeValue = -1;
 
-        if(startTime.length() == 0) {
+        if (startTime.length() == 0) {
             result = false;
         }
 
-        if(startTime.length() > 5) {
+        if (startTime.length() > 5) {
             result = false;
         } else {
-            if(startTime.length() == 5) {
-                if(startTime.charAt(2) != ':') {
+            if (startTime.length() == 5) {
+                if (startTime.charAt(2) != ':') {
                     StringBuilder sb = new StringBuilder();
                     sb.append(startTime,0, 2);
                     startTimeValue = Integer.parseInt(sb.toString());
                     result = false;
                 } else {
-                    if(startTime.charAt(1) != ':') {
+                    if (startTime.charAt(1) != ':') {
                         StringBuilder sb = new StringBuilder();
                         sb.append(startTime, 0, 1);
                         startTimeValue = Integer.parseInt(sb.toString());
@@ -403,21 +403,21 @@ public class AddCourseToScheduleController implements Initializable {
         String endTime = end_time.getText();
         int endTimeValue = -1;
 
-        if(endTime.length() == 0) {
+        if (endTime.length() == 0) {
             result = false;
         }
 
-        if(endTime.length() > 5) {
+        if (endTime.length() > 5) {
             result = false;
         } else {
-            if(endTime.length() == 5) {
-                if(endTime.charAt(2) != ':') {
+            if (endTime.length() == 5) {
+                if (endTime.charAt(2) != ':') {
                     StringBuilder sb = new StringBuilder();
                     sb.append(endTime,0, 2);
                     endTimeValue = Integer.parseInt(sb.toString());
                     result = false;
                 } else {
-                    if(endTime.charAt(1) != ':') {
+                    if (endTime.charAt(1) != ':') {
                         StringBuilder sb = new StringBuilder();
                         sb.append(endTime, 0, 1);
                         endTimeValue = Integer.parseInt(sb.toString());
@@ -428,11 +428,11 @@ public class AddCourseToScheduleController implements Initializable {
         }
 
 
-        if(startTimeValue > endTimeValue) {
+        if (startTimeValue > endTimeValue) {
             result = false;
         }
 
-        if(result == false) {
+        if (result == false) {
             invalidStartAndEndTime.setTitle("Invalid Time");
             invalidStartAndEndTime.setContentText("Please make sure to enter time in 24-hour time format \n" +
                     "Make sure to also have ':' in between the hour and minute \n" +
