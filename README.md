@@ -4,6 +4,8 @@ api url: "http://databaseconnectionexample.azurewebsites.net"
 curl commands for accessing api:
 
 *** CURRENT API CURL COMMANDS ***
+
+
 VIEW: `curl "http://databaseconnectionexample.azurewebsites.net/[table]"`
 ADD: `curl "http://databaseconnectionexample.azurewebsites.net/[table]" -X POST -d "table_attribute1=value&table_attribute2=value"`
 UPDATE: out of order
@@ -18,6 +20,8 @@ DELETE CISC 976: `curl "http://databaseconnectionexample.azurewebsites.net/class
 
 
 *** FUTURE API CURL COMMANDS ***
+
+
 VIEW: `curl "http://databaseconnectionexample.azurewebsites.net/[table]"`
 ADD: `curl "http://databaseconnectionexample.azurewebsites.net/[table]" -X POST -d "table_attribute1=value&table_attribute2=value"`
 UPDATE: `curl "http://databaseconnectionexample.azurewebsites.net/[table]/table_primarykey1/table_primarykey2/..." -X PUT -d "table_attribute1=value&table_attribute2=value"`
