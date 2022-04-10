@@ -463,6 +463,7 @@ app.get('/class_feature', (req, res) => {
                 query = query + " OR "
             }
             query = query + "dept_code = " + con.escape(depts[i]);
+        }
         
         prev = true;
     };
@@ -496,9 +497,8 @@ app.get('/class_feature', (req, res) => {
         }
         prev = true;
     };
-    
+    // query db
     query_db(query, res);
-
 });
 //add
 app.post('/class_feature', (req, res) => {
