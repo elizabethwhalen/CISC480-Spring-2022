@@ -152,6 +152,11 @@ public class AddCourseToScheduleController implements Initializable {
     Alert invalidDays = new Alert(Alert.AlertType.ERROR);
 
     /**
+     * The invalid time alert error
+     */
+    Alert invalidStartAndEndTime = new Alert(Alert.AlertType.ERROR);
+
+    /**
      * The confirmation alert to go back to the scheduler
      */
     Alert confirmBackButton = new Alert(Alert.AlertType.CONFIRMATION);
@@ -277,7 +282,7 @@ public class AddCourseToScheduleController implements Initializable {
      * @return false if any test is invalid, else true
      */
     private boolean validateData() {
-        return validateDates() && validateDepartment() && validateClassNumber() && validateClassName();
+        return validateDates() && validateDepartment() && validateClassNumber() && validateClassName() && validateTime();
     }
 
     /**
@@ -360,6 +365,79 @@ public class AddCourseToScheduleController implements Initializable {
             invalidDays.setTitle("Invalid Day/Days Error");
             invalidDays.setContentText("Please select at least one or more day/days of the week");
             invalidDays.showAndWait();
+        }
+
+        return result;
+    }
+
+    private boolean validateTime() {
+        // TODO: time error showing up twice. Also need to validate that end time must be after start time and that it is an integer that is being entered
+        boolean result = true;
+        String startTime = start_time.getText();
+        int startTimeValue = -1;
+
+        if(startTime.length() == 0) {
+            result = false;
+        }
+
+        if(startTime.length() > 5) {
+            result = false;
+        } else {
+            if(startTime.length() == 5) {
+                if(startTime.charAt(2) != ':') {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(startTime,0, 2);
+                    startTimeValue = Integer.parseInt(sb.toString());
+                    result = false;
+                } else {
+                    if(startTime.charAt(1) != ':') {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(startTime, 0, 1);
+                        startTimeValue = Integer.parseInt(sb.toString());
+                        result = false;
+                    }
+                }
+            }
+        }
+
+        String endTime = end_time.getText();
+        int endTimeValue = -1;
+
+        if(endTime.length() == 0) {
+            result = false;
+        }
+
+        if(endTime.length() > 5) {
+            result = false;
+        } else {
+            if(endTime.length() == 5) {
+                if(endTime.charAt(2) != ':') {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(endTime,0, 2);
+                    endTimeValue = Integer.parseInt(sb.toString());
+                    result = false;
+                } else {
+                    if(endTime.charAt(1) != ':') {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(endTime, 0, 1);
+                        endTimeValue = Integer.parseInt(sb.toString());
+                        result = false;
+                    }
+                }
+            }
+        }
+
+
+        if(startTimeValue > endTimeValue) {
+            result = false;
+        }
+
+        if(result == false) {
+            invalidStartAndEndTime.setTitle("Invalid Time");
+            invalidStartAndEndTime.setContentText("Please make sure to enter time in 24-hour time format \n" +
+                    "Make sure to also have ':' in between the hour and minute \n" +
+                    "Last but not least, make sure that end time is after start time");
+            invalidStartAndEndTime.showAndWait();
         }
 
         return result;
