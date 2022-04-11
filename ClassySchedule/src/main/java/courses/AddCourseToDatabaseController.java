@@ -55,12 +55,8 @@ public class AddCourseToDatabaseController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        deptName.getItems().clear();
-        try {
-            Database database = new Database();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        deptName.getItems().add("CISC");
+        deptName.getItems().add("STAT");
     }
 
     public void setStage(Stage addCourse) {
