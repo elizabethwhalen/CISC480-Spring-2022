@@ -364,72 +364,139 @@ public class AddCourseToScheduleController implements Initializable {
     }
 
     private boolean validateTime() {
-        // TODO: time error showing up twice. Also need to validate that end time must be after start time and that it is an integer that is being entered
         boolean result = true;
         String startTime = start_time.getText();
-        int startTimeValue = -1;
+        String endTime = end_time.getText();
 
-        if (startTime.length() == 0) {
+        // If no input
+        if (startTime.length() == 0 || endTime.length() == 0) {
             result = false;
+            invalidStartAndEndTime.setTitle("No Input");
+            invalidStartAndEndTime.setContentText("Please input a timeslot");
+            invalidStartAndEndTime.showAndWait();
         }
 
+        // If input is longer than 5 character (Not valid timeslot)
         if (startTime.length() > 5) {
             result = false;
-        } else {
-            if (startTime.length() == 5) {
-                if (startTime.charAt(2) != ':') {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(startTime,0, 2);
-                    startTimeValue = Integer.parseInt(sb.toString());
-                    result = false;
-                } else {
-                    if (startTime.charAt(1) != ':') {
-                        StringBuilder sb = new StringBuilder();
-                        sb.append(startTime, 0, 1);
-                        startTimeValue = Integer.parseInt(sb.toString());
+            invalidStartAndEndTime.setTitle("Input Longer than 5 Character");
+            invalidStartAndEndTime.setContentText("Please input a valid time slot");
+            invalidStartAndEndTime.showAndWait();
+        }
+
+        // If Start Time Length is 5
+        if (startTime.length() == 5) {
+            int i = 0;
+            // Iterate through each character
+            while (i < 5) {
+                // if length is 5, 2nd character must be a colon
+                if (i == 2) {
+                    if (startTime.charAt(i) != ':') {
                         result = false;
+                        invalidStartAndEndTime.setTitle("No Colon In Start Time");
+                        invalidStartAndEndTime.setContentText("Please input a colon in the 24-hour format timeslot");
+                        invalidStartAndEndTime.showAndWait();
+                    }
+                } else {
+                    // Every other character must be an integer
+                    if (!(Character.isDigit(startTime.charAt(i)))) {
+                        result = false;
+                        invalidStartAndEndTime.setTitle("Character Not Integer In Start Time");
+                        invalidStartAndEndTime.setContentText("Please input a a proper integer timeslot");
+                        invalidStartAndEndTime.showAndWait();
                     }
                 }
+                i++;
             }
         }
 
-        String endTime = end_time.getText();
-        int endTimeValue = -1;
-
-        if (endTime.length() == 0) {
-            result = false;
-        }
-
-        if (endTime.length() > 5) {
-            result = false;
-        } else {
-            if (endTime.length() == 5) {
-                if (endTime.charAt(2) != ':') {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(endTime,0, 2);
-                    endTimeValue = Integer.parseInt(sb.toString());
-                    result = false;
-                } else {
-                    if (endTime.charAt(1) != ':') {
-                        StringBuilder sb = new StringBuilder();
-                        sb.append(endTime, 0, 1);
-                        endTimeValue = Integer.parseInt(sb.toString());
+        // If Start Time Length is 4
+        if (startTime.length() == 4) {
+            int i = 0;
+            // Iterate through each character
+            while (i < 4) {
+                if (i == 1) {
+                    // if length is 4, 1 character must be a colon
+                    if (startTime.charAt(i) != ':') {
                         result = false;
+                        invalidStartAndEndTime.setTitle("No Colon In Start Time");
+                        invalidStartAndEndTime.setContentText("Please input a colon in the 24-hour format timeslot");
+                        invalidStartAndEndTime.showAndWait();
+                    }
+                } else {
+                    // Every other character must be an integer
+                    if (!(Character.isDigit(startTime.charAt(i)))) {
+                        result = false;
+                        invalidStartAndEndTime.setTitle("Character Not Integer In Start Time");
+                        invalidStartAndEndTime.setContentText("Please input a a proper integer timeslot");
+                        invalidStartAndEndTime.showAndWait();
                     }
                 }
+                i++;
             }
         }
 
-
-        if (startTimeValue > endTimeValue) {
-            result = false;
+        // If Start Time Length is 5
+        if (endTime.length() == 5) {
+            int i = 0;
+            // Iterate through each character
+            while (i < 5) {
+                if (i == 2) {
+                    // if length is 5, 2nd character must be a colon
+                    if (endTime.charAt(i) != ':') {
+                        result = false;
+                        invalidStartAndEndTime.setTitle("No Colon In End Time");
+                        invalidStartAndEndTime.setContentText("Please input a colon in the 24-hour format timeslot");
+                        invalidStartAndEndTime.showAndWait();
+                    }
+                } else {
+                    // Every other character must be an integer
+                    if (!(Character.isDigit(endTime.charAt(i)))) {
+                        result = false;
+                        invalidStartAndEndTime.setTitle("Character Not Integer In End Time");
+                        invalidStartAndEndTime.setContentText("Please input a a proper integer timeslot");
+                        invalidStartAndEndTime.showAndWait();
+                    }
+                }
+                i++;
+            }
         }
 
-        if (result == false) {
-            invalidStartAndEndTime.setTitle("Invalid Time");
-            invalidStartAndEndTime.setContentText("Please make sure to enter time in 24-hour time format \n" +
-                    "Make sure to also have ':' in between the hour and minute \n" +
-                    "Last but not least, make sure that end time is after start time");
+        // If Start Time Length is 4
+        if (endTime.length() == 4) {
+            int i = 0;
+            // Iterate through each character
+            while (i < 4) {
+                if (i == 1) {
+                    // if length is 4, 1st character must be a colon
+                    if (endTime.charAt(i) != ':') {
+                        result = false;
+                        invalidStartAndEndTime.setTitle("No Colon In End Time");
+                        invalidStartAndEndTime.setContentText("Please input a colon in the 24-hour format timeslot");
+                        invalidStartAndEndTime.showAndWait();
+                    }
+                } else {
+                    // Every other character must be an integer
+                    if (!(Character.isDigit(endTime.charAt(i)))) {
+                        result = false;
+                        invalidStartAndEndTime.setTitle("Character Not Integer In End Time");
+                        invalidStartAndEndTime.setContentText("Please input a a proper integer timeslot");
+                        invalidStartAndEndTime.showAndWait();
+                    }
+                }
+                i++;
+            }
+        }
+
+        // Remove colon from the string to test for end time beginning start time.
+        String startTimeValue = startTime.replace(":", "");
+        String endTimeValue = endTime.replace(":", "");
+
+        // Timeslot in 24-hour format, so just need to ensure that End Time is bigger than Start Time
+        if (Integer.parseInt(startTimeValue) > Integer.parseInt(endTimeValue)) {
+            result = false;
+            invalidStartAndEndTime.setTitle("End Time Need To Be After Start Time");
+            invalidStartAndEndTime.setContentText("Please ensure that end time starts after end time");
             invalidStartAndEndTime.showAndWait();
         }
 
