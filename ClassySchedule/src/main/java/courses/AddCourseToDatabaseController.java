@@ -9,11 +9,11 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 /**
@@ -54,10 +54,6 @@ public class AddCourseToDatabaseController implements Initializable {
         deptName.getItems().clear();
         try {
             Database database = new Database();
-            ResultSet rs = database.getData("dept_code", "dept");
-            while (rs.next()) {
-                deptName.getItems().add(rs.getString(1));
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }

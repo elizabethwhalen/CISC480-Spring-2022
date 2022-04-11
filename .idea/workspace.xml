@@ -1,33 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="BranchesTreeState">
-    <expand>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-      <path>
-        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
-        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
-      </path>
-    </expand>
-    <select />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="057f4515-dcfe-42e9-9b33-6bb509be28e9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CISC480-Spring-2022.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/samples/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/ClassySchedule/src/main/java/samples/Main.java" afterDir="false" />
-    </list>
+    <list default="true" id="014d7ba0-0c42-4fb5-92d3-e64c572dbb0b" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,54 +15,54 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="mavenHome" value="C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.1\plugins\maven\lib\maven3" />
-      </MavenGeneralSettings>
+  <component name="GitToolBoxStore">
+    <option name="projectConfigVersion" value="2" />
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="App-Dev-Branch" />
+                    <option name="lastUsedInstant" value="1646872263" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="main" />
+                    <option name="lastUsedInstant" value="1646872262" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
     </option>
   </component>
-  <component name="ProjectId" id="25vzl1uIKdPy5LmqQGRpleQrxRg" />
+  <component name="ProjectId" id="26AU9lmJ13v9Z3QPllLlTiXamgI" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/ClassySchedule" />
-    <property name="project.structure.last.edited" value="Libraries" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.2" />
-  </component>
-  <component name="RunManager">
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="057f4515-dcfe-42e9-9b33-6bb509be28e9" name="Default Changelist" comment="" />
-      <created>1646422496389</created>
+      <changelist id="014d7ba0-0c42-4fb5-92d3-e64c572dbb0b" name="Default Changelist" comment="" />
+      <created>1646865734906</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1646422496389</updated>
-      <workItem from="1646422501377" duration="134000" />
-      <workItem from="1646422653309" duration="125000" />
+      <updated>1646865734906</updated>
+      <workItem from="1646865736172" duration="125000" />
+      <workItem from="1646865982010" duration="723000" />
     </task>
     <servers />
   </component>
@@ -105,20 +79,5 @@
         </entry>
       </map>
     </option>
-    <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="479" y="218" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1646422756595">
-      <screen x="0" y="0" width="2048" height="1120" />
-    </state>
-    <state x="479" y="218" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2048.1120@0.0.2048.1120" timestamp="1646422756595" />
-    <state x="887" y="305" key="FileChooserDialogImpl" timestamp="1646422776305">
-      <screen x="0" y="0" width="2048" height="1120" />
-    </state>
-    <state x="887" y="305" key="FileChooserDialogImpl/0.0.2048.1120@0.0.2048.1120" timestamp="1646422776305" />
-    <state x="663" y="138" key="SettingsEditor" timestamp="1646422545180">
-      <screen x="0" y="0" width="2048" height="1120" />
-    </state>
-    <state x="663" y="138" key="SettingsEditor/0.0.2048.1120@0.0.2048.1120" timestamp="1646422545180" />
   </component>
 </project>

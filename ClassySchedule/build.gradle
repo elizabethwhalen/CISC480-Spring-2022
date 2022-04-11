@@ -24,18 +24,13 @@ sourceSets {
 repositories {
     mavenCentral()
     dependencies {
-        implementation group: 'org.jfxtras', name: 'jfxtras-icalendaragenda', version: '14-r2'
-        implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
-        runtime files('lib/jfxtras-agenda-22.4.4.jar')
+        implementation group: 'org.jfxtras', name: 'jfxtras-controls', version: '14-r2'
+        implementation files('lib/jfxtras-agenda-22.4.4.jar')
+        implementation group: 'org.json', name: 'json', version: '20220320'
+        implementation 'org.apache.httpcomponents.client5:httpclient5:5.1.3'
     }
 }
 
-//dependencies {
-//    repositories {
-//        mavenCentral()
-//    }
-//
-//}
 
 test {
     useJUnitPlatform()

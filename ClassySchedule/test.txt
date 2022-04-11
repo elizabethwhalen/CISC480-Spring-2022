@@ -1,1 +1,1 @@
-classname: 123 deptname: CISC class number: 123
+classname: Computers and Society deptname: CISC class number: 246

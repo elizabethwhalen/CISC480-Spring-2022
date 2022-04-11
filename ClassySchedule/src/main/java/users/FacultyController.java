@@ -3,7 +3,11 @@ package users;
 import database.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -14,7 +18,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 public class FacultyController implements Initializable {
@@ -63,18 +66,34 @@ public class FacultyController implements Initializable {
         deptName.getItems().clear();
         try {
             Database database = new Database();
-            ResultSet rs = database.getData("dept_code", "dept");
-            while (rs.next()) {
-                deptName.getItems().add(rs.getString(1));
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     public void setStage(Stage addFaculty) {
         this.addFaculty = addFaculty;
     }
+
+    /**
+     * Changes scene back to homescreen when cancelButton is clicked
+     * @param event Clicking on cancelButton
+     */
+    @FXML
+    public void cancelButtonClicked(ActionEvent event) {
+        System.out.println("Cancel button clicked");
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/resources/fxml/Homescreen.fxml"));
+            addFaculty = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            addFaculty.setScene(scene);
+            addFaculty.show();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @FXML
     public void submitData(ActionEvent event) {
