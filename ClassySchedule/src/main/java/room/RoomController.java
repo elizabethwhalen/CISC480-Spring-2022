@@ -137,16 +137,19 @@ public class RoomController implements Initializable {
      */
     @FXML
     public void cancelButtonClicked(ActionEvent event) {
-        System.out.println("Cancel button clicked");
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/resources/fxml/Homescreen.fxml"));
-            addRoom = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            addRoom.setScene(scene);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
+            Parent root = null;
+            try {
+                root = loader.load();
+                HomescreenController homescreenController = loader.getController();
+                homescreenController.setStage(addRoom);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            addRoom.setTitle("Classy-Schedule");
+            addRoom.setScene(new Scene(root, 650, 400));
             addRoom.show();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
     }
 
 

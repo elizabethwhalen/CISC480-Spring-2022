@@ -1,16 +1,15 @@
 package scheduler;
 
-import courses.Lecture;
 import database.Database;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import jfxtras.scene.control.agenda.Agenda;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.net.URL;
 import java.text.ParseException;
@@ -163,11 +162,8 @@ public class AddCourseToScheduleController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         datesSelected = Arrays.asList(monday, tuesday, wednesday, thursday, friday);
         dept_name.getItems().clear();
-        try {
-            Database database = new Database();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Database database = new Database();
+
 
         // This is the confirmation to go back alert
         confirmBackButton.setTitle("Back to Scheduler");
@@ -191,15 +187,20 @@ public class AddCourseToScheduleController implements Initializable {
 
         // Testing; Hard-coded courses into the drop-down boxes
         // TODO: Get class name, class sections, available rooms from database
-        class_name.getItems().add("Intro to Programming");
-        class_name.getItems().add("Object-Oriented Programming");
-        class_name.getItems().add("Data Structure");
-        class_name.getItems().add("Information Security");
-        classNumber.getItems().add("131");
-        classNumber.getItems().add("230");
-        classNumber.getItems().add("231");
-        classNumber.getItems().add("350");
+        JSONArray classes = database.getData("class");
+        for (Object jsonObject: classes) {
+            JSONObject job = (JSONObject)jsonObject;
+            class_name.getItems().add((String) job.get("class_name"));
+            classNumber.getItems().add((String) job.get("class_num"));
+        }
+        JSONArray depts = database.getData("dept");
+        for (Object jsonObject: depts) {
+            JSONObject job = (JSONObject)jsonObject;
+            dept_name.getItems().add((String) job.get("dept_code"));
+        }
 
+        room.getItems().add("TEST room");
+        section_number.getItems().add("000");
     }
 
     /**
