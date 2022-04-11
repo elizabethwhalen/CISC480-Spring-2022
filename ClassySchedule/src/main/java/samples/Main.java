@@ -14,8 +14,8 @@ public class Main extends Application {
     private Stage primaryStage;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        this.primaryStage = primaryStage;
+    public void start(Stage stage) throws Exception {
+        this.primaryStage = stage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/LoginPage.fxml"));
         Parent root = loader.load();
         LoginController loginController = loader.getController();
