@@ -410,7 +410,7 @@ public class AddCourseToScheduleController implements Initializable {
         }
 
         // If Start Time Length is 4
-        if(startTime.length() == 4) {
+        if (startTime.length() == 4) {
             int i = 0;
             // Iterate through each character
             while (i < 4) {
@@ -462,7 +462,7 @@ public class AddCourseToScheduleController implements Initializable {
         }
 
         // If Start Time Length is 4
-        if(endTime.length() == 4) {
+        if (endTime.length() == 4) {
             int i = 0;
             // Iterate through each character
             while (i < 4) {
@@ -492,7 +492,7 @@ public class AddCourseToScheduleController implements Initializable {
         String endTimeValue = endTime.replace(":", "");
 
         // Timeslot in 24-hour format, so just need to ensure that End Time is bigger than Start Time
-        if(Integer.parseInt(startTimeValue) > Integer.parseInt(endTimeValue)) {
+        if (Integer.parseInt(startTimeValue) > Integer.parseInt(endTimeValue)) {
             result = false;
             invalidStartAndEndTime.setTitle("End Time Need To Be After Start Time");
             invalidStartAndEndTime.setContentText("Please ensure that end time starts after end time");
