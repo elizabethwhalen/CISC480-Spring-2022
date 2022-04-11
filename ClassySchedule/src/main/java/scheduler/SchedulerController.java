@@ -94,7 +94,7 @@ public class SchedulerController implements Initializable {
         HomescreenController hsController = loader.getController();
         hsController.setStage(stage);
         stage.setTitle("Classy-Schedule");
-        stage.setScene(new Scene(root, 600, 450));
+        stage.setScene(new Scene(root, 650, 450));
         stage.show();
     }
 

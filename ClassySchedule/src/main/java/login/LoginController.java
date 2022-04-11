@@ -119,7 +119,7 @@ public class LoginController implements Initializable {
             e.printStackTrace();
         }
         loginStage.setTitle("Classy-Schedule");
-        loginStage.setScene(new Scene(root, 600, 400));
+        loginStage.setScene(new Scene(root, 650, 400));
         loginStage.show();
     }
 

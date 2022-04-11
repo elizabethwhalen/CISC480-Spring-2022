@@ -1,6 +1,7 @@
 package users;
 
 import database.Database;
+import homescreen.HomescreenController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,9 +22,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class FacultyController implements Initializable {
-//public class FacultyController {
 
     private Stage addFaculty;
+
     @FXML
     TextField facultyName;
 
@@ -63,13 +64,7 @@ public class FacultyController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        deptName.getItems().clear();
-        try {
-            Database database = new Database();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        //TODO: initial boxes from database
     }
 
     public void setStage(Stage addFaculty) {
@@ -82,16 +77,19 @@ public class FacultyController implements Initializable {
      */
     @FXML
     public void cancelButtonClicked(ActionEvent event) {
-        System.out.println("Cancel button clicked");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
+        Parent root = null;
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/resources/fxml/Homescreen.fxml"));
-            addFaculty = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            addFaculty.setScene(scene);
-            addFaculty.show();
-        } catch(Exception e) {
+            root = loader.load();
+            HomescreenController homescreenController = loader.getController();
+            homescreenController.setStage(addFaculty);
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
+        addFaculty.setTitle("Classy-Schedule");
+        addFaculty.setScene(new Scene(root, 650, 400));
+        addFaculty.show();
     }
 
 
