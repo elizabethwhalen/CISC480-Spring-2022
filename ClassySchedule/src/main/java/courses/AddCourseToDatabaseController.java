@@ -1,9 +1,13 @@
 package courses;
 
 import database.Database;
+import homescreen.HomescreenController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -112,5 +116,21 @@ public class AddCourseToDatabaseController implements Initializable {
         departmentWarning.setVisible(false);
         classNumWarning.setVisible(false);
         classNameWarning.setVisible(false);
+    }
+
+    @FXML
+    public void goBack() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        HomescreenController hsController = loader.getController();
+        hsController.setStage(addCourse);
+        addCourse.setTitle("Classy-Schedule");
+        addCourse.setScene(new Scene(root, 650, 450));
+        addCourse.show();
     }
 }

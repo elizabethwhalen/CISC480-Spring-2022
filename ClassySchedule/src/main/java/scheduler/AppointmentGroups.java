@@ -2,7 +2,7 @@ package scheduler;
 
 import jfxtras.scene.control.agenda.Agenda;
 
-public class AppointmentGroups implements Agenda.AppointmentGroup{
+public class AppointmentGroups implements Agenda.AppointmentGroup {
     @Override
     public String getDescription() {
         return null;

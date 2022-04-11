@@ -10,7 +10,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import room.RoomController;
 import scheduler.SchedulerController;
+import users.FacultyController;
 
 import java.io.IOException;
 import java.net.URL;
@@ -68,32 +70,34 @@ public class HomescreenController implements Initializable {
      * Changes scene to add classroom page when 'Add CLassroom' button is clicked
      */
     public void addClassroomButtonClicked(MouseEvent mouseEvent) {
-        System.out.println("Add classroom button clicked");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/ClassroomNew.fxml"));
+        Parent root = null;
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("ClassroomNew.fxml"));
-            homescreenStage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            homescreenStage.setScene(scene);
-            homescreenStage.show();
-            System.out.println("on classroom page");
-        } catch(Exception e) {
+            root = loader.load();
+        } catch (IOException e) {
             e.printStackTrace();
         }
+        RoomController roomController = loader.getController();
+        roomController.setStage(homescreenStage);
+        homescreenStage.setScene(new Scene(root, 800, 600));
+        homescreenStage.show();
     }
 
     /**
      * Changes scene to add professor page when 'Add Professor' button is clicked
      */
     public void addProfessorButtonClicked(MouseEvent mouseEvent) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Professor.fxml"));
+        Parent root = null;
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/resources/fxml/Professor.fxml"));
-            homescreenStage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            homescreenStage.setScene(scene);
-            homescreenStage.show();
-        } catch(Exception e) {
+            root = loader.load();
+        } catch (IOException e) {
             e.printStackTrace();
         }
+        FacultyController facultyController = loader.getController();
+        facultyController.setStage(homescreenStage);
+        homescreenStage.setScene(new Scene(root, 800, 600));
+        homescreenStage.show();
     }
 
     public void viewScheduleClicked(MouseEvent mouseEvent) {
@@ -106,7 +110,7 @@ public class HomescreenController implements Initializable {
         }
         SchedulerController schedulerController = loader.getController();
         schedulerController.setStage(homescreenStage);
-        homescreenStage.setScene(new Scene(root, 600, 450));
+        homescreenStage.setScene(new Scene(root, 800, 600));
         homescreenStage.show();
     }
 }
