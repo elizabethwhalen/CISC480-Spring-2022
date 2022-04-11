@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 const AddFaculty = () => {
     const [firstName, setFirstName] = React.useState('');
     const [lastName, setLastName] = React.useState('');
-    const [teachLoad, setTeachLoad] = React.useState(0.0);
+    const [teachLoad, setTeachLoad] = React.useState('');
     const [state, setState] = React.useState({
         intro: false,
         security: false,
@@ -91,7 +91,7 @@ const AddFaculty = () => {
         });
     };
 
-    const { intro, security, ai } = state;
+   // const { intro, security, ai } = state;
 
     const classes = useStyles()
 
@@ -176,9 +176,8 @@ const AddFaculty = () => {
                                 />
                             </Grid>
 
-                            <Grid item xs={12} fullWidth>
+                            {/* <Grid item xs={12} fullWidth>
                                 <Grid container spacing={1}>
-                                    {/* Preferred Classes checkboxes */}
                                     <Grid item xs={12} fullWidth>
                                         <Typography className={classes.subHeader}>
                                             Please Select Preferred Classes for Faculty to Instruct
@@ -209,7 +208,7 @@ const AddFaculty = () => {
                                         </FormControl>
                                     </Grid>
                                 </Grid>
-                            </Grid>
+                            </Grid> */}
 
                             <Grid item xs={12} fullWidth>
                                 <Button 
