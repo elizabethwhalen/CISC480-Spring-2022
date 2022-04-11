@@ -2,22 +2,33 @@ package room;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import homescreen.HomescreenController;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * Controls the add room page, which allows a user to add a classroom to the database
  */
-public class RoomController {
+public class RoomController implements Initializable {
 
     private Stage addRoom;
+    private Scene scene;
+    private Parent root;
 
     @FXML
     TextField roomNum;
@@ -32,6 +43,9 @@ public class RoomController {
     Button submitButton;
 
     @FXML
+    Button cancelButton;
+
+    @FXML
     Text roomWarning;
 
     @FXML
@@ -41,6 +55,10 @@ public class RoomController {
     Text campusWarning;
 
     public RoomController() {
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
     }
 
     //May use in the future to reach into database for room options
@@ -112,4 +130,24 @@ public class RoomController {
         buildingWarning.setVisible(false);
         campusWarning.setVisible(false);
     }
+
+    /**
+     * Changes scene back to homescreen when cancelButton is clicked
+     * @param event Clicking on cancelButton
+     */
+    @FXML
+    public void cancelButtonClicked(ActionEvent event) {
+        System.out.println("Cancel button clicked");
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/resources/fxml/Homescreen.fxml"));
+            addRoom = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            addRoom.setScene(scene);
+            addRoom.show();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

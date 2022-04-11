@@ -45,7 +45,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="users.FacultyController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -130,7 +130,7 @@
             <ChoiceBox layoutX="124.0" layoutY="203.0" prefHeight="25.0" prefWidth="200.0" />
             <ChoiceBox layoutX="124.0" layoutY="239.0" prefHeight="25.0" prefWidth="200.0" />
             <Button layoutX="144.0" layoutY="308.0" mnemonicParsing="false" text="Confirm" textFill="#5ce85c" />
-            <Button layoutX="217.0" layoutY="308.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="59.0" text="Cancel" textFill="#c32727" />
+            <Button layoutX="217.0" layoutY="308.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="59.0" text="Cancel" onAction="#cancelButtonClicked" textFill="#c32727" />
       </children>
     </AnchorPane>
   </children>

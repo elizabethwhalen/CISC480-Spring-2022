@@ -68,12 +68,14 @@ public class HomescreenController implements Initializable {
      * Changes scene to add classroom page when 'Add CLassroom' button is clicked
      */
     public void addClassroomButtonClicked(MouseEvent mouseEvent) {
+        System.out.println("Add classroom button clicked");
         try {
             Parent root = FXMLLoader.load(getClass().getResource("ClassroomNew.fxml"));
             homescreenStage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             homescreenStage.setScene(scene);
             homescreenStage.show();
+            System.out.println("on classroom page");
         } catch(Exception e) {
             e.printStackTrace();
         }
