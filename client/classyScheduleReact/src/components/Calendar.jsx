@@ -1,18 +1,22 @@
 import {
     Grid,
     Paper,
-    Button
+    Button,
+    FormControlLabel,
+    Checkbox,
+    Popover
 } from '@material-ui/core'
 
 import {
     InputLabel,
     MenuItem,
     FormControl,
+    FormGroup,
     Select,
     Typography
 } from '@mui/material'
 
-import React from 'react'
+import React, {useRef, useState} from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
@@ -31,9 +35,16 @@ const useStyles = makeStyles((theme) => ({
 /*React page Calendar */
 const Calendar = () => {
 
+    const ref = useRef(null);
+
+    const [popOverVisible, setPopOverVisible] = useState(false);
+    const togglePopOver = () => {
+        popOverVisible === false
+        ? setPopOverVisible(true)
+        : setPopOverVisible(false);
+    };
 
     const [Time, SetTime] = React.useState('');
-    const [Day, SetDay] = React.useState('');
     const [Class, SetClass] = React.useState('');
     const [Room, SetRoom] = React.useState('');
     const [Instructor, SetInstructor] = React.useState('');
@@ -41,6 +52,13 @@ const Calendar = () => {
     /*Submiting the Form will Update the table (Calendar) */
     const submitForm = (event) => {
         let row = -1;
+
+        let workday1 = document.getElementById("Monday");
+        let workday2 = document.getElementById("Tuesday");
+        let workday3 = document.getElementById("Wednesday");
+        let workday4 = document.getElementById("Thursday");
+        let workday5 = document.getElementById("Friday");
+
         if (Time === '8AM') {
             row = 1;
         } else if (Time === '9AM') {
@@ -69,20 +87,29 @@ const Calendar = () => {
             row = 13;
         }
 
+        var table = document.getElementById('classes');
         if (row !== -1) {
-            var table = document.getElementById('classes');
-            table.rows[row].cells[Day].innerHTML = Class + " Room: " + Room + " Instructor: " + Instructor;
+            if(workday1.checked) {
+                table.rows[row].cells[1].innerHTML = Class + " Room: " + Room + " Instructor: " + Instructor;
+            }
+            if(workday2.checked) {
+                table.rows[row].cells[2].innerHTML = Class + " Room: " + Room + " Instructor: " + Instructor;
+            }
+            if(workday3.checked) {
+                table.rows[row].cells[3].innerHTML = Class + " Room: " + Room + " Instructor: " + Instructor;
+            }
+            if(workday4.checked) {
+                table.rows[row].cells[4].innerHTML = Class + " Room: " + Room + " Instructor: " + Instructor;
+            }
+            if(workday5.checked) {
+                table.rows[row].cells[5].innerHTML = Class + " Room: " + Room + " Instructor: " + Instructor;
+            }
         }
     }
 
     // This function will retrieve the value entered in the time field whenever it changes
     const handleChangeTime = (event) => {
         SetTime(event.target.value)
-    }
-
-    // This function will retrieve the value entered in the day field whenever it changes
-    const handleChangeDay = (event) => {
-        SetDay(event.target.value);
     }
 
     // This function will retrieve the value entered in the class field whenever it changes
@@ -111,6 +138,14 @@ const Calendar = () => {
                     </Typography>
                 </Grid>
                 {/* add a list with checkboxes */}
+                <Button
+                    ref={ref}
+                    variant="contained"
+                    color="primary"
+                    onClick={togglePopOver}
+                >
+                    Open Form
+                </Button>
 
                 <Grid item xs={12} fullWidth >{/* This Grid contains the table for our calendar*/}
                     <table id='classes'>
@@ -227,6 +262,19 @@ const Calendar = () => {
                 </Grid>
             </Grid>
 
+            {/*Anchored Popover with on it form*/}
+            <Popover
+            open={popOverVisible}
+            anchorEl={ref}
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+            }}
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+        >
             {/*This is the demo form to add classes to the table*/}
             <Grid container spacing={2}>
                 <Grid item xs={2}>
@@ -262,27 +310,15 @@ const Calendar = () => {
                     </FormControl>
                 </Grid>
                 <Grid item xs={2}>
-                    {/*This controls the time being inputted into the calendar*/}
+                    {/*This controls the day being inputted into the calendar*/}
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Day</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={Day}
-                            label="Day"
-                            onChange={handleChangeDay}
-                            size='medium'
-                            autoWidth
-                        >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={1}>Monday</MenuItem>
-                            <MenuItem value={2}>Tuesday</MenuItem>
-                            <MenuItem value={3}>Wednesday</MenuItem>
-                            <MenuItem value={4}>Thursday</MenuItem>
-                            <MenuItem value={5}>Friday</MenuItem>
-                        </Select>
+                    <FormGroup>
+                        <FormControlLabel control={<Checkbox name="WorkA" id="Monday" value={"yes"}/>} label="Monday"/>
+                        <FormControlLabel control={<Checkbox name="WorkB" id="Tuesday" value={"yes"}/>} label="Tuesday"/>
+                        <FormControlLabel control={<Checkbox name="WorkC" id="Wednesday" value={"yes"}/>} label="Wednesday"/>
+                        <FormControlLabel control={<Checkbox name="WorkD" id="Thursday" value={"yes"}/>} label="Thursday"/>
+                        <FormControlLabel control={<Checkbox name="WorkE" id="Friday" value={"yes"}/>} label="Friday"/>
+                    </FormGroup>
                     </FormControl>
                 </Grid>
                 <Grid item xs={2}>
@@ -370,7 +406,16 @@ const Calendar = () => {
                     </Button>
                 </Grid>
             </Grid>
-        </Paper>
+            <Button
+                ref={ref}
+                variant="contained"
+                color="primary"
+                onClick={togglePopOver}
+            >
+                Close Form
+            </Button> 
+        </Popover>    
+    </Paper>
 
 
     )
