@@ -124,13 +124,13 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <TextField layoutX="164.0" layoutY="133.0" prefHeight="25.0" prefWidth="200.0" />
-            <ChoiceBox layoutX="166.0" layoutY="203.0" prefHeight="25.0" prefWidth="200.0" />
-            <ChoiceBox layoutX="166.0" layoutY="239.0" prefHeight="25.0" prefWidth="200.0" />
-            <Button layoutX="144.0" layoutY="308.0" mnemonicParsing="false" text="Confirm" textFill="#5ce85c" />
-            <Button fx:id="cancelButton" layoutX="217.0" layoutY="308.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="59.0" onAction="#cancelButtonClicked" text="Cancel" textFill="#c32727" />
-            <ChoiceBox layoutX="166.0" layoutY="168.0" prefHeight="25.0" prefWidth="200.0" />
-            <ChoiceBox layoutX="166.0" layoutY="101.0" prefHeight="25.0" prefWidth="200.0" />
+            <TextField fx:id="roomNum" layoutX="164.0" layoutY="133.0" prefHeight="25.0" prefWidth="200.0" />
+            <ChoiceBox fx:id="deptName" layoutX="166.0" layoutY="203.0" prefHeight="25.0" prefWidth="200.0" />
+<!--            <ChoiceBox fx:id="type" layoutX="166.0" layoutY="239.0" prefHeight="25.0" prefWidth="200.0" />-->
+            <Button fx:id="submitButton" layoutX="144.0" layoutY="308.0" mnemonicParsing="false" text="Confirm" textFill="#5ce85c" onAction="#submitData" />
+            <Button fx:id="cancelButton" layoutX="217.0" layoutY="308.0" mnemonicParsing="false" onAction="#cancelButtonClicked" prefHeight="25.0" prefWidth="59.0" text="Cancel" textFill="#c32727" />
+            <ChoiceBox fx:id="campusID" layoutX="166.0" layoutY="168.0" prefHeight="25.0" prefWidth="200.0" />
+            <ChoiceBox fx:id="buildingCode" layoutX="166.0" layoutY="101.0" prefHeight="25.0" prefWidth="200.0" />
       </children>
     </AnchorPane>
   </children>

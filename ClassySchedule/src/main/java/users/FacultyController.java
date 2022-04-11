@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -36,11 +37,11 @@ public class FacultyController implements Initializable {
     TextField email;
 
     @FXML
-    ComboBox<String> deptName;
+    ChoiceBox<String> deptName;
 
     //not in database
     @FXML
-    ComboBox<String> type;
+    ChoiceBox<String> type;
 
     @FXML
     Button submitButton;
@@ -65,6 +66,11 @@ public class FacultyController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //TODO: initial boxes from database
+        type.getItems().add("Adjunct");
+        type.getItems().add("Full Time");
+
+        deptName.getItems().add("CISC");
+        deptName.getItems().add("STAT");
     }
 
     public void setStage(Stage addFaculty) {

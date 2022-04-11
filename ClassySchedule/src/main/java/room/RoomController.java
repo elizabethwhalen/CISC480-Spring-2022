@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -27,17 +28,21 @@ import java.util.ResourceBundle;
 public class RoomController implements Initializable {
 
     private Stage addRoom;
-    private Scene scene;
-    private Parent root;
+
+    @FXML
+    ChoiceBox<String> deptName;
+
+    @FXML
+    ChoiceBox<String> type;
 
     @FXML
     TextField roomNum;
 
     @FXML
-    ComboBox<String> buildingCode;
+    ChoiceBox<String> buildingCode;
 
     @FXML
-    ComboBox<String> campusID;
+    ChoiceBox<String> campusID;
 
     @FXML
     Button submitButton;
@@ -54,11 +59,17 @@ public class RoomController implements Initializable {
     @FXML
     Text campusWarning;
 
-    public RoomController() {
-    }
+    public RoomController() {}
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        deptName.getItems().add("CISC");
+        deptName.getItems().add("STAT");
+
+        buildingCode.getItems().add("OSS");
+        buildingCode.getItems().add("OWS");
+        campusID.getItems().add("St. Paul");
+
     }
 
     //May use in the future to reach into database for room options
