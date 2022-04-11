@@ -65,9 +65,6 @@ public class FacultyController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         //TODO: initial boxes from database
-        deptName.getItems().add("CISC");
-        deptName.getItems().add("STAT");
-
     }
 
     public void setStage(Stage addFaculty) {
