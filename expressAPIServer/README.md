@@ -27,12 +27,12 @@ From another terminal, submit HTTP requests to "http://localhost:4000". Here are
 ## Azure Deployment
 
 ### Deployment Versions
-| Date     | API ver. | GitHub Commit ID                                                                                                  | Notes                                   |
-|----------|----------|-------------------------------------------------------------------------------------------------------------------|-----------------------------------------|
-| 04/14    |          |                                                                                                                   |                                         |
-| 04/14/22 | V1       | [0c7ec99](https://github.com/elizabethwhalen/CISC480-Spring-2022/commit/0c7ec9923d5abf9030e9a63c4d0e04b285c98129) | Original version without update working |
-|          |          |                                                                                                                   |                                         |
-|          |          |                                                                                                                   |                                         |
+| Date     | API ver. | URI Connection                | Status     | GitHub Commit ID                                                                                                  | Azure App Service   | Notes                                   |
+|----------|----------|-------------------------------|------------|-------------------------------------------------------------------------------------------------------------------|---------------------|-----------------------------------------|
+| 04/14    |          |                               |            |                                                                                                                   |                     |                                         |
+| 04/14/22 | V1       | http://classy-api.ddns.net/v1 | Deprecated | [0c7ec99](https://github.com/elizabethwhalen/CISC480-Spring-2022/commit/0c7ec9923d5abf9030e9a63c4d0e04b285c98129) | classy-schedule-api | Original version without update working |
+|          |          |                               |            |                                                                                                                   |                     |                                         |
+|          |          |                               |            |                                                                                                                   |                     |                                         |
 
 ### Deployment Process
 To deploy the Express API Server to an Azure Web Service owned by the Database team, please complete the following steps:
