@@ -66,6 +66,7 @@ con.connect();
 function query_db(query, res) {
     // function to query the database
     new Promise((resolve, reject) => {
+        console.log(query)
         con.query(query, (err, result) => {
             if (err) {
                 reject();
@@ -273,7 +274,7 @@ app.get('/class', (req, res) => {
     let dept_code = req.query.dept_code
     if (dept_code){
         dept_code_split = dept_code.split(",");
-        for(let i = 0; i < dept_code_split; i++){
+        for(let i = 0; i < dept_code_split.length; i++){
             if(i > 0){
                 query = query + " OR "
             }
