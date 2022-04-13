@@ -145,11 +145,6 @@ app.get('/building', (req, res) => {
         }
         prev = true;
     };
-
-    if(prev){
-        query = query + " AND "
-    }
-
     //where condition:building_name
     let building_name = req.query.building_name
     if (building_name){
@@ -312,7 +307,7 @@ app.get('/class', (req, res) => {
             if(i > 0){
                 query = query + " OR ";
             }
-            query = query + "class_num = " + con.escape(class_names[i]);
+            query = query + "class_name = " + con.escape(class_names[i]);
         }
     };
     // query database
@@ -454,7 +449,6 @@ app.get('/class_feature', (req, res) => {
     }
     prev = false;    
     //where condition:dept_code
-    //where condition:building_code
     let dept_code = req.query.dept_code
     if (dept_code){
         depts = dept_code.split(",")
@@ -851,7 +845,7 @@ app.get('/faculty', (req, res) => {
             if(i > 0){
                 query = query + " OR "
             }
-            query = query + "curr_load = " + con.escape(currloads[i]);
+            query = query + "curr_load = " + con.escape(curr_loads[i]);
         }
         prev = true;
     }
