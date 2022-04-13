@@ -13,6 +13,8 @@ import {
     FormControlLabel,
     Checkbox,
 } from '@mui/material'
+
+import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +44,7 @@ const AddFaculty = () => {
     // promise for our AddFaculty button
     const submitFrom = (event) => {
         event.preventDefault();
-        if(firstName !== '' | lastName !== '' | teachLoad != ''){
+        if(firstName !== '' | lastName !== '' | teachLoad !== ''){
             let data = JSON.stringify({faculty_id: 99, faculty_first: firstName, faculty_last: lastName, 
             title_id: 99, prev_load: 0, curr_load: teachLoad});
             let config = {
