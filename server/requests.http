@@ -10,3 +10,17 @@ curl "http://databaseconnectionexample.azurewebsites.net/class"
 
 ###
 curl "http://databaseconnectionexample.azurewebsites.net/faculty"
+
+###
+curl -X POST "http://databaseconnectionexample.azurewebsites.net/faculty" -H "Content-Type: application/json" -d '
+{
+    "faculty_id": 1,
+    "faculty_first": "first",
+    "faculty_last": "last",
+    "title_id": 1,
+    "prev_load": 2.5,
+    "curr_load": 6.0
+}'
+
+###
+curl "classy-api.ddns.net/faculty"

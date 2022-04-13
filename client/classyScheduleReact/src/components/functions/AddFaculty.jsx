@@ -2,7 +2,6 @@ import React from 'react'
 import {
     Paper,
     Grid,
-    TextField,
     Button,
     Typography
 } from '@material-ui/core'
@@ -16,6 +15,8 @@ import {
 
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles'
+import axios from 'axios'
+import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -42,15 +43,21 @@ const AddFaculty = () => {
         ai: false,
     });
     // promise for our AddFaculty button
-    const submitFrom = (event) => {
+    const submitForm = (event) => {
         event.preventDefault();
-        if(firstName !== '' | lastName !== '' | teachLoad !== ''){
-            let data = JSON.stringify({faculty_id: 99, faculty_first: firstName, faculty_last: lastName, 
-            title_id: 99, prev_load: 0, curr_load: teachLoad});
+        if (firstName !== '' && lastName !== '' && teachLoad !== 0.0) {
+            let data = JSON.stringify({
+                faculty_id: 99, 
+                faculty_first: firstName, 
+                faculty_last: lastName,
+                title_id: 99, 
+                prev_load: 0, 
+                curr_load: teachLoad
+            });
             let config = {
                 method: 'post',
-                url: 'http://databaseconnectionexample.azurewebsites.net/faculty',
-                headers: {'Content-Type': 'application/json'},
+                url: 'http://classy-api.ddns.net/faculty',
+                headers: { 'Content-Type': 'application/json' },
                 data: data
             };
             axios(config).then((response) => {
@@ -58,11 +65,12 @@ const AddFaculty = () => {
             }).catch((error) => {
                 console.log(error);
             });
+            setFirstName('');
+            setLastName('');
+            setTeachLoad('');
+            //setState(false);
         }
-        setFirstName('');
-        setLastName('');
-        setTeachLoad('');
-        setState(false);
+
     };
 
     const handleFirstNameChange = (event) => {
@@ -85,7 +93,7 @@ const AddFaculty = () => {
         });
     };
 
-    const { intro, security, ai } = state;
+   // const { intro, security, ai } = state;
 
     const classes = useStyles()
 
@@ -98,60 +106,125 @@ const AddFaculty = () => {
                     </Typography>
                 </Grid>
 
-                {/* First name */}
-                <Grid item xs={4} fullWidth>
-                    <TextField fullWidth size="medium" id="outlined-basic" label="First Name" variant="outlined" value={firstName} onChange={handleFirstNameChange} />
-                </Grid>
-
-                {/* Last name */}
-                <Grid item xs={4} fullWidth>
-                    <TextField fullWidth size="medium" id="outlined-basic" label="Last Name" variant="outlined" value={lastName} onChange={handleLastNameChange} />
-                </Grid>
-
-                {/* Teach Load */}
-                <Grid item xs={4}>
-                    <TextField fullWidth size="medium" id="outlined-basic" label="Teach Load" variant="outlined" value={teachLoad} onChange={handleTeachLoadChange} />
-                </Grid>
-
                 <Grid item xs={12} fullWidth>
-                    <Grid container spacing={1}>
-                        {/* Preferred Classes checkboxes */}
-                        <Grid item xs={12} fullWidth>
-                            <Typography className={classes.subHeader}>
-                                Please Select Preferred Classes for Faculty to Instruct
-                            </Typography>
+                    <ValidatorForm onSubmit={submitForm}>
+                        <Grid container spacing={2}>
+                            {/* First name */}
+                            <Grid item xs={4} fullWidth>
+                                <TextValidator
+                                    size="medium"
+                                    variant="outlined"
+                                    label="First Name"
+                                    fullWidth
+                                    name="firstName"
+                                    type="text"
+                                    value={firstName}
+
+                                    validators={[
+                                        'matchRegexp:^[a-zA-Z]{1,50}$',
+                                        'required'
+                                    ]}
+                                    errorMessages={[
+                                        'Invalid input',
+                                        'this field is required',
+                                    ]}
+                                    onChange={handleFirstNameChange}
+                                />
+
+                            </Grid>
+
+                            {/* Last name */}
+                            <Grid item xs={4} fullWidth>
+                                <TextValidator
+                                    size="medium"
+                                    variant="outlined"
+                                    label="Last Name"
+                                    fullWidth
+                                    name="lastName"
+                                    type="text"
+                                    value={lastName}
+
+                                    validators={[
+                                        'matchRegexp:^[a-zA-Z]{1,50}$',
+                                        'required'
+                                    ]}
+                                    errorMessages={[
+                                        'Invalid input',
+                                        'this field is required',
+                                    ]}
+                                    onChange={handleLastNameChange}
+                                />
+                            </Grid>
+
+                            {/* Teach Load */}
+                            <Grid item xs={4}>
+                                <TextValidator
+                                    size="medium"
+                                    variant="outlined"
+                                    label="Teach Load"
+                                    fullWidth
+                                    name="teachLoad"
+                                    value={teachLoad}
+
+                                    validators={[
+                                        'matchRegexp:^[0-9.]{1,5}$',
+                                        'required'
+                                    ]}
+                                    errorMessages={[
+                                        'Invalid input',
+                                        'this field is required',
+                                    ]}
+                                    onChange={handleTeachLoadChange}
+                                />
+                            </Grid>
+
+                            {/* <Grid item xs={12} fullWidth>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12} fullWidth>
+                                        <Typography className={classes.subHeader}>
+                                            Please Select Preferred Classes for Faculty to Instruct
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12} fullWidth>
+                                        <FormControl component="fieldset" variant="standard">
+                                            <FormGroup>
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox checked={intro} onChange={handleChangeClassType} name="intro" />
+                                                    }
+                                                    label="Intro to CS"
+                                                />
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox checked={security} onChange={handleChangeClassType} name="security" />
+                                                    }
+                                                    label="Information Security"
+                                                />
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox checked={ai} onChange={handleChangeClassType} name="ai" />
+                                                    }
+                                                    label="Artifical Intelligence"
+                                                />
+                                            </FormGroup>
+                                        </FormControl>
+                                    </Grid>
+                                </Grid>
+                            </Grid> */}
+
+                            <Grid item xs={12} fullWidth>
+                                <Button 
+                                    variant="contained" 
+                                    size="large" 
+                                    type="submit" 
+                                    disableElevation
+                                >
+                                    Submit
+                                </Button>
+                            </Grid>
+
                         </Grid>
-                        <Grid item xs={12} fullWidth>
-                            <FormControl component="fieldset" variant="standard">
-                                <FormGroup>
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox checked={intro} onChange={handleChangeClassType} name="intro" />
-                                        }
-                                        label="Intro to CS"
-                                    />
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox checked={security} onChange={handleChangeClassType} name="security" />
-                                        }
-                                        label="Information Security"
-                                    />
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox checked={ai} onChange={handleChangeClassType} name="ai" />
-                                        }
-                                        label="Artifical Intelligence"
-                                    />
-                                </FormGroup>
-                            </FormControl>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                
-                <Grid item xs={12} fullWidth>
-                    <Button variant="contained" size="large" type="submit" disableElevation>
-                        Submit
-                    </Button>
+                    </ValidatorForm>
                 </Grid>
             </Grid>
         </Paper>

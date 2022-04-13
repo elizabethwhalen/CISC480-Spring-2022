@@ -5,14 +5,6 @@ import {
     Button,
     Typography
 } from '@material-ui/core'
-
-import {
-    InputLabel,
-    MenuItem,
-    FormControl,
-    Select,
-    FormHelperText
-} from '@mui/material'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import { makeStyles } from '@material-ui/core/styles'
 import axios from 'axios'
@@ -50,7 +42,11 @@ const AddClass = () => {
     const submitForm = (event) => {
         event.preventDefault();
         if (code !== '' && courseNum !== '' && courseName !== '') {
-            let data = JSON.stringify({ dept_code: code, class_num: courseNum, class_name: courseName });
+            let data = JSON.stringify({ 
+                dept_code: code, 
+                class_num: courseNum, 
+                class_name: courseName 
+            });
             let config = {
                 method: 'post',
                 url: 'http://databaseconnectionexample.azurewebsites.net/class',
@@ -109,23 +105,6 @@ const AddClass = () => {
 
                             {/* DEPARTMENT CODE */}
                             <Grid item xs={3} >
-                                {/* <FormControl fullWidth>
-                                    <InputLabel id="demo-simple-select-label">Department Code</InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={code}
-                                        label="Department Code"
-                                        onChange={handleChangeCode}
-                                        size='medium'
-                                        autoWidth
-                                    >
-                                        <MenuItem value=""><em>None</em></MenuItem>
-                                        <MenuItem value={'CISC'}>CISC</MenuItem>
-                                        <MenuItem value={'STAT'}>STAT</MenuItem>
-                                    </Select>
-                                    {error && <FormHelperText>this field is required</FormHelperText>}
-                                </FormControl> */}
                                 <TextValidator
                                     size="medium"
                                     variant="outlined"
