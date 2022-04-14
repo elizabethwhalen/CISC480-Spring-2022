@@ -16,8 +16,9 @@ import {
     Typography
 } from '@mui/material'
 
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import AddClassForm from './AddClassForm'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -40,8 +41,8 @@ const Calendar = () => {
     const [popOverVisible, setPopOverVisible] = useState(false);
     const togglePopOver = () => {
         popOverVisible === false
-        ? setPopOverVisible(true)
-        : setPopOverVisible(false);
+            ? setPopOverVisible(true)
+            : setPopOverVisible(false);
     };
 
     const [Time, SetTime] = React.useState('');
@@ -89,19 +90,19 @@ const Calendar = () => {
 
         var table = document.getElementById('classes');
         if (row !== -1) {
-            if(workday1.checked) {
+            if (workday1.checked) {
                 table.rows[row].cells[1].innerHTML = Class + " Room: " + Room + " Instructor: " + Instructor;
             }
-            if(workday2.checked) {
+            if (workday2.checked) {
                 table.rows[row].cells[2].innerHTML = Class + " Room: " + Room + " Instructor: " + Instructor;
             }
-            if(workday3.checked) {
+            if (workday3.checked) {
                 table.rows[row].cells[3].innerHTML = Class + " Room: " + Room + " Instructor: " + Instructor;
             }
-            if(workday4.checked) {
+            if (workday4.checked) {
                 table.rows[row].cells[4].innerHTML = Class + " Room: " + Room + " Instructor: " + Instructor;
             }
-            if(workday5.checked) {
+            if (workday5.checked) {
                 table.rows[row].cells[5].innerHTML = Class + " Room: " + Room + " Instructor: " + Instructor;
             }
         }
@@ -138,17 +139,28 @@ const Calendar = () => {
                     </Typography>
                 </Grid>
                 {/* add a list with checkboxes */}
-                <Button
-                    ref={ref}
-                    variant="contained"
-                    color="primary"
-                    onClick={togglePopOver}
-                >
-                    Open Form
-                </Button>
+                <Grid item xs={12} fullWidth>
+                    <Button
+                        ref={ref}
+                        variant="contained"
+                        disableElevation
+                        onClick={togglePopOver}
+                    >
+                        Add Class
+                    </Button>
+                </Grid>
 
-                {// we can split the calendar to a MWF table and a T TR table  
-                }
+                {/* <AddClassForm
+                    Class = {Class}
+                    Instructor = {Instructor}
+                    Room = {Room}
+                    Time = {Time}
+                    handleChangeClass = {handleChangeClass}
+                    handleChangeInstructor = {handleChangeInstructor}
+                    handleChangeRoom = {handleChangeRoom}
+                    handleChangeTime = {handleChangeTime}
+                /> */}
+
                 <Grid item xs={12} fullWidth >{/* This Grid contains the table for our calendar*/}
                     <table id='classes'>
                         <thead>
@@ -266,158 +278,163 @@ const Calendar = () => {
 
             {/*Anchored Popover with on it form*/}
             <Popover
-            open={popOverVisible}
-            anchorEl={ref}
-            anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-            }}
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-        >
-            {/*This is the demo form to add classes to the table*/}
-            <Grid container spacing={2}>
-                <Grid item xs={3}>
-                    {/*This Section controls the time to input*/}
-                    <FormControl fullWidth>
-                        {/* anchor */}
-                        <InputLabel id="demo-simple-select-label">Time</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={Time}
-                            label="Time"
-                            onChange={handleChangeTime}
-                            size='medium'
-                            autoWidth
-                        >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={'8AM'}>8AM</MenuItem>
-                            <MenuItem value={'9AM'}>9AM</MenuItem>
-                            <MenuItem value={'10AM'}>10AM</MenuItem>
-                            <MenuItem value={'11AM'}>11AM</MenuItem>
-                            <MenuItem value={'12PM'}>12PM</MenuItem>
-                            <MenuItem value={'1PM'}>1PM</MenuItem>
-                            <MenuItem value={'2PM'}>2PM</MenuItem>
-                            <MenuItem value={'3PM'}>3PM</MenuItem>
-                            <MenuItem value={'4PM'}>4PM</MenuItem>
-                            <MenuItem value={'5PM'}>5PM</MenuItem>
-                            <MenuItem value={'6PM'}>6PM</MenuItem>
-                            <MenuItem value={'7PM'}>7PM</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Grid>
-                <Grid item xs={2}>
-                    {/*This controls the day being inputted into the calendar*/}
-                    <FormControl fullWidth>
-                    <FormGroup>
-                        <FormControlLabel control={<Checkbox name="WorkA" id="Monday" value={"yes"}/>} label="Monday"/>
-                        <FormControlLabel control={<Checkbox name="WorkB" id="Tuesday" value={"yes"}/>} label="Tuesday"/>
-                        <FormControlLabel control={<Checkbox name="WorkC" id="Wednesday" value={"yes"}/>} label="Wednesday"/>
-                        <FormControlLabel control={<Checkbox name="WorkD" id="Thursday" value={"yes"}/>} label="Thursday"/>
-                        <FormControlLabel control={<Checkbox name="WorkE" id="Friday" value={"yes"}/>} label="Friday"/>
-                    </FormGroup>
-                    </FormControl>
-                </Grid>
-                <Grid item xs={2}>
-                    <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Room</InputLabel>
-                        <Select 
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={Room}
-                            label="Room"
-                            onChange={handleChangeRoom}
-                            size='medium'
-                            autoWidth>
-
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={428}>428</MenuItem>
-                            <MenuItem value={429}>429</MenuItem>
-                            <MenuItem value={430}>430</MenuItem>
-                            <MenuItem value={431}>431</MenuItem>
-                            <MenuItem value={432}>432</MenuItem>
-
-                        </Select>
-
-                    </FormControl>
-                </Grid>
-                <Grid item xs={3}>
-                    <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Instructor</InputLabel>
-                        <Select 
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={Instructor}
-                            label="Instructor"
-                            onChange={handleChangeInstructor}
-                            size='medium'
-                            autoWidth>
-
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value={'Chaz'}>Chaz</MenuItem>
-                            <MenuItem value={"Carl"}>Carl</MenuItem>
-                            <MenuItem value={"Sue"}>Sue</MenuItem>
-                            <MenuItem value={"Kevin"}>Kevin</MenuItem>
-                            <MenuItem value={"Howard"}>Howard</MenuItem>
-
-                        </Select>
-
-                    </FormControl>
-                </Grid>
-                <Grid item xs={2}>
-                    {/*This controls the class to input into the calendar*/}
-                    <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">Class</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={Class}
-                            label="Class"
-                            onChange={handleChangeClass}
-                            size='medium'
-                            autoWidth
-                        >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
-                            <MenuItem value="CISC 480">CISC 480</MenuItem>
-                            <MenuItem value="CISC 210">CISC 210</MenuItem>
-                            <MenuItem value="STAT 420">STAT 420</MenuItem>
-                            <MenuItem value="No Class">No Class</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Grid>
-                <Grid item xs={12} fullWidth>
-                    <Button
-                        variant="contained"
-                        size="large"
-                        type="submit"
-                        disableElevation
-                        onClick={submitForm}
-                    >
-                        Submit
-                    </Button>
-                </Grid>
-            </Grid>
-            <Button
-                ref={ref}
-                variant="contained"
-                color="primary"
-                onClick={togglePopOver}
+                open={popOverVisible}
+                anchorEl={ref}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                styles={'padding: 10px'}
             >
-                Close Form
-            </Button> 
-        </Popover>    
-    </Paper>
+                {/*This is the demo form to add classes to the table*/}
+                <Grid container spacing={2}>
+                    <Grid item xs={3}>
+                        {/*This Section controls the time to input*/}
+                        <FormControl fullWidth>
+                            {/* anchor */}
+                            <InputLabel id="demo-simple-select-label">Time</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={Time}
+                                label="Time"
+                                onChange={handleChangeTime}
+                                size='medium'
+                                autoWidth
+                            >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                <MenuItem value={'8AM'}>8AM</MenuItem>
+                                <MenuItem value={'9AM'}>9AM</MenuItem>
+                                <MenuItem value={'10AM'}>10AM</MenuItem>
+                                <MenuItem value={'11AM'}>11AM</MenuItem>
+                                <MenuItem value={'12PM'}>12PM</MenuItem>
+                                <MenuItem value={'1PM'}>1PM</MenuItem>
+                                <MenuItem value={'2PM'}>2PM</MenuItem>
+                                <MenuItem value={'3PM'}>3PM</MenuItem>
+                                <MenuItem value={'4PM'}>4PM</MenuItem>
+                                <MenuItem value={'5PM'}>5PM</MenuItem>
+                                <MenuItem value={'6PM'}>6PM</MenuItem>
+                                <MenuItem value={'7PM'}>7PM</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={2}>
+                        {/*This controls the day being inputted into the calendar*/}
+                        <FormControl fullWidth>
+                            <FormGroup>
+                                <FormControlLabel control={<Checkbox name="WorkA" id="Monday" value={"yes"} />} label="Monday" />
+                                <FormControlLabel control={<Checkbox name="WorkB" id="Tuesday" value={"yes"} />} label="Tuesday" />
+                                <FormControlLabel control={<Checkbox name="WorkC" id="Wednesday" value={"yes"} />} label="Wednesday" />
+                                <FormControlLabel control={<Checkbox name="WorkD" id="Thursday" value={"yes"} />} label="Thursday" />
+                                <FormControlLabel control={<Checkbox name="WorkE" id="Friday" value={"yes"} />} label="Friday" />
+                            </FormGroup>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Room</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={Room}
+                                label="Room"
+                                onChange={handleChangeRoom}
+                                size='medium'
+                                autoWidth>
+
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                <MenuItem value={428}>428</MenuItem>
+                                <MenuItem value={429}>429</MenuItem>
+                                <MenuItem value={430}>430</MenuItem>
+                                <MenuItem value={431}>431</MenuItem>
+                                <MenuItem value={432}>432</MenuItem>
+
+                            </Select>
+
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={3}>
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Instructor</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={Instructor}
+                                label="Instructor"
+                                onChange={handleChangeInstructor}
+                                size='medium'
+                                autoWidth>
+
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                <MenuItem value={'Chaz'}>Chaz</MenuItem>
+                                <MenuItem value={"Carl"}>Carl</MenuItem>
+                                <MenuItem value={"Sue"}>Sue</MenuItem>
+                                <MenuItem value={"Kevin"}>Kevin</MenuItem>
+                                <MenuItem value={"Howard"}>Howard</MenuItem>
+
+                            </Select>
+
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={2}>
+                        {/*This controls the class to input into the calendar*/}
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Class</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={Class}
+                                label="Class"
+                                onChange={handleChangeClass}
+                                size='medium'
+                                autoWidth
+                            >
+                                <MenuItem value="">
+                                    <em>None</em>
+                                </MenuItem>
+                                <MenuItem value="CISC 480">CISC 480</MenuItem>
+                                <MenuItem value="CISC 210">CISC 210</MenuItem>
+                                <MenuItem value="STAT 420">STAT 420</MenuItem>
+                                <MenuItem value="No Class">No Class</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={2} fullWidth>
+                        <Button
+                            variant="contained"
+                            size="medium"
+                            type="submit"
+                            disableElevation
+                            onClick={submitForm}
+                        >
+                            Submit
+                        </Button>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <Button
+                            ref={ref}
+                            variant="contained"
+                            disableElevation
+                            size="medium"
+                            onClick={togglePopOver}
+                        >
+                            Close Form
+                        </Button>
+                    </Grid>
+                </Grid>
+
+            </Popover>
+        </Paper>
 
 
     )

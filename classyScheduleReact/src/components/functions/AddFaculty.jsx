@@ -6,14 +6,8 @@ import {
     Typography
 } from '@material-ui/core'
 
-import {
-    FormControl,
-    FormGroup,
-    FormControlLabel,
-    Checkbox,
-} from '@mui/material'
+import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles'
-import axios from 'axios'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 
 const useStyles = makeStyles((theme) => ({
@@ -35,11 +29,11 @@ const AddFaculty = () => {
     const [firstName, setFirstName] = React.useState('');
     const [lastName, setLastName] = React.useState('');
     const [teachLoad, setTeachLoad] = React.useState('');
-    const [state, setState] = React.useState({
-        intro: false,
-        security: false,
-        ai: false,
-    });
+    // const [state, setState] = React.useState({
+    //     intro: false,
+    //     security: false,
+    //     ai: false,
+    // });
     // promise for our AddFaculty button
     const submitForm = (event) => {
         event.preventDefault();
@@ -83,14 +77,14 @@ const AddFaculty = () => {
         setTeachLoad(event.target.value);
     };
 
-
+    /*
     const handleChangeClassType = (event) => {
         setState({
             ...state,
             [event.target.name]: event.target.checked,
         });
     };
-
+    */
    // const { intro, security, ai } = state;
 
     const classes = useStyles()
