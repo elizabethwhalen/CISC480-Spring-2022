@@ -147,6 +147,8 @@ const Calendar = () => {
                     Open Form
                 </Button>
 
+                {// we can split the calendar to a MWF table and a T TR table  
+                }
                 <Grid item xs={12} fullWidth >{/* This Grid contains the table for our calendar*/}
                     <table id='classes'>
                         <thead>
@@ -277,7 +279,7 @@ const Calendar = () => {
         >
             {/*This is the demo form to add classes to the table*/}
             <Grid container spacing={2}>
-                <Grid item xs={2}>
+                <Grid item xs={3}>
                     {/*This Section controls the time to input*/}
                     <FormControl fullWidth>
                         {/* anchor */}
@@ -346,7 +348,7 @@ const Calendar = () => {
 
                     </FormControl>
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={3}>
                     <FormControl fullWidth>
                         <InputLabel id="demo-simple-select-label">Instructor</InputLabel>
                         <Select 
