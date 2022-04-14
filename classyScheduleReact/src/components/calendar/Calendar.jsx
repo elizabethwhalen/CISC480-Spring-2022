@@ -409,7 +409,7 @@ const Calendar = () => {
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={2} fullWidth>
+                    <Grid item xs={2}>
                         <Button
                             variant="contained"
                             size="medium"
