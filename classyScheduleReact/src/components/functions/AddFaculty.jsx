@@ -29,11 +29,11 @@ const AddFaculty = () => {
     const [firstName, setFirstName] = React.useState('');
     const [lastName, setLastName] = React.useState('');
     const [teachLoad, setTeachLoad] = React.useState('');
-    const [state, setState] = React.useState({
-        intro: false,
-        security: false,
-        ai: false,
-    });
+    // const [state, setState] = React.useState({
+    //     intro: false,
+    //     security: false,
+    //     ai: false,
+    // });
     // promise for our AddFaculty button
     const submitForm = (event) => {
         event.preventDefault();
