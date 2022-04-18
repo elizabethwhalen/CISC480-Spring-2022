@@ -1,13 +1,10 @@
+
 var crypto = require('crypto');
 var argon2i = require('argon2-ffi').argon2i;
 var jwt = require('jsonwebtoken')
 const secretkey = "secretkey" //CHANGETHIS
 
 // *****v2****
-
-
-//TODO:
-//in weak entities update should be: insert in strong, update weak entity, delete in strong
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -104,12 +101,20 @@ app.get('/', (req, res) => {
 //***BUILDING***
 //view
 app.get('/v2/building', (req, res) => {
-    let query = "SELECT * FROM building";
+    // verify auth
+    const token = req.cookies.token
 
-    if(Object.keys(req.query).length > 0){
-        query = query + " WHERE"
-    }
-        
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = "SELECT * FROM building";
+
+        if(Object.keys(req.query).length > 0){
+            query = query + " WHERE"
+        }
+            
     //where condition:building_code
     let building_code = req.query.building_code
     if (building_code){
@@ -134,47 +139,82 @@ app.get('/v2/building', (req, res) => {
         }
         prev = true;
     };
-
     query_db_get(query, res)
+    }
+    
 });
 //add
 app.post('/v2/building', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO building (building_code,building_name) VALUES ?";
-    data = [
-        [req.body.building_code,req.body.building_name]
-    ]
+    // verify auth
+    const token = req.cookies.token
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        console.log(req.body)
+        let query = "INSERT INTO building (building_code,building_name) VALUES ?";
+        data = [
+            [req.body.building_code,req.body.building_name]
+        ]
     
-    query_db_add(query, data, res)
+        query_db_add(query, data, res)
+    }
+
 });
 //update
 app.put('/v2/building/:building_code_id', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
 
-    //console.log(req.body)
-    let query = 'UPDATE building SET building_code = COALESCE(?,building_code), building_name = COALESCE(?,building_name) WHERE building_code= '+con.escape(req.params.building_code_id)+'';
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'UPDATE building SET building_code = COALESCE(?,building_code), building_name = COALESCE(?,building_name) WHERE building_code= '+con.escape(req.params.building_code_id)+'';
 
-    data = [
-        req.body.building_code,req.body.building_name
-    ]
+        data = [
+            req.body.building_code,req.body.building_name
+        ]
     
-    query_db_put(query, data, res)
+        query_db_put(query, data, res)
+    }
 });
 //delete
 app.delete('/v2/building/:building_code_id', (req, res) => {
-    let query = 'DELETE FROM building WHERE building_code= '+con.escape(req.params.building_code_id)+'';
+    // verify auth
+    const token = req.cookies.token
 
-    query_db_delete(query, res)
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'DELETE FROM building WHERE building_code= '+con.escape(req.params.building_code_id)+'';
+
+        query_db_delete(query, res)
+    }
 });
 
 //***CLASS***
 //view
 app.get('/v2/class', (req, res) => {
-    let query = "SELECT * FROM class";
+    // verify auth
+    const token = req.cookies.token
 
-    if(Object.keys(req.query).length > 0){
-        query = query + " WHERE"
-    }
-        
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = "SELECT * FROM class";
+
+        if(Object.keys(req.query).length > 0){
+            query = query + " WHERE"
+        }
+            
     //where condition:dept_code
     let dept_code = req.query.dept_code
     if (dept_code){
@@ -211,47 +251,82 @@ app.get('/v2/class', (req, res) => {
         }
         prev = true;
     };
-
     query_db_get(query, res)
+    }
+    
 });
 //add
 app.post('/v2/class', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO class (dept_code,class_num,class_name) VALUES ?";
-    data = [
-        [req.body.dept_code,req.body.class_num,req.body.class_name]
-    ]
+    // verify auth
+    const token = req.cookies.token
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        console.log(req.body)
+        let query = "INSERT INTO class (dept_code,class_num,class_name) VALUES ?";
+        data = [
+            [req.body.dept_code,req.body.class_num,req.body.class_name]
+        ]
     
-    query_db_add(query, data, res)
+        query_db_add(query, data, res)
+    }
+
 });
 //update
 app.put('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
 
-    //console.log(req.body)
-    let query = 'UPDATE class SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), class_name = COALESCE(?,class_name) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'UPDATE class SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), class_name = COALESCE(?,class_name) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
 
-    data = [
-        req.body.dept_code,req.body.class_num,req.body.class_name
-    ]
+        data = [
+            req.body.dept_code,req.body.class_num,req.body.class_name
+        ]
     
-    query_db_put(query, data, res)
+        query_db_put(query, data, res)
+    }
 });
 //delete
 app.delete('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
-    let query = 'DELETE FROM class WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
+    // verify auth
+    const token = req.cookies.token
 
-    query_db_delete(query, res)
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'DELETE FROM class WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
+
+        query_db_delete(query, res)
+    }
 });
 
 //***CLASS_FEATURE***
 //view
 app.get('/v2/class_feature', (req, res) => {
-    let query = "SELECT * FROM class_feature";
+    // verify auth
+    const token = req.cookies.token
 
-    if(Object.keys(req.query).length > 0){
-        query = query + " WHERE"
-    }
-        
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = "SELECT * FROM class_feature";
+
+        if(Object.keys(req.query).length > 0){
+            query = query + " WHERE"
+        }
+            
     //where condition:dept_code
     let dept_code = req.query.dept_code
     if (dept_code){
@@ -288,47 +363,82 @@ app.get('/v2/class_feature', (req, res) => {
         }
         prev = true;
     };
-
     query_db_get(query, res)
+    }
+    
 });
 //add
 app.post('/v2/class_feature', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO class_feature (dept_code,class_num,feature_id) VALUES ?";
-    data = [
-        [req.body.dept_code,req.body.class_num,req.body.feature_id]
-    ]
+    // verify auth
+    const token = req.cookies.token
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        console.log(req.body)
+        let query = "INSERT INTO class_feature (dept_code,class_num,feature_id) VALUES ?";
+        data = [
+            [req.body.dept_code,req.body.class_num,req.body.feature_id]
+        ]
     
-    query_db_add(query, data, res)
+        query_db_add(query, data, res)
+    }
+
 });
 //update
 app.put('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
 
-    //console.log(req.body)
-    let query = 'UPDATE class_feature SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), feature_id = COALESCE(?,feature_id) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'UPDATE class_feature SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), feature_id = COALESCE(?,feature_id) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
 
-    data = [
-        req.body.dept_code,req.body.class_num,req.body.feature_id
-    ]
+        data = [
+            req.body.dept_code,req.body.class_num,req.body.feature_id
+        ]
     
-    query_db_put(query, data, res)
+        query_db_put(query, data, res)
+    }
 });
 //delete
 app.delete('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req, res) => {
-    let query = 'DELETE FROM class_feature WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
+    // verify auth
+    const token = req.cookies.token
 
-    query_db_delete(query, res)
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'DELETE FROM class_feature WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
+
+        query_db_delete(query, res)
+    }
 });
 
 //***DEPT***
 //view
 app.get('/v2/dept', (req, res) => {
-    let query = "SELECT * FROM dept";
+    // verify auth
+    const token = req.cookies.token
 
-    if(Object.keys(req.query).length > 0){
-        query = query + " WHERE"
-    }
-        
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = "SELECT * FROM dept";
+
+        if(Object.keys(req.query).length > 0){
+            query = query + " WHERE"
+        }
+            
     //where condition:dept_code
     let dept_code = req.query.dept_code
     if (dept_code){
@@ -353,47 +463,82 @@ app.get('/v2/dept', (req, res) => {
         }
         prev = true;
     };
-
     query_db_get(query, res)
+    }
+    
 });
 //add
 app.post('/v2/dept', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO dept (dept_code,dept_name) VALUES ?";
-    data = [
-        [req.body.dept_code,req.body.dept_name]
-    ]
+    // verify auth
+    const token = req.cookies.token
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        console.log(req.body)
+        let query = "INSERT INTO dept (dept_code,dept_name) VALUES ?";
+        data = [
+            [req.body.dept_code,req.body.dept_name]
+        ]
     
-    query_db_add(query, data, res)
+        query_db_add(query, data, res)
+    }
+
 });
 //update
 app.put('/v2/dept/:dept_code_id', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
 
-    //console.log(req.body)
-    let query = 'UPDATE dept SET dept_code = COALESCE(?,dept_code), dept_name = COALESCE(?,dept_name) WHERE dept_code= '+con.escape(req.params.dept_code_id)+'';
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'UPDATE dept SET dept_code = COALESCE(?,dept_code), dept_name = COALESCE(?,dept_name) WHERE dept_code= '+con.escape(req.params.dept_code_id)+'';
 
-    data = [
-        req.body.dept_code,req.body.dept_name
-    ]
+        data = [
+            req.body.dept_code,req.body.dept_name
+        ]
     
-    query_db_put(query, data, res)
+        query_db_put(query, data, res)
+    }
 });
 //delete
 app.delete('/v2/dept/:dept_code_id', (req, res) => {
-    let query = 'DELETE FROM dept WHERE dept_code= '+con.escape(req.params.dept_code_id)+'';
+    // verify auth
+    const token = req.cookies.token
 
-    query_db_delete(query, res)
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'DELETE FROM dept WHERE dept_code= '+con.escape(req.params.dept_code_id)+'';
+
+        query_db_delete(query, res)
+    }
 });
 
 //***FACULTY***
 //view
 app.get('/v2/faculty', (req, res) => {
-    let query = "SELECT * FROM faculty";
+    // verify auth
+    const token = req.cookies.token
 
-    if(Object.keys(req.query).length > 0){
-        query = query + " WHERE"
-    }
-        
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = "SELECT * FROM faculty";
+
+        if(Object.keys(req.query).length > 0){
+            query = query + " WHERE"
+        }
+            
     //where condition:faculty_id
     let faculty_id = req.query.faculty_id
     if (faculty_id){
@@ -466,47 +611,82 @@ app.get('/v2/faculty', (req, res) => {
         }
         prev = true;
     };
-
     query_db_get(query, res)
+    }
+    
 });
 //add
 app.post('/v2/faculty', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO faculty (faculty_id,faculty_first,faculty_last,title_id,prev_load,curr_load) VALUES ?";
-    data = [
-        [req.body.faculty_id,req.body.faculty_first,req.body.faculty_last,req.body.title_id,req.body.prev_load,req.body.curr_load]
-    ]
+    // verify auth
+    const token = req.cookies.token
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        console.log(req.body)
+        let query = "INSERT INTO faculty (faculty_id,faculty_first,faculty_last,title_id,prev_load,curr_load) VALUES ?";
+        data = [
+            [req.body.faculty_id,req.body.faculty_first,req.body.faculty_last,req.body.title_id,req.body.prev_load,req.body.curr_load]
+        ]
     
-    query_db_add(query, data, res)
+        query_db_add(query, data, res)
+    }
+
 });
 //update
 app.put('/v2/faculty/:faculty_id_id', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
 
-    //console.log(req.body)
-    let query = 'UPDATE faculty SET faculty_id = COALESCE(?,faculty_id), faculty_first = COALESCE(?,faculty_first), faculty_last = COALESCE(?,faculty_last), title_id = COALESCE(?,title_id), prev_load = COALESCE(?,prev_load), curr_load = COALESCE(?,curr_load) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+'';
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'UPDATE faculty SET faculty_id = COALESCE(?,faculty_id), faculty_first = COALESCE(?,faculty_first), faculty_last = COALESCE(?,faculty_last), title_id = COALESCE(?,title_id), prev_load = COALESCE(?,prev_load), curr_load = COALESCE(?,curr_load) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+'';
 
-    data = [
-        req.body.faculty_id,req.body.faculty_first,req.body.faculty_last,req.body.title_id,req.body.prev_load,req.body.curr_load
-    ]
+        data = [
+            req.body.faculty_id,req.body.faculty_first,req.body.faculty_last,req.body.title_id,req.body.prev_load,req.body.curr_load
+        ]
     
-    query_db_put(query, data, res)
+        query_db_put(query, data, res)
+    }
 });
 //delete
 app.delete('/v2/faculty/:faculty_id_id', (req, res) => {
-    let query = 'DELETE FROM faculty WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+'';
+    // verify auth
+    const token = req.cookies.token
 
-    query_db_delete(query, res)
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'DELETE FROM faculty WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+'';
+
+        query_db_delete(query, res)
+    }
 });
 
 //***FACULTY_CLASS***
 //view
 app.get('/v2/faculty_class', (req, res) => {
-    let query = "SELECT * FROM faculty_class";
+    // verify auth
+    const token = req.cookies.token
 
-    if(Object.keys(req.query).length > 0){
-        query = query + " WHERE"
-    }
-        
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = "SELECT * FROM faculty_class";
+
+        if(Object.keys(req.query).length > 0){
+            query = query + " WHERE"
+        }
+            
     //where condition:faculty_id
     let faculty_id = req.query.faculty_id
     if (faculty_id){
@@ -555,47 +735,82 @@ app.get('/v2/faculty_class', (req, res) => {
         }
         prev = true;
     };
-
     query_db_get(query, res)
+    }
+    
 });
 //add
 app.post('/v2/faculty_class', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO faculty_class (faculty_id,dept_code,class_num,pref_level) VALUES ?";
-    data = [
-        [req.body.faculty_id,req.body.dept_code,req.body.class_num,req.body.pref_level]
-    ]
+    // verify auth
+    const token = req.cookies.token
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        console.log(req.body)
+        let query = "INSERT INTO faculty_class (faculty_id,dept_code,class_num,pref_level) VALUES ?";
+        data = [
+            [req.body.faculty_id,req.body.dept_code,req.body.class_num,req.body.pref_level]
+        ]
     
-    query_db_add(query, data, res)
+        query_db_add(query, data, res)
+    }
+
 });
 //update
 app.put('/v2/faculty_class/:faculty_id_id/:dept_code_id/:class_num_id', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
 
-    //console.log(req.body)
-    let query = 'UPDATE faculty_class SET faculty_id = COALESCE(?,faculty_id), dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), pref_level = COALESCE(?,pref_level) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'UPDATE faculty_class SET faculty_id = COALESCE(?,faculty_id), dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), pref_level = COALESCE(?,pref_level) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
 
-    data = [
-        req.body.faculty_id,req.body.dept_code,req.body.class_num,req.body.pref_level
-    ]
+        data = [
+            req.body.faculty_id,req.body.dept_code,req.body.class_num,req.body.pref_level
+        ]
     
-    query_db_put(query, data, res)
+        query_db_put(query, data, res)
+    }
 });
 //delete
 app.delete('/v2/faculty_class/:faculty_id_id/:dept_code_id/:class_num_id', (req, res) => {
-    let query = 'DELETE FROM faculty_class WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
+    // verify auth
+    const token = req.cookies.token
 
-    query_db_delete(query, res)
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'DELETE FROM faculty_class WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
+
+        query_db_delete(query, res)
+    }
 });
 
 //***FACULTY_FEATURE***
 //view
 app.get('/v2/faculty_feature', (req, res) => {
-    let query = "SELECT * FROM faculty_feature";
+    // verify auth
+    const token = req.cookies.token
 
-    if(Object.keys(req.query).length > 0){
-        query = query + " WHERE"
-    }
-        
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = "SELECT * FROM faculty_feature";
+
+        if(Object.keys(req.query).length > 0){
+            query = query + " WHERE"
+        }
+            
     //where condition:faculty_id
     let faculty_id = req.query.faculty_id
     if (faculty_id){
@@ -632,47 +847,82 @@ app.get('/v2/faculty_feature', (req, res) => {
         }
         prev = true;
     };
-
     query_db_get(query, res)
+    }
+    
 });
 //add
 app.post('/v2/faculty_feature', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO faculty_feature (faculty_id,feature_id,pref_level) VALUES ?";
-    data = [
-        [req.body.faculty_id,req.body.feature_id,req.body.pref_level]
-    ]
+    // verify auth
+    const token = req.cookies.token
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        console.log(req.body)
+        let query = "INSERT INTO faculty_feature (faculty_id,feature_id,pref_level) VALUES ?";
+        data = [
+            [req.body.faculty_id,req.body.feature_id,req.body.pref_level]
+        ]
     
-    query_db_add(query, data, res)
+        query_db_add(query, data, res)
+    }
+
 });
 //update
 app.put('/v2/faculty_feature/:faculty_id_id/:feature_id_id', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
 
-    //console.log(req.body)
-    let query = 'UPDATE faculty_feature SET faculty_id = COALESCE(?,faculty_id), feature_id = COALESCE(?,feature_id), pref_level = COALESCE(?,pref_level) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'UPDATE faculty_feature SET faculty_id = COALESCE(?,faculty_id), feature_id = COALESCE(?,feature_id), pref_level = COALESCE(?,pref_level) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
 
-    data = [
-        req.body.faculty_id,req.body.feature_id,req.body.pref_level
-    ]
+        data = [
+            req.body.faculty_id,req.body.feature_id,req.body.pref_level
+        ]
     
-    query_db_put(query, data, res)
+        query_db_put(query, data, res)
+    }
 });
 //delete
 app.delete('/v2/faculty_feature/:faculty_id_id/:feature_id_id', (req, res) => {
-    let query = 'DELETE FROM faculty_feature WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
+    // verify auth
+    const token = req.cookies.token
 
-    query_db_delete(query, res)
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'DELETE FROM faculty_feature WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
+
+        query_db_delete(query, res)
+    }
 });
 
 //***FACULTY_OTHER_REQUEST***
 //view
 app.get('/v2/faculty_other_request', (req, res) => {
-    let query = "SELECT * FROM faculty_other_request";
+    // verify auth
+    const token = req.cookies.token
 
-    if(Object.keys(req.query).length > 0){
-        query = query + " WHERE"
-    }
-        
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = "SELECT * FROM faculty_other_request";
+
+        if(Object.keys(req.query).length > 0){
+            query = query + " WHERE"
+        }
+            
     //where condition:faculty_id
     let faculty_id = req.query.faculty_id
     if (faculty_id){
@@ -697,47 +947,82 @@ app.get('/v2/faculty_other_request', (req, res) => {
         }
         prev = true;
     };
-
     query_db_get(query, res)
+    }
+    
 });
 //add
 app.post('/v2/faculty_other_request', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO faculty_other_request (faculty_id,request) VALUES ?";
-    data = [
-        [req.body.faculty_id,req.body.request]
-    ]
+    // verify auth
+    const token = req.cookies.token
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        console.log(req.body)
+        let query = "INSERT INTO faculty_other_request (faculty_id,request) VALUES ?";
+        data = [
+            [req.body.faculty_id,req.body.request]
+        ]
     
-    query_db_add(query, data, res)
+        query_db_add(query, data, res)
+    }
+
 });
 //update
 app.put('/v2/faculty_other_request/:faculty_id_id/:request_id', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
 
-    //console.log(req.body)
-    let query = 'UPDATE faculty_other_request SET faculty_id = COALESCE(?,faculty_id), request = COALESCE(?,request) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND request= '+con.escape(req.params.request_id)+'';
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'UPDATE faculty_other_request SET faculty_id = COALESCE(?,faculty_id), request = COALESCE(?,request) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND request= '+con.escape(req.params.request_id)+'';
 
-    data = [
-        req.body.faculty_id,req.body.request
-    ]
+        data = [
+            req.body.faculty_id,req.body.request
+        ]
     
-    query_db_put(query, data, res)
+        query_db_put(query, data, res)
+    }
 });
 //delete
 app.delete('/v2/faculty_other_request/:faculty_id_id/:request_id', (req, res) => {
-    let query = 'DELETE FROM faculty_other_request WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND request= '+con.escape(req.params.request_id)+'';
+    // verify auth
+    const token = req.cookies.token
 
-    query_db_delete(query, res)
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'DELETE FROM faculty_other_request WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND request= '+con.escape(req.params.request_id)+'';
+
+        query_db_delete(query, res)
+    }
 });
 
 //***FACULTY_TIMESLOT***
 //view
 app.get('/v2/faculty_timeslot', (req, res) => {
-    let query = "SELECT * FROM faculty_timeslot";
+    // verify auth
+    const token = req.cookies.token
 
-    if(Object.keys(req.query).length > 0){
-        query = query + " WHERE"
-    }
-        
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = "SELECT * FROM faculty_timeslot";
+
+        if(Object.keys(req.query).length > 0){
+            query = query + " WHERE"
+        }
+            
     //where condition:faculty_id
     let faculty_id = req.query.faculty_id
     if (faculty_id){
@@ -774,47 +1059,82 @@ app.get('/v2/faculty_timeslot', (req, res) => {
         }
         prev = true;
     };
-
     query_db_get(query, res)
+    }
+    
 });
 //add
 app.post('/v2/faculty_timeslot', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO faculty_timeslot (faculty_id,time_id,pref_level) VALUES ?";
-    data = [
-        [req.body.faculty_id,req.body.time_id,req.body.pref_level]
-    ]
+    // verify auth
+    const token = req.cookies.token
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        console.log(req.body)
+        let query = "INSERT INTO faculty_timeslot (faculty_id,time_id,pref_level) VALUES ?";
+        data = [
+            [req.body.faculty_id,req.body.time_id,req.body.pref_level]
+        ]
     
-    query_db_add(query, data, res)
+        query_db_add(query, data, res)
+    }
+
 });
 //update
 app.put('/v2/faculty_timeslot/:faculty_id_id/:time_id_id', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
 
-    //console.log(req.body)
-    let query = 'UPDATE faculty_timeslot SET faculty_id = COALESCE(?,faculty_id), time_id = COALESCE(?,time_id), pref_level = COALESCE(?,pref_level) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND time_id= '+con.escape(req.params.time_id_id)+'';
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'UPDATE faculty_timeslot SET faculty_id = COALESCE(?,faculty_id), time_id = COALESCE(?,time_id), pref_level = COALESCE(?,pref_level) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND time_id= '+con.escape(req.params.time_id_id)+'';
 
-    data = [
-        req.body.faculty_id,req.body.time_id,req.body.pref_level
-    ]
+        data = [
+            req.body.faculty_id,req.body.time_id,req.body.pref_level
+        ]
     
-    query_db_put(query, data, res)
+        query_db_put(query, data, res)
+    }
 });
 //delete
 app.delete('/v2/faculty_timeslot/:faculty_id_id/:time_id_id', (req, res) => {
-    let query = 'DELETE FROM faculty_timeslot WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND time_id= '+con.escape(req.params.time_id_id)+'';
+    // verify auth
+    const token = req.cookies.token
 
-    query_db_delete(query, res)
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'DELETE FROM faculty_timeslot WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND time_id= '+con.escape(req.params.time_id_id)+'';
+
+        query_db_delete(query, res)
+    }
 });
 
 //***FEATURE***
 //view
 app.get('/v2/feature', (req, res) => {
-    let query = "SELECT * FROM feature";
+    // verify auth
+    const token = req.cookies.token
 
-    if(Object.keys(req.query).length > 0){
-        query = query + " WHERE"
-    }
-        
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = "SELECT * FROM feature";
+
+        if(Object.keys(req.query).length > 0){
+            query = query + " WHERE"
+        }
+            
     //where condition:feature_id
     let feature_id = req.query.feature_id
     if (feature_id){
@@ -839,47 +1159,82 @@ app.get('/v2/feature', (req, res) => {
         }
         prev = true;
     };
-
     query_db_get(query, res)
+    }
+    
 });
 //add
 app.post('/v2/feature', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO feature (feature_id,feature_name) VALUES ?";
-    data = [
-        [req.body.feature_id,req.body.feature_name]
-    ]
+    // verify auth
+    const token = req.cookies.token
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        console.log(req.body)
+        let query = "INSERT INTO feature (feature_id,feature_name) VALUES ?";
+        data = [
+            [req.body.feature_id,req.body.feature_name]
+        ]
     
-    query_db_add(query, data, res)
+        query_db_add(query, data, res)
+    }
+
 });
 //update
 app.put('/v2/feature/:feature_id_id', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
 
-    //console.log(req.body)
-    let query = 'UPDATE feature SET feature_id = COALESCE(?,feature_id), feature_name = COALESCE(?,feature_name) WHERE feature_id= '+con.escape(req.params.feature_id_id)+'';
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'UPDATE feature SET feature_id = COALESCE(?,feature_id), feature_name = COALESCE(?,feature_name) WHERE feature_id= '+con.escape(req.params.feature_id_id)+'';
 
-    data = [
-        req.body.feature_id,req.body.feature_name
-    ]
+        data = [
+            req.body.feature_id,req.body.feature_name
+        ]
     
-    query_db_put(query, data, res)
+        query_db_put(query, data, res)
+    }
 });
 //delete
 app.delete('/v2/feature/:feature_id_id', (req, res) => {
-    let query = 'DELETE FROM feature WHERE feature_id= '+con.escape(req.params.feature_id_id)+'';
+    // verify auth
+    const token = req.cookies.token
 
-    query_db_delete(query, res)
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'DELETE FROM feature WHERE feature_id= '+con.escape(req.params.feature_id_id)+'';
+
+        query_db_delete(query, res)
+    }
 });
 
-let loginv2Deprecated = [/* //***LOGIN***
+//***LOGIN***
 //view
 app.get('/v2/login', (req, res) => {
-    let query = "SELECT * FROM login";
+    // verify auth
+    const token = req.cookies.token
 
-    if(Object.keys(req.query).length > 0){
-        query = query + " WHERE"
-    }
-        
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = "SELECT * FROM login";
+
+        if(Object.keys(req.query).length > 0){
+            query = query + " WHERE"
+        }
+            
     //where condition:user_id
     let user_id = req.query.user_id
     if (user_id){
@@ -928,47 +1283,82 @@ app.get('/v2/login', (req, res) => {
         }
         prev = true;
     };
-
     query_db_get(query, res)
+    }
+    
 });
 //add
-app.post('/v2/login', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO login (user_id,pass,faculty_id,access_level) VALUES ?";
-    data = [
-        [req.body.user_id,req.body.pass,req.body.faculty_id,req.body.access_level]
-    ]
+app.post('/v2/login/bad', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        console.log(req.body)
+        let query = "INSERT INTO login (user_id,pass,faculty_id,access_level) VALUES ?";
+        data = [
+            [req.body.user_id,req.body.pass,req.body.faculty_id,req.body.access_level]
+        ]
     
-    query_db_add(query, data, res)
+        query_db_add(query, data, res)
+    }
+
 });
 //update
 app.put('/v2/login/:user_id_id', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
 
-    //console.log(req.body)
-    let query = 'UPDATE login SET user_id = COALESCE(?,user_id), pass = COALESCE(?,pass), faculty_id = COALESCE(?,faculty_id), access_level = COALESCE(?,access_level) WHERE user_id= '+con.escape(req.params.user_id_id)+'';
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'UPDATE login SET user_id = COALESCE(?,user_id), pass = COALESCE(?,pass), faculty_id = COALESCE(?,faculty_id), access_level = COALESCE(?,access_level) WHERE user_id= '+con.escape(req.params.user_id_id)+'';
 
-    data = [
-        req.body.user_id,req.body.pass,req.body.faculty_id,req.body.access_level
-    ]
+        data = [
+            req.body.user_id,req.body.pass,req.body.faculty_id,req.body.access_level
+        ]
     
-    query_db_put(query, data, res)
+        query_db_put(query, data, res)
+    }
 });
 //delete
 app.delete('/v2/login/:user_id_id', (req, res) => {
-    let query = 'DELETE FROM login WHERE user_id= '+con.escape(req.params.user_id_id)+'';
+    // verify auth
+    const token = req.cookies.token
 
-    query_db_delete(query, res)
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'DELETE FROM login WHERE user_id= '+con.escape(req.params.user_id_id)+'';
+
+        query_db_delete(query, res)
+    }
 });
 
 //***MEETS***
 //view
 app.get('/v2/meets', (req, res) => {
-    let query = "SELECT * FROM meets";
+    // verify auth
+    const token = req.cookies.token
 
-    if(Object.keys(req.query).length > 0){
-        query = query + " WHERE"
-    }
-        
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = "SELECT * FROM meets";
+
+        if(Object.keys(req.query).length > 0){
+            query = query + " WHERE"
+        }
+            
     //where condition:dept_code
     let dept_code = req.query.dept_code
     if (dept_code){
@@ -1065,49 +1455,82 @@ app.get('/v2/meets', (req, res) => {
         }
         prev = true;
     };
-
     query_db_get(query, res)
+    }
+    
 });
 //add
 app.post('/v2/meets', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO meets (dept_code,class_num,section_num,semester,draft,building_code,room_num,time_id) VALUES ?";
-    data = [
-        [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.building_code,req.body.room_num,req.body.time_id]
-    ]
+    // verify auth
+    const token = req.cookies.token
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        console.log(req.body)
+        let query = "INSERT INTO meets (dept_code,class_num,section_num,semester,draft,building_code,room_num,time_id) VALUES ?";
+        data = [
+            [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.building_code,req.body.room_num,req.body.time_id]
+        ]
     
-    query_db_add(query, data, res)
+        query_db_add(query, data, res)
+    }
+
 });
 //update
 app.put('/v2/meets/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:draft_id/:building_code_id/:room_num_id/:time_id_id', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
 
-    //console.log(req.body)
-    let query = 'UPDATE meets SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), section_num = COALESCE(?,section_num), semester = COALESCE(?,semester), draft = COALESCE(?,draft), building_code = COALESCE(?,building_code), room_num = COALESCE(?,room_num), time_id = COALESCE(?,time_id) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+' AND building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+' AND time_id= '+con.escape(req.params.time_id_id)+'';
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'UPDATE meets SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), section_num = COALESCE(?,section_num), semester = COALESCE(?,semester), draft = COALESCE(?,draft), building_code = COALESCE(?,building_code), room_num = COALESCE(?,room_num), time_id = COALESCE(?,time_id) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+' AND building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+' AND time_id= '+con.escape(req.params.time_id_id)+'';
 
-    data = [
-        req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.building_code,req.body.room_num,req.body.time_id
-    ]
+        data = [
+            req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.building_code,req.body.room_num,req.body.time_id
+        ]
     
-    query_db_put(query, data, res)
+        query_db_put(query, data, res)
+    }
 });
 //delete
 app.delete('/v2/meets/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:draft_id/:building_code_id/:room_num_id/:time_id_id', (req, res) => {
-    let query = 'DELETE FROM meets WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+' AND building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+' AND time_id= '+con.escape(req.params.time_id_id)+'';
+    // verify auth
+    const token = req.cookies.token
 
-    query_db_delete(query, res)
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'DELETE FROM meets WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+' AND building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+' AND time_id= '+con.escape(req.params.time_id_id)+'';
+
+        query_db_delete(query, res)
+    }
 });
-*/
-]
 
 //***ROOM***
 //view
 app.get('/v2/room', (req, res) => {
-    let query = "SELECT * FROM room";
+    // verify auth
+    const token = req.cookies.token
 
-    if(Object.keys(req.query).length > 0){
-        query = query + " WHERE"
-    }
-        
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = "SELECT * FROM room";
+
+        if(Object.keys(req.query).length > 0){
+            query = query + " WHERE"
+        }
+            
     //where condition:building_code
     let building_code = req.query.building_code
     if (building_code){
@@ -1144,47 +1567,82 @@ app.get('/v2/room', (req, res) => {
         }
         prev = true;
     };
-
     query_db_get(query, res)
+    }
+    
 });
 //add
 app.post('/v2/room', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO room (building_code,room_num,capacity) VALUES ?";
-    data = [
-        [req.body.building_code,req.body.room_num,req.body.capacity]
-    ]
+    // verify auth
+    const token = req.cookies.token
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        console.log(req.body)
+        let query = "INSERT INTO room (building_code,room_num,capacity) VALUES ?";
+        data = [
+            [req.body.building_code,req.body.room_num,req.body.capacity]
+        ]
     
-    query_db_add(query, data, res)
+        query_db_add(query, data, res)
+    }
+
 });
 //update
 app.put('/v2/room/:building_code_id/:room_num_id', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
 
-    //console.log(req.body)
-    let query = 'UPDATE room SET building_code = COALESCE(?,building_code), room_num = COALESCE(?,room_num), capacity = COALESCE(?,capacity) WHERE building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+'';
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'UPDATE room SET building_code = COALESCE(?,building_code), room_num = COALESCE(?,room_num), capacity = COALESCE(?,capacity) WHERE building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+'';
 
-    data = [
-        req.body.building_code,req.body.room_num,req.body.capacity
-    ]
+        data = [
+            req.body.building_code,req.body.room_num,req.body.capacity
+        ]
     
-    query_db_put(query, data, res)
+        query_db_put(query, data, res)
+    }
 });
 //delete
 app.delete('/v2/room/:building_code_id/:room_num_id', (req, res) => {
-    let query = 'DELETE FROM room WHERE building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+'';
+    // verify auth
+    const token = req.cookies.token
 
-    query_db_delete(query, res)
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'DELETE FROM room WHERE building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+'';
+
+        query_db_delete(query, res)
+    }
 });
 
 //***ROOM_FEATURE***
 //view
 app.get('/v2/room_feature', (req, res) => {
-    let query = "SELECT * FROM room_feature";
+    // verify auth
+    const token = req.cookies.token
 
-    if(Object.keys(req.query).length > 0){
-        query = query + " WHERE"
-    }
-        
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = "SELECT * FROM room_feature";
+
+        if(Object.keys(req.query).length > 0){
+            query = query + " WHERE"
+        }
+            
     //where condition:building_code
     let building_code = req.query.building_code
     if (building_code){
@@ -1221,47 +1679,82 @@ app.get('/v2/room_feature', (req, res) => {
         }
         prev = true;
     };
-
     query_db_get(query, res)
+    }
+    
 });
 //add
 app.post('/v2/room_feature', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO room_feature (building_code,room_num,feature_id) VALUES ?";
-    data = [
-        [req.body.building_code,req.body.room_num,req.body.feature_id]
-    ]
+    // verify auth
+    const token = req.cookies.token
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        console.log(req.body)
+        let query = "INSERT INTO room_feature (building_code,room_num,feature_id) VALUES ?";
+        data = [
+            [req.body.building_code,req.body.room_num,req.body.feature_id]
+        ]
     
-    query_db_add(query, data, res)
+        query_db_add(query, data, res)
+    }
+
 });
 //update
 app.put('/v2/room_feature/:building_code_id/:room_num_id/:feature_id_id', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
 
-    //console.log(req.body)
-    let query = 'UPDATE room_feature SET building_code = COALESCE(?,building_code), room_num = COALESCE(?,room_num), feature_id = COALESCE(?,feature_id) WHERE building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'UPDATE room_feature SET building_code = COALESCE(?,building_code), room_num = COALESCE(?,room_num), feature_id = COALESCE(?,feature_id) WHERE building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
 
-    data = [
-        req.body.building_code,req.body.room_num,req.body.feature_id
-    ]
+        data = [
+            req.body.building_code,req.body.room_num,req.body.feature_id
+        ]
     
-    query_db_put(query, data, res)
+        query_db_put(query, data, res)
+    }
 });
 //delete
 app.delete('/v2/room_feature/:building_code_id/:room_num_id/:feature_id_id', (req, res) => {
-    let query = 'DELETE FROM room_feature WHERE building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
+    // verify auth
+    const token = req.cookies.token
 
-    query_db_delete(query, res)
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'DELETE FROM room_feature WHERE building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
+
+        query_db_delete(query, res)
+    }
 });
 
 //***SECTION***
 //view
 app.get('/v2/section', (req, res) => {
-    let query = "SELECT * FROM section";
+    // verify auth
+    const token = req.cookies.token
 
-    if(Object.keys(req.query).length > 0){
-        query = query + " WHERE"
-    }
-        
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = "SELECT * FROM section";
+
+        if(Object.keys(req.query).length > 0){
+            query = query + " WHERE"
+        }
+            
     //where condition:dept_code
     let dept_code = req.query.dept_code
     if (dept_code){
@@ -1334,47 +1827,82 @@ app.get('/v2/section', (req, res) => {
         }
         prev = true;
     };
-
     query_db_get(query, res)
+    }
+    
 });
 //add
 app.post('/v2/section', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO section (dept_code,class_num,section_num,semester,draft,capacity) VALUES ?";
-    data = [
-        [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.capacity]
-    ]
+    // verify auth
+    const token = req.cookies.token
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        console.log(req.body)
+        let query = "INSERT INTO section (dept_code,class_num,section_num,semester,draft,capacity) VALUES ?";
+        data = [
+            [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.capacity]
+        ]
     
-    query_db_add(query, data, res)
+        query_db_add(query, data, res)
+    }
+
 });
 //update
 app.put('/v2/section/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:draft_id', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
 
-    //console.log(req.body)
-    let query = 'UPDATE section SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), section_num = COALESCE(?,section_num), semester = COALESCE(?,semester), draft = COALESCE(?,draft), capacity = COALESCE(?,capacity) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+'';
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'UPDATE section SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), section_num = COALESCE(?,section_num), semester = COALESCE(?,semester), draft = COALESCE(?,draft), capacity = COALESCE(?,capacity) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+'';
 
-    data = [
-        req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.capacity
-    ]
+        data = [
+            req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.capacity
+        ]
     
-    query_db_put(query, data, res)
+        query_db_put(query, data, res)
+    }
 });
 //delete
 app.delete('/v2/section/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:draft_id', (req, res) => {
-    let query = 'DELETE FROM section WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+'';
+    // verify auth
+    const token = req.cookies.token
 
-    query_db_delete(query, res)
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'DELETE FROM section WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+'';
+
+        query_db_delete(query, res)
+    }
 });
 
 //***TEACHES***
 //view
 app.get('/v2/teaches', (req, res) => {
-    let query = "SELECT * FROM teaches";
+    // verify auth
+    const token = req.cookies.token
 
-    if(Object.keys(req.query).length > 0){
-        query = query + " WHERE"
-    }
-        
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = "SELECT * FROM teaches";
+
+        if(Object.keys(req.query).length > 0){
+            query = query + " WHERE"
+        }
+            
     //where condition:dept_code
     let dept_code = req.query.dept_code
     if (dept_code){
@@ -1447,47 +1975,82 @@ app.get('/v2/teaches', (req, res) => {
         }
         prev = true;
     };
-
     query_db_get(query, res)
+    }
+    
 });
 //add
 app.post('/v2/teaches', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO teaches (dept_code,class_num,section_num,semester,draft,faculty_id) VALUES ?";
-    data = [
-        [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.faculty_id]
-    ]
+    // verify auth
+    const token = req.cookies.token
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        console.log(req.body)
+        let query = "INSERT INTO teaches (dept_code,class_num,section_num,semester,draft,faculty_id) VALUES ?";
+        data = [
+            [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.faculty_id]
+        ]
     
-    query_db_add(query, data, res)
+        query_db_add(query, data, res)
+    }
+
 });
 //update
 app.put('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:draft_id/:faculty_id_id', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
 
-    //console.log(req.body)
-    let query = 'UPDATE teaches SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), section_num = COALESCE(?,section_num), semester = COALESCE(?,semester), draft = COALESCE(?,draft), faculty_id = COALESCE(?,faculty_id) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+' AND faculty_id= '+con.escape(req.params.faculty_id_id)+'';
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'UPDATE teaches SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), section_num = COALESCE(?,section_num), semester = COALESCE(?,semester), draft = COALESCE(?,draft), faculty_id = COALESCE(?,faculty_id) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+' AND faculty_id= '+con.escape(req.params.faculty_id_id)+'';
 
-    data = [
-        req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.faculty_id
-    ]
+        data = [
+            req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.faculty_id
+        ]
     
-    query_db_put(query, data, res)
+        query_db_put(query, data, res)
+    }
 });
 //delete
 app.delete('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:draft_id/:faculty_id_id', (req, res) => {
-    let query = 'DELETE FROM teaches WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+' AND faculty_id= '+con.escape(req.params.faculty_id_id)+'';
+    // verify auth
+    const token = req.cookies.token
 
-    query_db_delete(query, res)
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'DELETE FROM teaches WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+' AND faculty_id= '+con.escape(req.params.faculty_id_id)+'';
+
+        query_db_delete(query, res)
+    }
 });
 
 //***TIMESLOT***
 //view
 app.get('/v2/timeslot', (req, res) => {
-    let query = "SELECT * FROM timeslot";
+    // verify auth
+    const token = req.cookies.token
 
-    if(Object.keys(req.query).length > 0){
-        query = query + " WHERE"
-    }
-        
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = "SELECT * FROM timeslot";
+
+        if(Object.keys(req.query).length > 0){
+            query = query + " WHERE"
+        }
+            
     //where condition:time_id
     let time_id = req.query.time_id
     if (time_id){
@@ -1536,47 +2099,82 @@ app.get('/v2/timeslot', (req, res) => {
         }
         prev = true;
     };
-
     query_db_get(query, res)
+    }
+    
 });
 //add
 app.post('/v2/timeslot', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO timeslot (time_id,day_of_week,time_start,time_end) VALUES ?";
-    data = [
-        [req.body.time_id,req.body.day_of_week,req.body.time_start,req.body.time_end]
-    ]
+    // verify auth
+    const token = req.cookies.token
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        console.log(req.body)
+        let query = "INSERT INTO timeslot (time_id,day_of_week,time_start,time_end) VALUES ?";
+        data = [
+            [req.body.time_id,req.body.day_of_week,req.body.time_start,req.body.time_end]
+        ]
     
-    query_db_add(query, data, res)
+        query_db_add(query, data, res)
+    }
+
 });
 //update
 app.put('/v2/timeslot/:time_id_id', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
 
-    //console.log(req.body)
-    let query = 'UPDATE timeslot SET time_id = COALESCE(?,time_id), day_of_week = COALESCE(?,day_of_week), time_start = COALESCE(?,time_start), time_end = COALESCE(?,time_end) WHERE time_id= '+con.escape(req.params.time_id_id)+'';
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'UPDATE timeslot SET time_id = COALESCE(?,time_id), day_of_week = COALESCE(?,day_of_week), time_start = COALESCE(?,time_start), time_end = COALESCE(?,time_end) WHERE time_id= '+con.escape(req.params.time_id_id)+'';
 
-    data = [
-        req.body.time_id,req.body.day_of_week,req.body.time_start,req.body.time_end
-    ]
+        data = [
+            req.body.time_id,req.body.day_of_week,req.body.time_start,req.body.time_end
+        ]
     
-    query_db_put(query, data, res)
+        query_db_put(query, data, res)
+    }
 });
 //delete
 app.delete('/v2/timeslot/:time_id_id', (req, res) => {
-    let query = 'DELETE FROM timeslot WHERE time_id= '+con.escape(req.params.time_id_id)+'';
+    // verify auth
+    const token = req.cookies.token
 
-    query_db_delete(query, res)
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'DELETE FROM timeslot WHERE time_id= '+con.escape(req.params.time_id_id)+'';
+
+        query_db_delete(query, res)
+    }
 });
 
 //***TITLE***
 //view
 app.get('/v2/title', (req, res) => {
-    let query = "SELECT * FROM title";
+    // verify auth
+    const token = req.cookies.token
 
-    if(Object.keys(req.query).length > 0){
-        query = query + " WHERE"
-    }
-        
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = "SELECT * FROM title";
+
+        if(Object.keys(req.query).length > 0){
+            query = query + " WHERE"
+        }
+            
     //where condition:title_id
     let title_id = req.query.title_id
     if (title_id){
@@ -1613,36 +2211,63 @@ app.get('/v2/title', (req, res) => {
         }
         prev = true;
     };
-
     query_db_get(query, res)
+    }
+    
 });
 //add
 app.post('/v2/title', (req, res) => {
-    console.log(req.body)
-    let query = "INSERT INTO title (title_id,title_name,max_load) VALUES ?";
-    data = [
-        [req.body.title_id,req.body.title_name,req.body.max_load]
-    ]
+    // verify auth
+    const token = req.cookies.token
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        console.log(req.body)
+        let query = "INSERT INTO title (title_id,title_name,max_load) VALUES ?";
+        data = [
+            [req.body.title_id,req.body.title_name,req.body.max_load]
+        ]
     
-    query_db_add(query, data, res)
+        query_db_add(query, data, res)
+    }
+
 });
 //update
 app.put('/v2/title/:title_id_id', (req, res) => {
+    // verify auth
+    const token = req.cookies.token
 
-    //console.log(req.body)
-    let query = 'UPDATE title SET title_id = COALESCE(?,title_id), title_name = COALESCE(?,title_name), max_load = COALESCE(?,max_load) WHERE title_id= '+con.escape(req.params.title_id_id)+'';
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'UPDATE title SET title_id = COALESCE(?,title_id), title_name = COALESCE(?,title_name), max_load = COALESCE(?,max_load) WHERE title_id= '+con.escape(req.params.title_id_id)+'';
 
-    data = [
-        req.body.title_id,req.body.title_name,req.body.max_load
-    ]
+        data = [
+            req.body.title_id,req.body.title_name,req.body.max_load
+        ]
     
-    query_db_put(query, data, res)
+        query_db_put(query, data, res)
+    }
 });
 //delete
 app.delete('/v2/title/:title_id_id', (req, res) => {
-    let query = 'DELETE FROM title WHERE title_id= '+con.escape(req.params.title_id_id)+'';
+    // verify auth
+    const token = req.cookies.token
 
-    query_db_delete(query, res)
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        let query = 'DELETE FROM title WHERE title_id= '+con.escape(req.params.title_id_id)+'';
+
+        query_db_delete(query, res)
+    }
 });
 
 
@@ -1722,6 +2347,7 @@ function query_db_put(query, data, res){
     });
 }
 
+
 // ****login****
 var MIN_PASSWORD_LENGTH = 8;
 var MAX_PASSWORD_LENGTH = 160;
@@ -1752,7 +2378,7 @@ app.post('/v2/signup', (req, res) => {
     }).catch(err => {
       reject(err)
     }).then(hash => {
-      login_query_db_post("insert into login values ?",[[[req.body.username, hash, 101104523, access_level=1]]],res)
+      login_query_db_post("insert into login values ?",[[[req.body.username, hash, req.body.faculty_id, access_level=0]]],res)
     });
   });
 });
@@ -1779,7 +2405,9 @@ app.post('/v2/login', async function (req, res) {
             algorithm: "HS256",
             expiresIn: 300,
           });
-        res.status(200).send('\nWelcome '+ req.body.username +"\nYour token is:\n"+ token)}
+        res.cookie("token", token, { maxAge: 300 * 1000 })
+        res.status(200).send('Welcome '+ req.body.username +"! Your token is: "+ token)
+      }
       else {res.status(400).send('Incorrect password')}
     });
   });
@@ -1815,6 +2443,30 @@ function login_query_db(query, res) {
 async function get_pass(query,res){
   let result = await login_query_db(query,res)
   return result
+}
+function verify(token){
+  
+	// if the cookie is not set, return an unauthorized error
+	if (!token) {
+		return [401,"Unauthorized"]
+	}
+
+	var payload
+	try {
+		// Parse the JWT string and store the result in `payload`.
+		// Note that we are passing the key in this method as well. This method will throw an error
+		// if the token is invalid (if it has expired according to the expiry time we set on sign in),
+		// or if the signature does not match
+		payload = jwt.verify(token, secretkey)
+	} catch (e) {
+		if (e instanceof jwt.JsonWebTokenError) {
+			// if the error thrown is because the JWT is unauthorized, return a 401 error
+			return [401,"Unauthorized"]
+		}
+		// otherwise, return a bad request error
+		return [400,"Bad Request"]
+	}
+  return [200,payload]
 }
 
 // ****v0****
@@ -5523,6 +6175,5 @@ app.put('/title', (req, res) => {
   })
   res.redirect('/title')
 });
-
 
 module.exports = app;
