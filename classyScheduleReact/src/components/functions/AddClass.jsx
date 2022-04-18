@@ -49,7 +49,7 @@ const AddClass = () => {
             });
             let config = {
                 method: 'post',
-                url: 'http://databaseconnectionexample.azurewebsites.net/class',
+                url: 'http://classy-api.ddns.net/class',
                 headers: { 'Content-Type': 'application/json' },
                 data: data
             };

@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import AddClass from '../components/functions/AddClass'
-import Calendar from '../components/Calendar'
+import Calendar from '../components/calendar/Calendar'
 import Home from '../components/layout/Home'
 import AddFaculty from '../components/functions/AddFaculty'
 import Help from '../components/tools/Help'
