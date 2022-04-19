@@ -11,4 +11,8 @@ class -X POST: a new body option is added. When req.body.features has content, t
 
 **TODO** (everyone- feel free to add things here, just include your name so we can follow up with any questions. formatting as aboove if appreciated but not required)
 
+room -X POST: make like class -X POST
+
+strong entities (and title) need UPDATE CASCADE and DELETE CASCADE (maybe?)
+
 
