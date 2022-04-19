@@ -14,7 +14,7 @@ To run the Express API Server locally, please complete the following steps:
 2. $npm install
 3. $npm start
 
-</br></br>
+</br>
 For information on how to connect to the locally-hosted API server, please see "docs/vX.md"
 
 ## Azure Deployment
@@ -34,7 +34,8 @@ To deploy the Express API Server to an Azure Web Service owned by the Database t
 5. $code .
 6. Select the "expressAPIServer" folder
 7. Click the "Deploy to Web App" icon and select "classy-schedule-api"
-</br></br>
+
+</br>
 Note: We followed this guide for Node.js application deployment to Azure: https://docs.microsoft.com/en-us/azure/app-service/quickstart-nodejs?tabs=linux&pivots=development-environment-azure-portal
 </br></br>
 For information on how to connect to the azure-hosted API server, please see "docs/vX.md"
