@@ -1,6 +1,6 @@
 
 var crypto = require('crypto');
-var argon2i = require('argon2-ffi').argon2i;
+var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken')
 const secretkey = "secretkey" //CHANGETHIS
 
@@ -2354,7 +2354,7 @@ var MAX_PASSWORD_LENGTH = 160;
 var users = {};
 
 //create users
-app.post('/v2/signup', (req, res) => {
+app.post('/v2/signup', async (req, res) => {
 
     if(!req.body){
       return res.sendStatus(400);
@@ -2371,16 +2371,10 @@ app.post('/v2/signup', (req, res) => {
         return res.status(400).send('Password must be between ' + MIN_PASSWORD_LENGTH + ' and ' + MAX_PASSWORD_LENGTH + ' characters long');
     }
 
-    crypto.randomBytes(16, function (err, salt) {
-    if (err) throw err;
-    argon2i.hash(req.body.password, salt, function (err, hash) {
-      if (err) {throw err;}
-    }).catch(err => {
-      reject(err)
-    }).then(hash => {
-      login_query_db_post("insert into login values ?",[[[req.body.username, hash, req.body.faculty_id, access_level=0]]],res)
-    });
-  });
+const salt = await bcrypt.genSalt(10)
+try{ hash = await bcrypt.hash(req.body.password, salt)
+} catch (err) {console.log("bcrypt error", err)}
+login_query_db_post("insert into login values ?",[[[req.body.username, hash, req.body.faculty_id, access_level=0]]],res)
 });
 
 //login
@@ -2394,8 +2388,9 @@ app.post('/v2/login', async function (req, res) {
   
     let loginjson = await get_pass("SELECT * from login where user_id="+con.escape(req.body.username),res);
     passHashed = loginjson[0].pass
+    console.log("passHashed")
     if (passHashed === undefined) { return res.sendStatus(401); }
-    argon2i.verify(passHashed, req.body.password)  
+    bcrypt.compare(req.body.password,passHashed)  
     .then(correct => {
       if(correct){
         let token = jwt.sign(
