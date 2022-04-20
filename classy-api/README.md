@@ -1,6 +1,8 @@
 # Express API Server
 **Classy-Schedule Express API Server Repository**
 </br>
+**NOTE: For information on how to connect to the azure-hosted API server, please see "/classy-api/versioning.md"**
+</br>
 The Database Team's Express API Server accepts HTTP requests from other teams. Based
 on the received HTTP requests, the API then queries one of the Database Team's MySQL
 database schemeas. The resulting data is return to the API where it is then sent to
@@ -38,4 +40,4 @@ To deploy the Express API Server to an Azure Web Service owned by the Database t
 </br>
 Note: We followed this guide for Node.js application deployment to Azure: https://docs.microsoft.com/en-us/azure/app-service/quickstart-nodejs?tabs=linux&pivots=development-environment-azure-portal
 </br></br>
-For information on how to connect to the locally-hosted API server, please see "/classy-api/versioning.md"
+For information on how to connect to the azure-hosted API server, please see "/classy-api/versioning.md"
