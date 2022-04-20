@@ -1,5 +1,5 @@
-# CISC480-Spring-2022
-**Classy-Schedule API Repository**
+# Database Team
+## Classy-Schedule API Access
 </br>
 classy-api - API access: https://classy-api.ddns.net (please see [/classy-api/versioning.md](docs) for version connection info.)
 </br>
