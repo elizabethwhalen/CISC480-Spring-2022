@@ -317,7 +317,6 @@ app.post('/v2/class', async (req, res) => {
             return res.status(201).send("Class and features added to database")
         }
     }
-
 });
 //update
 app.put('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
