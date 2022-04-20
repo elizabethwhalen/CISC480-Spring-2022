@@ -1,8 +1,7 @@
-# Express API Server
-**Classy-Schedule Express API Server Repository**
+# Classy-Schedule Express API Server Repository
 </br>
 **NOTE: For information on how to connect to the azure-hosted API server, please see "/classy-api/versioning.md"**
-</br>
+</br></br>
 The Database Team's Express API Server accepts HTTP requests from other teams. Based
 on the received HTTP requests, the API then queries one of the Database Team's MySQL
 database schemeas. The resulting data is return to the API where it is then sent to
