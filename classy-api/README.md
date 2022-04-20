@@ -1,5 +1,4 @@
 # Classy-Schedule Express API Server Repository
-</br>
 __NOTE: For information on how to connect to the azure-hosted API server, please see "/classy-api/versioning.md"__
 </br></br>
 The Database Team's Express API Server accepts HTTP requests from other teams. Based
