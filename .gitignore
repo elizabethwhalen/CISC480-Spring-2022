@@ -1,7 +1,12 @@
 # Node garbage #
 #####################
-node_modules
-package-lock.json
+*.node_modules
+*package-lock.json
+
+# Other apps #
+#####################
+*.vscode
+*.deployment
 
 # Logs and databases #
 ######################
