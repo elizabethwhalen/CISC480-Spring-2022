@@ -1,5 +1,5 @@
 # Express API Server
-**Classy-Schedule Express API Server Development Repository**
+**Classy-Schedule Express API Server Repository**
 </br>
 The Database Team's Express API Server accepts HTTP requests from other teams. Based
 on the received HTTP requests, the API then queries one of the Database Team's MySQL
