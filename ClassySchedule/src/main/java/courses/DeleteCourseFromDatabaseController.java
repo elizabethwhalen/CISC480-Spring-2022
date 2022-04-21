@@ -2,7 +2,6 @@ package courses;
 
 import database.Database;
 import homescreen.HomescreenController;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -15,17 +14,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
-import jfxtras.scene.control.agenda.Agenda;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.sql.SQLOutput;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -69,12 +62,15 @@ public class DeleteCourseFromDatabaseController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize dropdown boxes with observable database list
-        dept.setItems(FXCollections.observableArrayList(getDept()));
-        course.setItems(FXCollections.observableArrayList(getCourses()));
+        getDept();
+        getCourses();
         // Initialize back button
         back(back, "Go Back To Home Screen", "Click ok to go back to home screen.", true);
+        // Set confirmation of confirm button to delete the selected course
+        back(confirm, "Confirm Deletion", "Click 'OK' to delete the class, or 'Cancel' to cancel the following action.", false);
 
     }
+
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -91,8 +87,6 @@ public class DeleteCourseFromDatabaseController implements Initializable {
         Database database = new Database();
         // If drop-down boxes are not empty
         if (!(course.getSelectionModel().isEmpty()) && !(dept.getSelectionModel().isEmpty())) {
-            // Set confirmation of confirm button to delete the selected course
-            back(confirm, "Confirm Deletion", "Click 'OK' to delete the class, or 'Cancel' to cancel the following action.", false);
             String selectedClass = course.getValue();
             String selectedDept = dept.getValue();
             JSONArray classes = database.getData("class");
@@ -102,58 +96,48 @@ public class DeleteCourseFromDatabaseController implements Initializable {
                 // If the JSON object to be deleted is equal to the selected course/dept then delete it
                 if (job.get("class_name").equals(selectedClass) && job.get("dept_code").equals(selectedDept)) {
                     try {
+                        System.out.println("here");
                         database.deleteData("class", job);
                     } catch (URISyntaxException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    break;
                 }
                 //TODO: alert button for mismatching dept and course
-                /*else {
-                    course.getItems().clear();
-                    dept.getItems().clear();
-                    Alert classNotInDept = new Alert(Alert.AlertType.ERROR);
-                    classNotInDept.setTitle("Error Alert");
-                    classNotInDept.setContentText("The selected class is not in the selected department or vice versa");
-                    classNotInDept.showAndWait();
-                } */
             }
         }
     }
 
     /**
-     * return a list of string of courses from the database to pass into the observable list for initialization
-     * @return a list of string of courses
+     * Initialize and grab data from the database to put into the course drop-down box
      */
-    private List<String> getCourses() {
+    private void getCourses() {
         // Connect to db
         Database database = new Database();
-        List<String> courses = new ArrayList<>();
         // Iterate through the classes data and add its info to the dropdown options
         JSONArray classes = database.getData("class");
         for (Object jsonObject: classes) {
             JSONObject job = (JSONObject)jsonObject;
-            courses.add((String) job.get("class_name"));
+            System.out.println(job);
+            course.getItems().add((String) job.get("class_name"));
         }
-        return courses;
     }
 
     /**
      * return a list of string of departments from the database to pass into the observable list for initialization
      * @return a list of string of department
      */
-    private List<String> getDept() {
+    private void getDept() {
         // Connect to the db
         Database database = new Database();
-        List<String> dept = new ArrayList<>();
         // Iterate through the classes data and add its info to the dropdown options
         JSONArray department = database.getData("dept");
         for (Object jsonObject: department) {
             JSONObject job = (JSONObject)jsonObject;
-            dept.add((String) job.get("dept_code"));
+            dept.getItems().add((String) job.get("dept_code"));
         }
-        return dept;
     }
 
     /**
@@ -199,11 +183,11 @@ public class DeleteCourseFromDatabaseController implements Initializable {
                     // If button is "Ok", then create information alert to notify successful removal
                     // and go back to home screen
                     if (ok.get().getText().equals("OK")) {
+                        confirmButton();
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Deleted");
-                        alert.setContentText("The selected course has been deleted. You will be sent back to the home screen.");
+                        alert.setContentText("The selected course has been deleted.");
                         alert.showAndWait();
-                        goBack();
                     }
                 }
             };
