@@ -46,19 +46,27 @@ Add new record to table: `curl "https://classy-api.ddns.net/class" -X POST -d "d
 
 **v2:**
 
-View records in table: `curl "https://classy-api.ddns.net/class" --cookie "token=[token]"`
+IMPORTANT NOTE: Currently the token must be included in the data section, however, it is actively being switched to the header section. Including it in both locations guarantees the request will be authorized while the transfer is taking place.
 
-Add new record to table: `curl "https://classy-api.ddns.net/class" -X POST -d "dept_code=OSS&class_num=999" --cookie "token=[token]"`
+View records in table: `curl -H "Authorization: Bearer [token]" "https://classy-api.ddns.net/v2/class" -X GET -d "token=[token]"`
 
-Update record in table: `curl "https://classy-api.ddns.net/class/OSS/999" -X PUT -d "class_name="example" --cookie "token=[token]"`
+View records (filtered) in table: `curl -H "Authorization: Bearer [token]" "https://classy-api.ddns.net/v2/class?dept_code=CISC" -X GET -d "token=[token]"`
 
-Delete record in table: `curl "https://classy-api.ddns.net/class/OSS/999" -X DELETE --cookie "token=[token]"`
+Add new record to table: `curl -H "Authorization: Bearer [token]" "https://classy-api.ddns.net/v2/class" -X POST -d "dept_code=OSS&class_num=999&token=[token]"`
+
+Update record in table: `curl -H "Authorization: Bearer [token]" "https://classy-api.ddns.net/v2/class/OSS/999" -X PUT -d "class_name="example&token=[token]"`
+
+Delete record in table: `curl -H "Authorization: Bearer [token]" "https://classy-api.ddns.net/v2/class/OSS/999" -X DELETE -d "token=[token]"`
 
 _*login does not fit pattern- the v2 add method is disabled in lieu of the login method shown below_
 
 **Login and Security**
 
-All methods in v2 and up require token authorization to access. Tokens are obtained via the login method (`curl "https://classy-api.ddns.net/v2/login" -X POST -d "username=[username]&password=[password]"`)
-Once the token is acquired, use the --cookie flag after each curl command to include the token. In v2, all accounts have full access to all methods. In versions 3 and up, methods will be restricted depending on the access_level and faculty_id associated with login accounts.
+All methods in v2 and up require token authorization to access. 
 
 Login accounts are created via the signup method (`curl "https://classy-api.ddns.net/v2/signup" -X POST -d "username=[username]&password=[password]"`)
+
+Tokens are obtained via the login method (`curl "https://classy-api.ddns.net/v2/login" -X POST -d "username=[username]&password=[password]"`)
+
+Once the token is acquired, it must be included in the the data after each curl command. In v2, all accounts have full access to all methods. In versions 3 and up, methods will be restricted depending on the access_level and faculty_id associated with login accounts.
+
