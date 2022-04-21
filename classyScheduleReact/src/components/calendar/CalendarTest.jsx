@@ -34,10 +34,11 @@ class CalendarTest extends React.Component {
     };
 
     onEventDrop = (data) => {
-        console.log(data);
+        console.log("Drop" + data);
     };
 
-    onSlotChange(slotInfo) {
+    onSlotChange = (slotInfo) => {
+        console.log("Slot change")
         var startDate = moment(slotInfo.start.toLocaleString()).format("YYYY-MM-DD hh:mm:ss");
         var endDate = moment(slotInfo.end.toLocaleString()).format("YYYY-MM-DD hh:mm:ss");
         console.log(startDate); //shows the start time chosen

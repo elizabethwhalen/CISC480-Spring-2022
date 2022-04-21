@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Grid, Paper, Typography, } from '@material-ui/core'
+import { Button, Grid, Paper, Typography, } from '@mui/material'
 import { makeStyles } from '@material-ui/core/styles'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import background from '../../images/campus.jpg'
@@ -104,40 +104,41 @@ const Login = (props) => {
       <Grid container className={classes.container} >
 
         {/* Empty grid item used for place holder */}
-        <Grid item direction="column"
-          alignItems="flex-start"
-          justify="flex-start" className={classes.gridItem1} >
+        <Grid item 
+          // alignItems="flex-start"
+          // justify="flex-start" 
+          className={classes.gridItem1} >
         </Grid>
 
-        <Grid item direction="column"
-          alignItems="flex-end"
-          justify="flex-end"
+        <Grid item
+          // alignItems="flex-end"
+          // justify="flex-end"
           className={classes.gridItem2}
         >
           <Grid container className={classes.loginContainer}>
 
             {/* LOGO */}
-            <Grid item xs={12} fullWidth className={classes.logoGrid} >
+            <Grid item xs={12} className={classes.logoGrid} >
               <img src={logo} className={classes.logo} alt='logo' ></img>
             </Grid>
 
             {/* Instruction line */}
-            <Grid item xs={12} fullWidth className={classes.text}>
+            <Grid item xs={12} className={classes.text}>
               Sign in with your organizational account
             </Grid>
 
             {/* Form */}
-            <Grid item xs={12} fullWidth>
+            <Grid item xs={12}>
               <ValidatorForm onSubmit={handleLogin}>
                 <Grid container spacing={1}>
 
                   {/* Email */}
-                  <Grid item xs={12} fullWidth>
+                  <Grid item xs={12}>
                     <TextValidator
                       size="small"
                       variant="outlined"
                       label="Email"
-                      fullWidth
+                      
                       name="email"
                       value={email}
                       onChange={handleChangeEmail}
@@ -147,12 +148,12 @@ const Login = (props) => {
                   </Grid>
 
                   {/* Password */}
-                  <Grid item xs={12} fullWidth >
+                  <Grid item xs={12} >
                     <TextValidator
                       size="small"
                       variant="outlined"
                       label="Password"
-                      fullWidth
+                      
                       name="password"
                       type="password"
                       value={password}
@@ -164,7 +165,7 @@ const Login = (props) => {
                   </Grid>
 
                   {/* Forgot Password link to reset password */}
-                  <Grid item xs={12} fullwidth>
+                  <Grid item xs={12}>
                     <Typography variant='h8'>
                       <Link to='/ForgotPassword' className={classes.forgotPass}>
                         Forgot password?
@@ -173,7 +174,7 @@ const Login = (props) => {
                   </Grid>
 
                   {/* Submit button */}
-                  <Grid item xs={12} fullWidth className={classes.loginButtonGrid}>
+                  <Grid item xs={12} className={classes.loginButtonGrid}>
                       <Button variant="contained" disableElevation type='submit' >
                         Log In
                       </Button>                   
