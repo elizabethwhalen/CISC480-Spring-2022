@@ -67,4 +67,3 @@ Login accounts are created via the signup method (`curl "https://classy-api.ddns
 Tokens are obtained via the login method (`curl "https://classy-api.ddns.net/v2/login" -X POST -d "username=[username]&password=[password]"`)
 
 Once the token is acquired, it must be included in the the header after each curl command. In v2, all accounts have full access to all methods. In versions 3 and up, methods will be restricted depending on the access_level and faculty_id associated with login accounts.
-

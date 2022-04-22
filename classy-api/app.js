@@ -1,108 +1,66 @@
+//
+// Import packages and setup app
+//
 
-var crypto = require('crypto');
-var argon2i = require('argon2-ffi').argon2i;
+// Base packages
+var express = require('express');
+var path = require('path');
+var mysql = require('mysql');
+
+// Login and token packages
+var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken')
 const secretkey = "secretkey" //CHANGETHIS
 
-// *****v2****
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
-// Import fs, express, hbs (HTML template format), body-parser
-let fs = require('fs');
-const hbs = require('express-handlebars');
-const bodyParser = require("body-parser");
-
+// Setup RESTful app
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
-
-app.use(logger('dev'));
+// Response in JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//app.use('/', indexRouter);
-//app.use('/users', usersRouter);
+///
+// Database Connection
+//
 
-/*
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+// Determine which schema we are modifying
+let schema = "cs_dev" // "db_dev" use for development Database Team
+
+// Connection to the database team Azure DB
+var config =
+{
+    host: 'classy-schedule-database.mysql.database.azure.com',
+    user: 'db_test',
+    password: 'fA!6#_&eaU9-EaeJ',
+    database: schema,
+    port: 3306,
+};
+
+// Connect to the database
+const con = new mysql.createConnection(config);
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected to the MySQL database!");
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
-*/
-
-//connection
-const con = require('./models/taskModel');
-
-// User express to populate HTML templates
-app.use(express.static('public'));
-app.engine('hbs', hbs.engine({
-    helpers: {
-        isCompleted: function (status) {
-            if (status == "completed") {
-                return true
-            } else {
-                return false
-            }
-        },
-    },
-    layoutsDir: './views/layouts',
-    defaultLayout: 'main',
-    extname: '.hbs',
-    runtimeOptions: {
-        allowProtoPropertiesByDefault: true,
-        allowProtoMethodsByDefault: true
-    }
-}));
-
-
-app.set('view engine', 'hbs');
-app.use(bodyParser.urlencoded({
-    extended: true
-}))
-app.use(bodyParser.json())
-
-app.get('/', (req, res) => {
-    let query = "SELECT * FROM dept";
-    let items = []
-    con.query(query, (err, result) => {
-        if (err) throw err;
-        items = result
-        console.log(items)
-        res.render('index', {
-            items: items
-        })
-    })
-    console.log(items);
+app.get('/help', (req, res) => {
+    res.send("https://github.com/elizabethwhalen/CISC480-Spring-2022/blob/Database-Branch/classy-api/versioning.md")
 });
 
+//
+// *** v2 ***
+//
 
 //***BUILDING***
 //view
 app.get('/v2/building', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -146,7 +104,11 @@ app.get('/v2/building', (req, res) => {
 //add
 app.post('/v2/building', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -166,7 +128,11 @@ app.post('/v2/building', (req, res) => {
 //update
 app.put('/v2/building/:building_code_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -185,7 +151,11 @@ app.put('/v2/building/:building_code_id', (req, res) => {
 //delete
 app.delete('/v2/building/:building_code_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -202,7 +172,11 @@ app.delete('/v2/building/:building_code_id', (req, res) => {
 //view
 app.get('/v2/class', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -258,7 +232,11 @@ app.get('/v2/class', (req, res) => {
 //add
 app.post('/v2/class', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -278,7 +256,11 @@ app.post('/v2/class', (req, res) => {
 //update
 app.put('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -297,7 +279,11 @@ app.put('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
 //delete
 app.delete('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -314,7 +300,11 @@ app.delete('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
 //view
 app.get('/v2/class_feature', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -370,7 +360,11 @@ app.get('/v2/class_feature', (req, res) => {
 //add
 app.post('/v2/class_feature', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -390,7 +384,11 @@ app.post('/v2/class_feature', (req, res) => {
 //update
 app.put('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -409,7 +407,11 @@ app.put('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req, re
 //delete
 app.delete('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -426,7 +428,11 @@ app.delete('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req,
 //view
 app.get('/v2/dept', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -470,7 +476,11 @@ app.get('/v2/dept', (req, res) => {
 //add
 app.post('/v2/dept', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -490,7 +500,11 @@ app.post('/v2/dept', (req, res) => {
 //update
 app.put('/v2/dept/:dept_code_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -509,7 +523,11 @@ app.put('/v2/dept/:dept_code_id', (req, res) => {
 //delete
 app.delete('/v2/dept/:dept_code_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -526,7 +544,11 @@ app.delete('/v2/dept/:dept_code_id', (req, res) => {
 //view
 app.get('/v2/faculty', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -618,7 +640,11 @@ app.get('/v2/faculty', (req, res) => {
 //add
 app.post('/v2/faculty', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -638,7 +664,11 @@ app.post('/v2/faculty', (req, res) => {
 //update
 app.put('/v2/faculty/:faculty_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -657,7 +687,11 @@ app.put('/v2/faculty/:faculty_id_id', (req, res) => {
 //delete
 app.delete('/v2/faculty/:faculty_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -674,7 +708,11 @@ app.delete('/v2/faculty/:faculty_id_id', (req, res) => {
 //view
 app.get('/v2/faculty_class', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -742,7 +780,11 @@ app.get('/v2/faculty_class', (req, res) => {
 //add
 app.post('/v2/faculty_class', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -762,7 +804,11 @@ app.post('/v2/faculty_class', (req, res) => {
 //update
 app.put('/v2/faculty_class/:faculty_id_id/:dept_code_id/:class_num_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -781,7 +827,11 @@ app.put('/v2/faculty_class/:faculty_id_id/:dept_code_id/:class_num_id', (req, re
 //delete
 app.delete('/v2/faculty_class/:faculty_id_id/:dept_code_id/:class_num_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -798,7 +848,11 @@ app.delete('/v2/faculty_class/:faculty_id_id/:dept_code_id/:class_num_id', (req,
 //view
 app.get('/v2/faculty_feature', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -854,7 +908,11 @@ app.get('/v2/faculty_feature', (req, res) => {
 //add
 app.post('/v2/faculty_feature', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -874,7 +932,11 @@ app.post('/v2/faculty_feature', (req, res) => {
 //update
 app.put('/v2/faculty_feature/:faculty_id_id/:feature_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -893,7 +955,11 @@ app.put('/v2/faculty_feature/:faculty_id_id/:feature_id_id', (req, res) => {
 //delete
 app.delete('/v2/faculty_feature/:faculty_id_id/:feature_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -910,7 +976,11 @@ app.delete('/v2/faculty_feature/:faculty_id_id/:feature_id_id', (req, res) => {
 //view
 app.get('/v2/faculty_other_request', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -954,7 +1024,11 @@ app.get('/v2/faculty_other_request', (req, res) => {
 //add
 app.post('/v2/faculty_other_request', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -974,7 +1048,11 @@ app.post('/v2/faculty_other_request', (req, res) => {
 //update
 app.put('/v2/faculty_other_request/:faculty_id_id/:request_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -993,7 +1071,11 @@ app.put('/v2/faculty_other_request/:faculty_id_id/:request_id', (req, res) => {
 //delete
 app.delete('/v2/faculty_other_request/:faculty_id_id/:request_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1010,7 +1092,11 @@ app.delete('/v2/faculty_other_request/:faculty_id_id/:request_id', (req, res) =>
 //view
 app.get('/v2/faculty_timeslot', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1066,7 +1152,11 @@ app.get('/v2/faculty_timeslot', (req, res) => {
 //add
 app.post('/v2/faculty_timeslot', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1086,7 +1176,11 @@ app.post('/v2/faculty_timeslot', (req, res) => {
 //update
 app.put('/v2/faculty_timeslot/:faculty_id_id/:time_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1105,7 +1199,11 @@ app.put('/v2/faculty_timeslot/:faculty_id_id/:time_id_id', (req, res) => {
 //delete
 app.delete('/v2/faculty_timeslot/:faculty_id_id/:time_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1122,7 +1220,11 @@ app.delete('/v2/faculty_timeslot/:faculty_id_id/:time_id_id', (req, res) => {
 //view
 app.get('/v2/feature', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1166,7 +1268,11 @@ app.get('/v2/feature', (req, res) => {
 //add
 app.post('/v2/feature', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1186,7 +1292,11 @@ app.post('/v2/feature', (req, res) => {
 //update
 app.put('/v2/feature/:feature_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1205,7 +1315,11 @@ app.put('/v2/feature/:feature_id_id', (req, res) => {
 //delete
 app.delete('/v2/feature/:feature_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1222,7 +1336,11 @@ app.delete('/v2/feature/:feature_id_id', (req, res) => {
 //view
 app.get('/v2/login', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1290,7 +1408,11 @@ app.get('/v2/login', (req, res) => {
 //add
 app.post('/v2/login/bad', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1310,7 +1432,11 @@ app.post('/v2/login/bad', (req, res) => {
 //update
 app.put('/v2/login/:user_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1329,7 +1455,11 @@ app.put('/v2/login/:user_id_id', (req, res) => {
 //delete
 app.delete('/v2/login/:user_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1346,7 +1476,11 @@ app.delete('/v2/login/:user_id_id', (req, res) => {
 //view
 app.get('/v2/meets', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1462,7 +1596,11 @@ app.get('/v2/meets', (req, res) => {
 //add
 app.post('/v2/meets', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1482,7 +1620,11 @@ app.post('/v2/meets', (req, res) => {
 //update
 app.put('/v2/meets/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:draft_id/:building_code_id/:room_num_id/:time_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1501,7 +1643,11 @@ app.put('/v2/meets/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:dra
 //delete
 app.delete('/v2/meets/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:draft_id/:building_code_id/:room_num_id/:time_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1518,7 +1664,11 @@ app.delete('/v2/meets/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:
 //view
 app.get('/v2/room', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1574,7 +1724,11 @@ app.get('/v2/room', (req, res) => {
 //add
 app.post('/v2/room', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1594,7 +1748,11 @@ app.post('/v2/room', (req, res) => {
 //update
 app.put('/v2/room/:building_code_id/:room_num_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1613,7 +1771,11 @@ app.put('/v2/room/:building_code_id/:room_num_id', (req, res) => {
 //delete
 app.delete('/v2/room/:building_code_id/:room_num_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1630,7 +1792,11 @@ app.delete('/v2/room/:building_code_id/:room_num_id', (req, res) => {
 //view
 app.get('/v2/room_feature', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1686,7 +1852,11 @@ app.get('/v2/room_feature', (req, res) => {
 //add
 app.post('/v2/room_feature', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1706,7 +1876,11 @@ app.post('/v2/room_feature', (req, res) => {
 //update
 app.put('/v2/room_feature/:building_code_id/:room_num_id/:feature_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1725,7 +1899,11 @@ app.put('/v2/room_feature/:building_code_id/:room_num_id/:feature_id_id', (req, 
 //delete
 app.delete('/v2/room_feature/:building_code_id/:room_num_id/:feature_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1742,7 +1920,11 @@ app.delete('/v2/room_feature/:building_code_id/:room_num_id/:feature_id_id', (re
 //view
 app.get('/v2/section', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1834,7 +2016,11 @@ app.get('/v2/section', (req, res) => {
 //add
 app.post('/v2/section', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1854,7 +2040,11 @@ app.post('/v2/section', (req, res) => {
 //update
 app.put('/v2/section/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:draft_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1873,7 +2063,11 @@ app.put('/v2/section/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:d
 //delete
 app.delete('/v2/section/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:draft_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1890,7 +2084,11 @@ app.delete('/v2/section/:dept_code_id/:class_num_id/:section_num_id/:semester_id
 //view
 app.get('/v2/teaches', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1982,7 +2180,11 @@ app.get('/v2/teaches', (req, res) => {
 //add
 app.post('/v2/teaches', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -2002,7 +2204,11 @@ app.post('/v2/teaches', (req, res) => {
 //update
 app.put('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:draft_id/:faculty_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -2021,7 +2227,11 @@ app.put('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:d
 //delete
 app.delete('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:draft_id/:faculty_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -2038,7 +2248,11 @@ app.delete('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id
 //view
 app.get('/v2/timeslot', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -2106,7 +2320,11 @@ app.get('/v2/timeslot', (req, res) => {
 //add
 app.post('/v2/timeslot', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -2126,7 +2344,11 @@ app.post('/v2/timeslot', (req, res) => {
 //update
 app.put('/v2/timeslot/:time_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -2145,7 +2367,11 @@ app.put('/v2/timeslot/:time_id_id', (req, res) => {
 //delete
 app.delete('/v2/timeslot/:time_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -2162,7 +2388,11 @@ app.delete('/v2/timeslot/:time_id_id', (req, res) => {
 //view
 app.get('/v2/title', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -2218,7 +2448,11 @@ app.get('/v2/title', (req, res) => {
 //add
 app.post('/v2/title', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -2238,7 +2472,11 @@ app.post('/v2/title', (req, res) => {
 //update
 app.put('/v2/title/:title_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -2257,7 +2495,11 @@ app.put('/v2/title/:title_id_id', (req, res) => {
 //delete
 app.delete('/v2/title/:title_id_id', (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -2350,11 +2592,11 @@ function query_db_put(query, data, res){
 
 // ****login****
 var MIN_PASSWORD_LENGTH = 8;
-var MAX_PASSWORD_LENGTH = 160;
+var MAX_PASSWORD_LENGTH = 16;
 var users = {};
 
 //create users
-app.post('/v2/signup', (req, res) => {
+app.post('/v2/signup', async (req, res) => {
 
     if(!req.body){
       return res.sendStatus(400);
@@ -2371,16 +2613,10 @@ app.post('/v2/signup', (req, res) => {
         return res.status(400).send('Password must be between ' + MIN_PASSWORD_LENGTH + ' and ' + MAX_PASSWORD_LENGTH + ' characters long');
     }
 
-    crypto.randomBytes(16, function (err, salt) {
-    if (err) throw err;
-    argon2i.hash(req.body.password, salt, function (err, hash) {
-      if (err) {throw err;}
-    }).catch(err => {
-      reject(err)
-    }).then(hash => {
-      login_query_db_post("insert into login values ?",[[[req.body.username, hash, req.body.faculty_id, access_level=0]]],res)
-    });
-  });
+const salt = await bcrypt.genSalt(10)
+try{ hash = await bcrypt.hash(req.body.password, salt)
+} catch (err) {console.log("bcrypt error", err)}
+login_query_db_post("insert into login values ?",[[[req.body.username, hash, req.body.faculty_id, access_level=0]]],res)
 });
 
 //login
@@ -2394,19 +2630,19 @@ app.post('/v2/login', async function (req, res) {
   
     let loginjson = await get_pass("SELECT * from login where user_id="+con.escape(req.body.username),res);
     passHashed = loginjson[0].pass
+    console.log("passHashed")
     if (passHashed === undefined) { return res.sendStatus(401); }
-    argon2i.verify(passHashed, req.body.password)  
+    bcrypt.compare(req.body.password,passHashed)  
     .then(correct => {
       if(correct){
         let token = jwt.sign(
           {user: loginjson[0]},
           secretkey,
           {
-            algorithm: "HS256",
-            expiresIn: 300,
+              algorithm: "HS256",
+              expiresIn: 86400,
           });
-        res.cookie("token", token, { maxAge: 300 * 1000 })
-        res.status(200).send('Welcome '+ req.body.username +"! Your token is: "+ token)
+        res.status(200).send(token)
       }
       else {res.status(400).send('Incorrect password')}
     });
@@ -2445,10 +2681,10 @@ async function get_pass(query,res){
   return result
 }
 function verify(token){
-  
+    console.log(token)
 	// if the cookie is not set, return an unauthorized error
 	if (!token) {
-		return [401,"Unauthorized"]
+		return [401,"Unauthorized no token"]
 	}
 
 	var payload
@@ -2461,7 +2697,8 @@ function verify(token){
 	} catch (e) {
 		if (e instanceof jwt.JsonWebTokenError) {
 			// if the error thrown is because the JWT is unauthorized, return a 401 error
-			return [401,"Unauthorized"]
+            console.log(e)
+			return [401,"Unauthorized error"]
 		}
 		// otherwise, return a bad request error
 		return [400,"Bad Request"]
