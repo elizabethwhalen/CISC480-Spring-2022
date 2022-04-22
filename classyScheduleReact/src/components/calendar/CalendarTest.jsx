@@ -1,79 +1,71 @@
 import React from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
+import { Paper } from "@mui/material";
 import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
+
 const localizer = momentLocalizer(moment);
-
-const events = [{ start: new Date(), end: new Date(), title: "special event" }];
-
 const DnDCalendar = withDragAndDrop(Calendar);
 
-const minTime = new Date();
-minTime.setHours(8, 0, 0);
-const maxTime = new Date();
-maxTime.setHours(21, 0, 0);
+export default function CalendarTest() {
+    const [events, setEvents] = React.useState([]);
+    const minTime = new Date();
+    minTime.setHours(8, 0, 0);
+    const maxTime = new Date();
+    maxTime.setHours(21, 0, 0);
 
-class CalendarTest extends React.Component {
-    state = {
-        events,
-        minTime: minTime,
-        maxTime: maxTime,
+    const onEventDrop = (data) => {
+        const { start, end, event } = data;
+        let id = event.id;
+        const newData =  [...events];
+        newData.map((e) => {
+            if (e.id === id) { 
+                let title = e.title;
+                let updated = {start: start, end: end, title: title, id : id};
+                newData[e.id] = updated;
+                return;
+            }
+        })
+        setEvents(newData);
     };
 
-    onEventResize = (data) => {
-        const { start, end } = data;
-
-        this.setState((state) => {
-            state.events[0].start = start;
-            state.events[0].end = end;
-            return { events: state.events };
-        });
+    const onSlotChange = (event) => {
+        let { start, end } = event;
+        let count = events.length;
+        let newEvent = { start: start, end: end, title: "New event", id: count};
+        const newData = [...events]
+        newData.push(newEvent);
+        setEvents(newData);
+        return events;
     };
 
-    onEventDrop = (data) => {
-        console.log("Drop" + data);
+    const onEventClick = (event) => {
+        // return <EditSession />;
     };
 
-    onSlotChange = (slotInfo) => {
-        console.log("Slot change")
-        var startDate = moment(slotInfo.start.toLocaleString()).format("YYYY-MM-DD hh:mm:ss");
-        var endDate = moment(slotInfo.end.toLocaleString()).format("YYYY-MM-DD hh:mm:ss");
-        console.log(startDate); //shows the start time chosen
-        console.log(endDate); //shows the end time chosen
-        // this.state.events.push({ start: new Date(), end: new Date(), title: "new event" });
-        return {events: this.state.events};
-    }
-
-    onEventClick(event) {
-        console.log(event) //Shows the event details provided while booking
-    }
-
-    render() {
-        return (
-            <div className="App">
-                <DnDCalendar
-                    min={this.state.minTime}
-                    max={this.state.maxTime}
-                    defaultDate={moment().toDate()}
-                    defaultView="week"
-                    events={this.state.events}
-                    localizer={localizer}
-                    onEventDrop={this.onEventDrop}
-                    onEventResize={this.onEventResize}
-                    resizable
-                    selectable
-                    style={{ height: "100vh" }}
-                    step={30}
-                    timeslots={2}
-                    onSelectEvent={event => this.onEventClick(event)}
-                    onSelectSlot={(slotInfo) => this.onSlotChange(slotInfo)}
-                />
-            </div>
-        );
-    }
-}
-
-export default CalendarTest;
+    return (
+        <Paper sx={{ padding: '20px' }} elevation={0} >
+            <DnDCalendar
+                min={minTime}
+                max={maxTime}
+                defaultDate={moment().toDate()}
+                defaultView="week"
+                events={events}
+                localizer={localizer}
+                onEventDrop={event => onEventDrop(event)}
+                onEventResize={event => onEventDrop(event)}
+                resizable
+                selectable
+                style={{ height: "100vh" }}
+                step={30}
+                timeslots={2}
+                onSelectEvent={event => onEventClick(event)}
+                onSelectSlot={(slotInfo) => onSlotChange(slotInfo)}
+                styles={{ overflow: "hidden" }}
+            />
+        </Paper>
+    );
+};

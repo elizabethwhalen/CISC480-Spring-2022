@@ -24,15 +24,15 @@ const Help = () => {
     return (
         <Paper elevation={0} className={classes.container} >
             <Grid container spacing={3}>
-                <Grid item xs={12} fullWidth>
+                <Grid item xs={12}>
                     <Typography variant='h4'>
                         Getting Started
                     </Typography>
                 </Grid>
 
-                <Grid item xs={12} fullWidth>
+                <Grid item xs={12}>
                     <Grid container spacing={1}>
-                        <Grid item xs={12} fullWidth>
+                        <Grid item xs={12}>
                             <Typography variant='h5' gutterBottom className={classes.header}>
                                 Home Page
                             </Typography>
@@ -41,7 +41,7 @@ const Help = () => {
                             </Typography>
                         </Grid>
 
-                        <Grid item xs={12} fullWidth>
+                        <Grid item xs={12}>
                             <Typography variant='h5' gutterBottom className={classes.header}>
                                 Functions Tab
                             </Typography>
@@ -60,7 +60,7 @@ const Help = () => {
                             </Typography>
                         </Grid>
 
-                        <Grid item xs={12} fullWidth>
+                        <Grid item xs={12}>
                             <Typography variant='h5' gutterBottom className={classes.header}>
                                 Calendar Overview
                             </Typography>
@@ -70,7 +70,7 @@ const Help = () => {
                             </Typography>
                         </Grid>
 
-                        <Grid item xs={12} fullWidth>
+                        <Grid item xs={12}>
                             <Typography variant='h5' gutterBottom className={classes.header}>
                                 Help
                             </Typography>

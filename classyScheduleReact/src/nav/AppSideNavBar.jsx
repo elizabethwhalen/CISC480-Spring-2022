@@ -163,7 +163,7 @@ const AppSideNavBar = (props) => {
       <List>
 
          {/* HOME */}
-        <Link exact to="/" className={classes.link} >
+        <Link to="/" className={classes.link} >
           <ListItem
             button
             selected={selectedIndex === 0}
@@ -196,7 +196,7 @@ const AppSideNavBar = (props) => {
 
           {/* Add course */}
           <List disablePadding>
-            <Link exact to='/AddClass' className={classes.link} >
+            <Link to='/AddClass' className={classes.link} >
               <ListItem button className={classes.collapseLink}>
                 <ListItemIcon>
                   <ClassIcon />
@@ -208,7 +208,7 @@ const AppSideNavBar = (props) => {
             </Link>
 
             {/* Add Faculty */}
-            <Link exact to='/AddFaculty' className={classes.link} >
+            <Link to='/AddFaculty' className={classes.link} >
               <ListItem button className={classes.collapseLink}>
                 <ListItemIcon>
                   <PermIdentityIcon />
@@ -219,7 +219,7 @@ const AppSideNavBar = (props) => {
               </ListItem>
             </Link>
             {/* Add Room*/}
-            <Link exact to='/AddRoom' className={classes.link} >
+            <Link to='/AddRoom' className={classes.link} >
               <ListItem button className={classes.collapseLink}>
                 <ListItemIcon>
                   <MeetingRoomIcon />
@@ -233,7 +233,7 @@ const AppSideNavBar = (props) => {
         </Collapse>
 
         {/* CALENDAR */} 
-        <Link exact to="/Calendar" className={classes.link} >
+        <Link to="/Calendar" className={classes.link} >
           <ListItem
             button
             selected={selectedIndex === 3}
@@ -249,7 +249,7 @@ const AppSideNavBar = (props) => {
         </Link>
 
         {/* HELP */}
-        <Link exact to="/Help" className={classes.link} >
+        <Link to="/Help" className={classes.link} >
           <ListItem
             button
             selected={selectedIndex === 4}

@@ -11,6 +11,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        display: 'flex',
+    },
     container: {
         padding: theme.spacing(4),
         position: 'relative',
@@ -92,17 +95,17 @@ const AddFaculty = () => {
     return (
         <Paper className={classes.container} elevation={0} >
             <Grid container spacing={2}>
-                <Grid item xs={12} fullWidth>
+                <Grid item xs={12}>
                     <Typography variant="h6" className={classes.title} gutterBottom>
                         Add New Faculty Member
                     </Typography>
                 </Grid>
 
-                <Grid item xs={12} fullWidth>
+                <Grid item xs={12}>
                     <ValidatorForm onSubmit={submitForm}>
                         <Grid container spacing={2}>
                             {/* First name */}
-                            <Grid item xs={4} fullWidth>
+                            <Grid item xs={4}>
                                 <TextValidator
                                     size="medium"
                                     variant="outlined"
@@ -126,7 +129,7 @@ const AddFaculty = () => {
                             </Grid>
 
                             {/* Last name */}
-                            <Grid item xs={4} fullWidth>
+                            <Grid item xs={4}>
                                 <TextValidator
                                     size="medium"
                                     variant="outlined"
@@ -204,7 +207,7 @@ const AddFaculty = () => {
                                 </Grid>
                             </Grid> */}
 
-                            <Grid item xs={12} fullWidth>
+                            <Grid item xs={12}>
                                 <Button 
                                     variant="contained" 
                                     size="large" 

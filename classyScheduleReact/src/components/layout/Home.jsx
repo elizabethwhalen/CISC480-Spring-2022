@@ -35,8 +35,8 @@ const Home = () => {
     return (
         <Paper className={classes.container} elevation={0}>
             <Grid container spacing={3} >
-                <Grid item xs={12} fullWidth>
-                    <img src={logo} className={classes.logo}/>
+                <Grid item xs={12}>
+                    <img src={logo} alt='' className={classes.logo}/>
                     <Typography variant="h4">
                         Welcome to Classy Scheduler
                     </Typography>
@@ -45,7 +45,7 @@ const Home = () => {
                     </Typography>
                     
                 </Grid>
-                <Grid item xs={12} fullWidth>
+                <Grid item xs={12}>
                     <Grid container spacing={2}>
                         {/*This button will take you to the add new class tab*/}
                         <Grid item xs={12} fullWidth>
@@ -55,28 +55,28 @@ const Home = () => {
                         </Grid>
 
                         {/*This button will take you to the add New Faculty tab*/}
-                        <Grid item xs={12} fullWidth>
+                        <Grid item xs={12}>
                             <Link to='/AddFaculty' className={classes.link}>
                                 <Button size="large">Add New Faculty Member</Button>
                             </Link>
                         </Grid>
 
                         {/*This button will take you to the add New Room tab*/}
-                        <Grid item xs={12} fullWidth>
+                        <Grid item xs={12}>
                             <Link to='/AddRoom' className={classes.link}>
                                 <Button size="large">Add New Room</Button>
                             </Link>
                         </Grid>
 
                         {/*This button will take you to the Calendar */}
-                        <Grid item xs={12} fullWidth>
+                        <Grid item xs={12}>
                             <Link to='/Calendar' className={classes.link}>
                                 <Button size="large">View Schedule</Button>
                             </Link>
                         </Grid>
 
                         {/*This button will take you to the Questions tab*/}
-                        <Grid item xs={12} fullWidth>
+                        <Grid item xs={12}>
                             <Link to='/Help' className={classes.link}>
                                 <Button size="large">Questions?</Button>
                             </Link>

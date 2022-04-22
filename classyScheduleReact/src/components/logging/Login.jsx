@@ -1,13 +1,13 @@
 import React from 'react'
 import { Button, Grid, Paper, Typography, } from '@mui/material'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import background from '../../images/campus.jpg'
 import logo from '../../images/ustlogo.png'
 import { Link } from 'react-router-dom'
 
 // Styling components using useStyles
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   root: {
     display: 'flex',
     height: '100vh',
@@ -44,15 +44,15 @@ const useStyles = makeStyles((theme) => ({
     margin: '0 auto -55px auto'
   },
   logoGrid: {
-    paddingTop: '30px',
-    marginBottom: '70px'
+    paddingTop: '50px',
+    paddingBottom: '70px',
   },
   logo: {
     width: '260px',
     height: '50px'
   },
   text: {
-    marginBottom: '30px'
+    paddingBottom: '30px'
   },
   textBox: {
     marginBottom: '20px'
@@ -65,13 +65,16 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'none',
   },
   loginButtonGrid: {
-    marginTop: '20px'
+    marginTop: '100px',
   },
   message: {
     color: 'red',
     fontWeight: 600,
   },
-}))
+  button: {
+    backgroundColor: '#0063cc',
+  },
+});
 
 // Login page component with parameter passed under props
 const Login = (props) => {
@@ -138,7 +141,7 @@ const Login = (props) => {
                       size="small"
                       variant="outlined"
                       label="Email"
-                      
+                      fullWidth  
                       name="email"
                       value={email}
                       onChange={handleChangeEmail}
@@ -153,7 +156,7 @@ const Login = (props) => {
                       size="small"
                       variant="outlined"
                       label="Password"
-                      
+                      fullWidth
                       name="password"
                       type="password"
                       value={password}
@@ -174,8 +177,8 @@ const Login = (props) => {
                   </Grid>
 
                   {/* Submit button */}
-                  <Grid item xs={12} className={classes.loginButtonGrid}>
-                      <Button variant="contained" disableElevation type='submit' >
+                  <Grid item xs={12} sx={{ marginTop: '30px' }}>
+                      <Button variant="contained" disableElevation type='submit' sx={{backgroundColor: '#6a1b9a', '&:hover' : {backgroundColor: '#4a148c'} }} >
                         Log In
                       </Button>                   
                   </Grid>
