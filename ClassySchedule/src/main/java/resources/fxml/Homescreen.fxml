@@ -102,12 +102,11 @@
                   <Button mnemonicParsing="false" onMouseClicked="#viewScheduleClicked" prefHeight="25.0" prefWidth="176.0" text="View Schedule" />
               </buttons>
             </ButtonBar>
-            <ButtonBar layoutX="-10.0" layoutY="180.0" prefHeight="40.0" prefWidth="647.0">
+            <ButtonBar layoutX="52.0" layoutY="180.0" prefHeight="40.0" prefWidth="647.0">
                <buttons>
-                  <Button fx:id="deleteCourse" mnemonicParsing="false" onMouseClicked="#DeleteCourseButtonClicked" text="Delete Course" translateX="-133.0" />
-                  <Button fx:id="deleteProfessor" mnemonicParsing="false" text="Delete Professor" translateX="-131.0" />
-                  <Button fx:id="deleteClassroom" mnemonicParsing="false" text="Delete Classroom" translateX="-130.0" />
-                  <Button fx:id="deletePreferences" mnemonicParsing="false" text="Delete Preferences" translateX="-129.0" />
+                  <Button fx:id="deleteCourse" mnemonicParsing="false" onMouseClicked="#DeleteCourseButtonClicked" text="Delete Course" translateX="-335.0" />
+                  <Button fx:id="deleteProfessor" mnemonicParsing="false" text="Delete Professor" translateX="-325.0" />
+                  <Button fx:id="deleteClassroom" mnemonicParsing="false" onMouseClicked="#DeleteClassroomButtonClicked" text="Delete Classroom" translateX="-317.0" />
                </buttons>
             </ButtonBar>
       </children>

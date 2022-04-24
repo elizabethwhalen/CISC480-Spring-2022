@@ -18,13 +18,14 @@ import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class DeleteCourseFromDatabaseController implements Initializable {
+public class DeleteClassroomFromDatabaseController implements Initializable {
 
     /**
      * The back button to go back to home screen
@@ -39,16 +40,16 @@ public class DeleteCourseFromDatabaseController implements Initializable {
     private Button confirm;
 
     /**
-     * The course drop-down box to select which course to delete
+     * The buildingCode drop-down box to select which building we are referring to
      */
     @FXML
-    private ChoiceBox<String> course;
+    private ChoiceBox<String> buildingCode;
 
     /**
-     * The department drop-down box to select which dept of courses to delete
+     * The roomNum drop-down box to select the room to delete from the database
      */
     @FXML
-    private ChoiceBox<String> dept;
+    private ChoiceBox<String> roomNum;
 
     /**
      * the current stage of this scene
@@ -68,26 +69,24 @@ public class DeleteCourseFromDatabaseController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Initialize dropdown boxes with observable database list
-        getDept();
-        // Whenever the department drop-down is selected call the getCourse function to change
-        // and initialize the course drop-down
-        dept.valueProperty().addListener(new ChangeListener<String>() {
+        // Initialize the buildings drop-down
+        getBuildingCode();
+        // Whenever the building drop-down is selected call the getRoomNumber method to change
+        // and initialize the roomNum drop-down
+        buildingCode.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // Clear previous drop-down course
-                course.getItems().clear();
-                // Set list of new courses from selected department
-                getCourses();
+                // Clear previous drop-down roomNum
+                roomNum.getItems().clear();
+                // Set list of roomNum from selected building
+                getRoomNumber();
             }
         });
         // Initialize back button
         back(back, "Go Back To Home Screen", "Click ok to go back to home screen.", true);
         // Set confirmation of confirm button to delete the selected course
-        back(confirm, "Confirm Deletion", "Click 'OK' to delete the class, or 'Cancel' to cancel the following action.", false);
-
+        back(confirm, "Confirm Deletion", "Click 'OK' to delete the classroom, or 'Cancel' to cancel the following action.", false);
     }
-
 
     /**
      * Set the stage of the scene
@@ -98,31 +97,52 @@ public class DeleteCourseFromDatabaseController implements Initializable {
     }
 
     /**
-     * confirmButton to delete the selected course. It checks if the drop-down boxes
-     * are empty, if not, then it checks for the JSON object of the selected drop-down box of course/dept
-     * and call the deleteData function from the Database class to delete the selected course from the database
+     * Initialize and grab data of buildings from the database to put into the buildingCode drop-down box
+     */
+    private void getBuildingCode() {
+        JSONArray building = database.getData("room");
+        for (Object jsonObject: building) {
+            JSONObject job = (JSONObject)jsonObject;
+            buildingCode.getItems().add((String) job.get("building_code"));
+        }
+    }
+
+    /**
+     * Initialize and grab data of room number from the database to put into the roomNum drop-down box
+     */
+    private void getRoomNumber() {
+        JSONArray room = database.getData("room");
+        for (Object jsonObject: room) {
+            JSONObject job = (JSONObject)jsonObject;
+            roomNum.getItems().add((String) job.get("room_num"));
+        }
+    }
+
+    /**
+     * confirmButton to delete the selected classroom. It checks if the drop-down boxes
+     * are empty, if not, then it checks for the JSON object of the selected drop-down box of buildingCode/RoomNumber
+     * and call the deleteData function from the Database class to delete the selected classroom from the database
      * @return true if the course is deleted and false if there's an error
      */
     private boolean confirmButton() {
         boolean result = true;
         // If drop-down boxes are not empty
-        if (!(course.getSelectionModel().isEmpty()) && !(dept.getSelectionModel().isEmpty())) {
-            String selectedClass = course.getValue();
-            String selectedDept = dept.getValue();
-            //TODO: maybe include section number too for more specific class to delete?
-            JSONArray classes = database.getData("class");
-            // Iterate through the database class table to find matching selected dept/course for deletion
-            for (Object jsonObject: classes) {
+        if (!(buildingCode.getSelectionModel().isEmpty()) && !(roomNum.getSelectionModel().isEmpty())) {
+            String selectedBuilding = buildingCode.getValue();
+            String selectedRoom = roomNum.getValue();
+            JSONArray classroom = database.getData("room");
+            // Iterate through the database class table to find matching selected roomNum and buildingCode for deletion
+            for (Object jsonObject: classroom) {
                 JSONObject job = (JSONObject) jsonObject;
-                // If the JSON object to be deleted is equal to the selected course/dept then delete it
-                if (job.get("class_name").equals(selectedClass) && job.get("dept_code").equals(selectedDept)) {
+                // If the JSON object to be deleted is equal to the selected roomNum/buildingCode then delete it
+                if (job.get("building_code").equals(selectedBuilding) && job.get("room_num").equals(selectedRoom)) {
                     try {
-                        // Delete the class from the database
-                        database.deleteData("class", job);
-                        // Clear the course department
-                        course.getItems().clear();
-                        // Set department drop-down back to blank default
-                        dept.getSelectionModel().clearSelection();
+                        // Delete the room from the database
+                        database.deleteData("room", job);
+                        // Clear the room number drop-down box
+                        roomNum.getItems().clear();
+                        // Set buildingCode drop-down back to blank default
+                        buildingCode.getSelectionModel().clearSelection();
                     } catch (URISyntaxException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -132,45 +152,15 @@ public class DeleteCourseFromDatabaseController implements Initializable {
                 }
             }
         }
-        // No course has been selected show an error alert
+        // No room has been selected show an error alert
         else {
             result = false;
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("No Course Selected");
-            alert.setContentText("Please select a course to delete");
+            alert.setTitle("No Room Selected");
+            alert.setContentText("Please select a room to delete");
             alert.showAndWait();
         }
         return result;
-    }
-
-    /**
-     * Initialize and grab data from the database to put into the course drop-down box
-     */
-    private void getCourses() {
-        // Variable reference to the selected department
-        String selectedDepartment = dept.getValue();
-        // Iterate through the class table and grab the selected department classes from the database to the drop-down
-        JSONArray classes = database.getData("class");
-        for (Object jsonObject: classes) {
-            JSONObject job = (JSONObject)jsonObject;
-            // If the selected data have the same department as the selected department
-            // then add those data courses to the course drop-down
-            if (job.get("dept_code").equals(selectedDepartment)) {
-                course.getItems().add((String) job.get("class_name"));
-            }
-        }
-    }
-
-    /**
-     * Initialize and grab data of department from the database to put into the dept drop-down box
-     */
-    private void getDept() {
-        // Iterate through the class table and grab the data of department to the department drop-down
-        JSONArray department = database.getData("dept");
-        for (Object jsonObject: department) {
-            JSONObject job = (JSONObject)jsonObject;
-            dept.getItems().add((String) job.get("dept_code"));
-        }
     }
 
     /**
@@ -216,6 +206,7 @@ public class DeleteCourseFromDatabaseController implements Initializable {
                     // If button is "Ok", then create information alert to notify successful removal
                     // and go back to home screen
                     if (ok.get().getText().equals("OK")) {
+                        // If deletion goes well then show a successful alert
                         if (confirmButton()) {
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setTitle("Deleted");
@@ -227,7 +218,7 @@ public class DeleteCourseFromDatabaseController implements Initializable {
             };
             // Set the button to have the above functionality
             button.setOnAction(confirmDelete);
-        }
+            }
     }
 
     /**
@@ -249,3 +240,4 @@ public class DeleteCourseFromDatabaseController implements Initializable {
         stage.show();
     }
 }
+
