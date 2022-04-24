@@ -44,8 +44,9 @@ con.connect(function(err) {
   console.log("Connected to the MySQL database!");
 });
 
+// Get help information from versioning file
 app.get('/help', (req, res) => {
-    res.send("https://github.com/elizabethwhalen/CISC480-Spring-2022/blob/Database-Branch/classy-api/versioning.md")
+    res.send("Please visit: <a href='https://github.com/elizabethwhalen/CISC480-Spring-2022/blob/Database-Branch/classy-api/versioning.md'>https://github.com/elizabethwhalen/CISC480-Spring-2022/blob/Database-Branch/classy-api/versioning.md</a>")
 });
 
 //
@@ -297,7 +298,7 @@ app.get('/v2/building', (req, res) => {
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
         }
-            
+
     //where condition:building_code
     let building_code = req.query.building_code
     if (building_code){
@@ -324,7 +325,7 @@ app.get('/v2/building', (req, res) => {
     };
     query_db_get(query, res)
     }
-    
+
 });
 //add
 app.post('/v2/building', (req, res) => {
@@ -345,7 +346,7 @@ app.post('/v2/building', (req, res) => {
         data = [
             [req.body.building_code,req.body.building_name]
         ]
-    
+
         query_db_add(query, data, res)
     }
 
@@ -369,7 +370,7 @@ app.put('/v2/building/:building_code_id', (req, res) => {
         data = [
             req.body.building_code,req.body.building_name
         ]
-    
+
         query_db_put(query, data, res)
     }
 });
@@ -413,7 +414,7 @@ app.get('/v2/class', (req, res) => {
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
         }
-            
+
     //where condition:dept_code
     let dept_code = req.query.dept_code
     if (dept_code){
@@ -452,7 +453,7 @@ app.get('/v2/class', (req, res) => {
     };
     query_db_get(query, res)
     }
-    
+
 });
 //add
 app.post('/v2/class', (req, res) => {
@@ -473,7 +474,7 @@ app.post('/v2/class', (req, res) => {
         data = [
             [req.body.dept_code,req.body.class_num,req.body.class_name]
         ]
-    
+
         query_db_add(query, data, res)
     }
 
@@ -497,7 +498,7 @@ app.put('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
         data = [
             req.body.dept_code,req.body.class_num,req.body.class_name
         ]
-    
+
         query_db_put(query, data, res)
     }
 });
@@ -541,7 +542,7 @@ app.get('/v2/class_feature', (req, res) => {
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
         }
-            
+
     //where condition:dept_code
     let dept_code = req.query.dept_code
     if (dept_code){
@@ -580,7 +581,7 @@ app.get('/v2/class_feature', (req, res) => {
     };
     query_db_get(query, res)
     }
-    
+
 });
 //add
 app.post('/v2/class_feature', (req, res) => {
@@ -601,7 +602,7 @@ app.post('/v2/class_feature', (req, res) => {
         data = [
             [req.body.dept_code,req.body.class_num,req.body.feature_id]
         ]
-    
+
         query_db_add(query, data, res)
     }
 
@@ -625,7 +626,7 @@ app.put('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req, re
         data = [
             req.body.dept_code,req.body.class_num,req.body.feature_id
         ]
-    
+
         query_db_put(query, data, res)
     }
 });
@@ -669,7 +670,7 @@ app.get('/v2/dept', (req, res) => {
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
         }
-            
+
     //where condition:dept_code
     let dept_code = req.query.dept_code
     if (dept_code){
@@ -696,7 +697,7 @@ app.get('/v2/dept', (req, res) => {
     };
     query_db_get(query, res)
     }
-    
+
 });
 //add
 app.post('/v2/dept', (req, res) => {
@@ -717,7 +718,7 @@ app.post('/v2/dept', (req, res) => {
         data = [
             [req.body.dept_code,req.body.dept_name]
         ]
-    
+
         query_db_add(query, data, res)
     }
 
@@ -741,7 +742,7 @@ app.put('/v2/dept/:dept_code_id', (req, res) => {
         data = [
             req.body.dept_code,req.body.dept_name
         ]
-    
+
         query_db_put(query, data, res)
     }
 });
@@ -785,7 +786,7 @@ app.get('/v2/faculty', (req, res) => {
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
         }
-            
+
     //where condition:faculty_id
     let faculty_id = req.query.faculty_id
     if (faculty_id){
@@ -860,7 +861,7 @@ app.get('/v2/faculty', (req, res) => {
     };
     query_db_get(query, res)
     }
-    
+
 });
 //add
 app.post('/v2/faculty', (req, res) => {
@@ -881,7 +882,7 @@ app.post('/v2/faculty', (req, res) => {
         data = [
             [req.body.faculty_id,req.body.faculty_first,req.body.faculty_last,req.body.title_id,req.body.prev_load,req.body.curr_load]
         ]
-    
+
         query_db_add(query, data, res)
     }
 
@@ -905,7 +906,7 @@ app.put('/v2/faculty/:faculty_id_id', (req, res) => {
         data = [
             req.body.faculty_id,req.body.faculty_first,req.body.faculty_last,req.body.title_id,req.body.prev_load,req.body.curr_load
         ]
-    
+
         query_db_put(query, data, res)
     }
 });
@@ -949,7 +950,7 @@ app.get('/v2/faculty_class', (req, res) => {
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
         }
-            
+
     //where condition:faculty_id
     let faculty_id = req.query.faculty_id
     if (faculty_id){
@@ -1000,7 +1001,7 @@ app.get('/v2/faculty_class', (req, res) => {
     };
     query_db_get(query, res)
     }
-    
+
 });
 //add
 app.post('/v2/faculty_class', (req, res) => {
@@ -1021,7 +1022,7 @@ app.post('/v2/faculty_class', (req, res) => {
         data = [
             [req.body.faculty_id,req.body.dept_code,req.body.class_num,req.body.pref_level]
         ]
-    
+
         query_db_add(query, data, res)
     }
 
@@ -1045,7 +1046,7 @@ app.put('/v2/faculty_class/:faculty_id_id/:dept_code_id/:class_num_id', (req, re
         data = [
             req.body.faculty_id,req.body.dept_code,req.body.class_num,req.body.pref_level
         ]
-    
+
         query_db_put(query, data, res)
     }
 });
@@ -1089,7 +1090,7 @@ app.get('/v2/faculty_feature', (req, res) => {
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
         }
-            
+
     //where condition:faculty_id
     let faculty_id = req.query.faculty_id
     if (faculty_id){
@@ -1128,7 +1129,7 @@ app.get('/v2/faculty_feature', (req, res) => {
     };
     query_db_get(query, res)
     }
-    
+
 });
 //add
 app.post('/v2/faculty_feature', (req, res) => {
@@ -1149,7 +1150,7 @@ app.post('/v2/faculty_feature', (req, res) => {
         data = [
             [req.body.faculty_id,req.body.feature_id,req.body.pref_level]
         ]
-    
+
         query_db_add(query, data, res)
     }
 
@@ -1173,7 +1174,7 @@ app.put('/v2/faculty_feature/:faculty_id_id/:feature_id_id', (req, res) => {
         data = [
             req.body.faculty_id,req.body.feature_id,req.body.pref_level
         ]
-    
+
         query_db_put(query, data, res)
     }
 });
@@ -1217,7 +1218,7 @@ app.get('/v2/faculty_other_request', (req, res) => {
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
         }
-            
+
     //where condition:faculty_id
     let faculty_id = req.query.faculty_id
     if (faculty_id){
@@ -1244,7 +1245,7 @@ app.get('/v2/faculty_other_request', (req, res) => {
     };
     query_db_get(query, res)
     }
-    
+
 });
 //add
 app.post('/v2/faculty_other_request', (req, res) => {
@@ -1265,7 +1266,7 @@ app.post('/v2/faculty_other_request', (req, res) => {
         data = [
             [req.body.faculty_id,req.body.request]
         ]
-    
+
         query_db_add(query, data, res)
     }
 
@@ -1289,7 +1290,7 @@ app.put('/v2/faculty_other_request/:faculty_id_id/:request_id', (req, res) => {
         data = [
             req.body.faculty_id,req.body.request
         ]
-    
+
         query_db_put(query, data, res)
     }
 });
@@ -1333,7 +1334,7 @@ app.get('/v2/faculty_timeslot', (req, res) => {
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
         }
-            
+
     //where condition:faculty_id
     let faculty_id = req.query.faculty_id
     if (faculty_id){
@@ -1372,7 +1373,7 @@ app.get('/v2/faculty_timeslot', (req, res) => {
     };
     query_db_get(query, res)
     }
-    
+
 });
 //add
 app.post('/v2/faculty_timeslot', (req, res) => {
@@ -1393,7 +1394,7 @@ app.post('/v2/faculty_timeslot', (req, res) => {
         data = [
             [req.body.faculty_id,req.body.time_id,req.body.pref_level]
         ]
-    
+
         query_db_add(query, data, res)
     }
 
@@ -1417,7 +1418,7 @@ app.put('/v2/faculty_timeslot/:faculty_id_id/:time_id_id', (req, res) => {
         data = [
             req.body.faculty_id,req.body.time_id,req.body.pref_level
         ]
-    
+
         query_db_put(query, data, res)
     }
 });
@@ -1461,7 +1462,7 @@ app.get('/v2/feature', (req, res) => {
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
         }
-            
+
     //where condition:feature_id
     let feature_id = req.query.feature_id
     if (feature_id){
@@ -1488,7 +1489,7 @@ app.get('/v2/feature', (req, res) => {
     };
     query_db_get(query, res)
     }
-    
+
 });
 //add
 app.post('/v2/feature', (req, res) => {
@@ -1509,7 +1510,7 @@ app.post('/v2/feature', (req, res) => {
         data = [
             [req.body.feature_id,req.body.feature_name]
         ]
-    
+
         query_db_add(query, data, res)
     }
 
@@ -1533,7 +1534,7 @@ app.put('/v2/feature/:feature_id_id', (req, res) => {
         data = [
             req.body.feature_id,req.body.feature_name
         ]
-    
+
         query_db_put(query, data, res)
     }
 });
@@ -1577,7 +1578,7 @@ app.get('/v2/login', (req, res) => {
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
         }
-            
+
     //where condition:user_id
     let user_id = req.query.user_id
     if (user_id){
@@ -1628,7 +1629,7 @@ app.get('/v2/login', (req, res) => {
     };
     query_db_get(query, res)
     }
-    
+
 });
 //add
 app.post('/v2/login/bad', (req, res) => {
@@ -1649,7 +1650,7 @@ app.post('/v2/login/bad', (req, res) => {
         data = [
             [req.body.user_id,req.body.pass,req.body.faculty_id,req.body.access_level]
         ]
-    
+
         query_db_add(query, data, res)
     }
 
@@ -1673,7 +1674,7 @@ app.put('/v2/login/:user_id_id', (req, res) => {
         data = [
             req.body.user_id,req.body.pass,req.body.faculty_id,req.body.access_level
         ]
-    
+
         query_db_put(query, data, res)
     }
 });
@@ -1717,7 +1718,7 @@ app.get('/v2/meets', (req, res) => {
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
         }
-            
+
     //where condition:dept_code
     let dept_code = req.query.dept_code
     if (dept_code){
@@ -1816,7 +1817,7 @@ app.get('/v2/meets', (req, res) => {
     };
     query_db_get(query, res)
     }
-    
+
 });
 //add
 app.post('/v2/meets', (req, res) => {
@@ -1837,7 +1838,7 @@ app.post('/v2/meets', (req, res) => {
         data = [
             [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.building_code,req.body.room_num,req.body.time_id]
         ]
-    
+
         query_db_add(query, data, res)
     }
 
@@ -1861,7 +1862,7 @@ app.put('/v2/meets/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:dra
         data = [
             req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.building_code,req.body.room_num,req.body.time_id
         ]
-    
+
         query_db_put(query, data, res)
     }
 });
@@ -1905,7 +1906,7 @@ app.get('/v2/room', (req, res) => {
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
         }
-            
+
     //where condition:building_code
     let building_code = req.query.building_code
     if (building_code){
@@ -1944,7 +1945,7 @@ app.get('/v2/room', (req, res) => {
     };
     query_db_get(query, res)
     }
-    
+
 });
 //add
 app.post('/v2/room', (req, res) => {
@@ -1965,7 +1966,7 @@ app.post('/v2/room', (req, res) => {
         data = [
             [req.body.building_code,req.body.room_num,req.body.capacity]
         ]
-    
+
         query_db_add(query, data, res)
     }
 
@@ -1989,7 +1990,7 @@ app.put('/v2/room/:building_code_id/:room_num_id', (req, res) => {
         data = [
             req.body.building_code,req.body.room_num,req.body.capacity
         ]
-    
+
         query_db_put(query, data, res)
     }
 });
@@ -2033,7 +2034,7 @@ app.get('/v2/room_feature', (req, res) => {
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
         }
-            
+
     //where condition:building_code
     let building_code = req.query.building_code
     if (building_code){
@@ -2072,7 +2073,7 @@ app.get('/v2/room_feature', (req, res) => {
     };
     query_db_get(query, res)
     }
-    
+
 });
 //add
 app.post('/v2/room_feature', (req, res) => {
@@ -2093,7 +2094,7 @@ app.post('/v2/room_feature', (req, res) => {
         data = [
             [req.body.building_code,req.body.room_num,req.body.feature_id]
         ]
-    
+
         query_db_add(query, data, res)
     }
 
@@ -2117,7 +2118,7 @@ app.put('/v2/room_feature/:building_code_id/:room_num_id/:feature_id_id', (req, 
         data = [
             req.body.building_code,req.body.room_num,req.body.feature_id
         ]
-    
+
         query_db_put(query, data, res)
     }
 });
@@ -2161,7 +2162,7 @@ app.get('/v2/section', (req, res) => {
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
         }
-            
+
     //where condition:dept_code
     let dept_code = req.query.dept_code
     if (dept_code){
@@ -2236,7 +2237,7 @@ app.get('/v2/section', (req, res) => {
     };
     query_db_get(query, res)
     }
-    
+
 });
 //add
 app.post('/v2/section', (req, res) => {
@@ -2257,7 +2258,7 @@ app.post('/v2/section', (req, res) => {
         data = [
             [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.capacity]
         ]
-    
+
         query_db_add(query, data, res)
     }
 
@@ -2281,7 +2282,7 @@ app.put('/v2/section/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:d
         data = [
             req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.capacity
         ]
-    
+
         query_db_put(query, data, res)
     }
 });
@@ -2325,7 +2326,7 @@ app.get('/v2/teaches', (req, res) => {
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
         }
-            
+
     //where condition:dept_code
     let dept_code = req.query.dept_code
     if (dept_code){
@@ -2400,7 +2401,7 @@ app.get('/v2/teaches', (req, res) => {
     };
     query_db_get(query, res)
     }
-    
+
 });
 //add
 app.post('/v2/teaches', (req, res) => {
@@ -2421,7 +2422,7 @@ app.post('/v2/teaches', (req, res) => {
         data = [
             [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.faculty_id]
         ]
-    
+
         query_db_add(query, data, res)
     }
 
@@ -2445,7 +2446,7 @@ app.put('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:d
         data = [
             req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.faculty_id
         ]
-    
+
         query_db_put(query, data, res)
     }
 });
@@ -2489,7 +2490,7 @@ app.get('/v2/timeslot', (req, res) => {
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
         }
-            
+
     //where condition:time_id
     let time_id = req.query.time_id
     if (time_id){
@@ -2540,7 +2541,7 @@ app.get('/v2/timeslot', (req, res) => {
     };
     query_db_get(query, res)
     }
-    
+
 });
 //add
 app.post('/v2/timeslot', (req, res) => {
@@ -2561,7 +2562,7 @@ app.post('/v2/timeslot', (req, res) => {
         data = [
             [req.body.time_id,req.body.day_of_week,req.body.time_start,req.body.time_end]
         ]
-    
+
         query_db_add(query, data, res)
     }
 
@@ -2585,7 +2586,7 @@ app.put('/v2/timeslot/:time_id_id', (req, res) => {
         data = [
             req.body.time_id,req.body.day_of_week,req.body.time_start,req.body.time_end
         ]
-    
+
         query_db_put(query, data, res)
     }
 });
@@ -2629,7 +2630,7 @@ app.get('/v2/title', (req, res) => {
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
         }
-            
+
     //where condition:title_id
     let title_id = req.query.title_id
     if (title_id){
@@ -2668,7 +2669,7 @@ app.get('/v2/title', (req, res) => {
     };
     query_db_get(query, res)
     }
-    
+
 });
 //add
 app.post('/v2/title', (req, res) => {
@@ -2689,7 +2690,7 @@ app.post('/v2/title', (req, res) => {
         data = [
             [req.body.title_id,req.body.title_name,req.body.max_load]
         ]
-    
+
         query_db_add(query, data, res)
     }
 
@@ -2713,7 +2714,7 @@ app.put('/v2/title/:title_id_id', (req, res) => {
         data = [
             req.body.title_id,req.body.title_name,req.body.max_load
         ]
-    
+
         query_db_put(query, data, res)
     }
 });
@@ -2833,7 +2834,7 @@ app.post('/v2/signup', async (req, res) => {
     //this doesn't work- can't see users without query
     if (users[req.body.username] !== undefined) {
         return res.status(409).send('A user with the specified username already exists');
-    }  
+    }
     if(req.body.password.length < MIN_PASSWORD_LENGTH || req.body.password > MAX_PASSWORD_LENGTH){
         return res.status(400).send('Password must be between ' + MIN_PASSWORD_LENGTH + ' and ' + MAX_PASSWORD_LENGTH + ' characters long');
     }
@@ -2848,16 +2849,16 @@ login_query_db_post("insert into login values ?",[[[req.body.username, hash, req
 app.post('/v2/login', async function (req, res) {
     var passHashed;
     //if (!req.body) { return res.sendStatus(400); }
-  
+
     if (!req.body.username || !req.body.password) {
       return res.status(400).send('Missing username or password');
     }
-  
+
     let loginjson = await get_pass("SELECT * from login where user_id="+con.escape(req.body.username),res);
     passHashed = loginjson[0].pass
     console.log("passHashed")
     if (passHashed === undefined) { return res.sendStatus(401); }
-    bcrypt.compare(req.body.password,passHashed)  
+    bcrypt.compare(req.body.password,passHashed)
     .then(correct => {
       if(correct){
         let token = jwt.sign(
@@ -3011,7 +3012,7 @@ app.post('/building', (req, res) => {
   data = [
       [req.body.building_code,req.body.building_name]
   ]
-      
+
   //where condition:building_code
   let building_code = req.query.building_code
   if (building_code){
@@ -3036,7 +3037,7 @@ app.delete('/building', (req, res) => {
   console.log(req.body)
   let query = "DELETE FROM building";
   query=query+ " WHERE 1=1"
-  
+
   //where condition:building_code
   let building_code = req.query.building_code
   if (building_code){
@@ -3063,7 +3064,7 @@ app.put('/building', (req, res) => {
   //set condition: new_dept_code
   comma=0
 
-  
+
   //set condition: new_building_code
   let new_building_code = req.query.new_building_code
   if (new_building_code){
@@ -3078,9 +3079,9 @@ app.put('/building', (req, res) => {
       query = query + " building_name = '" + new_building_name +"'";
       comma=1
   };
-  
+
   query=query+ " WHERE 1=1"
-  
+
   //where condition:building_code
   let building_code = req.query.building_code
   if (building_code){
@@ -3153,8 +3154,8 @@ app.get('/class', (req, res) => {
       }
   };
   // query database
-  query_db(query, res);  
-  
+  query_db(query, res);
+
 });
 
 
@@ -3165,7 +3166,7 @@ app.post('/class', (req, res) => {
   data = [
       [req.body.dept_code,req.body.class_num,req.body.class_name]
   ]
-      
+
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -3196,7 +3197,7 @@ app.delete('/class', (req, res) => {
   console.log(req.body)
   let query = "DELETE FROM class";
   query=query+ " WHERE 1=1"
-  
+
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -3229,7 +3230,7 @@ app.put('/class', (req, res) => {
   //set condition: new_dept_code
   comma=0
 
-  
+
   //set condition: new_dept_code
   let new_dept_code = req.query.new_dept_code
   if (new_dept_code){
@@ -3251,9 +3252,9 @@ app.put('/class', (req, res) => {
       query = query + " class_name = '" + new_class_name +"'";
       comma=1
   };
-  
+
   query=query+ " WHERE 1=1"
-  
+
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -3289,7 +3290,7 @@ app.get('/class_feature', (req, res) => {
   if(Object.keys(req.query).length > 0){
       query = query + " WHERE "
   }
-  prev = false;    
+  prev = false;
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -3300,7 +3301,7 @@ app.get('/class_feature', (req, res) => {
           }
           query = query + "dept_code = " + con.escape(depts[i]);
       }
-      
+
       prev = true;
   };
   //where condition:class_num
@@ -3343,7 +3344,7 @@ app.post('/class_feature', (req, res) => {
   data = [
       [req.body.dept_code,req.body.class_num,req.body.feature_id]
   ]
-      
+
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -3374,7 +3375,7 @@ app.delete('/class_feature', (req, res) => {
   console.log(req.body)
   let query = "DELETE FROM class_feature";
   query=query+ " WHERE 1=1"
-  
+
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -3407,7 +3408,7 @@ app.put('/class_feature', (req, res) => {
   //set condition: new_dept_code
   comma=0
 
-  
+
   //set condition: new_dept_code
   let new_dept_code = req.query.new_dept_code
   if (new_dept_code){
@@ -3429,9 +3430,9 @@ app.put('/class_feature', (req, res) => {
       query = query + " feature_id = '" + new_feature_id +"'";
       comma=1
   };
-  
+
   query=query+ " WHERE 1=1"
-  
+
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -3467,7 +3468,7 @@ app.get('/dept', (req, res) => {
   if(Object.keys(req.query).length > 0){
       query = query + " WHERE "
   }
-  prev = false;    
+  prev = false;
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -3504,7 +3505,7 @@ app.post('/dept', (req, res) => {
   data = [
       [req.body.dept_code,req.body.dept_name]
   ]
-      
+
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -3529,7 +3530,7 @@ app.delete('/dept', (req, res) => {
   console.log(req.body)
   let query = "DELETE FROM dept";
   query=query+ " WHERE 1=1"
-  
+
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -3556,7 +3557,7 @@ app.put('/dept', (req, res) => {
   //set condition: new_dept_code
   comma=0
 
-  
+
   //set condition: new_dept_code
   let new_dept_code = req.query.new_dept_code
   if (new_dept_code){
@@ -3571,9 +3572,9 @@ app.put('/dept', (req, res) => {
       query = query + " dept_name = '" + new_dept_name +"'";
       comma=1
   };
-  
+
   query=query+ " WHERE 1=1"
-  
+
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -3700,7 +3701,7 @@ app.post('/faculty', (req, res) => {
   data = [
       [req.body.faculty_id,req.body.faculty_first,req.body.faculty_last,req.body.title_id,req.body.prev_load,req.body.curr_load]
   ]
-      
+
   //where condition:faculty_id
   let faculty_id = req.query.faculty_id
   if (faculty_id){
@@ -3749,7 +3750,7 @@ app.delete('/faculty', (req, res) => {
   console.log(req.body)
   let query = "DELETE FROM faculty";
   query=query+ " WHERE 1=1"
-  
+
   //where condition:faculty_id
   let faculty_id = req.query.faculty_id
   if (faculty_id){
@@ -3800,7 +3801,7 @@ app.put('/faculty', (req, res) => {
   //set condition: new_dept_code
   comma=0
 
-  
+
   //set condition: new_faculty_id
   let new_faculty_id = req.query.new_faculty_id
   if (new_faculty_id){
@@ -3843,9 +3844,9 @@ app.put('/faculty', (req, res) => {
       query = query + " curr_load = '" + new_curr_load +"'";
       comma=1
   };
-  
+
   query=query+ " WHERE 1=1"
-  
+
   //where condition:faculty_id
   let faculty_id = req.query.faculty_id
   if (faculty_id){
@@ -3967,7 +3968,7 @@ app.post('/faculty_class', (req, res) => {
   data = [
       [req.body.faculty_id,req.body.dept_code,req.body.class_num,req.body.pref_level]
   ]
-      
+
   //where condition:faculty_id
   let faculty_id = req.query.faculty_id
   if (faculty_id){
@@ -4004,7 +4005,7 @@ app.delete('/faculty_class', (req, res) => {
   console.log(req.body)
   let query = "DELETE FROM faculty_class";
   query=query+ " WHERE 1=1"
-  
+
   //where condition:faculty_id
   let faculty_id = req.query.faculty_id
   if (faculty_id){
@@ -4043,7 +4044,7 @@ app.put('/faculty_class', (req, res) => {
   //set condition: new_dept_code
   comma=0
 
-  
+
   //set condition: new_faculty_id
   let new_faculty_id = req.query.new_faculty_id
   if (new_faculty_id){
@@ -4072,9 +4073,9 @@ app.put('/faculty_class', (req, res) => {
       query = query + " pref_level = '" + new_pref_level +"'";
       comma=1
   };
-  
+
   query=query+ " WHERE 1=1"
-  
+
   //where condition:faculty_id
   let faculty_id = req.query.faculty_id
   if (faculty_id){
@@ -4168,7 +4169,7 @@ app.post('/faculty_feature', (req, res) => {
   data = [
       [req.body.faculty_id,req.body.feature_id,req.body.pref_level]
   ]
-      
+
   //where condition:faculty_id
   let faculty_id = req.query.faculty_id
   if (faculty_id){
@@ -4199,7 +4200,7 @@ app.delete('/faculty_feature', (req, res) => {
   console.log(req.body)
   let query = "DELETE FROM faculty_feature";
   query=query+ " WHERE 1=1"
-  
+
   //where condition:faculty_id
   let faculty_id = req.query.faculty_id
   if (faculty_id){
@@ -4232,7 +4233,7 @@ app.put('/faculty_feature', (req, res) => {
   //set condition: new_dept_code
   comma=0
 
-  
+
   //set condition: new_faculty_id
   let new_faculty_id = req.query.new_faculty_id
   if (new_faculty_id){
@@ -4254,9 +4255,9 @@ app.put('/faculty_feature', (req, res) => {
       query = query + " pref_level = '" + new_pref_level +"'";
       comma=1
   };
-  
+
   query=query+ " WHERE 1=1"
-  
+
   //where condition:faculty_id
   let faculty_id = req.query.faculty_id
   if (faculty_id){
@@ -4330,7 +4331,7 @@ app.post('/faculty_other_request', (req, res) => {
   data = [
       [req.body.faculty_id,req.body.request]
   ]
-      
+
   //where condition:faculty_id
   let faculty_id = req.query.faculty_id
   if (faculty_id){
@@ -4355,7 +4356,7 @@ app.delete('/faculty_other_request', (req, res) => {
   console.log(req.body)
   let query = "DELETE FROM faculty_other_request";
   query=query+ " WHERE 1=1"
-  
+
   //where condition:faculty_id
   let faculty_id = req.query.faculty_id
   if (faculty_id){
@@ -4382,7 +4383,7 @@ app.put('/faculty_other_request', (req, res) => {
   //set condition: new_dept_code
   comma=0
 
-  
+
   //set condition: new_faculty_id
   let new_faculty_id = req.query.new_faculty_id
   if (new_faculty_id){
@@ -4397,9 +4398,9 @@ app.put('/faculty_other_request', (req, res) => {
       query = query + " request = '" + new_request +"'";
       comma=1
   };
-  
+
   query=query+ " WHERE 1=1"
-  
+
   //where condition:faculty_id
   let faculty_id = req.query.faculty_id
   if (faculty_id){
@@ -4482,7 +4483,7 @@ app.post('/faculty_timeslot', (req, res) => {
   data = [
       [req.body.faculty_id,req.body.time_id,req.body.pref_level]
   ]
-      
+
   //where condition:faculty_id
   let faculty_id = req.query.faculty_id
   if (faculty_id){
@@ -4513,7 +4514,7 @@ app.delete('/faculty_timeslot', (req, res) => {
   console.log(req.body)
   let query = "DELETE FROM faculty_timeslot";
   query=query+ " WHERE 1=1"
-  
+
   //where condition:faculty_id
   let faculty_id = req.query.faculty_id
   if (faculty_id){
@@ -4546,7 +4547,7 @@ app.put('/faculty_timeslot', (req, res) => {
   //set condition: new_dept_code
   comma=0
 
-  
+
   //set condition: new_faculty_id
   let new_faculty_id = req.query.new_faculty_id
   if (new_faculty_id){
@@ -4568,9 +4569,9 @@ app.put('/faculty_timeslot', (req, res) => {
       query = query + " pref_level = '" + new_pref_level +"'";
       comma=1
   };
-  
+
   query=query+ " WHERE 1=1"
-  
+
   //where condition:faculty_id
   let faculty_id = req.query.faculty_id
   if (faculty_id){
@@ -4642,7 +4643,7 @@ app.post('/feature', (req, res) => {
   data = [
       [req.body.feature_id,req.body.feature_name]
   ]
-      
+
   //where condition:feature_id
   let feature_id = req.query.feature_id
   if (feature_id){
@@ -4667,7 +4668,7 @@ app.delete('/feature', (req, res) => {
   console.log(req.body)
   let query = "DELETE FROM feature";
   query=query+ " WHERE 1=1"
-  
+
   //where condition:feature_id
   let feature_id = req.query.feature_id
   if (feature_id){
@@ -4694,7 +4695,7 @@ app.put('/feature', (req, res) => {
   //set condition: new_dept_code
   comma=0
 
-  
+
   //set condition: new_feature_id
   let new_feature_id = req.query.new_feature_id
   if (new_feature_id){
@@ -4709,9 +4710,9 @@ app.put('/feature', (req, res) => {
       query = query + " feature_name = '" + new_feature_name +"'";
       comma=1
   };
-  
+
   query=query+ " WHERE 1=1"
-  
+
   //where condition:feature_id
   let feature_id = req.query.feature_id
   if (feature_id){
@@ -4739,7 +4740,7 @@ app.get('/login', (req, res) => {
   let query = "SELECT * FROM login";
 
   query = query + " WHERE 1=1"
-      
+
   //where condition:user_id
   let user_id = req.query.user_id
   if (user_id){
@@ -4789,7 +4790,7 @@ app.post('/login', (req, res) => {
   data = [
       [req.body.user_id,req.body.pass,req.body.faculty_id,req.body.access_level]
   ]
-      
+
   //where condition:user_id
   let user_id = req.query.user_id
   if (user_id){
@@ -4826,7 +4827,7 @@ app.delete('/login', (req, res) => {
   console.log(req.body)
   let query = "DELETE FROM login";
   query=query+ " WHERE 1=1"
-  
+
   //where condition:user_id
   let user_id = req.query.user_id
   if (user_id){
@@ -4865,7 +4866,7 @@ app.put('/login', (req, res) => {
   //set condition: new_dept_code
   comma=0
 
-  
+
   //set condition: new_user_id
   let new_user_id = req.query.new_user_id
   if (new_user_id){
@@ -4894,9 +4895,9 @@ app.put('/login', (req, res) => {
       query = query + " access_level = '" + new_access_level +"'";
       comma=1
   };
-  
+
   query=query+ " WHERE 1=1"
-  
+
   //where condition:user_id
   let user_id = req.query.user_id
   if (user_id){
@@ -4938,7 +4939,7 @@ app.get('/meets', (req, res) => {
   if(Object.keys(req.query).length > 0){
       query = query + " WHERE "
   }
-  prev = false;    
+  prev = false;
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -5066,7 +5067,7 @@ app.post('/meets', (req, res) => {
   data = [
       [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.building_code,req.body.room_num,req.body.time_id]
   ]
-      
+
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -5127,7 +5128,7 @@ app.delete('/meets', (req, res) => {
   console.log(req.body)
   let query = "DELETE FROM meets";
   query=query+ " WHERE 1=1"
-  
+
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -5190,7 +5191,7 @@ app.put('/meets', (req, res) => {
   //set condition: new_dept_code
   comma=0
 
-  
+
   //set condition: new_dept_code
   let new_dept_code = req.query.new_dept_code
   if (new_dept_code){
@@ -5247,9 +5248,9 @@ app.put('/meets', (req, res) => {
       query = query + " time_id = '" + new_time_id +"'";
       comma=1
   };
-  
+
   query=query+ " WHERE 1=1"
-  
+
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -5366,7 +5367,7 @@ app.post('/room', (req, res) => {
   data = [
       [req.body.building_code,req.body.room_num,req.body.capacity]
   ]
-      
+
   //where condition:building_code
   let building_code = req.query.building_code
   if (building_code){
@@ -5397,7 +5398,7 @@ app.delete('/room', (req, res) => {
   console.log(req.body)
   let query = "DELETE FROM room";
   query=query+ " WHERE 1=1"
-  
+
   //where condition:building_code
   let building_code = req.query.building_code
   if (building_code){
@@ -5430,7 +5431,7 @@ app.put('/room', (req, res) => {
   //set condition: new_dept_code
   comma=0
 
-  
+
   //set condition: new_building_code
   let new_building_code = req.query.new_building_code
   if (new_building_code){
@@ -5452,9 +5453,9 @@ app.put('/room', (req, res) => {
       query = query + " capacity = '" + new_capacity +"'";
       comma=1
   };
-  
+
   query=query+ " WHERE 1=1"
-  
+
   //where condition:building_code
   let building_code = req.query.building_code
   if (building_code){
@@ -5541,7 +5542,7 @@ app.post('/room_feature', (req, res) => {
   data = [
       [req.body.building_code,req.body.room_num,req.body.feature_id]
   ]
-      
+
   //where condition:building_code
   let building_code = req.query.building_code
   if (building_code){
@@ -5572,7 +5573,7 @@ app.delete('/room_feature', (req, res) => {
   console.log(req.body)
   let query = "DELETE FROM room_feature";
   query=query+ " WHERE 1=1"
-  
+
   //where condition:building_code
   let building_code = req.query.building_code
   if (building_code){
@@ -5605,7 +5606,7 @@ app.put('/room_feature', (req, res) => {
   //set condition: new_dept_code
   comma=0
 
-  
+
   //set condition: new_building_code
   let new_building_code = req.query.new_building_code
   if (new_building_code){
@@ -5627,9 +5628,9 @@ app.put('/room_feature', (req, res) => {
       query = query + " feature_id = '" + new_feature_id +"'";
       comma=1
   };
-  
+
   query=query+ " WHERE 1=1"
-  
+
   //where condition:building_code
   let building_code = req.query.building_code
   if (building_code){
@@ -5665,7 +5666,7 @@ app.get('/section', (req, res) => {
   if(Object.keys(req.query).length > 0){
       query = query + " WHERE "
   }
-  prev = false;    
+  prev = false;
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -5761,7 +5762,7 @@ app.post('/section', (req, res) => {
   data = [
       [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.capacity]
   ]
-      
+
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -5810,7 +5811,7 @@ app.delete('/section', (req, res) => {
   console.log(req.body)
   let query = "DELETE FROM section";
   query=query+ " WHERE 1=1"
-  
+
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -5861,7 +5862,7 @@ app.put('/section', (req, res) => {
   //set condition: new_dept_code
   comma=0
 
-  
+
   //set condition: new_dept_code
   let new_dept_code = req.query.new_dept_code
   if (new_dept_code){
@@ -5904,9 +5905,9 @@ app.put('/section', (req, res) => {
       query = query + " capacity = '" + new_capacity +"'";
       comma=1
   };
-  
+
   query=query+ " WHERE 1=1"
-  
+
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -5960,7 +5961,7 @@ app.get('/teaches', (req, res) => {
   if(Object.keys(req.query).length > 0){
       query = query + " WHERE "
   }
-  prev = false;    
+  prev = false;
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -6055,7 +6056,7 @@ app.post('/teaches', (req, res) => {
   data = [
       [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.faculty_id]
   ]
-      
+
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -6104,7 +6105,7 @@ app.delete('/teaches', (req, res) => {
   console.log(req.body)
   let query = "DELETE FROM teaches";
   query=query+ " WHERE 1=1"
-  
+
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -6155,7 +6156,7 @@ app.put('/teaches', (req, res) => {
   //set condition: new_dept_code
   comma=0
 
-  
+
   //set condition: new_dept_code
   let new_dept_code = req.query.new_dept_code
   if (new_dept_code){
@@ -6198,9 +6199,9 @@ app.put('/teaches', (req, res) => {
       query = query + " faculty_id = '" + new_faculty_id +"'";
       comma=1
   };
-  
+
   query=query+ " WHERE 1=1"
-  
+
   //where condition:dept_code
   let dept_code = req.query.dept_code
   if (dept_code){
@@ -6322,7 +6323,7 @@ app.post('/timeslot', (req, res) => {
   data = [
       [req.body.time_id,req.body.day_of_week,req.body.time_start,req.body.time_end]
   ]
-      
+
   //where condition:time_id
   let time_id = req.query.time_id
   if (time_id){
@@ -6359,7 +6360,7 @@ app.delete('/timeslot', (req, res) => {
   console.log(req.body)
   let query = "DELETE FROM timeslot";
   query=query+ " WHERE 1=1"
-  
+
   //where condition:time_id
   let time_id = req.query.time_id
   if (time_id){
@@ -6398,7 +6399,7 @@ app.put('/timeslot', (req, res) => {
   //set condition: new_dept_code
   comma=0
 
-  
+
   //set condition: new_time_id
   let new_time_id = req.query.new_time_id
   if (new_time_id){
@@ -6427,9 +6428,9 @@ app.put('/timeslot', (req, res) => {
       query = query + " time_end = '" + new_time_end +"'";
       comma=1
   };
-  
+
   query=query+ " WHERE 1=1"
-  
+
   //where condition:time_id
   let time_id = req.query.time_id
   if (time_id){
@@ -6471,7 +6472,7 @@ app.get('/title', (req, res) => {
   if(Object.keys(req.query).length > 0){
       query = query + " WHERE "
   }
-  prev = false;    
+  prev = false;
   //where condition:title_id
   let title_id = req.query.title_id
   if (title_id){
@@ -6522,7 +6523,7 @@ app.post('/title', (req, res) => {
   data = [
       [req.body.title_id,req.body.title_name,req.body.max_load]
   ]
-      
+
   //where condition:title_id
   let title_id = req.query.title_id
   if (title_id){
@@ -6553,7 +6554,7 @@ app.delete('/title', (req, res) => {
   console.log(req.body)
   let query = "DELETE FROM title";
   query=query+ " WHERE 1=1"
-  
+
   //where condition:title_id
   let title_id = req.query.title_id
   if (title_id){
@@ -6586,7 +6587,7 @@ app.put('/title', (req, res) => {
   //set condition: new_dept_code
   comma=0
 
-  
+
   //set condition: new_title_id
   let new_title_id = req.query.new_title_id
   if (new_title_id){
@@ -6608,9 +6609,9 @@ app.put('/title', (req, res) => {
       query = query + " max_load = '" + new_max_load +"'";
       comma=1
   };
-  
+
   query=query+ " WHERE 1=1"
-  
+
   //where condition:title_id
   let title_id = req.query.title_id
   if (title_id){
