@@ -49,6 +49,231 @@ app.get('/help', (req, res) => {
 });
 
 //
+// *** v3 ***
+//
+
+//queries
+async function db_get(query){
+    console.log(query)
+    return new Promise( (resolve, reject) => {
+        con.query(query, (err, result) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(result)
+            }
+        });
+      })
+}
+async function db_post(query, data){
+    console.log(query, data)
+    new Promise( (resolve, reject) => {
+        con.query(query, [data], (err, result) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(result)
+            }
+        });
+    })
+}
+async function db_delete(query){
+    return new Promise( (resolve, reject) => {
+      con.query(query, (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result)
+          }
+      });
+    })
+}
+async function db_put(query, data){
+    return new Promise( (resolve, reject) => {
+      con.query(query, data, (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result)
+          }
+      });
+    })
+}
+
+//calls
+
+//***BUILDING***
+//view
+//add
+//update
+//delete
+
+//***CLASS***
+//view
+//add
+app.post('/v2/class', async (req, res) => {
+    // verify auth
+    const token = req.cookies.token
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+
+    //auth validated
+    else{
+        //check if new dept
+        dept_exists = await db_get("SELECT * FROM dept WHERE dept_code="+con.escape(req.body.dept_code))
+        console.log(dept_exists)
+        if (dept_exists.length==0){return res.status(404).send("Department does not exist")} // could prompt them to add dept maybe??
+        let query = "INSERT INTO class (dept_code,class_num,class_name) VALUES ?";
+        data = [
+            [req.body.dept_code,req.body.class_num,req.body.class_name]
+        ]
+        console.log("adding")
+        try{classAdded = await db_post(query, data)
+        } catch(err){
+            console.log(err)
+            return res.status(400).send(err);
+        } //CHANGETHIS
+        console.log("no error")
+
+        //check for features
+        if (req.body.features){
+            feature_array = req.body.features.split(",")
+            for(let i = 0; i < feature_array.length; i++){
+                console.log(feature_array[i])
+                feature = con.escape(feature_array[i])
+                //check if new dept
+                try { feature_exists = await db_get("SELECT * FROM feature WHERE feature_name="+feature)
+                } catch(err){console.log("uhoh")}
+                console.log(feature_exists)
+                if (feature_exists.length==0){
+                    console.log(feature + " does not exist") //add feature to feature table
+                    try {
+                        await db_post("INSERT INTO feature VALUES ?", [[undefined,feature_array[i]]])
+                        console.log("feature created")
+                        try { new_feature = await db_get("SELECT * FROM feature WHERE feature_name="+feature)
+                        } catch(err){console.log("uhoh2")}
+                        feature_id = new_feature[0].feature_id
+                    }catch(err){console.log("feature add failed")}
+                }
+                else{
+                    feature_id = feature_exists[0].feature_id
+                }
+                try{
+                    feature_data = [
+                        [req.body.dept_code,req.body.class_num,feature_id]
+                    ]
+                    await db_post("INSERT INTO class_feature VALUES ?",feature_data)
+                }
+                catch(err){console.log("oops")}
+            
+            }
+            return res.status(201).send("Class and features added to database")
+        }
+    }
+});
+//update
+//delete
+
+//***CLASS_FEATURE***
+//view
+//add
+//update
+//delete
+
+//***DEPT***
+//view
+//add
+//update
+//delete
+
+//***FACULTY***
+//view
+//add
+//update
+//delete
+
+//***FACULTY_CLASS***
+//view
+//add
+//update
+//delete
+
+//***FACULTY_FEATURE***
+//view
+//add
+//update
+//delete
+
+//***FACULTY_OTHER_REQUEST***
+//view
+//add
+//update
+//delete
+
+//***FACULTY_TIMESLOT***
+//view
+//add
+//update
+//delete
+
+//***FEATURE***
+//view
+//add
+//update
+//delete
+
+//***LOGIN***
+//view
+//add
+//update
+//delete
+
+//***MEETS***
+//view
+//add
+//update
+//delete
+
+//***ROOM***
+//view
+//add
+//update
+//delete
+
+//***ROOM_FEATURE***
+//view
+//add
+//update
+//delete
+
+//***SECTION***
+//view
+//add
+//update
+//delete
+
+//***TEACHES***
+//view
+//add
+//update
+//delete
+
+//***TIMESLOT***
+//view
+//add
+//update
+//delete
+
+//***TITLE***
+//view
+//add
+//update
+//delete
+
+
+//
 // *** v2 ***
 //
 
