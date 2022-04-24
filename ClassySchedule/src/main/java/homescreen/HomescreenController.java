@@ -1,6 +1,8 @@
 package homescreen;
 
 import courses.AddCourseToDatabaseController;
+import courses.DeleteClassroomFromDatabaseController;
+import courses.DeleteCourseFromDatabaseController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -28,7 +30,7 @@ public class HomescreenController implements Initializable {
     public Button addClassroom;
     public Button addProfessor;
 
-    private Stage homescreenStage;
+    private Stage homeScreenStage;
 
     public HomescreenController() {
     }
@@ -43,7 +45,7 @@ public class HomescreenController implements Initializable {
      * @param stage
      */
     public void setStage(Stage stage) {
-        this.homescreenStage = stage;
+        this.homeScreenStage = stage;
     }
 
     /**
@@ -56,13 +58,13 @@ public class HomescreenController implements Initializable {
         try {
             root = loader.load();
             AddCourseToDatabaseController homescreenController = loader.getController();
-            homescreenController.setStage(homescreenStage);
+            homescreenController.setStage(homeScreenStage);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        homescreenStage.setTitle("Classy-Schedule");
-        homescreenStage.setScene(new Scene(root, 600, 400));
-        homescreenStage.show();
+        homeScreenStage.setTitle("Classy-Schedule");
+        homeScreenStage.setScene(new Scene(root, 600, 400));
+        homeScreenStage.show();
     }
 
 
@@ -78,9 +80,9 @@ public class HomescreenController implements Initializable {
             e.printStackTrace();
         }
         RoomController roomController = loader.getController();
-        roomController.setStage(homescreenStage);
-        homescreenStage.setScene(new Scene(root, 800, 600));
-        homescreenStage.show();
+        roomController.setStage(homeScreenStage);
+        homeScreenStage.setScene(new Scene(root, 800, 600));
+        homeScreenStage.show();
     }
 
     /**
@@ -95,9 +97,9 @@ public class HomescreenController implements Initializable {
             e.printStackTrace();
         }
         FacultyController facultyController = loader.getController();
-        facultyController.setStage(homescreenStage);
-        homescreenStage.setScene(new Scene(root, 800, 600));
-        homescreenStage.show();
+        facultyController.setStage(homeScreenStage);
+        homeScreenStage.setScene(new Scene(root, 800, 600));
+        homeScreenStage.show();
     }
 
     public void viewScheduleClicked(MouseEvent mouseEvent) {
@@ -109,8 +111,46 @@ public class HomescreenController implements Initializable {
             e.printStackTrace();
         }
         SchedulerController schedulerController = loader.getController();
-        schedulerController.setStage(homescreenStage);
-        homescreenStage.setScene(new Scene(root, 800, 600));
-        homescreenStage.show();
+        schedulerController.setStage(homeScreenStage);
+        homeScreenStage.setScene(new Scene(root, 800, 600));
+        homeScreenStage.show();
+    }
+
+    /**
+     * Changes scene to delete course page when 'Delete Course' button is clicked
+     */
+    @FXML
+    public void DeleteCourseButtonClicked() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/DeleteCourseFromDatabase.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+            DeleteCourseFromDatabaseController homeScreenController = loader.getController();
+            homeScreenController.setStage(homeScreenStage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        homeScreenStage.setTitle("Classy-Schedule");
+        homeScreenStage.setScene(new Scene(root));
+        homeScreenStage.show();
+    }
+
+    /**
+     * Changes scene to delete course page when 'Delete Course' button is clicked
+     */
+    @FXML
+    public void DeleteClassroomButtonClicked() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/DeleteClassroomFromDatabase.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+            DeleteClassroomFromDatabaseController homeScreenController = loader.getController();
+            homeScreenController.setStage(homeScreenStage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        homeScreenStage.setTitle("Classy-Schedule");
+        homeScreenStage.setScene(new Scene(root));
+        homeScreenStage.show();
     }
 }

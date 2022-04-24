@@ -436,7 +436,7 @@ public class AddCourseToScheduleController implements Initializable {
             }
         }
 
-        // If Start Time Length is 5
+        // If End Time Length is 5
         if (endTime.length() == 5) {
             int i = 0;
             // Iterate through each character
@@ -462,7 +462,7 @@ public class AddCourseToScheduleController implements Initializable {
             }
         }
 
-        // If Start Time Length is 4
+        // If End Time Length is 4
         if (endTime.length() == 4) {
             int i = 0;
             // Iterate through each character
