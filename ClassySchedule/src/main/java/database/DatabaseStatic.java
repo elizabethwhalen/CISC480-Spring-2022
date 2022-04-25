@@ -26,26 +26,27 @@ public final class DatabaseStatic {
     /**
      * Verifies the given credentials. Populates the token object to be used
      * for future database requests
+     *
      * @param username the username to be checked
      * @param password the password to be checked
      * @return true if the user is valid, false otherwise
      */
     public static boolean login(String username, String password) {
         try {
-        CloseableHttpClient client = HttpClients.createDefault();
-        URIBuilder builder = new URIBuilder(url + "login");
-        JSONObject json = new JSONObject();
-        json.put("password", password);
-        json.put("username", username);
-        StringEntity entity = new StringEntity(json.toString());
-        HttpPost httpPost = new HttpPost(builder.build());
-        httpPost.setHeader("Content-Type", "application/json");
-        httpPost.setEntity(entity);
-        CloseableHttpResponse response = client.execute(httpPost);
-        if(response.getCode() == 200) {
-            tokenObject.put("token", EntityUtils.toString(response.getEntity()));
-        }
-        client.close();
+            CloseableHttpClient client = HttpClients.createDefault();
+            URIBuilder builder = new URIBuilder(url + "login");
+            JSONObject json = new JSONObject();
+            json.put("password", password);
+            json.put("username", username);
+            StringEntity entity = new StringEntity(json.toString());
+            HttpPost httpPost = new HttpPost(builder.build());
+            httpPost.setHeader("Content-Type", "application/json");
+            httpPost.setEntity(entity);
+            CloseableHttpResponse response = client.execute(httpPost);
+            if (response.getCode() == 200) {
+                tokenObject.put("token", EntityUtils.toString(response.getEntity()));
+            }
+            client.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -54,8 +55,9 @@ public final class DatabaseStatic {
 
     /**
      * This methods inserts data into the database
+     *
      * @param table the table to insert into
-     * @param json the data to insert into the table
+     * @param json  the data to insert into the table
      * @return true if the operation is successful, false if not
      * @throws URISyntaxException
      * @throws IOException
@@ -77,7 +79,8 @@ public final class DatabaseStatic {
 
     /**
      * This gets data from a table with specific attributes
-     * @param table the table to get the data from
+     *
+     * @param table            the table to get the data from
      * @param requestedColumns the specific attributes to search for
      * @return a JSON array with the values from the search
      * @throws URISyntaxException
@@ -88,8 +91,8 @@ public final class DatabaseStatic {
             for (String string : requestedColumns.keySet()) {
                 builder.addParameter(string, requestedColumns.getString(string));
             }
-                HttpGet httpGet = new HttpGet(builder.build());
-                return executeGet(httpGet);
+            HttpGet httpGet = new HttpGet(builder.build());
+            return executeGet(httpGet);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -98,6 +101,7 @@ public final class DatabaseStatic {
 
     /**
      * Gets all the data from a specified table
+     *
      * @param table the table to get data from
      * @return
      */
@@ -129,8 +133,9 @@ public final class DatabaseStatic {
 
     /**
      * Updates the data in a specified table
+     *
      * @param table the table to update
-     * @param json the fields to update
+     * @param json  the fields to update
      * @return true if the update is successful, false otherwise
      * @throws URISyntaxException
      * @throws IOException
@@ -150,6 +155,7 @@ public final class DatabaseStatic {
 
     /**
      * Deletes a specified object from the database
+     *
      * @return
      */
     public static boolean deleteData(String table, JSONObject json) throws URISyntaxException, IOException {
@@ -157,7 +163,7 @@ public final class DatabaseStatic {
         CloseableHttpClient test = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
 
         URIBuilder builder = new URIBuilder(url + table);
-        for (String key: json.keySet()) {
+        for (String key : json.keySet()) {
             builder.addParameter(key, (String) json.get(key));
         }
 
