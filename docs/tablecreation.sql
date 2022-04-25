@@ -88,8 +88,10 @@ CREATE TABLE room_feature (
 CREATE TABLE login (
     user_id VARCHAR(30) NOT NULL,
     pass VARCHAR(30) NOT NULL,
+    email VARCHAR(130),
     faculty_id INT,
     access_level INT NOT NULL,
+    tmp INT,
     PRIMARY KEY (user_id)
 );
 #relationship between class and feature tables
