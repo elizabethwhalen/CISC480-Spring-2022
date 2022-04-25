@@ -124,6 +124,12 @@ public class AddCourseToScheduleController implements Initializable {
     List<RadioButton> datesSelected;
 
     /**
+     * This is the dropdown menu for the class times
+     */
+    @FXML
+    private ComboBox<String> classTimes;
+
+    /**
      * The constructor for the add course to schedule controller
      */
     public AddCourseToScheduleController() {
@@ -159,10 +165,25 @@ public class AddCourseToScheduleController implements Initializable {
      */
     Alert confirmBackButton = new Alert(Alert.AlertType.CONFIRMATION);
 
+    private void getTimeSlots() {
+        JSONArray currentTimeChunk = DatabaseStatic.getData("timeslot");
+        //JSONObject dayOfWeek = ()
+        for (Object jsonObject: currentTimeChunk) {
+            JSONObject job = (JSONObject)jsonObject;
+            classTimes.getItems().add((String) job.get("time_start") + " - " + job.get("time_end"));
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         datesSelected = Arrays.asList(monday, tuesday, wednesday, thursday, friday);
         dept_name.getItems().clear();
+        getTimeSlots();
+
+        //Add options to dropdown time chunk dropdown menu
+        // TODO: Make it grab from database
+        //String[] timeChunks = new String[]{"8:00 - 9:40", "8:15 - 9:20"};
+
 
         // This is the confirmation to go back alert
         confirmBackButton.setTitle("Back to Scheduler");
