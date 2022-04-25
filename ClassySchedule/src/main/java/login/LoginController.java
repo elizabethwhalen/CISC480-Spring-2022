@@ -1,6 +1,10 @@
 package login;
 
+import database.Database;
+import database.DatabaseStatic;
 import homescreen.HomescreenController;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import scheduler.AddCourseToScheduleController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +17,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -45,14 +52,18 @@ public class LoginController implements Initializable {
      */
     private Stage loginStage;
 
+    private JSONArray user;
+
+    private ResourceBundle resourceBundle;
+
     /**
      * The constructor for the login page
      */
     public LoginController() {}
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
+    public void initialize(URL location, ResourceBundle resources){
+        resourceBundle = resources;
     }
 
     /**
@@ -69,46 +80,29 @@ public class LoginController implements Initializable {
      */
     @FXML
     public void submitButtonClicked() {
-        final boolean usernameCorrect = validateUsername(username.getText());
-        if (usernameCorrect) {
-            final boolean passwordCorrect = validatePassword(username.getText(), password.getText());
-            if (passwordCorrect) {
-                // TODO: decide on what scene to show, for now just add course
-                changeScene();
-            }
+        if (validateLogin(username.getText(), password.getText())) {
+            changeScene();
+        } else {
+            //TODO: show error dialog if password is incorrect
         }
 
     }
 
-    // TODO: Create validation for username and password: validateUsername and validatePassword functions
-
     /**
      * Checks if the user exists in the database
-     * @param text user entered username to be checked
-     * @return true if username exists, false if not
+     * @param username user entered username to check
+     * @param password user entered password to check
+     * @return true if user exists, false if not
      */
-    private boolean validateUsername(String text) {
-        //check if user exists in the database
-        return true;
-    }
-
-    /**
-     * Checks if password matches username
-     * @param username username of user
-     * @param password user entered password to be validated
-     * @return true if password is correct for username, false if not
-     */
-    private boolean validatePassword(String username, String password) {
-        //get user with username
-        //check if password matches username
-        return true;
+    private boolean validateLogin(String username, String password) {
+        return DatabaseStatic.login(username, password);
     }
 
     /**
      * Changes the view to the homescreen page
      */
     public void changeScene() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"), resourceBundle);
         Parent root = null;
         try {
             root = loader.load();

@@ -9,7 +9,7 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.HttpEntity;
-import org.apache.hc.core5.http.ParseException;
+import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.net.URIBuilder;
@@ -18,29 +18,59 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.AbstractMap;
-import java.util.List;
 
-public class Database {
+public final class DatabaseStatic {
+    private static final String url = "https://classy-api.ddns.net/v2/";
+    private static final JSONObject tokenObject = new JSONObject();
 
-    private final String url = "http://classy-api.ddns.net/";
-
-    public Database() {}
+    /**
+     * Verifies the given credentials. Populates the token object to be used
+     * for future database requests
+     *
+     * @param username the username to be checked
+     * @param password the password to be checked
+     * @return true if the user is valid, false otherwise
+     */
+    public static boolean login(String username, String password) {
+        try {
+            CloseableHttpClient client = HttpClients.createDefault();
+            URIBuilder builder = new URIBuilder(url + "login");
+            JSONObject json = new JSONObject();
+            json.put("password", password);
+            json.put("username", username);
+            StringEntity entity = new StringEntity(json.toString());
+            HttpPost httpPost = new HttpPost(builder.build());
+            httpPost.setHeader("Content-Type", "application/json");
+            httpPost.setEntity(entity);
+            CloseableHttpResponse response = client.execute(httpPost);
+            if (response.getCode() == 200) {
+                tokenObject.put("token", EntityUtils.toString(response.getEntity()));
+            }
+            client.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return tokenObject.get("token") != null;
+    }
 
     /**
      * This methods inserts data into the database
+     *
      * @param table the table to insert into
-     * @param json the data to insert into the table
+     * @param json  the data to insert into the table
      * @return true if the operation is successful, false if not
      * @throws URISyntaxException
      * @throws IOException
      */
-    public boolean insertData(String table, JSONObject json) throws URISyntaxException, IOException {
+    public static boolean insertData(String table, JSONObject json) throws URISyntaxException, IOException {
         CloseableHttpClient client = HttpClients.createDefault();
+        json.put("token", tokenObject.get("token"));
         URIBuilder builder = new URIBuilder(url + table);
         StringEntity entity = new StringEntity(json.toString());
         HttpPost httpPost = new HttpPost(builder.build());
         httpPost.setHeader("Content-Type", "application/json");
+        httpPost.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + tokenObject.get("token"));
+
         httpPost.setEntity(entity);
         CloseableHttpResponse response = client.execute(httpPost);
         client.close();
@@ -49,62 +79,69 @@ public class Database {
 
     /**
      * This gets data from a table with specific attributes
-     * @param table the table to get the data from
+     *
+     * @param table            the table to get the data from
      * @param requestedColumns the specific attributes to search for
      * @return a JSON array with the values from the search
      * @throws URISyntaxException
      */
-    public JSONArray getData(String table, JSONObject requestedColumns) {
-        JSONArray jsonArray = null;
+    public static JSONArray getData(String table, JSONObject requestedColumns) {
         try {
-            CloseableHttpClient client = HttpClients.createDefault();
             URIBuilder builder = new URIBuilder(url + table);
-            for (String string: requestedColumns.keySet()) {
+            for (String string : requestedColumns.keySet()) {
                 builder.addParameter(string, requestedColumns.getString(string));
             }
-
             HttpGet httpGet = new HttpGet(builder.build());
-            CloseableHttpResponse response1 = client.execute(httpGet);
-            HttpEntity entity1 = response1.getEntity();
-            jsonArray = new JSONArray(EntityUtils.toString(entity1));
-
-            client.close();
-
-        } catch (IOException | ParseException | URISyntaxException e) {
+            return executeGet(httpGet);
+        } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return jsonArray;
     }
+
     /**
      * Gets all the data from a specified table
+     *
      * @param table the table to get data from
      * @return
      */
-    public JSONArray getData(String table) {
-        CloseableHttpClient client = HttpClients.createDefault();
+    public static JSONArray getData(String table) {
         HttpGet httpGet = new HttpGet(url + table);
+        return executeGet(httpGet);
+    }
+
+    /**
+     * Executes the given get request
+     * Returns a JSONArray or null if not present in database
+     */
+    private static JSONArray executeGet(HttpGet getRequest) {
         JSONArray jsonArray = null;
         try {
-            CloseableHttpResponse response1 = client.execute(httpGet);
-            HttpEntity entity1 = response1.getEntity();
-            jsonArray = new JSONArray(EntityUtils.toString(entity1));
+            CloseableHttpClient client = HttpClients.createDefault();
+            getRequest.setEntity(new StringEntity(tokenObject.toString()));
+            getRequest.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + tokenObject.get("token"));
+            CloseableHttpResponse response1 = client.execute(getRequest);
+            HttpEntity entity = response1.getEntity();
+            jsonArray = new JSONArray(EntityUtils.toString(entity));
             client.close();
-        } catch (IOException | ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return jsonArray;
     }
 
+
     /**
      * Updates the data in a specified table
+     *
      * @param table the table to update
-     * @param json the fields to update
+     * @param json  the fields to update
      * @return true if the update is successful, false otherwise
      * @throws URISyntaxException
      * @throws IOException
      */
     // TODO:  CURRENTLY OUT OF ORDER DO NOT USE
-    public boolean updateData(String table, JSONObject json) throws URISyntaxException, IOException {
+    public static boolean updateData(String table, JSONObject json) throws URISyntaxException, IOException {
         CloseableHttpClient client = HttpClients.createDefault();
         URIBuilder builder = new URIBuilder(url + table);
         StringEntity entity = new StringEntity(json.toString());
@@ -118,21 +155,25 @@ public class Database {
 
     /**
      * Deletes a specified object from the database
+     *
      * @return
      */
-    public boolean deleteData(String table, JSONObject json) throws URISyntaxException, IOException {
+    public static boolean deleteData(String table, JSONObject json) throws URISyntaxException, IOException {
         RequestConfig requestConfig = RequestConfig.custom().setCircularRedirectsAllowed(true).build();
         CloseableHttpClient test = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
 
         URIBuilder builder = new URIBuilder(url + table);
-        for (String key: json.keySet()) {
+        for (String key : json.keySet()) {
             builder.addParameter(key, (String) json.get(key));
         }
+
         HttpDelete httpDelete = new HttpDelete(builder.build());
+
+        httpDelete.setEntity(new StringEntity(tokenObject.toString()));
+        httpDelete.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + tokenObject.get("token"));
 
         CloseableHttpResponse response = test.execute(httpDelete);
         test.close();
         return response.getCode() == 200;
     }
 }
-
