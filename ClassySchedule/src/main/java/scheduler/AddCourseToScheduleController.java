@@ -1,6 +1,7 @@
 package scheduler;
 
 import database.Database;
+import database.DatabaseStatic;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -162,24 +163,19 @@ public class AddCourseToScheduleController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         datesSelected = Arrays.asList(monday, tuesday, wednesday, thursday, friday);
         dept_name.getItems().clear();
-        Database database = new Database();
-
 
         // This is the confirmation to go back alert
         confirmBackButton.setTitle("Back to Scheduler");
         confirmBackButton.setContentText("Go back to the scheduler page");
         // Set event to go back to previous scheduler screen if user click "Ok", else do nothing
-        EventHandler<ActionEvent> confirmBack = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                // Set button Ok to be the output button that the user clicked
-                // It is either "Cancel" or "Ok"
-                Optional<ButtonType> Ok = confirmBackButton.showAndWait();
-                // If button is "Ok", then go back to scheduler
-                if (Ok.get().getText().equals("OK")) {
-                    // Go back to scheduler
-                    section_number.getScene().getWindow().hide();
-                }
+        EventHandler<ActionEvent> confirmBack = event -> {
+            // Set button Ok to be the output button that the user clicked
+            // It is either "Cancel" or "Ok"
+            Optional<ButtonType> Ok = confirmBackButton.showAndWait();
+            // If button is "Ok", then go back to scheduler
+            if (Ok.get().getText().equals("OK")) {
+                // Go back to scheduler
+                section_number.getScene().getWindow().hide();
             }
         };
 
@@ -187,13 +183,17 @@ public class AddCourseToScheduleController implements Initializable {
 
         // Testing; Hard-coded courses into the drop-down boxes
         // TODO: Get class name, class sections, available rooms from database
-        JSONArray classes = database.getData("class");
+        JSONArray classes = DatabaseStatic.getData("class");
         for (Object jsonObject: classes) {
             JSONObject job = (JSONObject)jsonObject;
-            class_name.getItems().add((String) job.get("class_name"));
-            classNumber.getItems().add((String) job.get("class_num"));
+            if (job.get("class_name") != JSONObject.NULL) {
+                class_name.getItems().add((String) job.get("class_name"));
+            }
+            if (job.get("class_num") != JSONObject.NULL) {
+                classNumber.getItems().add((String) job.get("class_num"));
+            }
         }
-        JSONArray depts = database.getData("dept");
+        JSONArray depts = DatabaseStatic.getData("dept");
         for (Object jsonObject: depts) {
             JSONObject job = (JSONObject)jsonObject;
             dept_name.getItems().add((String) job.get("dept_code"));
