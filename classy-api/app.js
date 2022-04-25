@@ -130,37 +130,32 @@ app.post('/v3/class', async (req, res) => {
         dept_exists = await db_get("SELECT * FROM dept WHERE dept_code="+con.escape(req.body.dept_code))
         console.log(dept_exists)
         if (dept_exists.length==0){return res.status(404).send("Department does not exist")} // could prompt them to add dept maybe??
+        class_exists = await db_get("SELECT * FROM dept WHERE dept_code="+con.escape(req.body.dept_code)+"AND class_num="+con.escape(req.body.class_num))
+        if (class_exists.length==0){return res.status(400).send("Class alreadys exists")}
         let query = "INSERT INTO class (dept_code,class_num,class_name) VALUES ?";
         data = [
             [req.body.dept_code,req.body.class_num,req.body.class_name]
         ]
-        console.log("adding")
         try{classAdded = await db_post(query, data)
         } catch(err){
-            console.log("ERR: ",err)
             return res.status(400).send("Error encountered");
         } //CHANGETHIS
-        console.log("classAdded: ",classAdded)
 
         //check for features
         if (req.body.features){
             feature_array = req.body.features.split(",")
             for(let i = 0; i < feature_array.length; i++){
-                console.log(feature_array[i])
                 feature = con.escape(feature_array[i])
                 //check if new dept
                 try { feature_exists = await db_get("SELECT * FROM feature WHERE feature_name="+feature)
-                } catch(err){console.log("uhoh")}
-                console.log(feature_exists)
+                } catch(err){res.status(400).send("Error entering feature "+feature)}
                 if (feature_exists.length==0){
-                    console.log(feature + " does not exist") //add feature to feature table
                     try {
                         await db_post("INSERT INTO feature VALUES ?", [[undefined,feature_array[i]]])
-                        console.log("feature created")
                         try { new_feature = await db_get("SELECT * FROM feature WHERE feature_name="+feature)
-                        } catch(err){console.log("uhoh2")}
+                        } catch(err){res.status(400).send("Error entering feature "+feature)}
                         feature_id = new_feature[0].feature_id
-                    }catch(err){console.log("feature add failed")}
+                    }catch(err){res.status(400).send("Error entering feature "+feature)}
                 }
                 else{
                     feature_id = feature_exists[0].feature_id
@@ -171,7 +166,7 @@ app.post('/v3/class', async (req, res) => {
                     ]
                     await db_post("INSERT INTO class_feature VALUES ?",feature_data)
                 }
-                catch(err){console.log("oops")}
+                catch(err){res.status(400).send("Error entering feature "+feature)}
             
             }
             return res.status(201).send("Class and features added to database")
