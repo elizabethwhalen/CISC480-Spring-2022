@@ -131,6 +131,7 @@ app.post('/v3/class', async (req, res) => {
         console.log(dept_exists)
         if (dept_exists.length==0){return res.status(404).send("Department does not exist")} // could prompt them to add dept maybe??
         let query = "INSERT INTO class (dept_code,class_num,class_name) VALUES ?";
+        //TO DO: 
         data = [
             [req.body.dept_code,req.body.class_num,req.body.class_name]
         ]
@@ -2846,7 +2847,7 @@ app.post('/v2/signup', async (req, res) => {
 const salt = await bcrypt.genSalt(10)
 try{ hash = await bcrypt.hash(req.body.password, salt)
 } catch (err) {console.log("bcrypt error", err)}
-login_query_db_post("insert into login values ?",[[[req.body.username, hash, req.body.faculty_id, access_level=0]]],res)
+login_query_db_post("insert into login values ?",[[[req.body.username, hash, req.body.faculty_id, access_level=2]]],res)
 });
 
 //login
@@ -2859,9 +2860,12 @@ app.post('/v2/login', async function (req, res) {
     }
 
     let loginjson = await get_pass("SELECT * from login where user_id="+con.escape(req.body.username),res);
+    if (loginjson.length === 0) { return res.sendStatus(401); }
+    console.log("loginjson: " + loginjson.length);
     passHashed = loginjson[0].pass
-    console.log("passHashed")
-    if (passHashed === undefined) { return res.sendStatus(401); }
+    console.log("passHashed: " + passHashed);
+    console.log("passHashed: " + passHashed.length);
+    //if (passHashed === undefined) { return res.sendStatus(401); }
     bcrypt.compare(req.body.password,passHashed)
     .then(correct => {
       if(correct){
