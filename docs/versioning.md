@@ -60,6 +60,8 @@ _*login does not fit pattern- the v2 add method is disabled in lieu of the login
 
 **Login and Security**
 
+HTTP was disabled on 4/24/2022. All requests must be made over HTTPS now.
+
 All methods in v2 and up require token authorization to access. 
 
 Login accounts are created via the signup method (`curl "https://classy-api.ddns.net/v2/signup" -X POST -d "username=[username]&password=[password]"`)
