@@ -46,7 +46,7 @@ con.connect(function(err) {
 
 // Get help information from versioning file
 app.get('/help', (req, res) => {
-    res.send("Please visit: <a href='https://github.com/elizabethwhalen/CISC480-Spring-2022/blob/Database-Branch/classy-api/versioning.md'>https://github.com/elizabethwhalen/CISC480-Spring-2022/blob/Database-Branch/classy-api/versioning.md</a>")
+    res.send("https://github.com/elizabethwhalen/CISC480-Spring-2022/blob/db-dev/docs/versioning.md")
 });
 
 //
