@@ -68,7 +68,7 @@ async function db_get(query){
 }
 async function db_post(query, data){
     console.log(query, data)
-    new Promise( (resolve, reject) => {
+    return new Promise( (resolve, reject) => {
         con.query(query, [data], (err, result) => {
             if (err) {
               reject(err);
@@ -137,10 +137,10 @@ app.post('/v3/class', async (req, res) => {
         console.log("adding")
         try{classAdded = await db_post(query, data)
         } catch(err){
-            console.log(err)
-            return res.status(400).send(err);
+            console.log("ERR: ",err)
+            return res.status(400).send("Error encountered");
         } //CHANGETHIS
-        console.log("no error")
+        console.log("classAdded: ",classAdded)
 
         //check for features
         if (req.body.features){
