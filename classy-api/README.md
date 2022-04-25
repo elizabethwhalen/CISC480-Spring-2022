@@ -14,18 +14,17 @@ To run the Express API Server locally, please complete the following steps:
 2. $npm install
 3. $npm start
 
-</br>
 ## Azure Deployment
+Please see information below for the Deployment Versions and Deployment Process
 
 ### Deployment Versions
 | Date     | API ver. | URI Connection                | Status | GitHub Commit ID                                                                                                  | Azure App Service   | Notes                                   |
 |----------|----------|-------------------------------|--------|-------------------------------------------------------------------------------------------------------------------|---------------------|-----------------------------------------|
-| 04/24/22 | V3       | https://classy-api.ddns.net/V3 | Active | [XXXXX](https://) | classy-schedule-api | Async/await and more robust options for certain tables |
+| 04/24/22 | V3       | https://classy-api.ddns.net/V3 | Active | [b6a5538](https://github.com/elizabethwhalen/CISC480-Spring-2022/commit/b6a5538f54040d812b63ba8c5095f43991555e80) | classy-schedule-api | Async/await and more robust options for certain tables |
 | 04/20/22 | V2       | https://classy-api.ddns.net/V2 | Active | [081fe98](https://github.com/elizabethwhalen/CISC480-Spring-2022/commit/081fe98a2d5377d59a871f55291b30573c68d751) | classy-schedule-api | Login and tokens |
 | 04/04/22 | V0       | http://classy-api.ddns.net/   | Legacy | [0c7ec99](https://github.com/elizabethwhalen/CISC480-Spring-2022/commit/0c7ec9923d5abf9030e9a63c4d0e04b285c98129) | classy-schedule-api | Original version without update working |
 
-</br>
-**Satus types:** 
+**Satus types:**
 </br>
 Active: Please use this! Our most recent version. </br>
 Legacy: Still works, just not ideal! </br>
