@@ -112,9 +112,13 @@ async function db_put(query, data){
 //***CLASS***
 //view
 //add
-app.post('/v2/class', async (req, res) => {
+app.post('/v3/class', async (req, res) => {
     // verify auth
-    const token = req.cookies.token
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
