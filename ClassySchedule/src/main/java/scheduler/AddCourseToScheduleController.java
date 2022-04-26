@@ -1,6 +1,5 @@
 package scheduler;
 
-import database.Database;
 import database.DatabaseStatic;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -35,22 +34,22 @@ public class AddCourseToScheduleController implements Initializable {
     private SchedulerController parentController;
 
     /**
-     * The section number of the class
-     */
-    @FXML
-    private ComboBox<String> section_number;
-
-    /**
-     * The class name
-     */
-    @FXML
-    private ComboBox<String> class_name;
-
-    /**
      * The department name
      */
     @FXML
-    private ComboBox<String> dept_name;
+    private ComboBox<String> course;
+
+    /**
+     * The room for the class
+     */
+    @FXML
+    private ComboBox<String> room;
+
+    /**
+     * The timeslot for the class
+     */
+    @FXML
+    private ComboBox<String> timeSlot;
 
     /**
      * The submit button
@@ -62,49 +61,31 @@ public class AddCourseToScheduleController implements Initializable {
      * A button to specify Monday
      */
     @FXML
-    private RadioButton monday;
+    private CheckBox monday;
 
     /**
      * A button to specify Tuesday
      */
     @FXML
-    private RadioButton tuesday;
+    private CheckBox tuesday;
 
     /**
      * A button to specify Wednesday
      */
     @FXML
-    private RadioButton wednesday;
+    private CheckBox wednesday;
 
     /**
      * A button to specify Thursday
      */
     @FXML
-    private RadioButton thursday;
+    private CheckBox thursday;
 
     /**
      * A button to specify Friday
      */
     @FXML
-    private RadioButton friday;
-
-    /**
-     * The start time of the appointment
-     */
-    @FXML
-    private TextField start_time;
-
-    /**
-     * The end time of the appointment
-     */
-    @FXML
-    private TextField end_time;
-
-    /**
-     * The class number
-     */
-    @FXML
-    private ComboBox<String> classNumber;
+    private CheckBox friday;
 
     /**
      * The close button
@@ -113,15 +94,9 @@ public class AddCourseToScheduleController implements Initializable {
     private Button closeButton;
 
     /**
-     * The room for the class
-     */
-    @FXML
-    private ComboBox<String> room;
-
-    /**
      * The list of the select days
      */
-    List<RadioButton> datesSelected;
+    private List<CheckBox> datesSelected;
 
     /**
      * This is the dropdown menu for the class times
@@ -140,15 +115,6 @@ public class AddCourseToScheduleController implements Initializable {
      */
     Alert invalidClassName = new Alert(Alert.AlertType.ERROR);
 
-    /**
-     * The invalid department alert error
-     */
-    Alert invalidDepartment = new Alert(Alert.AlertType.ERROR);
-
-    /**
-     * The invalid class number alert error
-     */
-    Alert invalidClassNumber = new Alert(Alert.AlertType.ERROR);
 
     /**
      * The invalid dates alert error
@@ -177,7 +143,7 @@ public class AddCourseToScheduleController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         datesSelected = Arrays.asList(monday, tuesday, wednesday, thursday, friday);
-        dept_name.getItems().clear();
+        course.getItems().clear();
         getTimeSlots();
 
         //Add options to dropdown time chunk dropdown menu
@@ -196,32 +162,39 @@ public class AddCourseToScheduleController implements Initializable {
             // If button is "Ok", then go back to scheduler
             if (Ok.get().getText().equals("OK")) {
                 // Go back to scheduler
-                section_number.getScene().getWindow().hide();
+                course.getScene().getWindow().hide();
             }
         };
 
         closeButton.setOnAction(confirmBack);
 
-        // Testing; Hard-coded courses into the drop-down boxes
-        // TODO: Get class name, class sections, available rooms from database
         JSONArray classes = DatabaseStatic.getData("class");
         for (Object jsonObject: classes) {
-            JSONObject job = (JSONObject)jsonObject;
-            if (job.get("class_name") != JSONObject.NULL) {
-                class_name.getItems().add((String) job.get("class_name"));
+            JSONObject json = (JSONObject)jsonObject;
+            StringBuilder str = new StringBuilder((String) json.get("dept_code"));
+            if (json.get("class_num") != JSONObject.NULL) {
+                str.append(" ");
+                str.append(json.get("class_num"));
             }
-            if (job.get("class_num") != JSONObject.NULL) {
-                classNumber.getItems().add((String) job.get("class_num"));
+            if (json.get("class_name") != JSONObject.NULL) {
+                str.append(" ");
+                str.append(json.get("class_name"));
             }
-        }
-        JSONArray depts = DatabaseStatic.getData("dept");
-        for (Object jsonObject: depts) {
-            JSONObject job = (JSONObject)jsonObject;
-            dept_name.getItems().add((String) job.get("dept_code"));
+            course.getItems().add(str.toString());
         }
 
-        room.getItems().add("TEST room");
-        section_number.getItems().add("000");
+        JSONArray rooms = DatabaseStatic.getData("room");
+        for (Object jsonObject: rooms) {
+            JSONObject json = (JSONObject)jsonObject;
+            StringBuilder str = new StringBuilder((String) json.get("building_code"));
+            str.append(" ");
+            str.append(json.get("room_num"));
+            if (json.get("capacity") != JSONObject.NULL) {
+                str.append(" ");
+                str.append(json.get("room_num"));
+            }
+            room.getItems().add(str.toString());
+        }
     }
 
     /**
@@ -249,7 +222,7 @@ public class AddCourseToScheduleController implements Initializable {
             parentController.addCourse(appointmentList);
 
             // return to Scheduler
-            section_number.getScene().getWindow().hide();
+            course.getScene().getWindow().hide();
         }
 
     }
@@ -261,7 +234,7 @@ public class AddCourseToScheduleController implements Initializable {
      */
     private List<Agenda.Appointment> createAppointment() throws ParseException {
         List<String> selectedDates = new ArrayList<>();
-        for (RadioButton radioButton: datesSelected) {
+        for (CheckBox radioButton: datesSelected) {
             if (radioButton.isSelected()) {
                 selectedDates.add(radioButton.getText());
             }
@@ -270,11 +243,11 @@ public class AddCourseToScheduleController implements Initializable {
         List<LocalDateTime> endDaysAndTimes = new ArrayList<>();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (String day: selectedDates) {
-            startDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + start_time.getText() + ":00")));
-            endDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + end_time.getText() + ":00")));
+            startDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + timeSlot.getSelectionModel().getSelectedItem())));
+            endDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + timeSlot.getSelectionModel().getSelectedItem())));
         }
 
-        AppointmentFactory appointmentFactory = new AppointmentFactory(startDaysAndTimes, endDaysAndTimes, classNumber.getSelectionModel().getSelectedItem(), room.getSelectionModel().getSelectedItem(), "test",section_number.getSelectionModel().getSelectedItem(), class_name.getSelectionModel().getSelectedItem());
+        AppointmentFactory appointmentFactory = new AppointmentFactory(startDaysAndTimes, endDaysAndTimes, course.getSelectionModel().getSelectedItem(), room.getSelectionModel().getSelectedItem(), "test",course.getSelectionModel().getSelectedItem(), course.getSelectionModel().getSelectedItem());
 
         return appointmentFactory.createAppointments();
     }
@@ -296,7 +269,7 @@ public class AddCourseToScheduleController implements Initializable {
      * @return false if any test is invalid, else true
      */
     private boolean validateData() {
-        return validateDates() && validateDepartment() && validateClassNumber() && validateClassName() && validateTime();
+        return validateDates() && validateTime();
     }
 
     /**
@@ -304,52 +277,14 @@ public class AddCourseToScheduleController implements Initializable {
      * to select a class name.
      * @return false is nothing is selected, else return true
      */
-    private boolean validateClassName() {
+    private boolean validateCourse() {
         boolean result = true;
         // If the class name has not been selected
-        if (class_name.getSelectionModel().isEmpty()) {
+        if (course.getSelectionModel().isEmpty()) {
             // Set content of the error alert
-            invalidClassName.setTitle("Invalid Class Name Error");
-            invalidClassName.setContentText("Please select a valid class name");
+            invalidClassName.setTitle("Invalid course Error");
+            invalidClassName.setContentText("Please select a valid course");
             invalidClassName.showAndWait();
-            result = false;
-        }
-        // Probably need to find a way to bind class number and class name??
-        return result;
-    }
-
-    /**
-     * This function validate the class number. If nothing is selected, then it will prompt the user
-     * to select a class number.
-     * @return false is nothing is selected, else return true
-     */
-    private boolean validateClassNumber() {
-        boolean result = true;
-        // If the class name has not been selected
-        if (classNumber.getSelectionModel().isEmpty()) {
-            // Set content of the error alert
-            invalidClassNumber.setTitle("Invalid Class Number Error");
-            invalidClassNumber.setContentText("Please select a valid class number");
-            invalidClassNumber.showAndWait();
-            result = false;
-        }
-        // Probably need to find a way to bind class number and class name??
-        return result;
-    }
-
-    /**
-     * This function validate the department of the newly added class. If nothing is selected,
-     * then it will prompt the user to select a department.
-     * @return false is nothing is selected, else return true
-     */
-    private boolean validateDepartment() {
-        boolean result = true;
-        // If the class name has not been selected
-        if (dept_name.getSelectionModel().isEmpty()) {
-            // Set content of the error alert
-            invalidDepartment.setTitle("Invalid Department Error");
-            invalidDepartment.setContentText("Please select a valid department");
-            invalidDepartment.showAndWait();
             result = false;
         }
         // Probably need to find a way to bind class number and class name??
@@ -365,7 +300,7 @@ public class AddCourseToScheduleController implements Initializable {
         boolean result = false;
         // Iterate through all 5 days to check if at least 1 day is checked.
         // If so, set the boolean to true and break.
-        for (RadioButton day : datesSelected) {
+        for (CheckBox day : datesSelected) {
             if (day.isSelected()) {
                 result = true;
                 break;
@@ -385,143 +320,143 @@ public class AddCourseToScheduleController implements Initializable {
     }
 
     private boolean validateTime() {
-        boolean result = true;
-        String startTime = start_time.getText();
-        String endTime = end_time.getText();
+//        boolean result = true;
+//        String startTime = start_time.getText();
+//        String endTime = end_time.getText();
+//
+//        // If no input
+//        if (startTime.length() == 0 || endTime.length() == 0) {
+//            result = false;
+//            invalidStartAndEndTime.setTitle("No Input");
+//            invalidStartAndEndTime.setContentText("Please input a timeslot");
+//            invalidStartAndEndTime.showAndWait();
+//        }
+//
+//        // If input is longer than 5 character (Not valid timeslot)
+//        if (startTime.length() > 5) {
+//            result = false;
+//            invalidStartAndEndTime.setTitle("Input Longer than 5 Character");
+//            invalidStartAndEndTime.setContentText("Please input a valid time slot");
+//            invalidStartAndEndTime.showAndWait();
+//        }
+//
+//        // If Start Time Length is 5
+//        if (startTime.length() == 5) {
+//            int i = 0;
+//            // Iterate through each character
+//            while (i < 5) {
+//                // if length is 5, 2nd character must be a colon
+//                if (i == 2) {
+//                    if (startTime.charAt(i) != ':') {
+//                        result = false;
+//                        invalidStartAndEndTime.setTitle("No Colon In Start Time");
+//                        invalidStartAndEndTime.setContentText("Please input a colon in the 24-hour format timeslot");
+//                        invalidStartAndEndTime.showAndWait();
+//                    }
+//                } else {
+//                    // Every other character must be an integer
+//                    if (!(Character.isDigit(startTime.charAt(i)))) {
+//                        result = false;
+//                        invalidStartAndEndTime.setTitle("Character Not Integer In Start Time");
+//                        invalidStartAndEndTime.setContentText("Please input a a proper integer timeslot");
+//                        invalidStartAndEndTime.showAndWait();
+//                    }
+//                }
+//                i++;
+//            }
+//        }
+//
+//        // If Start Time Length is 4
+//        if (startTime.length() == 4) {
+//            int i = 0;
+//            // Iterate through each character
+//            while (i < 4) {
+//                if (i == 1) {
+//                    // if length is 4, 1 character must be a colon
+//                    if (startTime.charAt(i) != ':') {
+//                        result = false;
+//                        invalidStartAndEndTime.setTitle("No Colon In Start Time");
+//                        invalidStartAndEndTime.setContentText("Please input a colon in the 24-hour format timeslot");
+//                        invalidStartAndEndTime.showAndWait();
+//                    }
+//                } else {
+//                    // Every other character must be an integer
+//                    if (!(Character.isDigit(startTime.charAt(i)))) {
+//                        result = false;
+//                        invalidStartAndEndTime.setTitle("Character Not Integer In Start Time");
+//                        invalidStartAndEndTime.setContentText("Please input a a proper integer timeslot");
+//                        invalidStartAndEndTime.showAndWait();
+//                    }
+//                }
+//                i++;
+//            }
+//        }
+//
+//        // If End Time Length is 5
+//        if (endTime.length() == 5) {
+//            int i = 0;
+//            // Iterate through each character
+//            while (i < 5) {
+//                if (i == 2) {
+//                    // if length is 5, 2nd character must be a colon
+//                    if (endTime.charAt(i) != ':') {
+//                        result = false;
+//                        invalidStartAndEndTime.setTitle("No Colon In End Time");
+//                        invalidStartAndEndTime.setContentText("Please input a colon in the 24-hour format timeslot");
+//                        invalidStartAndEndTime.showAndWait();
+//                    }
+//                } else {
+//                    // Every other character must be an integer
+//                    if (!(Character.isDigit(endTime.charAt(i)))) {
+//                        result = false;
+//                        invalidStartAndEndTime.setTitle("Character Not Integer In End Time");
+//                        invalidStartAndEndTime.setContentText("Please input a a proper integer timeslot");
+//                        invalidStartAndEndTime.showAndWait();
+//                    }
+//                }
+//                i++;
+//            }
+//        }
+//
+//        // If End Time Length is 4
+//        if (endTime.length() == 4) {
+//            int i = 0;
+//            // Iterate through each character
+//            while (i < 4) {
+//                if (i == 1) {
+//                    // if length is 4, 1st character must be a colon
+//                    if (endTime.charAt(i) != ':') {
+//                        result = false;
+//                        invalidStartAndEndTime.setTitle("No Colon In End Time");
+//                        invalidStartAndEndTime.setContentText("Please input a colon in the 24-hour format timeslot");
+//                        invalidStartAndEndTime.showAndWait();
+//                    }
+//                } else {
+//                    // Every other character must be an integer
+//                    if (!(Character.isDigit(endTime.charAt(i)))) {
+//                        result = false;
+//                        invalidStartAndEndTime.setTitle("Character Not Integer In End Time");
+//                        invalidStartAndEndTime.setContentText("Please input a a proper integer timeslot");
+//                        invalidStartAndEndTime.showAndWait();
+//                    }
+//                }
+//                i++;
+//            }
+//        }
+//
+//        // Remove colon from the string to test for end time beginning start time.
+//        String startTimeValue = startTime.replace(":", "");
+//        String endTimeValue = endTime.replace(":", "");
+//
+//        // Timeslot in 24-hour format, so just need to ensure that End Time is bigger than Start Time
+//        if (Integer.parseInt(startTimeValue) > Integer.parseInt(endTimeValue)) {
+//            result = false;
+//            invalidStartAndEndTime.setTitle("End Time Need To Be After Start Time");
+//            invalidStartAndEndTime.setContentText("Please ensure that end time starts after end time");
+//            invalidStartAndEndTime.showAndWait();
+//        }
 
-        // If no input
-        if (startTime.length() == 0 || endTime.length() == 0) {
-            result = false;
-            invalidStartAndEndTime.setTitle("No Input");
-            invalidStartAndEndTime.setContentText("Please input a timeslot");
-            invalidStartAndEndTime.showAndWait();
-        }
-
-        // If input is longer than 5 character (Not valid timeslot)
-        if (startTime.length() > 5) {
-            result = false;
-            invalidStartAndEndTime.setTitle("Input Longer than 5 Character");
-            invalidStartAndEndTime.setContentText("Please input a valid time slot");
-            invalidStartAndEndTime.showAndWait();
-        }
-
-        // If Start Time Length is 5
-        if (startTime.length() == 5) {
-            int i = 0;
-            // Iterate through each character
-            while (i < 5) {
-                // if length is 5, 2nd character must be a colon
-                if (i == 2) {
-                    if (startTime.charAt(i) != ':') {
-                        result = false;
-                        invalidStartAndEndTime.setTitle("No Colon In Start Time");
-                        invalidStartAndEndTime.setContentText("Please input a colon in the 24-hour format timeslot");
-                        invalidStartAndEndTime.showAndWait();
-                    }
-                } else {
-                    // Every other character must be an integer
-                    if (!(Character.isDigit(startTime.charAt(i)))) {
-                        result = false;
-                        invalidStartAndEndTime.setTitle("Character Not Integer In Start Time");
-                        invalidStartAndEndTime.setContentText("Please input a a proper integer timeslot");
-                        invalidStartAndEndTime.showAndWait();
-                    }
-                }
-                i++;
-            }
-        }
-
-        // If Start Time Length is 4
-        if (startTime.length() == 4) {
-            int i = 0;
-            // Iterate through each character
-            while (i < 4) {
-                if (i == 1) {
-                    // if length is 4, 1 character must be a colon
-                    if (startTime.charAt(i) != ':') {
-                        result = false;
-                        invalidStartAndEndTime.setTitle("No Colon In Start Time");
-                        invalidStartAndEndTime.setContentText("Please input a colon in the 24-hour format timeslot");
-                        invalidStartAndEndTime.showAndWait();
-                    }
-                } else {
-                    // Every other character must be an integer
-                    if (!(Character.isDigit(startTime.charAt(i)))) {
-                        result = false;
-                        invalidStartAndEndTime.setTitle("Character Not Integer In Start Time");
-                        invalidStartAndEndTime.setContentText("Please input a a proper integer timeslot");
-                        invalidStartAndEndTime.showAndWait();
-                    }
-                }
-                i++;
-            }
-        }
-
-        // If End Time Length is 5
-        if (endTime.length() == 5) {
-            int i = 0;
-            // Iterate through each character
-            while (i < 5) {
-                if (i == 2) {
-                    // if length is 5, 2nd character must be a colon
-                    if (endTime.charAt(i) != ':') {
-                        result = false;
-                        invalidStartAndEndTime.setTitle("No Colon In End Time");
-                        invalidStartAndEndTime.setContentText("Please input a colon in the 24-hour format timeslot");
-                        invalidStartAndEndTime.showAndWait();
-                    }
-                } else {
-                    // Every other character must be an integer
-                    if (!(Character.isDigit(endTime.charAt(i)))) {
-                        result = false;
-                        invalidStartAndEndTime.setTitle("Character Not Integer In End Time");
-                        invalidStartAndEndTime.setContentText("Please input a a proper integer timeslot");
-                        invalidStartAndEndTime.showAndWait();
-                    }
-                }
-                i++;
-            }
-        }
-
-        // If End Time Length is 4
-        if (endTime.length() == 4) {
-            int i = 0;
-            // Iterate through each character
-            while (i < 4) {
-                if (i == 1) {
-                    // if length is 4, 1st character must be a colon
-                    if (endTime.charAt(i) != ':') {
-                        result = false;
-                        invalidStartAndEndTime.setTitle("No Colon In End Time");
-                        invalidStartAndEndTime.setContentText("Please input a colon in the 24-hour format timeslot");
-                        invalidStartAndEndTime.showAndWait();
-                    }
-                } else {
-                    // Every other character must be an integer
-                    if (!(Character.isDigit(endTime.charAt(i)))) {
-                        result = false;
-                        invalidStartAndEndTime.setTitle("Character Not Integer In End Time");
-                        invalidStartAndEndTime.setContentText("Please input a a proper integer timeslot");
-                        invalidStartAndEndTime.showAndWait();
-                    }
-                }
-                i++;
-            }
-        }
-
-        // Remove colon from the string to test for end time beginning start time.
-        String startTimeValue = startTime.replace(":", "");
-        String endTimeValue = endTime.replace(":", "");
-
-        // Timeslot in 24-hour format, so just need to ensure that End Time is bigger than Start Time
-        if (Integer.parseInt(startTimeValue) > Integer.parseInt(endTimeValue)) {
-            result = false;
-            invalidStartAndEndTime.setTitle("End Time Need To Be After Start Time");
-            invalidStartAndEndTime.setContentText("Please ensure that end time starts after end time");
-            invalidStartAndEndTime.showAndWait();
-        }
-
-        return result;
+        return true;
     }
 
     public void setParent(SchedulerController controller) {
@@ -530,6 +465,6 @@ public class AddCourseToScheduleController implements Initializable {
 
     @FXML
     public void close(ActionEvent actionEvent) {
-        section_number.getScene().getWindow().hide();
+        course.getScene().getWindow().hide();
     }
 }
