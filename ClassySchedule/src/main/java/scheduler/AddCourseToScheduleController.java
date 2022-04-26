@@ -11,6 +11,7 @@ import jfxtras.scene.control.agenda.Agenda;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -105,39 +106,30 @@ public class AddCourseToScheduleController implements Initializable {
     private ComboBox<String> classTimes;
 
     /**
-     * The constructor for the add course to schedule controller
-     */
-    public AddCourseToScheduleController() {
-    }
-
-    /**
      * The invalid class name alert error
      */
-    Alert invalidClassName = new Alert(Alert.AlertType.ERROR);
+    private Alert invalidClassName = new Alert(Alert.AlertType.ERROR);
 
 
     /**
      * The invalid dates alert error
      */
-    Alert invalidDays = new Alert(Alert.AlertType.ERROR);
+    private Alert invalidDays = new Alert(Alert.AlertType.ERROR);
 
     /**
      * The invalid time alert error
      */
-    Alert invalidStartAndEndTime = new Alert(Alert.AlertType.ERROR);
+    private Alert invalidStartAndEndTime = new Alert(Alert.AlertType.ERROR);
 
     /**
      * The confirmation alert to go back to the scheduler
      */
-    Alert confirmBackButton = new Alert(Alert.AlertType.CONFIRMATION);
+    private Alert confirmBackButton = new Alert(Alert.AlertType.CONFIRMATION);
 
-    private void getTimeSlots() {
-        JSONArray currentTimeChunk = DatabaseStatic.getData("timeslot");
-        //JSONObject dayOfWeek = ()
-        for (Object jsonObject: currentTimeChunk) {
-            JSONObject job = (JSONObject)jsonObject;
-            classTimes.getItems().add((String) job.get("time_start") + " - " + job.get("time_end"));
-        }
+    /**
+     * The constructor for the add course to schedule controller
+     */
+    public AddCourseToScheduleController() {
     }
 
     @Override
@@ -147,7 +139,6 @@ public class AddCourseToScheduleController implements Initializable {
         getTimeSlots();
 
         //Add options to dropdown time chunk dropdown menu
-        // TODO: Make it grab from database
         //String[] timeChunks = new String[]{"8:00 - 9:40", "8:15 - 9:20"};
 
 
@@ -197,6 +188,18 @@ public class AddCourseToScheduleController implements Initializable {
         }
     }
 
+    private void getTimeSlots() {
+        JSONArray currentTimeChunk = DatabaseStatic.getData("timeslot");
+        //JSONObject dayOfWeek = ()
+        for (Object jsonObject: currentTimeChunk) {
+            JSONObject job = (JSONObject)jsonObject;
+            if (job.get("time_start") != JSONObject.NULL && job.get("time_end") != JSONObject.NULL) {
+                timeSlot.getItems().add(job.get("time_start") + " - " + job.get("time_end"));
+
+            }
+        }
+    }
+
     /**
      * Sets the stage
      * @param stage the stage to be set
@@ -243,11 +246,12 @@ public class AddCourseToScheduleController implements Initializable {
         List<LocalDateTime> endDaysAndTimes = new ArrayList<>();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (String day: selectedDates) {
-            startDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + timeSlot.getSelectionModel().getSelectedItem())));
-            endDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + timeSlot.getSelectionModel().getSelectedItem())));
+            String[] times = timeSlot.getSelectionModel().getSelectedItem().split("-");
+            startDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + times[0])));
+            endDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + times[1])));
         }
 
-        AppointmentFactory appointmentFactory = new AppointmentFactory(startDaysAndTimes, endDaysAndTimes, course.getSelectionModel().getSelectedItem(), room.getSelectionModel().getSelectedItem(), "test",course.getSelectionModel().getSelectedItem(), course.getSelectionModel().getSelectedItem());
+        AppointmentFactory appointmentFactory = new AppointmentFactory(startDaysAndTimes, endDaysAndTimes, course.getSelectionModel().getSelectedItem(), room.getSelectionModel().getSelectedItem(), "TODO: PROFESSOR");
 
         return appointmentFactory.createAppointments();
     }
@@ -269,7 +273,7 @@ public class AddCourseToScheduleController implements Initializable {
      * @return false if any test is invalid, else true
      */
     private boolean validateData() {
-        return validateDates() && validateTime();
+        return validateDates() && validateCourse() && validateTime();
     }
 
     /**
