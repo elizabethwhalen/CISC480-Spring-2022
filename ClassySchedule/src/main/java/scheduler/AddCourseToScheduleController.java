@@ -11,7 +11,6 @@ import jfxtras.scene.control.agenda.Agenda;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -100,12 +99,6 @@ public class AddCourseToScheduleController implements Initializable {
     private List<CheckBox> datesSelected;
 
     /**
-     * This is the dropdown menu for the class times
-     */
-    @FXML
-    private ComboBox<String> classTimes;
-
-    /**
      * The invalid class name alert error
      */
     private Alert invalidClassName = new Alert(Alert.AlertType.ERROR);
@@ -160,8 +153,8 @@ public class AddCourseToScheduleController implements Initializable {
         closeButton.setOnAction(confirmBack);
 
         JSONArray classes = DatabaseStatic.getData("class");
-        for (Object jsonObject: classes) {
-            JSONObject json = (JSONObject)jsonObject;
+        for (Object jsonObject : classes) {
+            JSONObject json = (JSONObject) jsonObject;
             StringBuilder str = new StringBuilder((String) json.get("dept_code"));
             if (json.get("class_num") != JSONObject.NULL) {
                 str.append(" ");
@@ -175,8 +168,8 @@ public class AddCourseToScheduleController implements Initializable {
         }
 
         JSONArray rooms = DatabaseStatic.getData("room");
-        for (Object jsonObject: rooms) {
-            JSONObject json = (JSONObject)jsonObject;
+        for (Object jsonObject : rooms) {
+            JSONObject json = (JSONObject) jsonObject;
             StringBuilder str = new StringBuilder((String) json.get("building_code"));
             str.append(" ");
             str.append(json.get("room_num"));
@@ -188,20 +181,23 @@ public class AddCourseToScheduleController implements Initializable {
         }
     }
 
+    /**
+     * Gets the current time slots from the database
+     */
     private void getTimeSlots() {
         JSONArray currentTimeChunk = DatabaseStatic.getData("timeslot");
         //JSONObject dayOfWeek = ()
-        for (Object jsonObject: currentTimeChunk) {
-            JSONObject job = (JSONObject)jsonObject;
+        for (Object jsonObject : currentTimeChunk) {
+            JSONObject job = (JSONObject) jsonObject;
             if (job.get("time_start") != JSONObject.NULL && job.get("time_end") != JSONObject.NULL) {
                 timeSlot.getItems().add(job.get("time_start") + " - " + job.get("time_end"));
-
             }
         }
     }
 
     /**
      * Sets the stage
+     *
      * @param stage the stage to be set
      */
     public void setStage(Stage stage) {
@@ -212,6 +208,7 @@ public class AddCourseToScheduleController implements Initializable {
      * Validates the data inputs
      * Creates a list of class times
      * Adds the classes to the schedule
+     *
      * @param event
      * @throws ParseException
      */
@@ -232,12 +229,13 @@ public class AddCourseToScheduleController implements Initializable {
 
     /**
      * Creates the appointments
+     *
      * @return a list of appointments
      * @throws ParseException
      */
     private List<Agenda.Appointment> createAppointment() throws ParseException {
         List<String> selectedDates = new ArrayList<>();
-        for (CheckBox radioButton: datesSelected) {
+        for (CheckBox radioButton : datesSelected) {
             if (radioButton.isSelected()) {
                 selectedDates.add(radioButton.getText());
             }
@@ -245,7 +243,7 @@ public class AddCourseToScheduleController implements Initializable {
         List<LocalDateTime> startDaysAndTimes = new ArrayList<>();
         List<LocalDateTime> endDaysAndTimes = new ArrayList<>();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        for (String day: selectedDates) {
+        for (String day : selectedDates) {
             String[] times = timeSlot.getSelectionModel().getSelectedItem().split("-");
             startDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + times[0])));
             endDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + times[1])));
@@ -258,6 +256,7 @@ public class AddCourseToScheduleController implements Initializable {
 
     /**
      * Converts a date to local date time
+     *
      * @param dateToConvert the date to be converted
      * @return a date in local date time formatx
      */
@@ -270,6 +269,7 @@ public class AddCourseToScheduleController implements Initializable {
 
     /**
      * This method validates that each data field necessary has the required and correct data type
+     *
      * @return false if any test is invalid, else true
      */
     private boolean validateData() {
@@ -279,6 +279,7 @@ public class AddCourseToScheduleController implements Initializable {
     /**
      * This function validates the class name. If nothing is selected, then it will prompt the user
      * to select a class name.
+     *
      * @return false is nothing is selected, else return true
      */
     private boolean validateCourse() {
@@ -298,6 +299,7 @@ public class AddCourseToScheduleController implements Initializable {
     /**
      * This function validate that at least 1 of the day of the week is selected. If not
      * then it will prompt the user to click on at least 1 or more day/days of the week.
+     *
      * @return false is nothing is selected, else return true
      */
     private boolean validateDates() {
