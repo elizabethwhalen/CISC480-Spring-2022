@@ -2831,7 +2831,10 @@ app.post('/v2/signup', async (req, res) => {
     if (!req.body.username || !req.body.password) {
         return res.status(400).send('Missing username or password');
     }
-    //this doesn't work- can't see users without query
+    if(!req.body.email){ 
+        return res.status(400).send("Email is required. Please enter email");
+    }
+    //TO DO - this doesn't work- can't see users without query
     if (users[req.body.username] !== undefined) {
         return res.status(409).send('A user with the specified username already exists');
     }
@@ -2839,10 +2842,14 @@ app.post('/v2/signup', async (req, res) => {
         return res.status(400).send('Password must be between ' + MIN_PASSWORD_LENGTH + ' and ' + MAX_PASSWORD_LENGTH + ' characters long');
     }
 
+    if(req.body.email.length > 130){
+        return res.status(400).send("Email too long, please try again");
+    }
+
 const salt = await bcrypt.genSalt(10)
 try{ hash = await bcrypt.hash(req.body.password, salt)
 } catch (err) {console.log("bcrypt error", err)}
-login_query_db_post("insert into login values ?",[[[req.body.username, hash, req.body.faculty_id, access_level=2]]],res)
+login_query_db_post("insert into login values ?",[[[req.body.username, hash, req.body.email, req.body.faculty_id, access_level=2, tmp=000000]]],res)
 });
 
 //login
