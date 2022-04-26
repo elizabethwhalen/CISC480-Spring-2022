@@ -1,6 +1,7 @@
 package courses;
 
 import database.Database;
+import database.DatabaseStatic;
 import homescreen.HomescreenController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -58,11 +59,6 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
     private Stage stage;
 
     /**
-     * The database connectivity
-     */
-    Database database = new Database();
-
-    /**
      * Retrieves department codes from database for dropdown menu
      * @param url
      * @param resourceBundle
@@ -100,7 +96,7 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
      * Initialize and grab data of buildings from the database to put into the buildingCode drop-down box
      */
     private void getBuildingCode() {
-        JSONArray building = database.getData("room");
+        JSONArray building = DatabaseStatic.getData("room");
         for (Object jsonObject: building) {
             JSONObject job = (JSONObject)jsonObject;
             buildingCode.getItems().add((String) job.get("building_code"));
@@ -111,10 +107,11 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
      * Initialize and grab data of room number from the database to put into the roomNum drop-down box
      */
     private void getRoomNumber() {
-        JSONArray room = database.getData("room");
+        JSONArray room = DatabaseStatic.getData("room");
         for (Object jsonObject: room) {
             JSONObject job = (JSONObject)jsonObject;
             roomNum.getItems().add((String) job.get("room_num"));
+
         }
     }
 
@@ -130,7 +127,8 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
         if (!(buildingCode.getSelectionModel().isEmpty()) && !(roomNum.getSelectionModel().isEmpty())) {
             String selectedBuilding = buildingCode.getValue();
             String selectedRoom = roomNum.getValue();
-            JSONArray classroom = database.getData("room");
+            JSONArray classroom = DatabaseStatic.getData("room");
+
             // Iterate through the database class table to find matching selected roomNum and buildingCode for deletion
             for (Object jsonObject: classroom) {
                 JSONObject job = (JSONObject) jsonObject;
@@ -138,7 +136,8 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
                 if (job.get("building_code").equals(selectedBuilding) && job.get("room_num").equals(selectedRoom)) {
                     try {
                         // Delete the room from the database
-                        database.deleteData("room", job);
+                        job.put("capacity", String.valueOf( job.get("capacity")));
+                        DatabaseStatic.deleteData("room", job);
                         // Clear the room number drop-down box
                         roomNum.getItems().clear();
                         // Set buildingCode drop-down back to blank default
