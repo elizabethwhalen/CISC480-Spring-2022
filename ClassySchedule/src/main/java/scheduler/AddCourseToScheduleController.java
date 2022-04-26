@@ -149,19 +149,6 @@ public class AddCourseToScheduleController implements Initializable {
             JSONObject job = (JSONObject)jsonObject;
             int day = (int) job.get("day_of_week");
             listOfTimes.add((String) job.get("time_start") + " - " + job.get("time_end"));
-            //String stringStartTime = (String) job.get("time_start");
-
-            //LocalTime currentStartTime = LocalTime.parse(stringStartTime, DateTimeFormatter.ISO_LOCAL_TIME);
-            //System.out.println(currentStartTime.getHour());
-
-
-
-
-
-
-            //classTimes.getItems().add((String) job.get("time_start") + " - " + job.get("time_end"));
-            //listOfTimes.add(job.get(""))
-            //sortTimes(listOfTimes);
         }
         removeDuplicateTimes(listOfTimes);
         //Add Times to startTime and endTime list
@@ -178,7 +165,6 @@ public class AddCourseToScheduleController implements Initializable {
         }
 
         sortTimes(startTime, endTime);
-        removeDuplicateTimes(listOfTimes);
         //Inserts time slots to the dropdown menu
         for(int numTimes=0; numTimes < listOfTimes.size(); numTimes++){
             classTimes.getItems().add(listOfTimes.get(numTimes));
@@ -259,10 +245,15 @@ public class AddCourseToScheduleController implements Initializable {
      * @param listOfTimes
      */
     private List<String> removeDuplicateTimes(List<String> listOfTimes){
-        for(int index = 0; index < listOfTimes.size(); index++) {
-            String currentTimeChunk = listOfTimes.get(index);
-            if (index != listOfTimes.lastIndexOf(currentTimeChunk)) {
-                listOfTimes.remove(listOfTimes.lastIndexOf(currentTimeChunk));
+        boolean removedAllDuplicates = false;
+        while(!removedAllDuplicates) {
+            removedAllDuplicates = true;
+            for (int index = 0; index < listOfTimes.size(); index++) {
+                String currentTimeChunk = listOfTimes.get(index);
+                if (index != listOfTimes.lastIndexOf(currentTimeChunk)) {
+                    listOfTimes.remove(listOfTimes.lastIndexOf(currentTimeChunk));
+                    removedAllDuplicates = false;
+                }
             }
         }
         return listOfTimes;
