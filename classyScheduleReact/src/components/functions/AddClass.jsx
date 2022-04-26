@@ -8,6 +8,7 @@ import {
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import { makeStyles } from '@material-ui/core/styles'
 import axios from 'axios'
+import DoneIcon from '@mui/icons-material/Done'
 
 // This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: '600',
     },
     message: {
-        color: 'red',
+        color: '#388e3c',
         fontWeight: 600,
     },
 }))
@@ -36,33 +37,41 @@ const AddClass = () => {
     const [code, setCode] = React.useState(''); // Department code (e.g., CISC, STAT, etc.)
     const [courseNum, setCourseNum] = React.useState(''); // Course number (e.g., 420, 350, etc.)
     const [courseName, setCourseName] = React.useState(''); // Course name (e.g., Info Sec, Computer Graphics, etc.)
+    const [added, setAdded] = React.useState(null);
 
+    const token = localStorage.getItem('access_token');
     // This function will create a Axios request when the form is submitted
     // It will send all information in the form to the database through the call
     const submitForm = (event) => {
         event.preventDefault();
         if (code !== '' && courseNum !== '' && courseName !== '') {
-            let data = JSON.stringify({ 
-                dept_code: code, 
-                class_num: courseNum, 
-                class_name: courseName 
+            let data = JSON.stringify({
+                dept_code: code,
+                class_num: courseNum,
+                class_name: courseName
             });
             let config = {
                 method: 'post',
-                url: 'http://classy-api.ddns.net/class',
-                headers: { 'Content-Type': 'application/json' },
+                url: 'http://classy-api.ddns.net/v2/class',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
                 data: data
             };
             axios(config).then((response) => {
                 console.log(JSON.stringify(response.data));
+                setAdded(true);
             }).catch((error) => {
                 console.log(error);
+                setAdded(false);
             });
 
             setCode('')
             setCourseNum('')
             setCourseName('')
-
+        } else {
+            setAdded(false);
         }
     };
 
@@ -99,7 +108,7 @@ const AddClass = () => {
                     </Typography>
                 </Grid>
 
-                <Grid item xs={12} fullWidth>
+                <Grid item xs={12}>
                     <ValidatorForm onSubmit={submitForm}>
                         <Grid container spacing={2}>
 
@@ -175,6 +184,15 @@ const AddClass = () => {
                                     onChange={handleChangeCourseName}
                                 />
                             </Grid>
+
+                            {added && (
+                                <Grid item xs={12}>
+                                    <Typography variant="body1" className={classes.message}>
+                                        <DoneIcon /> Product masking code has been added successfully!
+                                    </Typography>
+                                </Grid>
+                            )}
+
                             {/* BUTTON */}
                             <Grid item xs={4} fullWidth>
                                 <Button

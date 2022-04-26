@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(4),
         position: 'relative',
         flexGrow: 1,
+        height: '100%'
     },
     title: {
         color: '#7E16A4',
@@ -51,7 +52,7 @@ const AddFaculty = () => {
             });
             let config = {
                 method: 'post',
-                url: 'http://classy-api.ddns.net/faculty',
+                url: 'http://classy-api.ddns.net/v2/faculty',
                 headers: { 'Content-Type': 'application/json' },
                 data: data
             };

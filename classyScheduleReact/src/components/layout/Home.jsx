@@ -4,6 +4,7 @@ import { Grid, Paper, Button, Typography } from "@mui/material"
 import { Link } from 'react-router-dom'
 import logo from '../../images/Classy_logo.gif'
 
+
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -12,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(4),
         position: 'relative',
         flexGrow: 1,
-        height: '90vh'
+        height: '100%'
     },
     title: {
         color: '#7E16A4',
@@ -48,7 +49,7 @@ const Home = () => {
                 <Grid item xs={12}>
                     <Grid container spacing={2}>
                         {/*This button will take you to the add new class tab*/}
-                        <Grid item xs={12} fullWidth>
+                        <Grid item xs={12}>
                             <Link to='/AddClass' className={classes.link}>
                                 <Button size="large">Add New Class</Button>
                             </Link>
