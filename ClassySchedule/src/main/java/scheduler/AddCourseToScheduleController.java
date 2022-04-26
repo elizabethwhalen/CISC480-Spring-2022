@@ -150,14 +150,15 @@ public class AddCourseToScheduleController implements Initializable {
             int day = (int) job.get("day_of_week");
             listOfTimes.add((String) job.get("time_start") + " - " + job.get("time_end"));
         }
+        System.out.println(listOfTimes.size());
         removeDuplicateTimes(listOfTimes);
+        System.out.println(listOfTimes.size());
         //Add Times to startTime and endTime list
         for(int i=0; i < listOfTimes.size(); i++) {
             String stringTime = listOfTimes.get(i).toString();
 
             String stringStartTime = stringTime.substring(0, stringTime.indexOf(" "));
             String stringEndTime = stringTime.substring(stringTime.lastIndexOf(" ") + 1);
-            //System.out.println("END TIME " + stringEndTime);
             LocalTime currentStartTime = LocalTime.parse(stringStartTime, DateTimeFormatter.ISO_LOCAL_TIME);
             LocalTime currentEndTime = LocalTime.parse(stringEndTime, DateTimeFormatter.ISO_LOCAL_TIME);
             startTime.add(currentStartTime);
@@ -172,73 +173,43 @@ public class AddCourseToScheduleController implements Initializable {
     }
 
     /**
-     * This method sorts the times and updates the time-block list
+     * This method sorts the times and updates the listoftimes
      * @param startingTimes
      * @param endTimes
      */
+    @SuppressWarnings("DuplicatedCode")
     private void sortTimes(List<LocalTime> startingTimes, List<LocalTime> endTimes){
         List<String> sortedTimes = new ArrayList<String>();
-        boolean isSorted = false;
-        while(!isSorted) {
-            isSorted = true;
-            for (int index = 0; index < startingTimes.size()-1; index++){
-                LocalTime currentStartTime = startingTimes.get(index);
-                LocalTime currentEndTime = endTimes.get(index);
-                //If the time comes after then swap the places
-                if(currentStartTime.isAfter(startingTimes.get(index+1))){
-                    startingTimes.set(index,startingTimes.get(index+1));
-                    startingTimes.set(index+1, currentStartTime);
+        for (int index = 0; index < startingTimes.size()-1; index++){
+            for(int j=0; j<startingTimes.size()-1-index; j++){
+                LocalTime currentStartTime = startingTimes.get(j);
+                LocalTime currentEndTime = endTimes.get(j);
+                if(currentStartTime.isAfter(startingTimes.get(j+1))){
+                    startingTimes.set(j,startingTimes.get(j+1));
+                    startingTimes.set(j+1, currentStartTime);
 
-                    endTimes.set(index,endTimes.get(index+1));
-                    endTimes.set(index+1, currentEndTime);
+                    endTimes.set(j,endTimes.get(j+1));
+                    endTimes.set(j+1, currentEndTime);
 
-                    isSorted = false;
                 }
-            }
-        }
-        //System.out.println(startingTimes);
-        //Update the current List of Times
-        /*
-        for(int j =0; j < startingTimes.size(); j++){
-            sortedTimes.add(startingTimes.get(j).toString() + " - " + endTimes.get(j).toString());
-        }
-         */
-        sortedTimes = sortEndTimes(startingTimes, endTimes);
-        listOfTimes = sortedTimes;
-    }
-
-    /**
-     *
-     * @param startingTimes
-     * @param endTimes
-     */
-    private List<String> sortEndTimes(List<LocalTime> startingTimes, List<LocalTime> endTimes){
-        List<String> sortedTimes = new ArrayList<String>();
-        boolean isSorted = false;
-        while(!isSorted) {
-            isSorted = true;
-            for (int index = 0; index < startingTimes.size()-1; index++){
-                LocalTime currentStartTime = startingTimes.get(index);
-                LocalTime currentEndTime = endTimes.get(index);
-                //If the time comes after then swap the places
-                if(currentStartTime == startingTimes.get(index+1)) {
-                    if (currentEndTime.isAfter(endTimes.get(index + 1))) {
-                        startingTimes.set(index, startingTimes.get(index + 1));
-                        startingTimes.set(index + 1, currentStartTime);
-                        endTimes.set(index, endTimes.get(index + 1));
-                        endTimes.set(index + 1, currentEndTime);
-                        isSorted = false;
+                //Handle the end times
+                if(currentStartTime == startingTimes.get(j+1)) {
+                    if (currentEndTime.isAfter(endTimes.get(j + 1))){
+                        startingTimes.set(j, startingTimes.get(j + 1));
+                        startingTimes.set(j + 1, currentStartTime);
+                        endTimes.set(j, endTimes.get(j + 1));
+                        endTimes.set(j + 1, currentEndTime);
                     }
                 }
             }
         }
-        //System.out.println(startingTimes);
         //Update the current List of Times
-        for(int j =0; j < startingTimes.size(); j++){
-            sortedTimes.add(startingTimes.get(j).toString() + " - " + endTimes.get(j).toString());
+        for(int k =0; k < startingTimes.size(); k++){
+            sortedTimes.add(startingTimes.get(k).toString() + " - " + endTimes.get(k).toString());
         }
-        return sortedTimes;
+        listOfTimes = sortedTimes;
     }
+
 
     /**
      * This method removes the duplicate time slots given to us by the database.
@@ -256,6 +227,7 @@ public class AddCourseToScheduleController implements Initializable {
                 }
             }
         }
+
         return listOfTimes;
     }
 
