@@ -1,10 +1,9 @@
 import React from 'react'
-import { Button, Grid, Paper, Typography, } from '@mui/material'
+import { Button, Grid, Paper } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import background from '../../images/campus.jpg'
 import logo from '../../images/ustlogo.png'
-import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 // Styling components using useStyles
@@ -78,7 +77,7 @@ const useStyles = makeStyles({
 });
 
 // Login page component with parameter passed under props
-const Login = (props) => {
+const Signup = (props) => {
 
   const classes = useStyles(); // use the useStyles
   const [email, setEmail] = React.useState(''); // email
@@ -149,10 +148,6 @@ const Login = (props) => {
               <img src={logo} className={classes.logo} alt='logo' ></img>
             </Grid>
 
-            {/* Instruction line */}
-            <Grid item xs={12} className={classes.text}>
-              Log in with your organizational account
-            </Grid>
 
             {/* Form */}
             <Grid item xs={12}>
@@ -191,27 +186,19 @@ const Login = (props) => {
                     />
                   </Grid>
 
-                  {/* Forgot Password link to reset password */}
-                  <Grid item xs={6}>
+                 
+                  {/* <Grid item xs={6}>
                     <Typography variant='h8'>
-                      <Link to='/ForgotPassword' className={classes.forgotPass}>
+                      <Link to='/Login' className={classes.forgotPass}>
                         Forgot password?
                       </Link>
                     </Typography>
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <Typography variant='h8'>
-                      <Link exact to='/Signup' className={classes.forgotPass}>
-                        Sign up
-                      </Link>
-                    </Typography>
-                  </Grid>
+                  </Grid> */}
 
                   {/* Submit button */}
                   <Grid item xs={12} sx={{ marginTop: '30px' }}>
                       <Button variant="contained" disableElevation type='submit' sx={{backgroundColor: '#6a1b9a', '&:hover' : {backgroundColor: '#4a148c'} }} >
-                        Log In
+                        Sign up
                       </Button>                   
                   </Grid>
                 </Grid>
@@ -224,4 +211,4 @@ const Login = (props) => {
   )
 }
 
-export default Login;
+export default Signup;

@@ -4,7 +4,7 @@ import { CssBaseline } from '@material-ui/core'
 import AppRouter from '../../router/AppRouter'
 import AppSideNavBar from '../../nav/AppSideNavBar'
 import AppHeader from '../header/AppHeader'
-import Login from '../logging/Login'
+import LogRouter from '../../router/LogRouter'
 
 // This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles((theme) => ({
@@ -44,8 +44,12 @@ export default function Layout() {
 
   // This function will set the login variable to be true
   // A.K.A. log user in
-  const handleLogin = () =>  {
-    setLogin(true) 
+  const handleLogin = (response) =>  {
+    if (response) {
+      setLogin(true);
+    } else {
+      setLogin(false);
+    }
   }
 
   // This function will set the login variable to be false
@@ -78,7 +82,8 @@ export default function Layout() {
           </main>
         </div>
         :
-        <Login handleLogin={handleLogin} />
+        // <Login handleLogin={handleLogin}/>
+        <LogRouter handleLogin = {handleLogin} />
       }
     </>
 

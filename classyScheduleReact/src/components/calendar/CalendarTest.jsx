@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useRef} from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import { Paper } from "@mui/material";
 import moment from "moment";
@@ -11,6 +11,7 @@ const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 export default function CalendarTest() {
+    const nodeRef = useRef(null);
     const [events, setEvents] = React.useState([]);
     const minTime = new Date();
     minTime.setHours(8, 0, 0);
@@ -65,6 +66,7 @@ export default function CalendarTest() {
                 onSelectEvent={event => onEventClick(event)}
                 onSelectSlot={(slotInfo) => onSlotChange(slotInfo)}
                 styles={{ overflow: "hidden" }}
+                ref={nodeRef}
             />
         </Paper>
     );
