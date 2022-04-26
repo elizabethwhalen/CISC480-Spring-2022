@@ -11,9 +11,13 @@ import jfxtras.scene.control.agenda.Agenda;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+
 import java.net.URL;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -104,6 +108,8 @@ public class AddCourseToScheduleController implements Initializable {
     @FXML
     private ComboBox<String> classTimes;
 
+    private List<String> listOfTimes = new ArrayList<>();
+
     /**
      * The constructor for the add course to schedule controller
      */
@@ -131,13 +137,135 @@ public class AddCourseToScheduleController implements Initializable {
      */
     Alert confirmBackButton = new Alert(Alert.AlertType.CONFIRMATION);
 
-    private void getTimeSlots() {
+    private void getTimeSlots(){
+        //TODO: Find out why i need to call removeDuplicates twice.
+
         JSONArray currentTimeChunk = DatabaseStatic.getData("timeslot");
-        //JSONObject dayOfWeek = ()
+        List<LocalTime> startTime = new ArrayList<LocalTime>();
+        List<LocalTime> endTime = new ArrayList<LocalTime>();
+
+        //grabs a list of times from the database and adds them to a list, removes the duplicates, and sorts them.
         for (Object jsonObject: currentTimeChunk) {
             JSONObject job = (JSONObject)jsonObject;
-            classTimes.getItems().add((String) job.get("time_start") + " - " + job.get("time_end"));
+            int day = (int) job.get("day_of_week");
+            listOfTimes.add((String) job.get("time_start") + " - " + job.get("time_end"));
+            //String stringStartTime = (String) job.get("time_start");
+
+            //LocalTime currentStartTime = LocalTime.parse(stringStartTime, DateTimeFormatter.ISO_LOCAL_TIME);
+            //System.out.println(currentStartTime.getHour());
+
+
+
+
+
+
+            //classTimes.getItems().add((String) job.get("time_start") + " - " + job.get("time_end"));
+            //listOfTimes.add(job.get(""))
+            //sortTimes(listOfTimes);
         }
+        removeDuplicateTimes(listOfTimes);
+        //Add Times to startTime and endTime list
+        for(int i=0; i < listOfTimes.size(); i++) {
+            String stringTime = listOfTimes.get(i).toString();
+
+            String stringStartTime = stringTime.substring(0, stringTime.indexOf(" "));
+            String stringEndTime = stringTime.substring(stringTime.lastIndexOf(" ") + 1);
+            //System.out.println("END TIME " + stringEndTime);
+            LocalTime currentStartTime = LocalTime.parse(stringStartTime, DateTimeFormatter.ISO_LOCAL_TIME);
+            LocalTime currentEndTime = LocalTime.parse(stringEndTime, DateTimeFormatter.ISO_LOCAL_TIME);
+            startTime.add(currentStartTime);
+            endTime.add(currentEndTime);
+        }
+
+        sortTimes(startTime, endTime);
+        removeDuplicateTimes(listOfTimes);
+        //Inserts time slots to the dropdown menu
+        for(int numTimes=0; numTimes < listOfTimes.size(); numTimes++){
+            classTimes.getItems().add(listOfTimes.get(numTimes));
+        }
+    }
+
+    /**
+     * This method sorts the times and updates the time-block list
+     * @param startingTimes
+     * @param endTimes
+     */
+    private void sortTimes(List<LocalTime> startingTimes, List<LocalTime> endTimes){
+        List<String> sortedTimes = new ArrayList<String>();
+        boolean isSorted = false;
+        while(!isSorted) {
+            isSorted = true;
+            for (int index = 0; index < startingTimes.size()-1; index++){
+                LocalTime currentStartTime = startingTimes.get(index);
+                LocalTime currentEndTime = endTimes.get(index);
+                //If the time comes after then swap the places
+                if(currentStartTime.isAfter(startingTimes.get(index+1))){
+                    startingTimes.set(index,startingTimes.get(index+1));
+                    startingTimes.set(index+1, currentStartTime);
+
+                    endTimes.set(index,endTimes.get(index+1));
+                    endTimes.set(index+1, currentEndTime);
+
+                    isSorted = false;
+                }
+            }
+        }
+        //System.out.println(startingTimes);
+        //Update the current List of Times
+        /*
+        for(int j =0; j < startingTimes.size(); j++){
+            sortedTimes.add(startingTimes.get(j).toString() + " - " + endTimes.get(j).toString());
+        }
+         */
+        sortedTimes = sortEndTimes(startingTimes, endTimes);
+        listOfTimes = sortedTimes;
+    }
+
+    /**
+     *
+     * @param startingTimes
+     * @param endTimes
+     */
+    private List<String> sortEndTimes(List<LocalTime> startingTimes, List<LocalTime> endTimes){
+        List<String> sortedTimes = new ArrayList<String>();
+        boolean isSorted = false;
+        while(!isSorted) {
+            isSorted = true;
+            for (int index = 0; index < startingTimes.size()-1; index++){
+                LocalTime currentStartTime = startingTimes.get(index);
+                LocalTime currentEndTime = endTimes.get(index);
+                //If the time comes after then swap the places
+                if(currentStartTime == startingTimes.get(index+1)) {
+                    if (currentEndTime.isAfter(endTimes.get(index + 1))) {
+                        startingTimes.set(index, startingTimes.get(index + 1));
+                        startingTimes.set(index + 1, currentStartTime);
+                        endTimes.set(index, endTimes.get(index + 1));
+                        endTimes.set(index + 1, currentEndTime);
+                        isSorted = false;
+                    }
+                }
+            }
+        }
+        //System.out.println(startingTimes);
+        //Update the current List of Times
+        for(int j =0; j < startingTimes.size(); j++){
+            sortedTimes.add(startingTimes.get(j).toString() + " - " + endTimes.get(j).toString());
+        }
+        return sortedTimes;
+    }
+
+    /**
+     * This method removes the duplicate time slots given to us by the database.
+     * @param listOfTimes
+     */
+    private List<String> removeDuplicateTimes(List<String> listOfTimes){
+        for(int index = 0; index < listOfTimes.size(); index++) {
+            String currentTimeChunk = listOfTimes.get(index);
+            if (index != listOfTimes.lastIndexOf(currentTimeChunk)) {
+                listOfTimes.remove(listOfTimes.lastIndexOf(currentTimeChunk));
+            }
+        }
+        return listOfTimes;
     }
 
     @Override
@@ -147,8 +275,7 @@ public class AddCourseToScheduleController implements Initializable {
         getTimeSlots();
 
         //Add options to dropdown time chunk dropdown menu
-        // TODO: Make it grab from database
-        //String[] timeChunks = new String[]{"8:00 - 9:40", "8:15 - 9:20"};
+
 
 
         // This is the confirmation to go back alert
