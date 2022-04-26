@@ -12,6 +12,13 @@ const DnDCalendar = withDragAndDrop(Calendar);
 
 export default function CalendarTest() {
     const [events, setEvents] = React.useState([]);
+    const [tempEvent, setTempEvent] = React.useState(null);
+    const [popupEventTitle, setTitle] = React.useState('');
+    const [popupEventDescription, setDescription] = React.useState('');
+    const [popupEventDate, setDate] = React.useState([]);
+    const [popupEventStatus, setStatus] = React.useState('busy');
+    const [isEdit, setEdit] = React.useState(false);
+    const [isOpen, setOpen] = React.useState(false);
     const minTime = new Date();
     minTime.setHours(8, 0, 0);
     const maxTime = new Date();
@@ -44,7 +51,38 @@ export default function CalendarTest() {
 
     const onEventClick = (event) => {
         // return <EditSession />;
+        console.log(event, "data click");
     };
+
+    const saveEvent = React.useCallback(()=>{
+        // save and edit events 
+        const newEvent = {
+            id: tempEvent.id,
+            title: popupEventTitle,
+            description: popupEventDescription,
+            start: popupEventDate[0],
+            end: popupEventDate[1]
+        };
+        if (isEdit){
+            // edit event on calendar
+            const index = events.findIndex(x => x.id === tempEvent.id);
+            const newEventList = [...events];
+
+            newEventList.splice(index, 1, newEvent);
+            setEvents(newEventList);
+            // here you can update your files from storage as well
+        }
+        else{
+            //add ne event to list
+            setEvents([...events, newEvent]);
+            // add events to your storage as well
+        }
+        setDate(popupEventDate[0]);
+        //close popup
+        setOpen(false);
+    });
+
+    
 
     return (
         <Paper sx={{ padding: '20px' }} elevation={0} >
