@@ -172,7 +172,7 @@ public final class DatabaseStatic {
 
         URIBuilder builder = new URIBuilder(url + table);
         for (String key : json.keySet()) {
-            builder.addParameter(key, (String) json.get(key));
+            builder.appendPath((String) json.get(key));
         }
 
         HttpDelete httpDelete = new HttpDelete(builder.build());
