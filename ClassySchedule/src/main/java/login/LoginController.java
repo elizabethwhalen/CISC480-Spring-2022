@@ -1,25 +1,22 @@
 package login;
 
-import database.Database;
 import database.DatabaseStatic;
 import homescreen.HomescreenController;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import scheduler.AddCourseToScheduleController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -52,10 +49,6 @@ public class LoginController implements Initializable {
      */
     private Stage loginStage;
 
-    private JSONArray user;
-
-    private ResourceBundle resourceBundle;
-
     /**
      * The constructor for the login page
      */
@@ -63,7 +56,7 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources){
-        resourceBundle = resources;
+        Platform.runLater(() -> username.requestFocus());
     }
 
     /**
@@ -83,9 +76,27 @@ public class LoginController implements Initializable {
         if (validateLogin(username.getText(), password.getText())) {
             changeScene();
         } else {
-            //TODO: show error dialog if password is incorrect
-        }
+            showIncorrectPasswordError();
+         }
+    }
 
+
+    @FXML
+    public void submitButton(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            if (validateLogin(username.getText(), password.getText())) {
+                changeScene();
+            } else {
+                showIncorrectPasswordError();
+            }
+        }
+    }
+
+    private void showIncorrectPasswordError() {
+        Alert invalidUser = new Alert(Alert.AlertType.ERROR);
+        invalidUser.setTitle("Invalid Password");
+        invalidUser.setContentText("INVALID USERNAME OR PASSWORD \n Please re-enter username and password");
+        invalidUser.showAndWait();
     }
 
     /**
@@ -102,7 +113,7 @@ public class LoginController implements Initializable {
      * Changes the view to the homescreen page
      */
     public void changeScene() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"), resourceBundle);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
         Parent root = null;
         try {
             root = loader.load();
