@@ -3,6 +3,7 @@ package homescreen;
 import courses.AddCourseToDatabaseController;
 import courses.DeleteClassroomFromDatabaseController;
 import courses.DeleteCourseFromDatabaseController;
+import courses.DeleteFacultyFromDatabaseController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -145,6 +146,22 @@ public class HomescreenController implements Initializable {
         try {
             root = loader.load();
             DeleteClassroomFromDatabaseController homeScreenController = loader.getController();
+            homeScreenController.setStage(homeScreenStage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        homeScreenStage.setTitle("Classy-Schedule");
+        homeScreenStage.setScene(new Scene(root));
+        homeScreenStage.show();
+    }
+
+    @FXML
+    public void DeleteFacultyButtonClicked() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/DeleteFacultyFromDatabase.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+            DeleteFacultyFromDatabaseController homeScreenController = loader.getController();
             homeScreenController.setStage(homeScreenStage);
         } catch (IOException e) {
             e.printStackTrace();

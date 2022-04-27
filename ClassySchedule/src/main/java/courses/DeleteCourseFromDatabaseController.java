@@ -1,7 +1,9 @@
 package courses;
 
-import database.Database;
+import database.DatabaseStatic;
+
 import homescreen.HomescreenController;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -11,16 +13,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.io.IOException;
+
 import java.net.URISyntaxException;
 import java.net.URL;
+
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -39,16 +42,22 @@ public class DeleteCourseFromDatabaseController implements Initializable {
     private Button confirm;
 
     /**
-     * The course drop-down box to select which course to delete
+     * The text field that consist of the selected course name
      */
     @FXML
-    private ChoiceBox<String> course;
+    private TextField course;
 
     /**
-     * The department drop-down box to select which dept of courses to delete
+     * The department drop-down to select which dept of courses to delete
      */
     @FXML
     private ChoiceBox<String> dept;
+
+    /**
+     * The class number drop-down to select the unique class to delete
+     */
+    @FXML
+    private ChoiceBox<String> classNum;
 
     /**
      * the current stage of this scene
@@ -57,33 +66,39 @@ public class DeleteCourseFromDatabaseController implements Initializable {
     private Stage stage;
 
     /**
-     * The database connectivity
-     */
-    Database database = new Database();
-
-    /**
-     * Retrieves department codes from database for dropdown menu
      * @param url
      * @param resourceBundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Initialize dropdown boxes with observable database list
+        // Do not allow text-field to be edited
+        course.setEditable(false);
+
+        // Initialize department drop-down
         getDept();
-        // Whenever the department drop-down is selected call the getCourse function to change
-        // and initialize the course drop-down
+        // Whenever department is selected/changed
         dept.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // Clear previous drop-down course
-                course.getItems().clear();
-                // Set list of new courses from selected department
-                getCourses();
+                // Clear previous class number
+                classNum.getItems().clear();
+                // Initialize class number
+                getClassNumber();
             }
         });
-        // Initialize back button
+
+        // Whenever class number is selected/change
+        classNum.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // Clear previous course text-field
+                course.clear();
+                // Set selected course name
+                course.setText(getCourse());
+            }
+        });
+        // Initialize back and confirmation button
         back(back, "Go Back To Home Screen", "Click ok to go back to home screen.", true);
-        // Set confirmation of confirm button to delete the selected course
         back(confirm, "Confirm Deletion", "Click 'OK' to delete the class, or 'Cancel' to cancel the following action.", false);
 
     }
@@ -98,29 +113,83 @@ public class DeleteCourseFromDatabaseController implements Initializable {
     }
 
     /**
-     * confirmButton to delete the selected course. It checks if the drop-down boxes
-     * are empty, if not, then it checks for the JSON object of the selected drop-down box of course/dept
-     * and call the deleteData function from the Database class to delete the selected course from the database
-     * @return true if the course is deleted and false if there's an error
+     * Iterate through the list of "class" table from the database and insert the department code
+     * into the department drop-down
+     */
+    private void getDept() {
+        JSONArray department = DatabaseStatic.getData("dept");
+        for (Object jsonObject: department) {
+            JSONObject job = (JSONObject)jsonObject;
+            dept.getItems().add((String) job.get("dept_code"));
+        }
+    }
+
+    /**
+     * Iterate through the list of "class" table from the database and insert the class number
+     * from the user selected department to the class number drop-down
+     */
+    private void getClassNumber() {
+        // References to user selected department
+        String selectedDepartment = dept.getValue();
+        JSONArray classes = DatabaseStatic.getData("class");
+        for (Object jsonObject: classes) {
+            JSONObject job = (JSONObject)jsonObject;
+            // If matching selected department then insert class number to class number drop-down
+            if (job.get("dept_code").equals(selectedDepartment)) {
+                classNum.getItems().add((String) job.get("class_num"));
+                break;
+            }
+        }
+    }
+
+    /**
+     * This method references the selected class number and return the string of the class name of that selected class number
+     * @return class name
+     */
+    private String getCourse() {
+        String result = null;
+        // References to user selected unique class number
+        String selectedClassNumber = classNum.getValue();
+        JSONArray classes = DatabaseStatic.getData("class");
+        for (Object jsonObject: classes) {
+            JSONObject job = (JSONObject)jsonObject;
+            // If matching selected class number then set result to that JSON object class name
+            if (job.get("class_num").equals(selectedClassNumber)) {
+                result = (String) job.get("class_name");
+                break;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * confirm button to delete the selected course. It checks if the drop-downs
+     * are empty, if not then it checks for the JSON object of the selected drop-downs of department and class number
+     * to delete that JSON object from the database
+     * @return true if the course is deleted and false otherwise
      */
     private boolean confirmButton() {
         boolean result = true;
-        // If drop-down boxes are not empty
-        if (!(course.getSelectionModel().isEmpty()) && !(dept.getSelectionModel().isEmpty())) {
-            String selectedClass = course.getValue();
+        // If drop-downs are not empty
+        if (!(classNum.getSelectionModel().isEmpty()) && !(dept.getSelectionModel().isEmpty())) {
+            // The user selected class number and department
+            String selectedClassNum = classNum.getValue();
             String selectedDept = dept.getValue();
-            //TODO: maybe include section number too for more specific class to delete?
-            JSONArray classes = database.getData("class");
-            // Iterate through the database class table to find matching selected dept/course for deletion
+
+            // The "class" table from the database
+            JSONArray classes = DatabaseStatic.getData("class");
+
+            // Iterate through the "class" table and find matching JSON object to the user's request
             for (Object jsonObject: classes) {
                 JSONObject job = (JSONObject) jsonObject;
-                // If the JSON object to be deleted is equal to the selected course/dept then delete it
-                if (job.get("class_name").equals(selectedClass) && job.get("dept_code").equals(selectedDept)) {
+                // If JSON object contain the user's selected request
+                if (job.get("class_num").equals(selectedClassNum) && job.get("dept_code").equals(selectedDept)) {
                     try {
-                        // Delete the class from the database
-                        database.deleteData("class", job);
-                        // Clear the course department
-                        course.getItems().clear();
+                        // Delete the JSON object from the "class" table from the database
+                        DatabaseStatic.deleteData("class", job);
+                        //System.out.println(DatabaseStatic.deleteData("class", job));
+                        // Clear the class number drop-down
+                        classNum.getItems().clear();
                         // Set department drop-down back to blank default
                         dept.getSelectionModel().clearSelection();
                     } catch (URISyntaxException e) {
@@ -144,79 +213,49 @@ public class DeleteCourseFromDatabaseController implements Initializable {
     }
 
     /**
-     * Initialize and grab data from the database to put into the course drop-down box
-     */
-    private void getCourses() {
-        // Variable reference to the selected department
-        String selectedDepartment = dept.getValue();
-        // Iterate through the class table and grab the selected department classes from the database to the drop-down
-        JSONArray classes = database.getData("class");
-        for (Object jsonObject: classes) {
-            JSONObject job = (JSONObject)jsonObject;
-            // If the selected data have the same department as the selected department
-            // then add those data courses to the course drop-down
-            if (job.get("dept_code").equals(selectedDepartment)) {
-                course.getItems().add((String) job.get("class_name"));
-            }
-        }
-    }
-
-    /**
-     * Initialize and grab data of department from the database to put into the dept drop-down box
-     */
-    private void getDept() {
-        // Iterate through the class table and grab the data of department to the department drop-down
-        JSONArray department = database.getData("dept");
-        for (Object jsonObject: department) {
-            JSONObject job = (JSONObject)jsonObject;
-            dept.getItems().add((String) job.get("dept_code"));
-        }
-    }
-
-    /**
-     * This method is the back confirmation action. Its parameters are taken into account for different scenarios.
+     * This method is the back confirmation action. Its parameters are taken into account for two different scenarios.
      * Scenarios include going back to the home page or canceling the deletion request which just stays on the same page.
-     * @param button the button passed to activate its on-action functionality
+     * @param button the button to initialize
      * @param title the title of the alert
      * @param message the message of the alert
-     * @param goBackToPrevPage boolean variable to identify different scenario
+     * @param goBackToPrevPage boolean variable to identify the two scenario
      */
     private void back(Button button, String title, String message, Boolean goBackToPrevPage) {
-        // Initialize the alert for going back to the home screen
+        // Initialize back confirmation button
         Alert backAlert = new Alert(Alert.AlertType.CONFIRMATION);
         backAlert.setTitle(title);
         backAlert.setContentText(message);
-        // If it's to go back to the previous page
+        // First scenario to go back to home screen
         if (goBackToPrevPage) {
-            // confirmation action to go back to the previous page
+            // Confirmation to go back to the home screen
             EventHandler<ActionEvent> confirmBack = new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    // Set button Ok to be the output button that the user clicked
-                    // It is either "Cancel" or "Ok"
+                    // The Ok button from the alert
                     Optional<ButtonType> Ok = backAlert.showAndWait();
-                    // If button is "Ok", then go back
+                    // If user pressed "OK"
                     if (Ok.get().getText().equals("OK")) {
-                        // go back to the previous scene with this method
+                        // Go back to home screen
                         goBack();
                     }
                 }
             };
-            // Set the button to have the above functionality
+            // Set the button to have to go back to home screen functionality
             button.setOnAction(confirmBack);
         }
         // 2nd scenario, confirm deletion
         else {
+            // Confirmation to delete from the database
             EventHandler<ActionEvent> confirmDelete = new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    // Set button Ok to be the output button that the user clicked
-                    // It is either "Cancel" or "Ok"
+                    // The Ok button from the alert
                     Optional<ButtonType> ok = backAlert.showAndWait();
-                    // If button is "Ok", then create information alert to notify successful removal
-                    // and go back to home screen
+                    // If user pressed "OK"
                     if (ok.get().getText().equals("OK")) {
+                        // If delete was successful
                         if (confirmButton()) {
+                            // Successful deletion alert
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setTitle("Deleted");
                             alert.setContentText("The selected course has been deleted.");
@@ -225,13 +264,13 @@ public class DeleteCourseFromDatabaseController implements Initializable {
                     }
                 }
             };
-            // Set the button to have the above functionality
+            // Set the button to have to confirmation delete functionality
             button.setOnAction(confirmDelete);
         }
     }
 
     /**
-     * This method switch scene back to the home screen
+     * This method switches the scene back to the home screen
      */
     @FXML
     public void goBack() {

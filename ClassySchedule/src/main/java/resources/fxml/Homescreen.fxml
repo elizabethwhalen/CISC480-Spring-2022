@@ -105,7 +105,7 @@
             <ButtonBar layoutX="52.0" layoutY="180.0" prefHeight="40.0" prefWidth="647.0">
                <buttons>
                   <Button fx:id="deleteCourse" mnemonicParsing="false" onMouseClicked="#DeleteCourseButtonClicked" text="Delete Course" translateX="-335.0" />
-                  <Button fx:id="deleteProfessor" mnemonicParsing="false" text="Delete Professor" translateX="-325.0" />
+                  <Button fx:id="deleteFaculty" mnemonicParsing="false" onMouseClicked="#DeleteFacultyButtonClicked" text="Delete Professor" translateX="-325.0" />
                   <Button fx:id="deleteClassroom" mnemonicParsing="false" onMouseClicked="#DeleteClassroomButtonClicked" text="Delete Classroom" translateX="-317.0" />
                </buttons>
             </ButtonBar>
