@@ -53,20 +53,22 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        getFacultyID();
-
+        // Do not allow text-field to be edited
         firstName.setEditable(false);
         lastName.setEditable(false);
         title.setEditable(false);
         prevCourseLoad.setEditable(false);
         currCourseLoad.setEditable(false);
 
+        // Initialize faculty id drop-down
+        getFacultyID();
+        // Whenever faculty id is selected/changed
         facultyID.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // Clear previous drop-down course
+                // Clear all of the previous text-fields
                 clearTextField();
-                // Set list of new courses from selected department
+                // Initialize all of the text-fields
                 title.setText(getTitle());
                 firstName.setText(getFirstName());
                 lastName.setText(getLastName());
@@ -75,9 +77,8 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
             }
         });
 
-        // Initialize back button
+        // Initialize back and confirmation button
         back(back, "Go Back To Home Screen", "Click ok to go back to home screen.", true);
-        // Set confirmation of confirm button to delete the selected course
         back(confirm, "Confirm Deletion", "Click 'OK' to delete the faculty, or 'Cancel' to cancel the following action.", false);
     }
 
@@ -89,6 +90,10 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
         this.stage = stage;
     }
 
+    /**
+     * Iterate through the list of "faculty" table from the database and insert the faculty id
+     * into the faculty id drop-down
+     */
     private void getFacultyID() {
         JSONArray faculty = DatabaseStatic.getData("faculty");
         for (Object jsonObject: faculty) {
@@ -98,17 +103,21 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
         }
     }
 
+    /**
+     * Iterate through the lists of "faculty" table from the database and find the matching selected
+     * faculty id and retrieve that faculty's title
+     * @return the title of the faculty
+     */
     private String getTitle() {
         String result = null;
-        // Variable reference to the selected class number
+        // References to user selected faculty id
         Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-        // Iterate through the class table
+        // Iterate through the faculty table
         JSONArray faculty = DatabaseStatic.getData("faculty");
         for (Object jsonObject: faculty) {
             JSONObject job = (JSONObject)jsonObject;
             job.put("title_id", String.valueOf( job.get("title_id")));
-            // json object matches class number then it is this object,
-            // set result equal to class name of this selected object
+            // If matching selected faculty id then set result equal to title and break
             if (job.get("faculty_id").equals(selectedFaculty)) {
                 result = (String) job.get("title_id");
                 break;
@@ -117,16 +126,20 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
         return result;
     }
 
+    /**
+     * Iterate through the lists of "faculty" table from the database and find the matching selected
+     * faculty id and retrieve that faculty's first name
+     * @return the first name of the faculty
+     */
     private String getFirstName() {
         String result = null;
-        // Variable reference to the selected class number
+        // References to user selected faculty id
         Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-        // Iterate through the class table
+        // Iterate through the faculty table
         JSONArray faculty = DatabaseStatic.getData("faculty");
         for (Object jsonObject: faculty) {
             JSONObject job = (JSONObject)jsonObject;
-            // json object matches class number then it is this object,
-            // set result equal to class name of this selected object
+            // If matching selected faculty id then set result equal to first name and break
             if (job.get("faculty_id").equals(selectedFaculty)) {
                 result = (String) job.get("faculty_first");
                 break;
@@ -135,16 +148,20 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
         return result;
     }
 
+    /**
+     * Iterate through the lists of "faculty" table from the database and find the matching selected
+     * faculty id and retrieve that faculty's first name
+     * @return the first name of the faculty
+     */
     private String getLastName() {
         String result = null;
-        // Variable reference to the selected class number
+        // References to user selected faculty id
         Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-        // Iterate through the class table
+        // Iterate through the faculty table
         JSONArray faculty = DatabaseStatic.getData("faculty");
         for (Object jsonObject: faculty) {
             JSONObject job = (JSONObject)jsonObject;
-            // json object matches class number then it is this object,
-            // set result equal to class name of this selected object
+            // If matching selected faculty id then set result equal to last name and break
             if (job.get("faculty_id").equals(selectedFaculty)) {
                 result = (String) job.get("faculty_last");
                 break;
@@ -153,17 +170,21 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
         return result;
     }
 
+    /**
+     * Iterate through the lists of "faculty" table from the database and find the matching selected
+     * faculty id and retrieve that faculty's previous course load
+     * @return the previous course load of the faculty
+     */
     private String getPrevCourseLoad() {
         String result = null;
-        // Variable reference to the selected class number
+        // References to user selected faculty id
         Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-        // Iterate through the class table
+        // Iterate through the faculty table
         JSONArray faculty = DatabaseStatic.getData("faculty");
         for (Object jsonObject: faculty) {
             JSONObject job = (JSONObject)jsonObject;
             job.put("prev_load", String.valueOf( job.get("prev_load")));
-            // json object matches class number then it is this object,
-            // set result equal to class name of this selected object
+            // If matching selected faculty id then set result equal to previous course load and break
             if (job.get("faculty_id").equals(selectedFaculty)) {
                 result = (String) job.get("prev_load");
                 break;
@@ -172,17 +193,21 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
         return result;
     }
 
+    /**
+     * Iterate through the lists of "faculty" table from the database and find the matching selected
+     * faculty id and retrieve that faculty's current course load
+     * @return the current course load of the faculty
+     */
     private String getCurrCourseLoad() {
         String result = null;
-        // Variable reference to the selected class number
+        // References to user selected faculty id
         Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-        // Iterate through the class table
+        // Iterate through the faculty table
         JSONArray faculty = DatabaseStatic.getData("faculty");
         for (Object jsonObject: faculty) {
             JSONObject job = (JSONObject)jsonObject;
             job.put("curr_load", String.valueOf( job.get("curr_load")));
-            // json object matches class number then it is this object,
-            // set result equal to class name of this selected object
+            // If matching selected faculty id then set result equal to current course load and break
             if (job.get("faculty_id").equals(selectedFaculty)) {
                 result = (String) job.get("curr_load");
                 break;
@@ -191,6 +216,9 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
         return result;
     }
 
+    /**
+     * Clear all the text-fields from the scene
+     */
     private void clearTextField() {
         title.clear();
         firstName.clear();
@@ -200,29 +228,39 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
     }
 
     /**
-     * confirmButton to delete the selected classroom. It checks if the drop-down boxes
-     * are empty, if not, then it checks for the JSON object of the selected drop-down box of buildingCode/RoomNumber
-     * and call the deleteData function from the Database class to delete the selected classroom from the database
-     * @return true if the course is deleted and false if there's an error
+     * confirm button to delete the selected faculty. It checks if the drop-downs
+     * are empty, if not then it checks for the JSON object of the selected drop-down of faculty id
+     * to delete that JSON object from the database
+     * @return true if the course is deleted and false otherwise
      */
     private boolean confirmButton() {
         boolean result = true;
-        // If drop-down boxes are not empty
+        // If drop-down iss not empty
         if (!(facultyID.getSelectionModel().isEmpty())) {
-            Integer facultyIDValue = Integer.parseInt(facultyID.getValue());
-            //String facultyIDValue = facultyID.getValue();
+            // The user selected faculty id
+            //Integer facultyIDValue = Integer.parseInt(facultyID.getValue());
+            String facultyIDValue = facultyID.getValue();
+            // The "faculty" table from the database
             JSONArray faculty = DatabaseStatic.getData("faculty");
 
-            // Iterate through the database class table to find matching selected roomNum and buildingCode for deletion
+            // Iterate through the "faculty" table and find matching JSON object to the user's request
             for (Object jsonObject: faculty) {
                 JSONObject job = (JSONObject) jsonObject;
-                // If the JSON object to be deleted is equal to the selected roomNum/buildingCode then delete it
-                if (job.get("faculty_id").equals(facultyIDValue)) {
+                // If JSON object contain the user's selected request
+                if (job.get("faculty_id").equals(Integer.parseInt(facultyIDValue))) {
                     try {
-                        // Delete the room from the database
+                        System.out.println(job);
+                    /*    job.put("faculty_id", String.valueOf(job.get("faculty_id")));
+                        job.put("prev_load", String.valueOf(job.get("prev_load")));
+                        job.put("curr_load", String.valueOf(job.get("curr_load")));
+                        job.put("title_id", String.valueOf(job.get("title_id")));*/
+
+                        System.out.println(job);
+                        // Delete the JSON object from the "faculty" table from the database
                         DatabaseStatic.deleteData("faculty", job);
-                        // Clear the room number drop-down box
-                        facultyID.getItems().clear();
+                        // Set faculty id drop-down back to blank default
+                        facultyID.getSelectionModel().clearSelection();
+                        // Clear all the text-fields
                         clearTextField();
                     } catch (URISyntaxException e) {
                         e.printStackTrace();
@@ -233,7 +271,7 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
                 }
             }
         }
-        // No room has been selected show an error alert
+        // No faculty id has been selected show an error alert
         else {
             result = false;
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -245,50 +283,49 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
     }
 
     /**
-     * This method is the back confirmation action. Its parameters are taken into account for different scenarios.
+     * This method is the back confirmation action. Its parameters are taken into account for two different scenarios.
      * Scenarios include going back to the home page or canceling the deletion request which just stays on the same page.
-     * @param button the button passed to activate its on-action functionality
+     * @param button the button to initialize
      * @param title the title of the alert
      * @param message the message of the alert
-     * @param goBackToPrevPage boolean variable to identify different scenario
+     * @param goBackToPrevPage boolean variable to identify the two scenario
      */
     private void back(Button button, String title, String message, Boolean goBackToPrevPage) {
-        // Initialize the alert for going back to the home screen
+        // Initialize back confirmation button
         Alert backAlert = new Alert(Alert.AlertType.CONFIRMATION);
         backAlert.setTitle(title);
         backAlert.setContentText(message);
-        // If it's to go back to the previous page
+        // First scenario to go back to home screen
         if (goBackToPrevPage) {
-            // confirmation action to go back to the previous page
+            // Confirmation to go back to the home screen
             EventHandler<ActionEvent> confirmBack = new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    // Set button Ok to be the output button that the user clicked
-                    // It is either "Cancel" or "Ok"
+                    // The Ok button from the alert
                     Optional<ButtonType> Ok = backAlert.showAndWait();
-                    // If button is "Ok", then go back
+                    // If user pressed "OK"
                     if (Ok.get().getText().equals("OK")) {
-                        // go back to the previous scene with this method
+                        // Go back to home screen
                         goBack();
                     }
                 }
             };
-            // Set the button to have the above functionality
+            // Set the button to have to go back to home screen functionality
             button.setOnAction(confirmBack);
         }
         // 2nd scenario, confirm deletion
         else {
+            // Confirmation to delete from the database
             EventHandler<ActionEvent> confirmDelete = new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    // Set button Ok to be the output button that the user clicked
-                    // It is either "Cancel" or "Ok"
+                    // The Ok button from the alert
                     Optional<ButtonType> ok = backAlert.showAndWait();
-                    // If button is "Ok", then create information alert to notify successful removal
-                    // and go back to home screen
+                    // If user pressed "OK"
                     if (ok.get().getText().equals("OK")) {
-                        // If deletion goes well then show a successful alert
+                        // If delete was successful
                         if (confirmButton()) {
+                            // Successful deletion alert
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setTitle("Deleted");
                             alert.setContentText("The selected faculty has been deleted.");
@@ -297,13 +334,13 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
                     }
                 }
             };
-            // Set the button to have the above functionality
+            // Set the button to have to confirmation delete functionality
             button.setOnAction(confirmDelete);
         }
     }
 
     /**
-     * This method switch scene back to the home screen
+     * This method switches the scene back to the home screen
      */
     @FXML
     public void goBack() {
