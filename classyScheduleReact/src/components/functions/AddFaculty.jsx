@@ -33,12 +33,8 @@ const AddFaculty = () => {
     const [firstName, setFirstName] = React.useState('');
     const [lastName, setLastName] = React.useState('');
     const [teachLoad, setTeachLoad] = React.useState('');
-    // const [state, setState] = React.useState({
-    //     intro: false,
-    //     security: false,
-    //     ai: false,
-    // });
-    // promise for our AddFaculty button
+    const token = localStorage.getItem('access_token');
+    
     const submitForm = (event) => {
         event.preventDefault();
         if (firstName !== '' && lastName !== '' && teachLoad !== 0.0) {
@@ -52,8 +48,11 @@ const AddFaculty = () => {
             });
             let config = {
                 method: 'post',
-                url: 'http://classy-api.ddns.net/v2/faculty',
-                headers: { 'Content-Type': 'application/json' },
+                url: 'https://classy-api.ddns.net/v2/faculty',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
                 data: data
             };
             axios(config).then((response) => {
@@ -64,9 +63,7 @@ const AddFaculty = () => {
             setFirstName('');
             setLastName('');
             setTeachLoad('');
-            //setState(false);
         }
-
     };
 
     const handleFirstNameChange = (event) => {
@@ -80,16 +77,6 @@ const AddFaculty = () => {
     const handleTeachLoadChange = (event) => {
         setTeachLoad(event.target.value);
     };
-
-    /*
-    const handleChangeClassType = (event) => {
-        setState({
-            ...state,
-            [event.target.name]: event.target.checked,
-        });
-    };
-    */
-   // const { intro, security, ai } = state;
 
     const classes = useStyles()
 
