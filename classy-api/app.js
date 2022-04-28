@@ -123,7 +123,6 @@ app.post('/v3/class', async (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
-
     //auth validated
     else{
         //check if new dept
@@ -944,16 +943,24 @@ app.get('/v2/faculty_class', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    console.log(payload)
+    console.log(payload.user.access_level)
+    if (payload.user.access_level==0){res.status(401).send("Unauthorized")}
     else{
         let query = "SELECT * FROM faculty_class";
 
-        if(Object.keys(req.query).length > 0){
+        if(Object.keys(req.query).length > 0 | payload.user.access_level == 1){
             query = query + " WHERE"
         }
-
     //where condition:faculty_id
-    let faculty_id = req.query.faculty_id
-    if (faculty_id){
+    //if user is faculty member, restrict view to their faculty_id
+    if (payload.user.access_level == 1){
+        faculty_id = payload.user.faculty_id
+        query = query + " faculty_id = " + con.escape(faculty_id);
+    }
+    else if (req.query.faculty_id){
+        faculty_id = req.query.faculty_id
+        console.log(faculty_id)
         faculty_id_array = faculty_id.split(",");
         for(let i = 0; i < faculty_id_array.length; i++){
             if(i > 0){
