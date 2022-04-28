@@ -88,27 +88,17 @@ const Signup = (props) => {
 
     // If either email or password is empty, then don't log user in
     if (email !== '' && password !== ''){
-      let token = '';
       let data = JSON.stringify({
         username: email,
         password: password
       });
       let config = {
         method: 'post',
-        url: 'http://classy-api.ddns.net/v2/login',
+        url: 'https://classy-api.ddns.net/v2/signup',
         headers: { 'Content-Type': 'application/json' },
         data: data
       };
-      axios(config).then((response) => {
-        if (response.data !== ''){
-          token = response.data;
-          props.handleLogin(true);
-          localStorage.setItem('access_token', token);
-          console.log(token)
-        } else {
-          props.handleLogin(false);
-        }
-      }).catch((error) => {
+      axios(config).then().catch((error) => {
         console.log(error);
       });
       

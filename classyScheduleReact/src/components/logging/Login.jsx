@@ -22,7 +22,8 @@ const useStyles = makeStyles({
     position: 'absolute',
     left: '0px',
     right: '0px',
-    top: '0px'
+    top: '0px',
+    minHeight: '450px'
   },
   container: {
     width: '100%'
@@ -96,7 +97,7 @@ const Login = (props) => {
       });
       let config = {
         method: 'post',
-        url: 'http://classy-api.ddns.net/v2/login',
+        url: 'https://classy-api.ddns.net/v2/login',
         headers: { 'Content-Type': 'application/json' },
         data: data
       };
@@ -132,14 +133,14 @@ const Login = (props) => {
 
         {/* Empty grid item used for place holder */}
         <Grid item 
-          // alignItems="flex-start"
-          // justify="flex-start" 
+          alignItems="flex-start"
+          justify="flex-start" 
           className={classes.gridItem1} >
         </Grid>
 
         <Grid item
-          // alignItems="flex-end"
-          // justify="flex-end"
+          alignItems="flex-end"
+          justify="flex-end"
           className={classes.gridItem2}
         >
           <Grid container className={classes.loginContainer}>
@@ -202,7 +203,7 @@ const Login = (props) => {
 
                   <Grid item xs={6}>
                     <Typography variant='h8'>
-                      <Link exact to='/Signup' className={classes.forgotPass}>
+                      <Link to='/Signup' className={classes.forgotPass}>
                         Sign up
                       </Link>
                     </Typography>
