@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core'
 import LoginHeader from './LoginHeader'
 import { Link } from 'react-router-dom'
+import logo from '../../images/Updated_Logo.gif'
 
 // Width of the drawer (so that the header can move to exact position as the drawer expands)
 const drawerWidth = 300
@@ -80,6 +81,11 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     textDecoration: 'none'
+  },
+  logo: {
+      width: '50px',
+      height: '50px',
+      display: 'inline-block',
   }
 }))
 
@@ -110,7 +116,6 @@ export default function AppHeader(props) {
         >
           <MenuIcon fontSize="large" />
         </IconButton>
-
         {/* TITLE */}
         <Container>
           <Link to='/' className={classes.link}>
@@ -119,7 +124,8 @@ export default function AppHeader(props) {
               className={classes.text}
               noWrap
             >
-              Classy Schedule
+              <img src={logo} alt='logo' className={classes.logo}/> 
+              Classy Schedule 
             </Typography>
           </Link>
         </Container>

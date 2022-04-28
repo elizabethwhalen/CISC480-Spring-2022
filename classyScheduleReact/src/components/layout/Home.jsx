@@ -2,7 +2,6 @@ import React from "react"
 import { makeStyles } from '@material-ui/core/styles'
 import { Grid, Paper, Button, Typography } from "@mui/material"
 import { Link } from 'react-router-dom'
-import logo from '../../images/Classy_logo.gif'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,12 +20,6 @@ const useStyles = makeStyles((theme) => ({
     },
     link: {
         textDecoration: 'none',
-    },
-    logo: {
-        width: '100px',
-        height: '100px',
-        display: 'inline-block',
-        float: 'left'
     }
 }))
 
@@ -37,7 +30,6 @@ const Home = () => {
         <Paper className={classes.container} elevation={0}>
             <Grid container spacing={3} >
                 <Grid item xs={12}>
-                    <img src={logo} alt='' className={classes.logo}/>
                     <Typography variant="h4">
                         Welcome to Classy Scheduler
                     </Typography>
