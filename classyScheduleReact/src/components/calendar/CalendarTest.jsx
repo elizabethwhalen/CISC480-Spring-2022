@@ -27,8 +27,9 @@ export default function CalendarTest() {
                 let title = e.title;
                 let updated = {start: start, end: end, title: title, id : id};
                 newData[e.id] = updated;
-                return;
+                return null;
             }
+            return null;
         })
         setEvents(newData);
     };
@@ -54,6 +55,7 @@ export default function CalendarTest() {
                 max={maxTime}
                 defaultDate={moment().toDate()}
                 defaultView="week"
+                views={['week']}
                 events={events}
                 localizer={localizer}
                 onEventDrop={event => onEventDrop(event)}

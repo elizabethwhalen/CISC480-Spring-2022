@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import { makeStyles } from '@material-ui/core/styles'
-
+import axios from 'axios';
 
 // This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles((theme) => ({
@@ -35,6 +35,7 @@ const AddRoom = () => {
     const [roomNum, setRoomNum] = React.useState('');
     const [building, setBuilding] = React.useState(''); // Room number (e.g., 420, 350, etc.)
     const classes = useStyles();
+    const token = localStorage.getItem('access_token');
 
     // This function will retrieve the value entered in the Room number field whenever it changes
     const handleChangeRoomNum = (event) => {
@@ -47,8 +48,29 @@ const AddRoom = () => {
     }
 
     const handleSubmit = (event) => {
+        event.preventDefault();
         if (roomNum !== '' && building !== '') {
-            // function
+            let data = JSON.stringify({
+                building_code: building,
+                room_num: roomNum,
+                capacity: 20
+            });
+            let config = {
+                method: 'post',
+                url: 'https://classy-api.ddns.net/v2/room',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                data: data
+            };
+            axios(config).then((response) => {
+                console.log(JSON.stringify(response.data));
+            }).catch((error) => {
+                console.log(error);
+            });
+            setRoomNum('');
+            setBuilding('');
         }
     }
 
