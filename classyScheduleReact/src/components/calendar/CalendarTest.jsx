@@ -56,25 +56,21 @@ export default function CalendarTest() {
         setEdit(true);
         setTempEvent({ ...args.event });
         // fill popup form with event data
-        loadPopupForm(args.event);
-        setAnchor(args.domEvent.target);
         setOpen(true);
-    }, [loadPopupForm]);
+    });
 
     const onEventCreated = React.useCallback((args) => {
         // createNewEvent(args.event, args.target)
         setEdit(false);
         setTempEvent(args.event)
         // fill popup form with event data
-        loadPopupForm(args.event);
-        setAnchor(args.target);
         // open the popup
         setOpen(true);
-    }, [loadPopupForm]);
+    });
 
     const onEventDeleted = React.useCallback((args) => {
         deleteEvent(args.event)
-    }, [deleteEvent]);
+    });
 
     const onEventUpdated = React.useCallback((args) => {
         // here you can update the event in your storage as well, after drag & drop or resize
@@ -110,7 +106,7 @@ export default function CalendarTest() {
                 }
             ];
         }
-    }, [isEdit, saveEvent]);
+    }, [isEdit]);
 
     const onClose = React.useCallback(() => {
         if (!isEdit) {
