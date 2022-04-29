@@ -56,6 +56,7 @@ export default function CalendarTest() {
         setEdit(true);
         setTempEvent({ ...args.event });
         // fill popup form with event data
+        // load popupform
         setOpen(true);
     });
 
