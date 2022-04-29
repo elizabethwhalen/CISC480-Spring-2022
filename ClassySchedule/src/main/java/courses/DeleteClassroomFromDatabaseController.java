@@ -139,8 +139,9 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
                 // If JSON object contain the user's selected request
                 if (job.get("building_code").equals(selectedBuilding) && job.get("room_num").equals(selectedRoom)) {
                     try {
-                        // String manipulation because capacity is Integer data type from the database
-                        job.put("capacity", String.valueOf( job.get("capacity")));
+                        System.out.println(job);
+                        job.remove("capacity");
+                        System.out.println(job);
                         // Delete the JSON object from the "room" table from the database
                         DatabaseStatic.deleteData("room", job);
                         // Clear the room number drop-down

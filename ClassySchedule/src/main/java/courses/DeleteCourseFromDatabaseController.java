@@ -137,7 +137,6 @@ public class DeleteCourseFromDatabaseController implements Initializable {
             // If matching selected department then insert class number to class number drop-down
             if (job.get("dept_code").equals(selectedDepartment)) {
                 classNum.getItems().add((String) job.get("class_num"));
-                break;
             }
         }
     }
@@ -155,8 +154,11 @@ public class DeleteCourseFromDatabaseController implements Initializable {
             JSONObject job = (JSONObject)jsonObject;
             // If matching selected class number then set result to that JSON object class name
             if (job.get("class_num").equals(selectedClassNumber)) {
-                result = (String) job.get("class_name");
-                break;
+                if(job.get("class_name").equals(null)) {
+                    result = "null";
+                } else {
+                    result = (String) job.get("class_name");
+                }
             }
         }
         return result;
@@ -185,6 +187,7 @@ public class DeleteCourseFromDatabaseController implements Initializable {
                 // If JSON object contain the user's selected request
                 if (job.get("class_num").equals(selectedClassNum) && job.get("dept_code").equals(selectedDept)) {
                     try {
+                        job.remove("class_name");
                         // Delete the JSON object from the "class" table from the database
                         DatabaseStatic.deleteData("class", job);
                         //System.out.println(DatabaseStatic.deleteData("class", job));

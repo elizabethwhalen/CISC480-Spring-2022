@@ -111,18 +111,23 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
     private String getTitle() {
         String result = null;
         // References to user selected faculty id
-        Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-        // Iterate through the faculty table
-        JSONArray faculty = DatabaseStatic.getData("faculty");
-        for (Object jsonObject: faculty) {
-            JSONObject job = (JSONObject)jsonObject;
-            job.put("title_id", String.valueOf( job.get("title_id")));
-            // If matching selected faculty id then set result equal to title and break
-            if (job.get("faculty_id").equals(selectedFaculty)) {
-                result = (String) job.get("title_id");
-                break;
+        if (!(facultyID.getValue() == (null))) {
+            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
+            // Iterate through the faculty table
+            JSONArray faculty = DatabaseStatic.getData("faculty");
+            for (Object jsonObject: faculty) {
+                JSONObject job = (JSONObject)jsonObject;
+                job.put("title_id", String.valueOf( job.get("title_id")));
+                // If matching selected faculty id then set result equal to title and break
+                if (job.get("faculty_id").equals(selectedFaculty)) {
+                    result = (String) job.get("title_id");
+                    break;
+                }
             }
+        } else {
+            result = "null";
         }
+
         return result;
     }
 
@@ -134,17 +139,22 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
     private String getFirstName() {
         String result = null;
         // References to user selected faculty id
-        Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-        // Iterate through the faculty table
-        JSONArray faculty = DatabaseStatic.getData("faculty");
-        for (Object jsonObject: faculty) {
-            JSONObject job = (JSONObject)jsonObject;
-            // If matching selected faculty id then set result equal to first name and break
-            if (job.get("faculty_id").equals(selectedFaculty)) {
-                result = (String) job.get("faculty_first");
-                break;
+        if (!(facultyID.getValue() == (null))) {
+            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
+            // Iterate through the faculty table
+            JSONArray faculty = DatabaseStatic.getData("faculty");
+            for (Object jsonObject : faculty) {
+                JSONObject job = (JSONObject) jsonObject;
+                // If matching selected faculty id then set result equal to first name and break
+                if (job.get("faculty_id").equals(selectedFaculty)) {
+                    result = (String) job.get("faculty_first");
+                    break;
+                }
             }
+        } else {
+            result = "null";
         }
+
         return result;
     }
 
@@ -156,17 +166,22 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
     private String getLastName() {
         String result = null;
         // References to user selected faculty id
-        Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-        // Iterate through the faculty table
-        JSONArray faculty = DatabaseStatic.getData("faculty");
-        for (Object jsonObject: faculty) {
-            JSONObject job = (JSONObject)jsonObject;
-            // If matching selected faculty id then set result equal to last name and break
-            if (job.get("faculty_id").equals(selectedFaculty)) {
-                result = (String) job.get("faculty_last");
-                break;
+        if (!(facultyID.getValue() == (null))) {
+            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
+            // Iterate through the faculty table
+            JSONArray faculty = DatabaseStatic.getData("faculty");
+            for (Object jsonObject : faculty) {
+                JSONObject job = (JSONObject) jsonObject;
+                // If matching selected faculty id then set result equal to last name and break
+                if (job.get("faculty_id").equals(selectedFaculty)) {
+                    result = (String) job.get("faculty_last");
+                    break;
+                }
             }
+        } else {
+            result = null;
         }
+
         return result;
     }
 
@@ -178,18 +193,23 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
     private String getPrevCourseLoad() {
         String result = null;
         // References to user selected faculty id
-        Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-        // Iterate through the faculty table
-        JSONArray faculty = DatabaseStatic.getData("faculty");
-        for (Object jsonObject: faculty) {
-            JSONObject job = (JSONObject)jsonObject;
-            job.put("prev_load", String.valueOf( job.get("prev_load")));
-            // If matching selected faculty id then set result equal to previous course load and break
-            if (job.get("faculty_id").equals(selectedFaculty)) {
-                result = (String) job.get("prev_load");
-                break;
+        if (!(facultyID.getValue() == (null))) {
+            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
+            // Iterate through the faculty table
+            JSONArray faculty = DatabaseStatic.getData("faculty");
+            for (Object jsonObject : faculty) {
+                JSONObject job = (JSONObject) jsonObject;
+                job.put("prev_load", String.valueOf(job.get("prev_load")));
+                // If matching selected faculty id then set result equal to previous course load and break
+                if (job.get("faculty_id").equals(selectedFaculty)) {
+                    result = (String) job.get("prev_load");
+                    break;
+                }
             }
+        } else {
+            result = "null";
         }
+
         return result;
     }
 
@@ -201,17 +221,21 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
     private String getCurrCourseLoad() {
         String result = null;
         // References to user selected faculty id
-        Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-        // Iterate through the faculty table
-        JSONArray faculty = DatabaseStatic.getData("faculty");
-        for (Object jsonObject: faculty) {
-            JSONObject job = (JSONObject)jsonObject;
-            job.put("curr_load", String.valueOf( job.get("curr_load")));
-            // If matching selected faculty id then set result equal to current course load and break
-            if (job.get("faculty_id").equals(selectedFaculty)) {
-                result = (String) job.get("curr_load");
-                break;
+        if (!(facultyID.getValue() == (null))) {
+            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
+            // Iterate through the faculty table
+            JSONArray faculty = DatabaseStatic.getData("faculty");
+            for (Object jsonObject : faculty) {
+                JSONObject job = (JSONObject) jsonObject;
+                job.put("curr_load", String.valueOf(job.get("curr_load")));
+                // If matching selected faculty id then set result equal to current course load and break
+                if (job.get("faculty_id").equals(selectedFaculty)) {
+                    result = (String) job.get("curr_load");
+                    break;
+                }
             }
+        } else {
+            result = "null";
         }
         return result;
     }
@@ -250,11 +274,12 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
                 if (job.get("faculty_id").equals(Integer.parseInt(facultyIDValue))) {
                     try {
                         System.out.println(job);
-                    /*    job.put("faculty_id", String.valueOf(job.get("faculty_id")));
-                        job.put("prev_load", String.valueOf(job.get("prev_load")));
-                        job.put("curr_load", String.valueOf(job.get("curr_load")));
-                        job.put("title_id", String.valueOf(job.get("title_id")));*/
-
+                        job.remove("prev_load");
+                        job.remove("curr_load");
+                        job.remove("title_id");
+                        job.remove("faculty_last");
+                        job.remove("faculty_first");
+                        job.put("faculty_id", facultyIDValue);
                         System.out.println(job);
                         // Delete the JSON object from the "faculty" table from the database
                         DatabaseStatic.deleteData("faculty", job);

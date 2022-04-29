@@ -176,7 +176,7 @@ public final class DatabaseStatic {
         }
 
         HttpDelete httpDelete = new HttpDelete(builder.build());
-
+                                                                            //https://classy-api.ddns.net/v2/class/OSS/999" -X PUT -d "class_name="example"
         httpDelete.setEntity(new StringEntity(tokenObject.toString()));
         httpDelete.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + tokenObject.get("token"));
 

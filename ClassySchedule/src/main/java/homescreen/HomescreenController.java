@@ -11,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import room.RoomController;
@@ -27,11 +28,54 @@ import java.util.ResourceBundle;
  */
 public class HomescreenController implements Initializable {
     @FXML
-    public Button addCourse;
-    public Button addClassroom;
-    public Button addProfessor;
+    private Button addClassroom;
 
-    private Stage homeScreenStage;
+    @FXML
+    private Button addCourse;
+
+    @FXML
+    private Button addProfessor;
+
+    @FXML
+    private Button deleteClassroom;
+
+    @FXML
+    private Button deleteCourse;
+
+    @FXML
+    private Button deleteFaculty;
+
+    @FXML
+    private MenuItem goToAddClassroom;
+
+    @FXML
+    private MenuItem goToAddCourse;
+
+    @FXML
+    private MenuItem goToAddProfessor;
+
+    @FXML
+    private MenuItem goToDeleteClassroom;
+
+    @FXML
+    private MenuItem goToDeleteProfessor;
+
+    @FXML
+    private MenuItem goToDeleteCourse;
+
+    @FXML
+    private MenuItem goToEditClassroom;
+
+    @FXML
+    private MenuItem goToEditCourse;
+
+    @FXML
+    private MenuItem goToEditProfessor;
+
+    @FXML
+    private MenuItem goToViewSchedule;
+
+    Stage homeScreenStage;
 
     public HomescreenController() {
     }
@@ -72,7 +116,7 @@ public class HomescreenController implements Initializable {
     /**
      * Changes scene to add classroom page when 'Add CLassroom' button is clicked
      */
-    public void addClassroomButtonClicked(MouseEvent mouseEvent) {
+    public void addClassroomButtonClicked() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/ClassroomNew.fxml"));
         Parent root = null;
         try {
@@ -89,7 +133,7 @@ public class HomescreenController implements Initializable {
     /**
      * Changes scene to add professor page when 'Add Professor' button is clicked
      */
-    public void addProfessorButtonClicked(MouseEvent mouseEvent) {
+    public void addProfessorButtonClicked() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Professor.fxml"));
         Parent root = null;
         try {
@@ -103,7 +147,7 @@ public class HomescreenController implements Initializable {
         homeScreenStage.show();
     }
 
-    public void viewScheduleClicked(MouseEvent mouseEvent) {
+    public void viewScheduleClicked() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/scheduler.fxml"));
         Parent root = null;
         try {
@@ -118,10 +162,10 @@ public class HomescreenController implements Initializable {
     }
 
     /**
-     * Changes scene to delete course page when 'Delete Course' button is clicked
+     * Changes scene to delete course page
      */
     @FXML
-    public void DeleteCourseButtonClicked() {
+    public void deleteCourseButtonClicked() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/DeleteCourseFromDatabase.fxml"));
         Parent root = null;
         try {
@@ -137,10 +181,10 @@ public class HomescreenController implements Initializable {
     }
 
     /**
-     * Changes scene to delete course page when 'Delete Course' button is clicked
+     * Changes scene to delete classroom page
      */
     @FXML
-    public void DeleteClassroomButtonClicked() {
+    public void deleteClassroomButtonClicked() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/DeleteClassroomFromDatabase.fxml"));
         Parent root = null;
         try {
@@ -155,8 +199,11 @@ public class HomescreenController implements Initializable {
         homeScreenStage.show();
     }
 
+    /**
+     * changes scene to delete faculty page
+     */
     @FXML
-    public void DeleteFacultyButtonClicked() {
+    public void deleteFacultyButtonClicked() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/DeleteFacultyFromDatabase.fxml"));
         Parent root = null;
         try {
@@ -170,4 +217,5 @@ public class HomescreenController implements Initializable {
         homeScreenStage.setScene(new Scene(root));
         homeScreenStage.show();
     }
+
 }

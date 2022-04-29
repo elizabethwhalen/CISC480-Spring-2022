@@ -45,34 +45,22 @@
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
-        <Menu mnemonicParsing="false" text="File">
+        <Menu fx:id="goTohome" mnemonicParsing="false" text="Home" />
+        <Menu mnemonicParsing="false" text="Goto">
           <items>
-            <MenuItem mnemonicParsing="false" text="New" />
-            <MenuItem mnemonicParsing="false" text="Open…" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
+            <MenuItem fx:id="goToAddCourse" mnemonicParsing="false" onAction="#addCourseButtonClicked" text="Add Course" />
+            <MenuItem fx:id="goToAddProfessor" mnemonicParsing="false" onAction="#addProfessorButtonClicked" text="Add Professor" />
+                  <MenuItem fx:id="goToAddClassroom" mnemonicParsing="false" onAction="#addClassroomButtonClicked" text="Add Classroom" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" />
-            <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
-            <MenuItem mnemonicParsing="false" text="Revert" />
+            <MenuItem fx:id="goToEditCourse" mnemonicParsing="false" text="Edit Course" />
+            <MenuItem fx:id="goToEditProfessor" mnemonicParsing="false" text="Edit Professor" />
+            <MenuItem fx:id="goToEditClassroom" mnemonicParsing="false" text="Edit Classroom" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Preferences…" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Cut" />
-            <MenuItem mnemonicParsing="false" text="Copy" />
-            <MenuItem mnemonicParsing="false" text="Paste" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Select All" />
-            <MenuItem mnemonicParsing="false" text="Unselect All" />
+            <MenuItem fx:id="goToDeleteCourse" mnemonicParsing="false" onAction="#deleteCourseButtonClicked" text="Delete Course" />
+            <MenuItem fx:id="goToDeleteProfessor" mnemonicParsing="false" onAction="#deleteFacultyButtonClicked" text="Delete Professor" />
+                  <MenuItem fx:id="goToDeleteClassroom" mnemonicParsing="false" onAction="#deleteClassroomButtonClicked" text="Delete Classroom" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="goToViewSchedule" mnemonicParsing="false" onAction="#viewScheduleClicked" text="View Schedule" />
           </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Help">
@@ -104,9 +92,9 @@
             </ButtonBar>
             <ButtonBar layoutX="52.0" layoutY="180.0" prefHeight="40.0" prefWidth="647.0">
                <buttons>
-                  <Button fx:id="deleteCourse" mnemonicParsing="false" onMouseClicked="#DeleteCourseButtonClicked" text="Delete Course" translateX="-335.0" />
-                  <Button fx:id="deleteFaculty" mnemonicParsing="false" onMouseClicked="#DeleteFacultyButtonClicked" text="Delete Professor" translateX="-325.0" />
-                  <Button fx:id="deleteClassroom" mnemonicParsing="false" onMouseClicked="#DeleteClassroomButtonClicked" text="Delete Classroom" translateX="-317.0" />
+                  <Button fx:id="deleteCourse" mnemonicParsing="false" onMouseClicked="#deleteCourseButtonClicked" text="Delete Course" translateX="-335.0" />
+                  <Button fx:id="deleteFaculty" mnemonicParsing="false" onMouseClicked="#deleteFacultyButtonClicked" text="Delete Professor" translateX="-325.0" />
+                  <Button fx:id="deleteClassroom" mnemonicParsing="false" onMouseClicked="#deleteClassroomButtonClicked" text="Delete Classroom" translateX="-317.0" />
                </buttons>
             </ButtonBar>
       </children>
