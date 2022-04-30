@@ -1,6 +1,6 @@
 import React, {useRef} from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
-import { Paper } from "@mui/material";
+import { Paper, Snackbar } from "@mui/material";
 import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
@@ -20,6 +20,7 @@ export default function CalendarTest() {
     const [popupEventStatus, setStatus] = React.useState('busy');
     const [isEdit, setEdit] = React.useState(false);
     const [isOpen, setOpen] = React.useState(false);
+    const [anchor, setAnchor] = React.useState(null);
     const minTime = new Date();
     minTime.setHours(8, 0, 0);
     const maxTime = new Date();
@@ -34,8 +35,9 @@ export default function CalendarTest() {
                 let title = e.title;
                 let updated = {start: start, end: end, title: title, id : id};
                 newData[e.id] = updated;
-                return;
+                return null;
             }
+            return null;
         })
         setEvents(newData);
     };
@@ -50,10 +52,70 @@ export default function CalendarTest() {
         return events;
     };
 
-    const onEventClick = (event) => {
-        // return <EditSession />;
-        console.log(event, "data click");
-    };
+    const onEventClick = React.useCallback((args) => {
+        setEdit(true);
+        setTempEvent({ ...args.event });
+        // fill popup form with event data
+        // load popupform
+        setOpen(true);
+    });
+
+    const onEventCreated = React.useCallback((args) => {
+        // createNewEvent(args.event, args.target)
+        setEdit(false);
+        setTempEvent(args.event)
+        // fill popup form with event data
+        // open the popup
+        setOpen(true);
+    });
+
+    const onEventDeleted = React.useCallback((args) => {
+        deleteEvent(args.event)
+    });
+
+    const onEventUpdated = React.useCallback((args) => {
+        // here you can update the event in your storage as well, after drag & drop or resize
+        // ...
+    }, []);
+
+    // popup options
+    const headerText = React.useMemo(() => isEdit ? 'Edit event' : 'New Event', [isEdit]);
+    const popupButtons = React.useMemo(() => {
+        if (isEdit) {
+            return [
+                'cancel',
+                {
+                    handler: () => {
+                        saveEvent();
+                    },
+                    keyCode: 'enter',
+                    text: 'Save',
+                    cssClass: 'mbsc-popup-button-primary'
+                }
+            ];
+        }
+        else {
+            return [
+                'cancel',
+                {
+                    handler: () => {
+                        saveEvent();
+                    },
+                    keyCode: 'enter',
+                    text: 'Add',
+                    cssClass: 'mbsc-popup-button-primary'
+                }
+            ];
+        }
+    }, [isEdit]);
+
+    const onClose = React.useCallback(() => {
+        if (!isEdit) {
+            // refresh the list, if add popup was canceled, to remove the temporary event
+            setEvents([...events]);
+        }
+        setOpen(false);
+    }, [isEdit, events]);
 
     const saveEvent = React.useCallback(()=>{
         // save and edit events 
@@ -81,10 +143,49 @@ export default function CalendarTest() {
         setDate(popupEventDate[0]);
         //close popup
         setOpen(false);
-    });
+    }, [isEdit, events, popupEventDate, popupEventDescription, popupEventStatus, popupEventTitle, tempEvent]);
 
-    
+    const deleteEvent = React.useCallback((event) => {
+        setEvents(events.filter(item => item.id !== event.id));
+        setTimeout(() =>{
+            Snackbar({
+                button: {
+                    action: () =>{
+                        setEvents(prevEvents => [...prevEvents, event]);
+                    },
+                    text: 'Undo'
+                },
+                message: 'event deleted'
+            });
+        });
 
+    }, [events]);
+
+    const loadPopupForm = React.useCallback((event) => {
+        setTitle(event.title);
+        setDescription(event.description);
+        setDate(event.Date);
+        
+    }, []);
+
+    // handle popup form changes
+    const titleChange = React.useCallback((ev) =>{
+        setTitle(ev.target.value);
+    }, []);
+
+    const descriptionChange = React.useCallback((ev) =>{
+        setDescription(ev.target.value);
+    }, []);
+
+    const dateChange = React.useCallback((args) => {
+        setDate(args.value);
+    }, []);
+
+    const onDeleteClick = React.useCallback(() => {
+        deleteEvent(tempEvent);
+        setOpen(false);
+    }, [deleteEvent, tempEvent]);
+    //scheduler options
     return (
         <Paper sx={{ padding: '20px' }} elevation={0} >
             <DnDCalendar
@@ -92,6 +193,7 @@ export default function CalendarTest() {
                 max={maxTime}
                 defaultDate={moment().toDate()}
                 defaultView="week"
+                views={['week']}
                 events={events}
                 localizer={localizer}
                 onEventDrop={event => onEventDrop(event)}
@@ -106,6 +208,7 @@ export default function CalendarTest() {
                 styles={{ overflow: "hidden" }}
                 ref={nodeRef}
             />
+            
         </Paper>
     );
 };
