@@ -4,6 +4,10 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
@@ -12,7 +16,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="courses.DeleteFacultyFromDatabaseController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="users.DeleteFacultyFromDatabaseController">
    <children>
       <VBox layoutX="5.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
          <children>
@@ -89,6 +93,37 @@
                   </Label>
                   <TextField fx:id="prevCourseLoad" layoutX="174.0" layoutY="164.0" prefHeight="26.0" prefWidth="166.0" />
                   <TextField fx:id="currCourseLoad" layoutX="196.0" layoutY="201.0" prefHeight="26.0" prefWidth="166.0" />
+                  <MenuBar layoutX="-4.0" layoutY="-5.0" prefHeight="26.0" prefWidth="605.0">
+                     <menus>
+                        <Menu fx:id="goTohome" mnemonicParsing="false" onAction="#homeButtonClicked" text="Home">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#homeButtonClicked" text="Back to Home" />
+                           </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Goto">
+                           <items>
+                              <MenuItem fx:id="goToAddCourse" mnemonicParsing="false" onAction="#addCourseButtonClicked" text="Add Course" />
+                              <MenuItem fx:id="goToAddProfessor" mnemonicParsing="false" onAction="#addProfessorButtonClicked" text="Add Professor" />
+                              <MenuItem fx:id="goToAddClassroom" mnemonicParsing="false" onAction="#addClassroomButtonClicked" text="Add Classroom" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem fx:id="goToEditCourse" mnemonicParsing="false" text="Edit Course" />
+                              <MenuItem fx:id="goToEditProfessor" mnemonicParsing="false" text="Edit Professor" />
+                              <MenuItem fx:id="goToEditClassroom" mnemonicParsing="false" text="Edit Classroom" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem fx:id="goToDeleteCourse" mnemonicParsing="false" onAction="#deleteCourseButtonClicked" text="Delete Course" />
+                              <MenuItem fx:id="goToDeleteProfessor" mnemonicParsing="false" onAction="#deleteFacultyButtonClicked" text="Delete Professor" />
+                              <MenuItem fx:id="goToDeleteClassroom" mnemonicParsing="false" onAction="#deleteClassroomButtonClicked" text="Delete Classroom" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem fx:id="goToViewSchedule" mnemonicParsing="false" onAction="#viewScheduleClicked" text="View Schedule" />
+                           </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Help">
+                           <items>
+                              <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+                           </items>
+                        </Menu>
+                     </menus>
+                  </MenuBar>
                </children>
             </AnchorPane>
          </children>
