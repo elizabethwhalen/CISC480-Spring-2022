@@ -14,8 +14,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -82,9 +85,16 @@ public class LoginController implements Initializable {
 
 
     @FXML
-    public void submitButton(KeyEvent keyEvent) {
+    public void submitButton(KeyEvent keyEvent) throws IOException, URISyntaxException {
         if (keyEvent.getCode() == KeyCode.ENTER) {
             if (validateLogin(username.getText(), password.getText())) {
+                JSONArray j = DatabaseStatic.getData("class");
+                JSONObject json = new JSONObject(); //dept code : cisc classname: test classnume: 444
+                json.put("class_name", "TEST");
+                //String test = "class_name=TEST";
+                DatabaseStatic.updateData("class/CISC/923", json);
+                //DatabaseStatic.updateData("class/CISC/444", json);
+                JSONArray jp = DatabaseStatic.getData("class");
                 changeScene();
             } else {
                 showIncorrectPasswordError();

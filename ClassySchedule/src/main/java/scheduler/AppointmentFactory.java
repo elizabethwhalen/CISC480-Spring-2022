@@ -53,4 +53,12 @@ public class AppointmentFactory {
         }
         return appointments;
     }
+
+    /**
+     *
+     * @param room
+     */
+    public Agenda.AppointmentGroup getAppointmentGroup(String room) {
+        return null;
+    }
 }
