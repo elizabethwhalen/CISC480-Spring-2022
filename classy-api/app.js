@@ -6645,6 +6645,9 @@ app.put('/title', (req, res) => {
 
 // populate schedule
 app.get('/v3/meets/ext', (req, res) =>{
+    /* Query returns information about a section by gathering attributes from the meets,
+        class, timeslot, room, teaches, and faculty tables in the database
+    */
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
