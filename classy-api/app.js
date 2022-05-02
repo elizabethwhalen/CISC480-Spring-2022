@@ -54,7 +54,7 @@ app.get('/help', (req, res) => {
 //
 
 //queries
-async function db_get(query){
+async function db_get(query){ //me
     console.log(query)
     return new Promise( (resolve, reject) => {
         con.query(query, (err, result) => {
@@ -66,13 +66,15 @@ async function db_get(query){
         });
       })
 }
-async function db_post(query, data){
+async function db_post(query, data){ //me
     console.log(query, data)
     return new Promise( (resolve, reject) => {
         con.query(query, [data], (err, result) => {
             if (err) {
+              console.log("error: " + err);
               reject(err);
             } else {
+              console.log("result: " + result);
               resolve(result)
             }
         });
@@ -1573,7 +1575,8 @@ app.get('/v2/login', (req, res) => {
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
-        let query = "SELECT * FROM login";
+        //let query = "SELECT * FROM login";
+        let query = "SELECT user_id,email,faculty_id,access_level FROM login";
 
         if(Object.keys(req.query).length > 0){
             query = query + " WHERE"
@@ -2740,7 +2743,7 @@ app.delete('/v2/title/:title_id_id', (req, res) => {
 
 
     // query database
-function query_db_get(query, res){
+function query_db_get(query, res){ //
     new Promise( (resolve, reject) => {
       con.query(query, (err, result) => {
           if (err) {
@@ -2759,7 +2762,7 @@ function query_db_get(query, res){
 }
 
     // query database
-function query_db_add(query, data, res){
+function query_db_add(query, data, res){ //
     new Promise( (resolve, reject) => {
       con.query(query, [data], (err, result) => {
           if (err) {
@@ -2829,17 +2832,24 @@ app.post('/v2/signup', async (req, res) => {
     }
 
     if (!req.body.username || !req.body.password) {
-        return res.status(400).send('Missing username or password');
+        return res.status(400).send('Missing username or password'); //send or status?
     }
     if(!req.body.email){ 
-        return res.status(400).send("Email is required. Please enter email");
+        return res.status(400).send("Email is required. Please enter email");//send or status?
     }
-    //TO DO - this doesn't work- can't see users without query
-    if (users[req.body.username] !== undefined) {
-        return res.status(409).send('A user with the specified username already exists');
-    }
-    if(req.body.password.length < MIN_PASSWORD_LENGTH || req.body.password > MAX_PASSWORD_LENGTH){
+    let loginjson = await get_pass("SELECT * from login where user_id="+con.escape(req.body.username),res);
+    if (!(loginjson.length === 0)) { return res.status(400).send('This username is already associated with an account'); } //which version, this or res send
+
+    /* Works, just not necessary without MFA */
+    let loginjsonemail = await get_pass("SELECT * from login where email="+con.escape(req.body.email),res);
+    if (!(loginjsonemail.length === 0)) { return res.status(400).send('Email is already associated with an account'); } //which version, this or res send
+
+    if(req.body.password.length < MIN_PASSWORD_LENGTH || req.body.password.length > MAX_PASSWORD_LENGTH){
         return res.status(400).send('Password must be between ' + MIN_PASSWORD_LENGTH + ' and ' + MAX_PASSWORD_LENGTH + ' characters long');
+    }
+
+    if(req.body.username.length > 30){
+        return res.status(400).send("Username is too long, please try again");
     }
 
     if(req.body.email.length > 130){
@@ -2862,7 +2872,7 @@ app.post('/v2/login', async function (req, res) {
     }
 
     let loginjson = await get_pass("SELECT * from login where user_id="+con.escape(req.body.username),res);
-    if (loginjson.length === 0) { return res.sendStatus(401); }
+    if (loginjson.length === 0) { return res.sendStatus(401); } //which version, this or res send
     console.log("loginjson: " + loginjson.length);
     passHashed = loginjson[0].pass
     console.log("passHashed: " + passHashed);
