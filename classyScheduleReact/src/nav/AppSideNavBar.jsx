@@ -123,7 +123,7 @@ const AppSideNavBar = (props) => {
       } else {
         setOpenNestedList(false)
       }
-      
+
     }
   }
 
@@ -131,6 +131,12 @@ const AppSideNavBar = (props) => {
   const handleDrawerClose = () => {
     props.handleDrawerClose();
     setOpenNestedList(false)
+  }
+
+  const handleFunctionClick = (event) => {
+    handleListItemClick(event, 2);
+    props.handleDrawerOpen();
+    setOpenNestedList(true);
   }
 
   // Return the Side Nav Bar component
@@ -162,7 +168,7 @@ const AppSideNavBar = (props) => {
 
       <List>
 
-         {/* HOME */}
+        {/* HOME */}
         <Link to="/" className={classes.link} >
           <ListItem
             button
@@ -180,7 +186,7 @@ const AppSideNavBar = (props) => {
         <ListItem
           button
           selected={selectedIndex === 2}
-          onClick={(event) => handleListItemClick(event, 2)}
+          onClick={(event) => handleFunctionClick(event)}
         >
           <ListItemIcon>
             <AddIcon />
@@ -232,7 +238,7 @@ const AppSideNavBar = (props) => {
           </List>
         </Collapse>
 
-        {/* CALENDAR */} 
+        {/* CALENDAR */}
         <Link to="/Calendar" className={classes.link} >
           <ListItem
             button
