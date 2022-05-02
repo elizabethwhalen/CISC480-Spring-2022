@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Grid, Paper } from '@mui/material'
+import { Button, Grid, Paper, Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import background from '../../images/campus.jpg'
@@ -74,6 +74,9 @@ const useStyles = makeStyles({
   button: {
     backgroundColor: '#0063cc',
   },
+  error:{
+    color: 'red',
+  }
 });
 
 // Login page component with parameter passed under props
@@ -82,37 +85,50 @@ const Signup = (props) => {
   const classes = useStyles(); // use the useStyles
   const [email, setEmail] = React.useState(''); // email
   const [password, setPassword] = React.useState(''); // password
+  const [confirmPass, setConfirmPass] = React.useState('');
+  const [passMatch, setPassMatch] = React.useState(true);
 
   const handleLogin = (event) => {
     event.preventDefault();
 
     // If either email or password is empty, then don't log user in
-    if (email !== '' && password !== ''){
-      let data = JSON.stringify({
-        username: email,
-        password: password
-      });
-      let config = {
-        method: 'post',
-        url: 'https://classy-api.ddns.net/v2/signup',
-        headers: { 'Content-Type': 'application/json' },
-        data: data
-      };
-      axios(config).then().catch((error) => {
-        console.log(error);
-      });
-      
+    if (email !== '' && password !== '' && confirmPass !== '') {
+      if (password === confirmPass) {
+        let data = JSON.stringify({
+          username: email,
+          password: password
+        });
+        let config = {
+          method: 'post',
+          url: 'https://classy-api.ddns.net/v2/signup',
+          headers: { 'Content-Type': 'application/json' },
+          data: data
+        };
+        axios(config).then().catch((error) => {
+          console.log(error);
+        });
+      } else {
+        setPassMatch(false);
+      }
     }
   }
 
   // This function will assign input value to email variable
   const handleChangeEmail = (event) => {
+    setPassMatch(true);
     setEmail(event.target.value);
   }
 
   // This function will assign input value to password variable
   const handleChangePassword = (event) => {
+    setPassMatch(true);
     setPassword(event.target.value);
+  }
+
+  // This function will assign input value to confirm password value
+  const handleChangeConfirmPassword = (event) => {
+    setPassMatch(true);
+    setConfirmPass(event.target.value);
   }
 
   return (
@@ -120,7 +136,7 @@ const Signup = (props) => {
       <Grid container className={classes.container} >
 
         {/* Empty grid item used for place holder */}
-        <Grid item 
+        <Grid item
           // alignItems="flex-start"
           // justify="flex-start" 
           className={classes.gridItem1} >
@@ -150,7 +166,7 @@ const Signup = (props) => {
                       size="small"
                       variant="outlined"
                       label="Email"
-                      fullWidth  
+                      fullWidth
                       name="email"
                       value={email}
                       onChange={handleChangeEmail}
@@ -176,20 +192,38 @@ const Signup = (props) => {
                     />
                   </Grid>
 
-                 
-                  {/* <Grid item xs={6}>
-                    <Typography variant='h8'>
-                      <Link to='/Login' className={classes.forgotPass}>
-                        Forgot password?
-                      </Link>
-                    </Typography>
-                  </Grid> */}
+                  {/* Re-comfirm Password */}
+                  <Grid item xs={12} >
+                    <TextValidator
+                      size="small"
+                      variant="outlined"
+                      label="Re-confirm Password"
+                      fullWidth
+                      name="password"
+                      type="password"
+                      value={confirmPass}
+                      onChange={handleChangeConfirmPassword}
+                      validators={['required']}
+                      errorMessages={['this field is required']}
+                      className={classes.textBox}
+                    />
+                  </Grid>
+                  {!passMatch && <Grid item xs={12}>
+                      <Typography className={classes.error}>
+                        Passwords do not match. Please retype.
+                      </Typography>
+                  </Grid>}
+
 
                   {/* Submit button */}
                   <Grid item xs={12} sx={{ marginTop: '30px' }}>
-                      <Button variant="contained" disableElevation type='submit' sx={{backgroundColor: '#6a1b9a', '&:hover' : {backgroundColor: '#4a148c'} }} >
-                        Sign up
-                      </Button>                   
+                    <Button
+                      variant="contained"
+                      disableElevation
+                      type='submit'
+                      sx={{ backgroundColor: '#6a1b9a', '&:hover': { backgroundColor: '#4a148c' } }} >
+                      Sign up
+                    </Button>
                   </Grid>
                 </Grid>
               </ValidatorForm>

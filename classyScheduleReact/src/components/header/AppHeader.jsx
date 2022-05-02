@@ -12,6 +12,7 @@ import {
 import LoginHeader from './LoginHeader'
 import { Link } from 'react-router-dom'
 import logo from '../../images/Updated_Logo.gif'
+import { Box } from '@mui/material'
 
 // Width of the drawer (so that the header can move to exact position as the drawer expands)
 const drawerWidth = 300
@@ -77,15 +78,16 @@ const useStyles = makeStyles((theme) => ({
   text: {
     textAlign: 'center',
     fontWeight: '600',
-    color: 'white'
+    color: 'white', 
   },
   link: {
     textDecoration: 'none'
   },
   logo: {
-      width: '50px',
-      height: '50px',
-      display: 'inline-block',
+      width: '35px',
+      height: '35px',
+      display: 'inline',
+      marginRight: '10px',
   }
 }))
 
@@ -116,6 +118,7 @@ export default function AppHeader(props) {
         >
           <MenuIcon fontSize="large" />
         </IconButton>
+        
         {/* TITLE */}
         <Container>
           <Link to='/' className={classes.link}>
@@ -123,11 +126,12 @@ export default function AppHeader(props) {
               variant="h4"
               className={classes.text}
               noWrap
+              align='center'
             >
               <img src={logo} alt='logo' className={classes.logo}/> 
               Classy Schedule 
             </Typography>
-          </Link>
+          </Link>          
         </Container>
 
         {/* USER'S LOGIN INFO */}
