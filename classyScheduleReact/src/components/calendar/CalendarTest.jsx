@@ -57,6 +57,7 @@ export default function CalendarTest() {
         setTempEvent({ ...args.event });
         // fill popup form with event data
         // load popupform
+        //loadPopupForm(args.event);
         setOpen(true);
     });
 
@@ -187,7 +188,8 @@ export default function CalendarTest() {
     }, [deleteEvent, tempEvent]);
     //scheduler options
 
-    // do curl request
+    // do curl request to get the number of classes that need to be scheduled
+    // at the 100, 200, 300, and 400 level
     const btn = document.querySelector('#btn');
         if(btn){
             btn.addEventListener('click', (event) => {
