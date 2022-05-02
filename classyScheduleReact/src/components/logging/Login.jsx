@@ -91,16 +91,19 @@ const Login = (props) => {
     // If either email or password is empty, then don't log user in
     if (email !== '' && password !== ''){
       let token = '';
+      // Data for POST to accept request.
       let data = JSON.stringify({
         username: email,
         password: password
       });
+      // Config for axios specific https request.
       let config = {
         method: 'post',
         url: 'https://classy-api.ddns.net/v2/login',
         headers: { 'Content-Type': 'application/json' },
         data: data
       };
+      // Axios promise is being executed with config data and token is being saved into browser local storage.
       axios(config).then((response) => {
         if (response.data !== ''){
           token = response.data;
