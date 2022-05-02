@@ -125,7 +125,6 @@ app.post('/v3/class', async (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
-
     //auth validated
     else{
         //check if new dept
@@ -946,16 +945,24 @@ app.get('/v2/faculty_class', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    console.log(payload)
+    console.log(payload.user.access_level)
+    if (payload.user.access_level==0){res.status(401).send("Unauthorized")}
     else{
         let query = "SELECT * FROM faculty_class";
 
-        if(Object.keys(req.query).length > 0){
+        if(Object.keys(req.query).length > 0 | payload.user.access_level == 1){
             query = query + " WHERE"
         }
-
     //where condition:faculty_id
-    let faculty_id = req.query.faculty_id
-    if (faculty_id){
+    //if user is faculty member, restrict view to their faculty_id
+    if (payload.user.access_level == 1){
+        faculty_id = payload.user.faculty_id
+        query = query + " faculty_id = " + con.escape(faculty_id);
+    }
+    else if (req.query.faculty_id){
+        faculty_id = req.query.faculty_id
+        console.log(faculty_id)
         faculty_id_array = faculty_id.split(",");
         for(let i = 0; i < faculty_id_array.length; i++){
             if(i > 0){
@@ -2747,7 +2754,7 @@ function query_db_get(query, res){ //
     new Promise( (resolve, reject) => {
       con.query(query, (err, result) => {
           if (err) {
-            reject();
+            reject(err);
           } else {
             resolve(result)
           }
@@ -2766,14 +2773,14 @@ function query_db_add(query, data, res){ //
     new Promise( (resolve, reject) => {
       con.query(query, [data], (err, result) => {
           if (err) {
-            reject();
+            reject(err);
           } else {
             resolve(result)
           }
       });
     })
     //return json package
-    .then(rows => {
+    .then(result => {
       res.status(200).send("Entry added successfully");
     }).catch(err => {
       res.status(400).send("Bad Request");
@@ -2785,17 +2792,19 @@ function query_db_delete(query, res){
     new Promise( (resolve, reject) => {
       con.query(query, (err, result) => {
           if (err) {
-            reject();
+            reject(err);
           } else {
             resolve(result)
           }
       });
     })
     //return json package
-    .then(rows => {
-      res.status(200).send("Entry deleted successfully");
+    .then(result => {
+        if (result.affectedRows == 0){res.status(404).send("Record not found")}
+        res.status(200).send("Entry deleted successfully");
     }).catch(err => {
-      res.status(400).send("Bad Request");
+        error_status = sql_error(err)
+        res.status(error_status[0]).send(error_status[1]);
     });
 }
 
@@ -2804,20 +2813,30 @@ function query_db_put(query, data, res){
     new Promise( (resolve, reject) => {
       con.query(query, data, (err, result) => {
           if (err) {
-            reject();
+            reject(err);
           } else {
             resolve(result)
           }
       });
     })
     //return json package
-    .then(rows => {
-      res.status(200).send("Entry updated successfully");
+    .then(result => {
+        if (result.affectedRows == 0){res.status(404).send("Record not found")}
+        res.status(200).send("Record updated successfully");
     }).catch(err => {
-      res.status(400).send("Bad Request");
+        error_status = sql_error(err)
+        res.status(error_status[0]).send(error_status[1]);
     });
 }
 
+function sql_error(err) {
+    err_code = err.code
+    if (err_code === "ER_ROW_IS_REFERENCED_2"){return [400,"Bad Request- This record is referenced somewhere else"]}
+    else {
+        console.log(err)
+        return [500,"Unknown Server Error- Try again. If error persists contact administrator"]
+    }
+}
 
 // ****login****
 var MIN_PASSWORD_LENGTH = 8;
@@ -2927,7 +2946,6 @@ async function get_pass(query,res){
   return result
 }
 function verify(token){
-    console.log(token)
 	// if the cookie is not set, return an unauthorized error
 	if (!token) {
 		return [401,"Unauthorized no token"]
