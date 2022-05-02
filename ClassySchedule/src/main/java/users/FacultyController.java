@@ -10,14 +10,19 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -26,36 +31,46 @@ public class FacultyController implements Initializable {
     private Stage addFaculty;
 
     @FXML
-    TextField facultyName;
+    TextField facultyLast;
+
+    @FXML
+    TextField facultyFirst;
 
     @FXML
     TextField facultyID;
 
     //not in database
-    @FXML
-    TextField email;
-
-    @FXML
-    ComboBox<String> deptName;
+    //@FXML
+    //TextField email;
 
     //not in database
+    //@FXML
+    //ChoiceBox<String> deptName;
+
+
     @FXML
-    ComboBox<String> type;
+    ChoiceBox<String> type;
 
     @FXML
     Button submitButton;
 
     @FXML
-    Text nameWarning;
+    Button cancelButton;
+
+    @FXML
+    Text firstNameWarning;
+
+    @FXML
+    Text lastNameWarning;
 
     @FXML
     Text IDWarning;
 
-    @FXML
-    Text emailWarning;
+    //@FXML
+    //Text emailWarning;
 
-    @FXML
-    Text departmentWarning;
+    //@FXML
+    //Text departmentWarning;
 
     @FXML
     Text typeWarning;
@@ -64,7 +79,17 @@ public class FacultyController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //TODO: initial boxes from database
+        Database database = new Database();
+
+        JSONArray types = database.getData("title");
+        for (Object jsonObject: types) {
+
+            JSONObject job = (JSONObject)jsonObject;
+            if (job.get("title_ID") != JSONObject.NULL) {
+                //change to ENUM
+                type.getItems().add((String) job.get("title_id"));
+            }
+        }
     }
 
     public void setStage(Stage addFaculty) {
@@ -95,20 +120,16 @@ public class FacultyController implements Initializable {
 
     @FXML
     public void submitData(ActionEvent event) {
-        if (deptName.getSelectionModel().isEmpty()) {
-            departmentWarning.setVisible(true);
+        if (facultyFirst.getText().isBlank()) {
+            firstNameWarning.setVisible(true);
             return;
         }
-        if (facultyName.getText().isBlank()) {
-            nameWarning.setVisible(true);
+        if (facultyLast.getText().isBlank()) {
+            lastNameWarning.setVisible(true);
             return;
         }
         if (facultyID.getText().isBlank()) {
             IDWarning.setVisible(true);
-            return;
-        }
-        if (email.getText().isBlank()) {
-            emailWarning.setVisible(true);
             return;
         }
         if (type.getSelectionModel().isEmpty()) {
@@ -124,29 +145,37 @@ public class FacultyController implements Initializable {
             return;
         }
 
-        //made it to the end of validation, send to database and then clear fields
-        // maybe update courses already added?
 
+        Database database = new Database();
 
-        //TODO: Send faculty info to database
-        File file = new File("testfaculty.txt");
+        JSONObject newFaculty = new JSONObject();
+        newFaculty.put("faculty_id", facultyID.getText());
+        newFaculty.put("faculty_first", facultyFirst.getText());
+        newFaculty.put("faculty_last", facultyLast.getText());
+        //newFaculty.put("title_id", type.getValue());
+
         try {
-            FileWriter fw = new FileWriter(file);
-            fw.append("Name: " + facultyName.getText() + " ID: " + facultyID.getText() + " email: " + email.getText() + " department: " + deptName.getValue() + " type: " + type.getValue());
-            fw.close();
+            database.insertData("faculty", newFaculty);
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
-        facultyName.clear();
+
+
+        facultyFirst.clear();
+        facultyLast.clear();
         facultyID.clear();
-        email.clear();
-        deptName.setValue("Dept name");
+        //email.clear();
+        //deptName.setValue("Dept name");
         type.setValue(null);
-        nameWarning.setVisible(false);
+        firstNameWarning.setVisible(false);
+        lastNameWarning.setVisible(false);
         IDWarning.setVisible(false);
-        emailWarning.setVisible(false);
-        departmentWarning.setVisible(false);
+        //emailWarning.setVisible(false);
+        //departmentWarning.setVisible(false);
         typeWarning.setVisible(false);
     }
+
 }
