@@ -45,11 +45,13 @@ const AddClass = () => {
     const submitForm = (event) => { 
         event.preventDefault();
         if (code !== '' && courseNum !== '' && courseName !== '') {
+            // Data fields for POST request.
             let data = JSON.stringify({
                 dept_code: code,
                 class_num: courseNum,
                 class_name: courseName
             });
+            // Config data for https request.
             let config = {
                 method: 'post',
                 url: 'http://classy-api.ddns.net/v2/class',
@@ -59,6 +61,7 @@ const AddClass = () => {
                 },
                 data: data
             };
+            // https request Promise executed with Config settings.
             axios(config).then((response) => {
                 console.log(JSON.stringify(response.data));
                 setAdded(true);
@@ -188,7 +191,7 @@ const AddClass = () => {
                             {added && (
                                 <Grid item xs={12}>
                                     <Typography variant="body1" className={classes.message}>
-                                        <DoneIcon /> Product masking code has been added successfully!
+                                        <DoneIcon /> Class has been added successfully!
                                     </Typography>
                                 </Grid>
                             )}

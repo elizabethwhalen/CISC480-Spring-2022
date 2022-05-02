@@ -88,10 +88,12 @@ const Signup = (props) => {
 
     // If either email or password is empty, then don't log user in
     if (email !== '' && password !== ''){
+      // data fields for POST to accept request.
       let data = JSON.stringify({
         username: email,
         password: password
       });
+      // Config data for https requests.
       let config = {
         method: 'post',
         url: 'https://classy-api.ddns.net/v2/signup',
