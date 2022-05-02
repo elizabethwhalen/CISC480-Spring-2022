@@ -74,7 +74,11 @@ export default function Layout() {
             handleLogOut={handleLogOut}
           />
 
-          <AppSideNavBar handleDrawerClose={handleDrawerClose} open={open} />
+          <AppSideNavBar 
+            handleDrawerClose={handleDrawerClose} 
+            handleDrawerOpen={handleDrawerOpen} 
+            open={open} 
+          />
 
           <main className={classes.content}>
             <div className={classes.toolbar} />

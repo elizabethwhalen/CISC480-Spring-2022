@@ -186,6 +186,20 @@ export default function CalendarTest() {
         setOpen(false);
     }, [deleteEvent, tempEvent]);
     //scheduler options
+
+    // do curl request
+    const btn = document.querySelector('#btn');
+        if(btn){
+            btn.addEventListener('click', (event) => {
+                let checkboxes = document.querySelector('input[name="level100"]:checked');
+                let values = [];
+                checkboxes.forEach((checkbox) => {
+                    values.push(checkbox.value);
+                });
+                alert(values);
+            });
+        }
+        
     return (
         <Paper sx={{ padding: '20px' }} elevation={0} >
             <DnDCalendar
@@ -208,6 +222,13 @@ export default function CalendarTest() {
                 styles={{ overflow: "hidden" }}
                 ref={nodeRef}
             />
+            <div>
+                <label htmlFor="level100">Level 100 classes</label><input type="checkbox" name="level100" value="yes"></input><br></br>
+                <label htmlFor="level200">Level 200 classes</label><input type="checkbox" name="level200" value="yes"></input><br></br>
+                <label htmlFor="level300">Level 300 classes</label><input type="checkbox" name="level300" value="yes"></input><br></br>
+                <label htmlFor="level400">Level 400 classes</label><input type="checkbox" name="level400" value="yes"></input><br></br>
+                <button id="btn">Get Selected Classes</button>
+            </div>
             
         </Paper>
     );
