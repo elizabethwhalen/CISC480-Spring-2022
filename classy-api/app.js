@@ -54,7 +54,7 @@ app.get('/help', (req, res) => {
 //
 
 //queries
-async function db_get(query){ //me
+async function db_get(query){ //
     console.log(query)
     return new Promise( (resolve, reject) => {
         con.query(query, (err, result) => {
@@ -66,7 +66,7 @@ async function db_get(query){ //me
         });
       })
 }
-async function db_post(query, data){ //me
+async function db_post(query, data){ //
     console.log(query, data)
     return new Promise( (resolve, reject) => {
         con.query(query, [data], (err, result) => {
@@ -2757,6 +2757,7 @@ function query_db_get(query, res){ //
             reject(err);
           } else {
             resolve(result)
+            console.log(result);
           }
       });
     })
@@ -2851,10 +2852,10 @@ app.post('/v2/signup', async (req, res) => {
     }
 
     if (!req.body.username || !req.body.password) {
-        return res.status(400).send('Missing username or password'); //send or status?
+        return res.status(400).send('Missing username or password'); 
     }
     if(!req.body.email){ 
-        return res.status(400).send("Email is required. Please enter email");//send or status?
+        return res.status(400).send("Email is required. Please enter email");
     }
     let loginjson = await get_pass("SELECT * from login where user_id="+con.escape(req.body.username),res);
     if (!(loginjson.length === 0)) { return res.status(400).send('This username is already associated with an account'); } //which version, this or res send
@@ -2891,12 +2892,11 @@ app.post('/v2/login', async function (req, res) {
     }
 
     let loginjson = await get_pass("SELECT * from login where user_id="+con.escape(req.body.username),res);
-    if (loginjson.length === 0) { return res.sendStatus(401); } //which version, this or res send
+    if (loginjson.length === 0) { return res.status(401).send("Username is not recognized"); } 
     console.log("loginjson: " + loginjson.length);
     passHashed = loginjson[0].pass
     console.log("passHashed: " + passHashed);
     console.log("passHashed: " + passHashed.length);
-    //if (passHashed === undefined) { return res.sendStatus(401); }
     bcrypt.compare(req.body.password,passHashed)
     .then(correct => {
       if(correct){
