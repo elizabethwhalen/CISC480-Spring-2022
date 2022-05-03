@@ -70,39 +70,6 @@ public class DeleteCourseFromDatabaseController implements Initializable {
     @FXML
     private Stage stage;
 
-    @FXML
-    private MenuItem goToAddClassroom;
-
-    @FXML
-    private MenuItem goToAddCourse;
-
-    @FXML
-    private MenuItem goToAddProfessor;
-
-    @FXML
-    private MenuItem goToDeleteClassroom;
-
-    @FXML
-    private MenuItem goToDeleteProfessor;
-
-    @FXML
-    private MenuItem goToDeleteCourse;
-
-    @FXML
-    private MenuItem goToEditClassroom;
-
-    @FXML
-    private MenuItem goToEditCourse;
-
-    @FXML
-    private MenuItem goToEditProfessor;
-
-    @FXML
-    private MenuItem goToViewSchedule;
-
-    @FXML
-    private MenuItem goToHome;
-
     /**
      * @param url
      * @param resourceBundle
