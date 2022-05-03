@@ -2865,7 +2865,8 @@ function query_db_get(query, res){ //
     .then(rows => {
       res.status(200).type('application/json').send(rows);
     }).catch(err => {
-      res.status(400).send("Bad Request");
+        error_status = sql_error(err)
+        res.status(error_status[0]).send(error_status[1]);
     });
 }
 
@@ -2886,7 +2887,8 @@ function query_db_add(query, data, res){ //
     .then(result => {
       res.status(200).send("Entry added successfully");
     }).catch(err => {
-      res.status(400).send("Bad Request: "+err);
+        error_status = sql_error(err)
+        res.status(error_status[0]).send(error_status[1]);
     });
 }
 
@@ -2924,11 +2926,13 @@ function query_db_put(query, data, res){
     })
     //return json package
     .then(result => {
-        if (result.affectedRows == 0){res.status(404).send("Record not found")}
-        res.status(200).send("Record updated successfully");
+        console.log(result)
+        if (result.affectedRows == 0){return res.status(404).send("Record not found")}
+        else if (result.changedRows == 0){return res.status(200).send("No change made")}
+        return res.status(200).send("Record updated successfully");
     }).catch(err => {
         error_status = sql_error(err)
-        res.status(error_status[0]).send(error_status[1]);
+        return res.status(error_status[0]).send(error_status[1]);
     });
 }
 
