@@ -9,7 +9,8 @@ var mysql = require('mysql');
 
 // Login and token packages
 var bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken')
+var jwt = require('jsonwebtoken');
+const { type } = require('os');
 const secretkey = "secretkey" //CHANGETHIS
 
 // Setup RESTful app
@@ -99,6 +100,37 @@ async function db_put(query, data){
           }
       });
     })
+}
+
+function check_int_type(value, int_size = null){
+    try{
+        parseInt(value)
+    }
+    catch{
+        throw `${value} is not the correct data type for the column`
+    }
+    if(int_size){
+        if(value.length > int_size){
+            throw `${value} is too large for the column in the database`;
+        }
+    }
+}
+
+function check_str_type(value, str_size = null){
+    if(typeof value !== 'string'){
+        throw `${value} is not the correct data type ${typeof value}`;
+    }
+    if(str_size){
+        if(value.length > str_size){
+            throw `${value} is too long for column in the database`;
+        }
+    }
+}
+
+function check_bool_type(value){
+    if(typeof value !== 'boolean'){
+        throw `${value} should be a boolean`
+    }
 }
 
 //calls
@@ -311,6 +343,7 @@ app.get('/v2/building', (req, res) => {
             if(i > 0){
                 query = query + " OR"
             }
+            check_str_type(building_code_array[i]);
             query = query + " building_code = " + con.escape(building_code_array[i]);
         }
         prev = true;
@@ -323,6 +356,7 @@ app.get('/v2/building', (req, res) => {
             if(i > 0){
                 query = query + " OR"
             }
+            check_str_type(building_name_array[i])
             query = query + " building_name = " + con.escape(building_name_array[i]);
         }
         prev = true;
@@ -347,6 +381,8 @@ app.post('/v2/building', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO building (building_code,building_name) VALUES ?";
+        check_str_type(building_code, 5);
+        check_str_type(building_name, 100);
         data = [
             [req.body.building_code,req.body.building_name]
         ]
@@ -370,6 +406,8 @@ app.put('/v2/building/:building_code_id', (req, res) => {
     if (status != 200){res.status(status).send(payload)}
     else{
         let query = 'UPDATE building SET building_code = COALESCE(?,building_code), building_name = COALESCE(?,building_name) WHERE building_code= '+con.escape(req.params.building_code_id)+'';
+        check_str_type(building_code, 5);
+        check_str_type(building_name, 100);
 
         data = [
             req.body.building_code,req.body.building_name
@@ -392,6 +430,8 @@ app.delete('/v2/building/:building_code_id', (req, res) => {
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
+        check_str_type(building_code);
+        check_str_type(building_name);
         let query = 'DELETE FROM building WHERE building_code= '+con.escape(req.params.building_code_id)+'';
 
         query_db_delete(query, res)
@@ -427,6 +467,7 @@ app.get('/v2/class', (req, res) => {
             if(i > 0){
                 query = query + " OR"
             }
+            check_str_type(dept_code_array[i]);
             query = query + " dept_code = " + con.escape(dept_code_array[i]);
         }
         prev = true;
@@ -439,6 +480,7 @@ app.get('/v2/class', (req, res) => {
             if(i > 0){
                 query = query + " OR"
             }
+            check_str_type(class_num_array[i]);
             query = query + " class_num = " + con.escape(class_num_array[i]);
         }
         prev = true;
@@ -451,6 +493,7 @@ app.get('/v2/class', (req, res) => {
             if(i > 0){
                 query = query + " OR"
             }
+            check_str_type(class_name_array[i]);
             query = query + " class_name = " + con.escape(class_name_array[i]);
         }
         prev = true;
@@ -475,6 +518,9 @@ app.post('/v2/class', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO class (dept_code,class_num,class_name) VALUES ?";
+        check_str_type(dept_code, 5);
+        check_str_type(class_num, 5);
+        check_str_type(class_name, 100);
         data = [
             [req.body.dept_code,req.body.class_num,req.body.class_name]
         ]
@@ -497,8 +543,12 @@ app.put('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
-        let query = 'UPDATE class SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), class_name = COALESCE(?,class_name) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
+        check_str_type(dept_code, 5);
+        check_str_type(class_num, 5);
+        check_str_type(class_name, 100);
 
+        let query = 'UPDATE class SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), class_name = COALESCE(?,class_name) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
+        
         data = [
             req.body.dept_code,req.body.class_num,req.body.class_name
         ]
@@ -520,6 +570,10 @@ app.delete('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
+        check_str_type(dept_code, 5);
+        check_str_type(class_num, 5);
+        check_str_type(class_name, 100);
+
         let query = 'DELETE FROM class WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
 
         query_db_delete(query, res)
@@ -555,6 +609,7 @@ app.get('/v2/class_feature', (req, res) => {
             if(i > 0){
                 query = query + " OR"
             }
+            check_str_type(dept_code_array[i]);
             query = query + " dept_code = " + con.escape(dept_code_array[i]);
         }
         prev = true;
@@ -567,6 +622,7 @@ app.get('/v2/class_feature', (req, res) => {
             if(i > 0){
                 query = query + " OR"
             }
+            check_str_type(class_num_array[i]);
             query = query + " class_num = " + con.escape(class_num_array[i]);
         }
         prev = true;
@@ -576,9 +632,11 @@ app.get('/v2/class_feature', (req, res) => {
     if (feature_id){
         feature_id_array = feature_id.split(",");
         for(let i = 0; i < feature_id_array.length; i++){
+            check_int_type(feature_id_array[i], 11);
             if(i > 0){
                 query = query + " OR"
             }
+            check_int_type(feature_id_array[i]);
             query = query + " feature_id = " + con.escape(feature_id_array[i]);
         }
         prev = true;
@@ -603,6 +661,9 @@ app.post('/v2/class_feature', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO class_feature (dept_code,class_num,feature_id) VALUES ?";
+        check_str_type(dept_code, 5);
+        check_str_type(class_num, 5);
+        check_int_type(feature_id, 11);
         data = [
             [req.body.dept_code,req.body.class_num,req.body.feature_id]
         ]
@@ -626,7 +687,9 @@ app.put('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req, re
     if (status != 200){res.status(status).send(payload)}
     else{
         let query = 'UPDATE class_feature SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), feature_id = COALESCE(?,feature_id) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
-
+        check_str_type(dept_code, 5);
+        check_str_type(class_num, 5);
+        check_int_type(feature_id, 11);
         data = [
             req.body.dept_code,req.body.class_num,req.body.feature_id
         ]
@@ -648,6 +711,10 @@ app.delete('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req,
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
+        check_str_type(dept_code, 5);
+        check_str_type(class_num, 5);
+        check_int_type(feature_id, 11);
+        
         let query = 'DELETE FROM class_feature WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
 
         query_db_delete(query, res)
@@ -680,6 +747,7 @@ app.get('/v2/dept', (req, res) => {
     if (dept_code){
         dept_code_array = dept_code.split(",");
         for(let i = 0; i < dept_code_array.length; i++){
+            check_str_type(dept_code_array[i]);
             if(i > 0){
                 query = query + " OR"
             }
@@ -692,6 +760,7 @@ app.get('/v2/dept', (req, res) => {
     if (dept_name){
         dept_name_array = dept_name.split(",");
         for(let i = 0; i < dept_name_array.length; i++){
+            check_str_type(dept_name_array[i]);
             if(i > 0){
                 query = query + " OR"
             }
@@ -719,6 +788,8 @@ app.post('/v2/dept', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO dept (dept_code,dept_name) VALUES ?";
+        check_str_type(dept_code, 5);
+        check_str_type(dept_name, 5);
         data = [
             [req.body.dept_code,req.body.dept_name]
         ]
@@ -742,7 +813,9 @@ app.put('/v2/dept/:dept_code_id', (req, res) => {
     if (status != 200){res.status(status).send(payload)}
     else{
         let query = 'UPDATE dept SET dept_code = COALESCE(?,dept_code), dept_name = COALESCE(?,dept_name) WHERE dept_code= '+con.escape(req.params.dept_code_id)+'';
-
+        check_str_type(dept_code, 5);
+        check_str_type(dept_name, 5);
+        
         data = [
             req.body.dept_code,req.body.dept_name
         ]
@@ -764,6 +837,8 @@ app.delete('/v2/dept/:dept_code_id', (req, res) => {
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
+        check_str_type(dept_code);
+        check_str_type(dept_name);
         let query = 'DELETE FROM dept WHERE dept_code= '+con.escape(req.params.dept_code_id)+'';
 
         query_db_delete(query, res)
@@ -796,6 +871,7 @@ app.get('/v2/faculty', (req, res) => {
     if (faculty_id){
         faculty_id_array = faculty_id.split(",");
         for(let i = 0; i < faculty_id_array.length; i++){
+            check_int_type(faculty_id_array[i]);
             if(i > 0){
                 query = query + " OR"
             }
@@ -808,6 +884,7 @@ app.get('/v2/faculty', (req, res) => {
     if (faculty_first){
         faculty_first_array = faculty_first.split(",");
         for(let i = 0; i < faculty_first_array.length; i++){
+            check_str_type(faculty_first_array[i], 50);
             if(i > 0){
                 query = query + " OR"
             }
@@ -820,6 +897,7 @@ app.get('/v2/faculty', (req, res) => {
     if (faculty_last){
         faculty_last_array = faculty_last.split(",");
         for(let i = 0; i < faculty_last_array.length; i++){
+            check_str_type(faculty_last_array[i], 50);
             if(i > 0){
                 query = query + " OR"
             }
@@ -832,6 +910,7 @@ app.get('/v2/faculty', (req, res) => {
     if (title_id){
         title_id_array = title_id.split(",");
         for(let i = 0; i < title_id_array.length; i++){
+            check_int_type(title_id_array[i], 11);
             if(i > 0){
                 query = query + " OR"
             }
@@ -844,6 +923,7 @@ app.get('/v2/faculty', (req, res) => {
     if (prev_load){
         prev_load_array = prev_load.split(",");
         for(let i = 0; i < prev_load_array.length; i++){
+            check_int_type(prev_load_array[i]); // TODO add double check type?
             if(i > 0){
                 query = query + " OR"
             }
@@ -856,6 +936,7 @@ app.get('/v2/faculty', (req, res) => {
     if (curr_load){
         curr_load_array = curr_load.split(",");
         for(let i = 0; i < curr_load_array.length; i++){
+            check_int_type(curr_load_array[i]);
             if(i > 0){
                 query = query + " OR"
             }
@@ -883,6 +964,12 @@ app.post('/v2/faculty', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO faculty (faculty_id,faculty_first,faculty_last,title_id,prev_load,curr_load) VALUES ?";
+        check_int_type(faculty_id, 11);
+        check_str_type(faculty_first, 50);
+        check_str_type(faculty_last, 50);
+        check_int_type(title_id, 11);
+        check_int_type(prev_load);
+        check_int_type(curr_load);
         data = [
             [req.body.faculty_id,req.body.faculty_first,req.body.faculty_last,req.body.title_id,req.body.prev_load,req.body.curr_load]
         ]
@@ -906,6 +993,13 @@ app.put('/v2/faculty/:faculty_id_id', (req, res) => {
     if (status != 200){res.status(status).send(payload)}
     else{
         let query = 'UPDATE faculty SET faculty_id = COALESCE(?,faculty_id), faculty_first = COALESCE(?,faculty_first), faculty_last = COALESCE(?,faculty_last), title_id = COALESCE(?,title_id), prev_load = COALESCE(?,prev_load), curr_load = COALESCE(?,curr_load) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+'';
+        
+        check_int_type(faculty_id, 11);
+        check_str_type(faculty_first, 50);
+        check_str_type(faculty_last, 50);
+        check_int_type(title_id, 11);
+        check_int_type(prev_load);
+        check_int_type(curr_load);
 
         data = [
             req.body.faculty_id,req.body.faculty_first,req.body.faculty_last,req.body.title_id,req.body.prev_load,req.body.curr_load
@@ -928,6 +1022,7 @@ app.delete('/v2/faculty/:faculty_id_id', (req, res) => {
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
+        check_int_type(faculty_id)
         let query = 'DELETE FROM faculty WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+'';
 
         query_db_delete(query, res)
@@ -960,6 +1055,7 @@ app.get('/v2/faculty_class', (req, res) => {
     if (faculty_id){
         faculty_id_array = faculty_id.split(",");
         for(let i = 0; i < faculty_id_array.length; i++){
+            check_int_type(faculty_id_array[i], 11);
             if(i > 0){
                 query = query + " OR"
             }
@@ -972,6 +1068,7 @@ app.get('/v2/faculty_class', (req, res) => {
     if (dept_code){
         dept_code_array = dept_code.split(",");
         for(let i = 0; i < dept_code_array.length; i++){
+            check_str_type(dept_code_array[i]);
             if(i > 0){
                 query = query + " OR"
             }
@@ -984,6 +1081,7 @@ app.get('/v2/faculty_class', (req, res) => {
     if (class_num){
         class_num_array = class_num.split(",");
         for(let i = 0; i < class_num_array.length; i++){
+            check_str_type(class_num_array, 5);
             if(i > 0){
                 query = query + " OR"
             }
@@ -996,6 +1094,7 @@ app.get('/v2/faculty_class', (req, res) => {
     if (pref_level){
         pref_level_array = pref_level.split(",");
         for(let i = 0; i < pref_level_array.length; i++){
+            check_int_type(pref_level_array[i], 11);
             if(i > 0){
                 query = query + " OR"
             }
@@ -1023,6 +1122,10 @@ app.post('/v2/faculty_class', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO faculty_class (faculty_id,dept_code,class_num,pref_level) VALUES ?";
+        check_int_type(faculty_id, 11);
+        check_str_type(dept_code, 5);
+        check_str_type(class_num, 5);
+        check_int_type(pref_level, 11);
         data = [
             [req.body.faculty_id,req.body.dept_code,req.body.class_num,req.body.pref_level]
         ]
@@ -1046,6 +1149,11 @@ app.put('/v2/faculty_class/:faculty_id_id/:dept_code_id/:class_num_id', (req, re
     if (status != 200){res.status(status).send(payload)}
     else{
         let query = 'UPDATE faculty_class SET faculty_id = COALESCE(?,faculty_id), dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), pref_level = COALESCE(?,pref_level) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
+        
+        check_int_type(faculty_id, 11);
+        check_str_type(dept_code, 5);
+        check_str_type(class_num, 5);
+        check_int_type(pref_level, 11);
 
         data = [
             req.body.faculty_id,req.body.dept_code,req.body.class_num,req.body.pref_level
@@ -1068,6 +1176,10 @@ app.delete('/v2/faculty_class/:faculty_id_id/:dept_code_id/:class_num_id', (req,
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
+        check_int_type(faculty_id);
+        check_str_type(dept_code);
+        check_str_type(class_num);
+        check_int_type(pref_level);
         let query = 'DELETE FROM faculty_class WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
 
         query_db_delete(query, res)
@@ -1100,6 +1212,7 @@ app.get('/v2/faculty_feature', (req, res) => {
     if (faculty_id){
         faculty_id_array = faculty_id.split(",");
         for(let i = 0; i < faculty_id_array.length; i++){
+            check_int_type(faculty_id_array[i]);
             if(i > 0){
                 query = query + " OR"
             }
@@ -1112,6 +1225,7 @@ app.get('/v2/faculty_feature', (req, res) => {
     if (feature_id){
         feature_id_array = feature_id.split(",");
         for(let i = 0; i < feature_id_array.length; i++){
+            check_int_type(feature_id_array[i]);
             if(i > 0){
                 query = query + " OR"
             }
@@ -1124,6 +1238,7 @@ app.get('/v2/faculty_feature', (req, res) => {
     if (pref_level){
         pref_level_array = pref_level.split(",");
         for(let i = 0; i < pref_level_array.length; i++){
+            check_int_type(pref_level_array[i]);
             if(i > 0){
                 query = query + " OR"
             }
@@ -1151,6 +1266,9 @@ app.post('/v2/faculty_feature', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO faculty_feature (faculty_id,feature_id,pref_level) VALUES ?";
+        check_int_type(faculty_id, 11);
+        check_int_type(feature_id, 11);
+        check_int_type(pref_level, 11);
         data = [
             [req.body.faculty_id,req.body.feature_id,req.body.pref_level]
         ]
@@ -1174,6 +1292,9 @@ app.put('/v2/faculty_feature/:faculty_id_id/:feature_id_id', (req, res) => {
     if (status != 200){res.status(status).send(payload)}
     else{
         let query = 'UPDATE faculty_feature SET faculty_id = COALESCE(?,faculty_id), feature_id = COALESCE(?,feature_id), pref_level = COALESCE(?,pref_level) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
+        check_int_type(faculty_id, 11);
+        check_int_type(feature_id, 11);
+        check_int_type(pref_level, 11);
 
         data = [
             req.body.faculty_id,req.body.feature_id,req.body.pref_level
@@ -1196,6 +1317,9 @@ app.delete('/v2/faculty_feature/:faculty_id_id/:feature_id_id', (req, res) => {
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
+        check_int_type(faculty_id);
+        check_int_type(feature_id);
+        check_int_type(pref_level);
         let query = 'DELETE FROM faculty_feature WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
 
         query_db_delete(query, res)
@@ -1228,6 +1352,7 @@ app.get('/v2/faculty_other_request', (req, res) => {
     if (faculty_id){
         faculty_id_array = faculty_id.split(",");
         for(let i = 0; i < faculty_id_array.length; i++){
+            check_int_type(faculty_id_array[i]);
             if(i > 0){
                 query = query + " OR"
             }
@@ -1240,6 +1365,7 @@ app.get('/v2/faculty_other_request', (req, res) => {
     if (request){
         request_array = request.split(",");
         for(let i = 0; i < request_array.length; i++){
+            check_str_type(request_array[i]);
             if(i > 0){
                 query = query + " OR"
             }
@@ -1267,6 +1393,8 @@ app.post('/v2/faculty_other_request', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO faculty_other_request (faculty_id,request) VALUES ?";
+        check_int_type(faculty_id, 11);
+        check_str_type(request, 130);
         data = [
             [req.body.faculty_id,req.body.request]
         ]
@@ -1290,7 +1418,8 @@ app.put('/v2/faculty_other_request/:faculty_id_id/:request_id', (req, res) => {
     if (status != 200){res.status(status).send(payload)}
     else{
         let query = 'UPDATE faculty_other_request SET faculty_id = COALESCE(?,faculty_id), request = COALESCE(?,request) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND request= '+con.escape(req.params.request_id)+'';
-
+        check_int_type(faculty_id, 11);
+        check_str_type(request, 130);
         data = [
             req.body.faculty_id,req.body.request
         ]
@@ -1312,6 +1441,8 @@ app.delete('/v2/faculty_other_request/:faculty_id_id/:request_id', (req, res) =>
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
+        check_int_type(faculty_id);
+        check_str_type(request);
         let query = 'DELETE FROM faculty_other_request WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND request= '+con.escape(req.params.request_id)+'';
 
         query_db_delete(query, res)
@@ -1344,6 +1475,7 @@ app.get('/v2/faculty_timeslot', (req, res) => {
     if (faculty_id){
         faculty_id_array = faculty_id.split(",");
         for(let i = 0; i < faculty_id_array.length; i++){
+            check_int_type(faculty_id_array[i], 11);
             if(i > 0){
                 query = query + " OR"
             }
@@ -1356,6 +1488,7 @@ app.get('/v2/faculty_timeslot', (req, res) => {
     if (time_id){
         time_id_array = time_id.split(",");
         for(let i = 0; i < time_id_array.length; i++){
+            check_int_type(time_id_array[i]);
             if(i > 0){
                 query = query + " OR"
             }
@@ -1368,6 +1501,7 @@ app.get('/v2/faculty_timeslot', (req, res) => {
     if (pref_level){
         pref_level_array = pref_level.split(",");
         for(let i = 0; i < pref_level_array.length; i++){
+            check_int_type(pref_level_array[i]);
             if(i > 0){
                 query = query + " OR"
             }
@@ -1395,6 +1529,9 @@ app.post('/v2/faculty_timeslot', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO faculty_timeslot (faculty_id,time_id,pref_level) VALUES ?";
+        check_int_type(faculty_id, 11);
+        check_int_type(time_id, 11);
+        check_int_type(pref_level, 11);
         data = [
             [req.body.faculty_id,req.body.time_id,req.body.pref_level]
         ]
@@ -1418,7 +1555,9 @@ app.put('/v2/faculty_timeslot/:faculty_id_id/:time_id_id', (req, res) => {
     if (status != 200){res.status(status).send(payload)}
     else{
         let query = 'UPDATE faculty_timeslot SET faculty_id = COALESCE(?,faculty_id), time_id = COALESCE(?,time_id), pref_level = COALESCE(?,pref_level) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND time_id= '+con.escape(req.params.time_id_id)+'';
-
+        check_int_type(faculty_id, 11);
+        check_int_type(time_id, 11);
+        check_int_type(pref_level, 11);
         data = [
             req.body.faculty_id,req.body.time_id,req.body.pref_level
         ]
@@ -1441,7 +1580,9 @@ app.delete('/v2/faculty_timeslot/:faculty_id_id/:time_id_id', (req, res) => {
     if (status != 200){res.status(status).send(payload)}
     else{
         let query = 'DELETE FROM faculty_timeslot WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND time_id= '+con.escape(req.params.time_id_id)+'';
-
+        check_int_type(faculty_id);
+        check_int_type(time_id);
+        check_int_type(pref_level);
         query_db_delete(query, res)
     }
 });
@@ -1472,6 +1613,7 @@ app.get('/v2/feature', (req, res) => {
     if (feature_id){
         feature_id_array = feature_id.split(",");
         for(let i = 0; i < feature_id_array.length; i++){
+            check_int_type(feature_id_array[i]);
             if(i > 0){
                 query = query + " OR"
             }
@@ -1484,6 +1626,7 @@ app.get('/v2/feature', (req, res) => {
     if (feature_name){
         feature_name_array = feature_name.split(",");
         for(let i = 0; i < feature_name_array.length; i++){
+            check_str_type(feature_name_array[i]);
             if(i > 0){
                 query = query + " OR"
             }
@@ -1511,6 +1654,8 @@ app.post('/v2/feature', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO feature (feature_id,feature_name) VALUES ?";
+        check_int_type(feature_id, 11);
+        check_str_type(feature_name, 100);
         data = [
             [req.body.feature_id,req.body.feature_name]
         ]
@@ -1534,7 +1679,8 @@ app.put('/v2/feature/:feature_id_id', (req, res) => {
     if (status != 200){res.status(status).send(payload)}
     else{
         let query = 'UPDATE feature SET feature_id = COALESCE(?,feature_id), feature_name = COALESCE(?,feature_name) WHERE feature_id= '+con.escape(req.params.feature_id_id)+'';
-
+        check_int_type(feature_id, 11);
+        check_str_type(feature_name, 100);
         data = [
             req.body.feature_id,req.body.feature_name
         ]
@@ -1556,6 +1702,8 @@ app.delete('/v2/feature/:feature_id_id', (req, res) => {
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
+        check_int_type(feature_id, 11);
+        check_str_type(feature_name, 100);
         let query = 'DELETE FROM feature WHERE feature_id= '+con.escape(req.params.feature_id_id)+'';
 
         query_db_delete(query, res)
@@ -1588,6 +1736,7 @@ app.get('/v2/login', (req, res) => {
     if (user_id){
         user_id_array = user_id.split(",");
         for(let i = 0; i < user_id_array.length; i++){
+            check_str_type(user_id_array[i]);
             if(i > 0){
                 query = query + " OR"
             }
@@ -1600,6 +1749,7 @@ app.get('/v2/login', (req, res) => {
     if (pass){
         pass_array = pass.split(",");
         for(let i = 0; i < pass_array.length; i++){
+            check_str_type(pass_array[i]);
             if(i > 0){
                 query = query + " OR"
             }
@@ -1612,6 +1762,7 @@ app.get('/v2/login', (req, res) => {
     if (faculty_id){
         faculty_id_array = faculty_id.split(",");
         for(let i = 0; i < faculty_id_array.length; i++){
+            check_int_type(faculty_id_array[i]);
             if(i > 0){
                 query = query + " OR"
             }
@@ -1624,6 +1775,7 @@ app.get('/v2/login', (req, res) => {
     if (access_level){
         access_level_array = access_level.split(",");
         for(let i = 0; i < access_level_array.length; i++){
+            check_int_type(access_level_array[i]);
             if(i > 0){
                 query = query + " OR"
             }
@@ -1651,6 +1803,10 @@ app.post('/v2/login/bad', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO login (user_id,pass,faculty_id,access_level) VALUES ?";
+        check_str_type(user_id, 100);
+        check_str_type(faculty_id, 100);
+        check_int_type(faculty_id, 11);
+        check_int_type(faculty_id, 11);
         data = [
             [req.body.user_id,req.body.pass,req.body.faculty_id,req.body.access_level]
         ]
@@ -2747,6 +2903,7 @@ app.delete('/v2/title/:title_id_id', (req, res) => {
 function query_db_get(query, res){
     new Promise( (resolve, reject) => {
       con.query(query, (err, result) => {
+          console.log(query);
           if (err) {
             reject();
           } else {
