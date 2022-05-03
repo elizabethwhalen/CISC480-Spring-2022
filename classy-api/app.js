@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //
 
 // Determine which schema we are modifying
-let schema = "db_dev" // "db_dev" use for development Database Team
+let schema = "cs_dev" // "db_dev" use for development Database Team
 
 // Connection to the database team Azure DB
 var config =
@@ -3129,7 +3129,7 @@ app.post('/building', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/building')
+  //res.redirect('/building')
 });
 //delete
 app.delete('/building', (req, res) => {
@@ -3154,7 +3154,7 @@ app.delete('/building', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/building')
+  //res.redirect('/building')
 });
 //update
 app.put('/building', (req, res) => {
@@ -3199,7 +3199,7 @@ app.put('/building', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/building')
+  //res.redirect('/building')
 });
 
 //***CLASS***
@@ -3289,7 +3289,7 @@ app.post('/class', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/class')
+  //res.redirect('/class')
 });
 //delete
 app.delete('/class', (req, res) => {
@@ -3320,7 +3320,7 @@ app.delete('/class', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/class')
+  //res.redirect('/class')
 });
 //update
 app.put('/class', (req, res) => {
@@ -3378,7 +3378,7 @@ app.put('/class', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/class')
+  //res.redirect('/class')
 });
 
 //***CLASS_FEATURE***
@@ -3467,7 +3467,7 @@ app.post('/class_feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/class_feature')
+  //res.redirect('/class_feature')
 });
 //delete
 app.delete('/class_feature', (req, res) => {
@@ -3498,7 +3498,7 @@ app.delete('/class_feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/class_feature')
+  //res.redirect('/class_feature')
 });
 //update
 app.put('/class_feature', (req, res) => {
@@ -3556,7 +3556,7 @@ app.put('/class_feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/class_feature')
+  //res.redirect('/class_feature')
 });
 
 //***DEPT***
@@ -3622,7 +3622,7 @@ app.post('/dept', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/dept')
+  //res.redirect('/dept')
 });
 //delete
 app.delete('/dept', (req, res) => {
@@ -3647,7 +3647,7 @@ app.delete('/dept', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/dept')
+  //res.redirect('/dept')
 });
 //update
 app.put('/dept', (req, res) => {
@@ -3692,7 +3692,7 @@ app.put('/dept', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/dept')
+  //res.redirect('/dept')
 });
 
 //***FACULTY***
@@ -3842,7 +3842,7 @@ app.post('/faculty', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty')
+  //res.redirect('/faculty')
 });
 //delete
 app.delete('/faculty', (req, res) => {
@@ -3891,7 +3891,7 @@ app.delete('/faculty', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty')
+  //res.redirect('/faculty')
 });
 //update
 app.put('/faculty', (req, res) => {
@@ -3988,7 +3988,7 @@ app.put('/faculty', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty')
+  //res.redirect('/faculty')
 });
 
 //***FACULTY_CLASS***
@@ -4097,7 +4097,7 @@ app.post('/faculty_class', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_class')
+  //res.redirect('/faculty_class')
 });
 //delete
 app.delete('/faculty_class', (req, res) => {
@@ -4134,7 +4134,7 @@ app.delete('/faculty_class', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_class')
+  //res.redirect('/faculty_class')
 });
 //update
 app.put('/faculty_class', (req, res) => {
@@ -4205,7 +4205,7 @@ app.put('/faculty_class', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_class')
+  //res.redirect('/faculty_class')
 });
 
 //***FACULTY_FEATURE***
@@ -4292,7 +4292,7 @@ app.post('/faculty_feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_feature')
+  //res.redirect('/faculty_feature')
 });
 //delete
 app.delete('/faculty_feature', (req, res) => {
@@ -4323,7 +4323,7 @@ app.delete('/faculty_feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_feature')
+  //res.redirect('/faculty_feature')
 });
 //update
 app.put('/faculty_feature', (req, res) => {
@@ -4381,7 +4381,7 @@ app.put('/faculty_feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_feature')
+  //res.redirect('/faculty_feature')
 });
 
 //***FACULTY_OTHER_REQUEST***
@@ -4448,7 +4448,7 @@ app.post('/faculty_other_request', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_other_request')
+  //res.redirect('/faculty_other_request')
 });
 //delete
 app.delete('/faculty_other_request', (req, res) => {
@@ -4473,7 +4473,7 @@ app.delete('/faculty_other_request', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_other_request')
+  //res.redirect('/faculty_other_request')
 });
 //update
 app.put('/faculty_other_request', (req, res) => {
@@ -4518,7 +4518,7 @@ app.put('/faculty_other_request', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_other_request')
+  //res.redirect('/faculty_other_request')
 });
 
 //***FACULTY_TIMESLOT***
@@ -4606,7 +4606,7 @@ app.post('/faculty_timeslot', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_timeslot')
+  //res.redirect('/faculty_timeslot')
 });
 //delete
 app.delete('/faculty_timeslot', (req, res) => {
@@ -4637,7 +4637,7 @@ app.delete('/faculty_timeslot', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_timeslot')
+  //res.redirect('/faculty_timeslot')
 });
 //update
 app.put('/faculty_timeslot', (req, res) => {
@@ -4695,7 +4695,7 @@ app.put('/faculty_timeslot', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_timeslot')
+  //res.redirect('/faculty_timeslot')
 });
 
 //***FEATURE***
@@ -4760,7 +4760,7 @@ app.post('/feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/feature')
+  //res.redirect('/feature')
 });
 //delete
 app.delete('/feature', (req, res) => {
@@ -4785,7 +4785,7 @@ app.delete('/feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/feature')
+  //res.redirect('/feature')
 });
 //update
 app.put('/feature', (req, res) => {
@@ -4830,7 +4830,7 @@ app.put('/feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/feature')
+  //res.redirect('/feature')
 });
 
 //***LOGIN***
@@ -4919,7 +4919,7 @@ app.post('/login', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/login')
+  //res.redirect('/login')
 });
 //delete
 app.delete('/login', (req, res) => {
@@ -4956,7 +4956,7 @@ app.delete('/login', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/login')
+  //res.redirect('/login')
 });
 //update
 app.put('/login', (req, res) => {
@@ -5027,7 +5027,7 @@ app.put('/login', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/login')
+  //res.redirect('/login')
 });
 
 //***MEETS***
@@ -5220,7 +5220,7 @@ app.post('/meets', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/meets')
+  //res.redirect('/meets')
 });
 //delete
 app.delete('/meets', (req, res) => {
@@ -5281,7 +5281,7 @@ app.delete('/meets', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/meets')
+  //res.redirect('/meets')
 });
 //update
 app.put('/meets', (req, res) => {
@@ -5404,7 +5404,7 @@ app.put('/meets', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/meets')
+  //res.redirect('/meets')
 });
 
 //***ROOM***
@@ -5490,7 +5490,7 @@ app.post('/room', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/room')
+  //res.redirect('/room')
 });
 //delete
 app.delete('/room', (req, res) => {
@@ -5521,7 +5521,7 @@ app.delete('/room', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/room')
+  //res.redirect('/room')
 });
 //update
 app.put('/room', (req, res) => {
@@ -5579,7 +5579,7 @@ app.put('/room', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/room')
+  //res.redirect('/room')
 });
 
 //***ROOM_FEATURE***
@@ -5665,7 +5665,7 @@ app.post('/room_feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/room_feature')
+  //res.redirect('/room_feature')
 });
 //delete
 app.delete('/room_feature', (req, res) => {
@@ -5696,7 +5696,7 @@ app.delete('/room_feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/room_feature')
+  //res.redirect('/room_feature')
 });
 //update
 app.put('/room_feature', (req, res) => {
@@ -5754,7 +5754,7 @@ app.put('/room_feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/room_feature')
+  //res.redirect('/room_feature')
 });
 
 //***SECTION***
@@ -5903,7 +5903,7 @@ app.post('/section', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/section')
+  //res.redirect('/section')
 });
 //delete
 app.delete('/section', (req, res) => {
@@ -5952,7 +5952,7 @@ app.delete('/section', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/section')
+  //res.redirect('/section')
 });
 //update
 app.put('/section', (req, res) => {
@@ -6049,7 +6049,7 @@ app.put('/section', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/section')
+  //res.redirect('/section')
 });
 
 //***TEACHES***
@@ -6197,7 +6197,7 @@ app.post('/teaches', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/teaches')
+  //res.redirect('/teaches')
 });
 //delete
 app.delete('/teaches', (req, res) => {
@@ -6246,7 +6246,7 @@ app.delete('/teaches', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/teaches')
+  //res.redirect('/teaches')
 });
 //update
 app.put('/teaches', (req, res) => {
@@ -6343,7 +6343,7 @@ app.put('/teaches', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/teaches')
+  //res.redirect('/teaches')
 });
 
 //***TIMESLOT***
@@ -6452,7 +6452,7 @@ app.post('/timeslot', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/timeslot')
+  //res.redirect('/timeslot')
 });
 //delete
 app.delete('/timeslot', (req, res) => {
@@ -6489,7 +6489,7 @@ app.delete('/timeslot', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/timeslot')
+  //res.redirect('/timeslot')
 });
 //update
 app.put('/timeslot', (req, res) => {
@@ -6560,7 +6560,7 @@ app.put('/timeslot', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/timeslot')
+  //res.redirect('/timeslot')
 });
 
 //***TITLE***
@@ -6646,7 +6646,7 @@ app.post('/title', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/title')
+  //res.redirect('/title')
 });
 //delete
 app.delete('/title', (req, res) => {
@@ -6677,7 +6677,7 @@ app.delete('/title', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/title')
+  //res.redirect('/title')
 });
 //update
 app.put('/title', (req, res) => {
@@ -6735,7 +6735,7 @@ app.put('/title', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/title')
+  //res.redirect('/title')
 });
 
 module.exports = app;
