@@ -17,6 +17,9 @@ sourceSets {
         java {
             srcDir 'src/main/java' //assume that your source codes are inside this
         }
+        resources {
+            srcDir "src"
+        }
     }
 
 }

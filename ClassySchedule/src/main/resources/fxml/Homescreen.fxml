@@ -34,12 +34,14 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <VBox prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="homescreen.HomescreenController">
   <children>
@@ -84,30 +86,23 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-            <ButtonBar layoutX="-10.0" layoutY="80.0" prefHeight="77.0" prefWidth="647.0">
+            <ButtonBar layoutX="-11.0" layoutY="82.0" prefHeight="77.0" prefWidth="647.0">
               <buttons>
-                <Button fx:id="addCourse" mnemonicParsing="false" onMouseClicked="#addCourseButtonClicked" prefHeight="25.0" text="Add Course" />
+                <Button fx:id="addCourse" mnemonicParsing="false" prefHeight="25.0" onMouseClicked="#addCourseButtonClicked" text="Add Course" />
                   <Button fx:id="addProfessor" mnemonicParsing="false" onMouseClicked="#addProfessorButtonClicked" text="Add Professor" />
                   <Button fx:id="addClassroom" mnemonicParsing="false" onMouseClicked="#addClassroomButtonClicked" text="Add Classroom" />
                   <Button mnemonicParsing="false" text="Modify Time Slots" />
                   <Button mnemonicParsing="false" prefHeight="23.0" prefWidth="164.0" text="Generate Schedule" />
               </buttons>
             </ButtonBar>
-            <ButtonBar layoutX="-10.0" layoutY="140.0" prefHeight="40.0" prefWidth="647.0">
+            <ButtonBar layoutX="-12.0" layoutY="137.0" prefHeight="40.0" prefWidth="647.0">
               <buttons>
                 <Button mnemonicParsing="false" text="Edit Course" />
                   <Button mnemonicParsing="false" text="Edit Professor" />
                   <Button mnemonicParsing="false" text="Edit Classroom" />
                   <Button mnemonicParsing="false" text="Edit Preferences" />
-                  <Button mnemonicParsing="false" onMouseClicked="#viewScheduleClicked" prefHeight="25.0" prefWidth="176.0" text="View Schedule" />
+                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="176.0" text="View Schedule" onMouseClicked="#viewScheduleClicked"/>
               </buttons>
-            </ButtonBar>
-            <ButtonBar layoutX="52.0" layoutY="180.0" prefHeight="40.0" prefWidth="647.0">
-               <buttons>
-                  <Button fx:id="deleteCourse" mnemonicParsing="false" onMouseClicked="#DeleteCourseButtonClicked" text="Delete Course" translateX="-335.0" />
-                  <Button fx:id="deleteFaculty" mnemonicParsing="false" onMouseClicked="#DeleteFacultyButtonClicked" text="Delete Professor" translateX="-325.0" />
-                  <Button fx:id="deleteClassroom" mnemonicParsing="false" onMouseClicked="#DeleteClassroomButtonClicked" text="Delete Classroom" translateX="-317.0" />
-               </buttons>
             </ButtonBar>
       </children>
     </AnchorPane>

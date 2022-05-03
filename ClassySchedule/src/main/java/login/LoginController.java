@@ -1,14 +1,18 @@
 package login;
 
+import database.DatabaseStatic;
 import homescreen.HomescreenController;
-import scheduler.AddCourseToScheduleController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -51,8 +55,8 @@ public class LoginController implements Initializable {
     public LoginController() {}
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
+    public void initialize(URL location, ResourceBundle resources){
+        Platform.runLater(() -> username.requestFocus());
     }
 
     /**
@@ -69,39 +73,40 @@ public class LoginController implements Initializable {
      */
     @FXML
     public void submitButtonClicked() {
-        final boolean usernameCorrect = validateUsername(username.getText());
-        if (usernameCorrect) {
-            final boolean passwordCorrect = validatePassword(username.getText(), password.getText());
-            if (passwordCorrect) {
-                // TODO: decide on what scene to show, for now just add course
-                changeScene();
-            }
-        }
-
+        if (validateLogin(username.getText(), password.getText())) {
+            changeScene();
+        } else {
+            showIncorrectPasswordError();
+         }
     }
 
-    // TODO: Create validation for username and password: validateUsername and validatePassword functions
+
+    @FXML
+    public void submitButton(KeyEvent keyEvent) {
+        if (keyEvent.getCode() == KeyCode.ENTER) {
+            if (validateLogin(username.getText(), password.getText())) {
+                changeScene();
+            } else {
+                showIncorrectPasswordError();
+            }
+        }
+    }
+
+    private void showIncorrectPasswordError() {
+        Alert invalidUser = new Alert(Alert.AlertType.ERROR);
+        invalidUser.setTitle("Invalid Password");
+        invalidUser.setContentText("INVALID USERNAME OR PASSWORD \n Please re-enter username and password");
+        invalidUser.showAndWait();
+    }
 
     /**
      * Checks if the user exists in the database
-     * @param text user entered username to be checked
-     * @return true if username exists, false if not
+     * @param username user entered username to check
+     * @param password user entered password to check
+     * @return true if user exists, false if not
      */
-    private boolean validateUsername(String text) {
-        //check if user exists in the database
-        return true;
-    }
-
-    /**
-     * Checks if password matches username
-     * @param username username of user
-     * @param password user entered password to be validated
-     * @return true if password is correct for username, false if not
-     */
-    private boolean validatePassword(String username, String password) {
-        //get user with username
-        //check if password matches username
-        return true;
+    private boolean validateLogin(String username, String password) {
+        return DatabaseStatic.login(username, password);
     }
 
     /**

@@ -54,26 +54,27 @@ public class Database {
      * @return a JSON array with the values from the search
      * @throws URISyntaxException
      */
-    public JSONArray getData(String table, List<AbstractMap.SimpleEntry<String, String>> requestedColumns) throws URISyntaxException, IOException {
-        CloseableHttpClient client = HttpClients.createDefault();
-        URIBuilder builder = new URIBuilder(url + table);
-        for (AbstractMap.SimpleEntry<String, String> value: requestedColumns) {
-            builder.addParameter(value.getKey(), value.getValue());
-        }
+    public JSONArray getData(String table, JSONObject requestedColumns) {
         JSONArray jsonArray = null;
-        HttpGet httpGet = new HttpGet(builder.build());
         try {
+            CloseableHttpClient client = HttpClients.createDefault();
+            URIBuilder builder = new URIBuilder(url + table);
+            for (String string: requestedColumns.keySet()) {
+                builder.addParameter(string, requestedColumns.getString(string));
+            }
+
+            HttpGet httpGet = new HttpGet(builder.build());
             CloseableHttpResponse response1 = client.execute(httpGet);
             HttpEntity entity1 = response1.getEntity();
             jsonArray = new JSONArray(EntityUtils.toString(entity1));
-        } catch (IOException | ParseException e) {
+
+            client.close();
+
+        } catch (IOException | ParseException | URISyntaxException e) {
             e.printStackTrace();
         }
-        client.close();
         return jsonArray;
     }
-
-
     /**
      * Gets all the data from a specified table
      * @param table the table to get data from

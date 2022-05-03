@@ -13,30 +13,28 @@ import java.util.List;
 public class AppointmentFactory {
     List<LocalDateTime> startTimes;
     List<LocalDateTime> endTimes;
-    private String classNumber;
+    private String departmentCode;
     private String room;
     private String professor;
-    private String classSection;
+    private String classNumber;
     private String className;
 
     /**
      * Constructor for an appointment factory
      * @param startTimes the days and start times appointments will be placed
      * @param endTimes the days and end times appointments will be placed
-     * @param classNumber the class number ex. 131 for CISC 131
      * @param room the room the class will be placed in
      * @param professor the professor teaching the class
-     * @param classSection the section number of the class
-     * @param className the name of the class
      */
-    public AppointmentFactory(List<LocalDateTime> startTimes, List<LocalDateTime> endTimes, String classNumber, String room, String professor, String classSection, String className) {
+    public AppointmentFactory(List<LocalDateTime> startTimes, List<LocalDateTime> endTimes, String course, String room, String professor) {
         this.startTimes = startTimes;
         this.endTimes = endTimes;
-        this.classNumber = classNumber;
+        String[] courseInfo = course.split(" ");
+        this.departmentCode = courseInfo[0];
         this.room = room;
         this.professor = professor;
-        this.classSection = classSection;
-        this.className = className;
+        this.classNumber = courseInfo[1];
+        this.className = courseInfo[2];
     }
 
     /**
@@ -49,7 +47,8 @@ public class AppointmentFactory {
             Agenda.AppointmentImplLocal appointment = new Agenda.AppointmentImplLocal()
                     .withStartLocalDateTime(startTimes.get(i))
                     .withEndLocalDateTime(endTimes.get(i))
-                    .withSummary(classNumber + " " + className + " " + classSection + " " + professor + " " + room);
+                    .withSummary(departmentCode + " " + classNumber + " " + className + " " + professor)
+                    .withLocation(room);
             appointments.add(appointment);
         }
         return appointments;
