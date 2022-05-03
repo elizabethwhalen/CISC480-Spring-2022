@@ -1,22 +1,12 @@
 package homescreen;
 
-import courses.AddCourseToDatabaseController;
-import courses.DeleteClassroomFromDatabaseController;
-import courses.DeleteCourseFromDatabaseController;
-import users.DeleteFacultyFromDatabaseController;
+import scenes.ChangeScene;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
-import room.RoomController;
-import scheduler.SchedulerController;
-import users.FacultyController;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -25,195 +15,83 @@ import java.util.ResourceBundle;
  * schedule pages.
  */
 public class HomescreenController implements Initializable {
-    @FXML
-    private Button addClassroom;
+    private Stage stage;
 
-    @FXML
-    private Button addCourse;
-
-    @FXML
-    private Button addProfessor;
-
-    @FXML
-    private Button deleteClassroom;
-
-    @FXML
-    private Button deleteCourse;
-
-    @FXML
-    private Button deleteFaculty;
-
-    @FXML
-    private MenuItem goToAddClassroom;
-
-    @FXML
-    private MenuItem goToAddCourse;
-
-    @FXML
-    private MenuItem goToAddProfessor;
-
-    @FXML
-    private MenuItem goToDeleteClassroom;
-
-    @FXML
-    private MenuItem goToDeleteProfessor;
-
-    @FXML
-    private MenuItem goToDeleteCourse;
-
-    @FXML
-    private MenuItem goToEditClassroom;
-
-    @FXML
-    private MenuItem goToEditCourse;
-
-    @FXML
-    private MenuItem goToEditProfessor;
-
-    @FXML
-    private MenuItem goToViewSchedule;
-
-    Stage homeScreenStage;
-
-    public HomescreenController() {
-    }
+    public HomescreenController() {}
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources) {}
+
+
+    /**
+     * go to add course scene
+     */
+    @FXML
+    public void goToAddCourse() {
+        ChangeScene cs = new ChangeScene();
+        cs.addCourseButtonClicked(stage);
     }
 
+    /**
+     * go to add classroom scene
+     */
+    @FXML
+    public void goToAddClassroom() {
+        ChangeScene cs = new ChangeScene();
+        cs.addClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to add faculty scene
+     */
+    @FXML
+    public void goToAddFaculty() {
+        ChangeScene cs = new ChangeScene();
+        cs.addProfessorButtonClicked(stage);
+    }
+
+    /**
+     * go to delete course scene
+     */
+    @FXML
+    public void goToDeleteCourse() {
+        ChangeScene cs = new ChangeScene();
+        cs.deleteCourseButtonClicked(stage);
+    }
+
+    /**
+     * go to delete classroom scene
+     */
+    @FXML
+    public void goToDeleteClassroom() {
+        ChangeScene cs = new ChangeScene();
+        cs.deleteClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to delete faculty scene
+     */
+    @FXML
+    public void goToDeleteFaculty() {
+        ChangeScene cs = new ChangeScene();
+        cs.deleteFacultyButtonClicked(stage);
+    }
+
+    /**
+     * go to view schedule scene
+     */
+    @FXML
+    public void goToViewSchedule() {
+        ChangeScene cs = new ChangeScene();
+        cs.viewScheduleClicked(stage);
+    }
 
     /**
      * Sets stage to homescreen
      * @param stage
      */
     public void setStage(Stage stage) {
-        this.homeScreenStage = stage;
-    }
-
-    /**
-     * Changes scene to add course page when 'Add Course' button is clicked
-     */
-    @FXML
-    public void addCourseButtonClicked() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/AddCourseToDatabase.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-            AddCourseToDatabaseController homescreenController = loader.getController();
-            homescreenController.setStage(homeScreenStage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        homeScreenStage.setTitle("Classy-Schedule");
-        homeScreenStage.setScene(new Scene(root, 600, 400));
-        homeScreenStage.show();
-    }
-
-
-    /**
-     * Changes scene to add classroom page when 'Add CLassroom' button is clicked
-     */
-    public void addClassroomButtonClicked() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/ClassroomNew.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        RoomController roomController = loader.getController();
-        roomController.setStage(homeScreenStage);
-        homeScreenStage.setScene(new Scene(root, 800, 600));
-        homeScreenStage.show();
-    }
-
-    /**
-     * Changes scene to add professor page when 'Add Professor' button is clicked
-     */
-    public void addProfessorButtonClicked() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Professor.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        FacultyController facultyController = loader.getController();
-        facultyController.setStage(homeScreenStage);
-        homeScreenStage.setScene(new Scene(root, 800, 600));
-        homeScreenStage.show();
-    }
-
-    public void viewScheduleClicked() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/scheduler.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        SchedulerController schedulerController = loader.getController();
-        schedulerController.setStage(homeScreenStage);
-        homeScreenStage.setScene(new Scene(root, 800, 600));
-        homeScreenStage.show();
-    }
-
-    /**
-     * Changes scene to delete course page
-     */
-    @FXML
-    public void deleteCourseButtonClicked() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/DeleteCourseFromDatabase.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-            DeleteCourseFromDatabaseController homeScreenController = loader.getController();
-            homeScreenController.setStage(homeScreenStage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        homeScreenStage.setTitle("Classy-Schedule");
-        homeScreenStage.setScene(new Scene(root));
-        homeScreenStage.show();
-    }
-
-    /**
-     * Changes scene to delete classroom page
-     */
-    @FXML
-    public void deleteClassroomButtonClicked() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/DeleteClassroomFromDatabase.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-            DeleteClassroomFromDatabaseController homeScreenController = loader.getController();
-            homeScreenController.setStage(homeScreenStage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        homeScreenStage.setTitle("Classy-Schedule");
-        homeScreenStage.setScene(new Scene(root));
-        homeScreenStage.show();
-    }
-
-    /**
-     * changes scene to delete faculty page
-     */
-    @FXML
-    public void deleteFacultyButtonClicked() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/DeleteFacultyFromDatabase.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-            DeleteFacultyFromDatabaseController homeScreenController = loader.getController();
-            homeScreenController.setStage(homeScreenStage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        homeScreenStage.setTitle("Classy-Schedule");
-        homeScreenStage.setScene(new Scene(root));
-        homeScreenStage.show();
+        this.stage = stage;
     }
 
 }

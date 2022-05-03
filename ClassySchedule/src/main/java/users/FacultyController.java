@@ -1,8 +1,5 @@
 package users;
 
-import courses.AddCourseToDatabaseController;
-import courses.DeleteClassroomFromDatabaseController;
-import courses.DeleteCourseFromDatabaseController;
 import homescreen.HomescreenController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,8 +12,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import room.RoomController;
-import scheduler.SchedulerController;
+import scenes.ChangeScene;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -25,9 +21,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class FacultyController implements Initializable {
-
-    private Stage addFaculty;
-
     @FXML
     TextField facultyName;
 
@@ -80,28 +73,6 @@ public class FacultyController implements Initializable {
     public void setStage(Stage stage) {
         this.stage = stage;
     }
-
-    /**
-     * Changes scene back to homescreen when cancelButton is clicked
-     * @param event Clicking on cancelButton
-     */
-    @FXML
-    public void cancelButtonClicked(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-            HomescreenController homescreenController = loader.getController();
-            homescreenController.setStage(addFaculty);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        addFaculty.setTitle("Classy-Schedule");
-        addFaculty.setScene(new Scene(root, 650, 400));
-        addFaculty.show();
-    }
-
 
     @FXML
     public void submitData(ActionEvent event) {
@@ -161,146 +132,75 @@ public class FacultyController implements Initializable {
     }
 
     /**
-     * Changes scene to add course page when 'Add Course' button is clicked
+     * go back to homepage
      */
     @FXML
-    public void addCourseButtonClicked() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/AddCourseToDatabase.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-            AddCourseToDatabaseController controller = loader.getController();
-            controller.setStage(stage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        stage.setTitle("Classy-Schedule");
-        stage.setScene(new Scene(root, 600, 400));
-        stage.show();
-    }
-
-
-    /**
-     * Changes scene to add classroom page when 'Add CLassroom' button is clicked
-     */
-    public void addClassroomButtonClicked() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/ClassroomNew.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        RoomController roomController = loader.getController();
-        roomController.setStage(stage);
-        stage.setScene(new Scene(root, 800, 600));
-        stage.show();
+    public void goBack() {
+        ChangeScene cs = new ChangeScene();
+        cs.goToHomepage(stage);
     }
 
     /**
-     * Changes scene to add professor page when 'Add Professor' button is clicked
-     */
-    public void addProfessorButtonClicked() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Professor.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        FacultyController facultyController = loader.getController();
-        facultyController.setStage(stage);
-        stage.setScene(new Scene(root, 800, 600));
-        stage.show();
-    }
-
-    public void viewScheduleClicked() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/scheduler.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        SchedulerController schedulerController = loader.getController();
-        schedulerController.setStage(stage);
-        stage.setScene(new Scene(root, 800, 600));
-        stage.show();
-    }
-
-    /**
-     * Changes scene to delete course page
+     * go to add course scene
      */
     @FXML
-    public void deleteCourseButtonClicked() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/DeleteCourseFromDatabase.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-            DeleteCourseFromDatabaseController controller = loader.getController();
-            controller.setStage(stage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        stage.setTitle("Classy-Schedule");
-        stage.setScene(new Scene(root));
-        stage.show();
+    public void goToAddCourse() {
+        ChangeScene cs = new ChangeScene();
+        cs.addCourseButtonClicked(stage);
     }
 
     /**
-     * Changes scene to delete classroom page
+     * go to add classroom scene
      */
     @FXML
-    public void deleteClassroomButtonClicked() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/DeleteClassroomFromDatabase.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-            DeleteClassroomFromDatabaseController controller = loader.getController();
-            controller.setStage(stage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        stage.setTitle("Classy-Schedule");
-        stage.setScene(new Scene(root));
-        stage.show();
+    public void goToAddClassroom() {
+        ChangeScene cs = new ChangeScene();
+        cs.addClassroomButtonClicked(stage);
     }
 
     /**
-     * changes scene to delete faculty page
+     * go to add faculty scene
      */
     @FXML
-    public void deleteFacultyButtonClicked() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/DeleteFacultyFromDatabase.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-            DeleteFacultyFromDatabaseController controller = loader.getController();
-            controller.setStage(stage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        stage.setTitle("Classy-Schedule");
-        stage.setScene(new Scene(root));
-        stage.show();
+    public void goToAddFaculty() {
+        ChangeScene cs = new ChangeScene();
+        cs.addProfessorButtonClicked(stage);
     }
 
     /**
-     * changes scene to homepage page
+     * go to delete course scene
      */
     @FXML
-    public void homeButtonClicked() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-            HomescreenController controller = loader.getController();
-            controller.setStage(stage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        stage.setTitle("Classy-Schedule");
-        stage.setScene(new Scene(root));
-        stage.show();
+    public void goToDeleteCourse() {
+        ChangeScene cs = new ChangeScene();
+        cs.deleteCourseButtonClicked(stage);
     }
+
+    /**
+     * go to delete classroom scene
+     */
+    @FXML
+    public void goToDeleteClassroom() {
+        ChangeScene cs = new ChangeScene();
+        cs.deleteClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to delete faculty scene
+     */
+    @FXML
+    public void goToDeleteFaculty() {
+        ChangeScene cs = new ChangeScene();
+        cs.deleteFacultyButtonClicked(stage);
+    }
+
+    /**
+     * go to view schedule scene
+     */
+    @FXML
+    public void goToViewSchedule() {
+        ChangeScene cs = new ChangeScene();
+        cs.viewScheduleClicked(stage);
+    }
+
 }
