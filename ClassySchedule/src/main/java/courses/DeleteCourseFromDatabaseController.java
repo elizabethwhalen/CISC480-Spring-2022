@@ -71,6 +71,11 @@ public class DeleteCourseFromDatabaseController implements Initializable {
     private Stage stage;
 
     /**
+     * The change scene object to change between scenes
+     */
+    private final ChangeScene cs = new ChangeScene();
+
+    /**
      * @param url
      * @param resourceBundle
      */
@@ -156,18 +161,17 @@ public class DeleteCourseFromDatabaseController implements Initializable {
         String selectedClassNumber = classNum.getValue();
         JSONArray classes = DatabaseStatic.getData("class");
         for (Object jsonObject: classes) {
-            JSONObject job = (JSONObject)jsonObject;
+            JSONObject job = (JSONObject) jsonObject;
             // If matching selected class number then set result to that JSON object class name
             if (job.get("class_num").equals(selectedClassNumber)) {
-                if(job.get("class_name").equals(null)) {
-                    result = "null";
-                } else {
+                if (!(job.get("class_name").equals(null))) {
                     result = (String) job.get("class_name");
                 }
             }
         }
         return result;
     }
+
 
     /**
      * confirm button to delete the selected course. It checks if the drop-downs
@@ -279,7 +283,6 @@ public class DeleteCourseFromDatabaseController implements Initializable {
 
     @FXML
     public void goBack() {
-        ChangeScene cs = new ChangeScene();
         cs.goToHomepage(stage);
     }
 
@@ -288,7 +291,6 @@ public class DeleteCourseFromDatabaseController implements Initializable {
      */
     @FXML
     public void goToAddCourse() {
-        ChangeScene cs = new ChangeScene();
         cs.addCourseButtonClicked(stage);
     }
 
@@ -297,7 +299,6 @@ public class DeleteCourseFromDatabaseController implements Initializable {
      */
     @FXML
     public void goToAddClassroom() {
-        ChangeScene cs = new ChangeScene();
         cs.addClassroomButtonClicked(stage);
     }
 
@@ -306,7 +307,6 @@ public class DeleteCourseFromDatabaseController implements Initializable {
      */
     @FXML
     public void goToAddFaculty() {
-        ChangeScene cs = new ChangeScene();
         cs.addProfessorButtonClicked(stage);
     }
 
@@ -315,7 +315,6 @@ public class DeleteCourseFromDatabaseController implements Initializable {
      */
     @FXML
     public void goToDeleteCourse() {
-        ChangeScene cs = new ChangeScene();
         cs.deleteCourseButtonClicked(stage);
     }
 
@@ -324,7 +323,6 @@ public class DeleteCourseFromDatabaseController implements Initializable {
      */
     @FXML
     public void goToDeleteClassroom() {
-        ChangeScene cs = new ChangeScene();
         cs.deleteClassroomButtonClicked(stage);
     }
 
@@ -333,7 +331,6 @@ public class DeleteCourseFromDatabaseController implements Initializable {
      */
     @FXML
     public void goToDeleteFaculty() {
-        ChangeScene cs = new ChangeScene();
         cs.deleteFacultyButtonClicked(stage);
     }
 
@@ -342,7 +339,6 @@ public class DeleteCourseFromDatabaseController implements Initializable {
      */
     @FXML
     public void goToViewSchedule() {
-        ChangeScene cs = new ChangeScene();
         cs.viewScheduleClicked(stage);
     }
 

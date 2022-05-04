@@ -62,6 +62,11 @@ public class SchedulerController implements Initializable {
      */
     Agenda agenda;
 
+    /**
+     * The change scene object to change between scenes
+     */
+    private final ChangeScene cs = new ChangeScene();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.agenda = new Agenda();
@@ -208,7 +213,6 @@ public class SchedulerController implements Initializable {
 
     @FXML
     public void goBack() {
-        ChangeScene cs = new ChangeScene();
         cs.goToHomepage(stage);
     }
 
@@ -217,7 +221,6 @@ public class SchedulerController implements Initializable {
      */
     @FXML
     public void goToAddCourse() {
-        ChangeScene cs = new ChangeScene();
         cs.addCourseButtonClicked(stage);
     }
 
@@ -226,7 +229,6 @@ public class SchedulerController implements Initializable {
      */
     @FXML
     public void goToAddClassroom() {
-        ChangeScene cs = new ChangeScene();
         cs.addClassroomButtonClicked(stage);
     }
 
@@ -235,7 +237,6 @@ public class SchedulerController implements Initializable {
      */
     @FXML
     public void goToAddFaculty() {
-        ChangeScene cs = new ChangeScene();
         cs.addProfessorButtonClicked(stage);
     }
 
@@ -244,7 +245,6 @@ public class SchedulerController implements Initializable {
      */
     @FXML
     public void goToDeleteCourse() {
-        ChangeScene cs = new ChangeScene();
         cs.deleteCourseButtonClicked(stage);
     }
 
@@ -253,7 +253,6 @@ public class SchedulerController implements Initializable {
      */
     @FXML
     public void goToDeleteClassroom() {
-        ChangeScene cs = new ChangeScene();
         cs.deleteClassroomButtonClicked(stage);
     }
 
@@ -262,7 +261,6 @@ public class SchedulerController implements Initializable {
      */
     @FXML
     public void goToDeleteFaculty() {
-        ChangeScene cs = new ChangeScene();
         cs.deleteFacultyButtonClicked(stage);
     }
 
@@ -271,7 +269,6 @@ public class SchedulerController implements Initializable {
      */
     @FXML
     public void goToViewSchedule() {
-        ChangeScene cs = new ChangeScene();
         cs.viewScheduleClicked(stage);
     }
 
