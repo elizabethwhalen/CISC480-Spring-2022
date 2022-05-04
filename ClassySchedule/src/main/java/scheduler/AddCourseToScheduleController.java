@@ -329,12 +329,18 @@ public class AddCourseToScheduleController implements Initializable {
                 selectedDates.add(radioButton.getText());
             }
         }
+        String stringTime = classTimes.getSelectionModel().getSelectedItem();
+        String stringStartTime = stringTime.substring(0, stringTime.indexOf(" "));
+        String stringEndTime = stringTime.substring(stringTime.lastIndexOf(" ") + 1);
+//        LocalTime currentStartTime = LocalTime.parse(stringStartTime, DateTimeFormatter.ISO_LOCAL_TIME);
+//        LocalTime currentEndTime = LocalTime.parse(stringEndTime, DateTimeFormatter.ISO_LOCAL_TIME);
+
         List<LocalDateTime> startDaysAndTimes = new ArrayList<>();
         List<LocalDateTime> endDaysAndTimes = new ArrayList<>();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (String day: selectedDates) {
-            startDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + timeSlot.getSelectionModel().getSelectedItem())));
-            endDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + timeSlot.getSelectionModel().getSelectedItem())));
+            startDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + stringStartTime)));
+            endDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + stringEndTime)));
         }
 
         AppointmentFactory appointmentFactory = new AppointmentFactory(startDaysAndTimes, endDaysAndTimes, course.getSelectionModel().getSelectedItem(), room.getSelectionModel().getSelectedItem(), "test",course.getSelectionModel().getSelectedItem(), course.getSelectionModel().getSelectedItem());
