@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //
 
 // Determine which schema we are modifying
-let schema = "cs_dev" // "db_dev" use for development Database Team
+let schema = "db_dev" // "db_dev" use for development Database Team
 
 // Connection to the database team Azure DB
 var config =
@@ -41,7 +41,7 @@ var config =
 const con = new mysql.createConnection(config);
 con.connect(function(err) {
   if (err) throw err;
-  console.log("Connected to the MySQL database!");
+  console.log("Connected to "+schema);
 });
 
 // Get help information from versioning file
@@ -293,6 +293,7 @@ app.get('/v2/building', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Any access_level can use this method.
     else{
         let query = "SELECT * FROM building";
 
@@ -341,6 +342,8 @@ app.post('/v2/building', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         console.log(req.body)
         let query = "INSERT INTO building (building_code,building_name) VALUES ?";
@@ -365,6 +368,8 @@ app.put('/v2/building/:building_code_id', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'UPDATE building SET building_code = COALESCE(?,building_code), building_name = COALESCE(?,building_name) WHERE building_code= '+con.escape(req.params.building_code_id)+'';
 
@@ -388,6 +393,8 @@ app.delete('/v2/building/:building_code_id', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'DELETE FROM building WHERE building_code= '+con.escape(req.params.building_code_id)+'';
 
@@ -409,6 +416,7 @@ app.get('/v2/class', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Any access_level can use this method.
     else{
         let query = "SELECT * FROM class";
 
@@ -469,6 +477,8 @@ app.post('/v2/class', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         console.log(req.body)
         let query = "INSERT INTO class (dept_code,class_num,class_name) VALUES ?";
@@ -493,6 +503,8 @@ app.put('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'UPDATE class SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), class_name = COALESCE(?,class_name) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
 
@@ -516,6 +528,8 @@ app.delete('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'DELETE FROM class WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
 
@@ -537,6 +551,7 @@ app.get('/v2/class_feature', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Any access_level can use this method.
     else{
         let query = "SELECT * FROM class_feature";
 
@@ -597,6 +612,8 @@ app.post('/v2/class_feature', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         console.log(req.body)
         let query = "INSERT INTO class_feature (dept_code,class_num,feature_id) VALUES ?";
@@ -621,6 +638,8 @@ app.put('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req, re
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'UPDATE class_feature SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), feature_id = COALESCE(?,feature_id) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
 
@@ -644,6 +663,8 @@ app.delete('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req,
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'DELETE FROM class_feature WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
 
@@ -665,6 +686,7 @@ app.get('/v2/dept', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Any access_level can use this method.
     else{
         let query = "SELECT * FROM dept";
 
@@ -713,6 +735,8 @@ app.post('/v2/dept', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         console.log(req.body)
         let query = "INSERT INTO dept (dept_code,dept_name) VALUES ?";
@@ -737,6 +761,8 @@ app.put('/v2/dept/:dept_code_id', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'UPDATE dept SET dept_code = COALESCE(?,dept_code), dept_name = COALESCE(?,dept_name) WHERE dept_code= '+con.escape(req.params.dept_code_id)+'';
 
@@ -760,6 +786,8 @@ app.delete('/v2/dept/:dept_code_id', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'DELETE FROM dept WHERE dept_code= '+con.escape(req.params.dept_code_id)+'';
 
@@ -781,6 +809,7 @@ app.get('/v2/faculty', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Any access_level can use this method.
     else{
         let query = "SELECT * FROM faculty";
 
@@ -877,6 +906,8 @@ app.post('/v2/faculty', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         console.log(req.body)
         let query = "INSERT INTO faculty (faculty_id,faculty_first,faculty_last,title_id,prev_load,curr_load) VALUES ?";
@@ -901,6 +932,8 @@ app.put('/v2/faculty/:faculty_id_id', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'UPDATE faculty SET faculty_id = COALESCE(?,faculty_id), faculty_first = COALESCE(?,faculty_first), faculty_last = COALESCE(?,faculty_last), title_id = COALESCE(?,title_id), prev_load = COALESCE(?,prev_load), curr_load = COALESCE(?,curr_load) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+'';
 
@@ -924,6 +957,8 @@ app.delete('/v2/faculty/:faculty_id_id', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'DELETE FROM faculty WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+'';
 
@@ -1465,6 +1500,7 @@ app.get('/v2/feature', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Any access_level can use this method.
     else{
         let query = "SELECT * FROM feature";
 
@@ -1513,6 +1549,8 @@ app.post('/v2/feature', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         console.log(req.body)
         let query = "INSERT INTO feature (feature_id,feature_name) VALUES ?";
@@ -1537,6 +1575,8 @@ app.put('/v2/feature/:feature_id_id', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'UPDATE feature SET feature_id = COALESCE(?,feature_id), feature_name = COALESCE(?,feature_name) WHERE feature_id= '+con.escape(req.params.feature_id_id)+'';
 
@@ -1560,6 +1600,8 @@ app.delete('/v2/feature/:feature_id_id', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'DELETE FROM feature WHERE feature_id= '+con.escape(req.params.feature_id_id)+'';
 
@@ -1581,6 +1623,8 @@ app.get('/v2/login', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         //let query = "SELECT * FROM login";
         let query = "SELECT user_id,email,faculty_id,access_level FROM login";
@@ -1641,32 +1685,9 @@ app.get('/v2/login', (req, res) => {
     }
 
 });
-//add
-app.post('/v2/login/bad', (req, res) => {
-    // verify auth
-    try{
-        token = req.headers.authorization.split(" ")[1]
-    } catch(e){
-        token = req.body.token
-    }
-
-    var verifyOutput = verify(token)
-    const status=verifyOutput[0]
-    const payload=verifyOutput[1]
-    if (status != 200){res.status(status).send(payload)}
-    else{
-        console.log(req.body)
-        let query = "INSERT INTO login (user_id,pass,faculty_id,access_level) VALUES ?";
-        data = [
-            [req.body.user_id,req.body.pass,req.body.faculty_id,req.body.access_level]
-        ]
-
-        query_db_add(query, data, res)
-    }
-
-});
+//add does not exist. use /v2/signup method.
 //update
-app.put('/v2/login/:user_id_id', (req, res) => {
+app.put('/v2/login/:email_id', (req, res) => {
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1678,18 +1699,53 @@ app.put('/v2/login/:user_id_id', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Access_level 2 (admin) or Access level 3 (temp setup) can use this method to update email, faculty_id, and access_level.
+    else if (payload.user.access_level<2){res.status(403).send("REQUEST DENIED- admin method only")}
+
     else{
-        let query = 'UPDATE login SET user_id = COALESCE(?,user_id), pass = COALESCE(?,pass), faculty_id = COALESCE(?,faculty_id), access_level = COALESCE(?,access_level) WHERE user_id= '+con.escape(req.params.user_id_id)+'';
+        let query = 'UPDATE login SET email = COALESCE(?,email), faculty_id = COALESCE(?,faculty_id), access_level = COALESCE(?,access_level) WHERE email= '+con.escape(req.params.email_id)+'';
 
         data = [
-            req.body.user_id,req.body.pass,req.body.faculty_id,req.body.access_level
+            req.body.email,req.body.faculty_id,req.body.access_level
         ]
 
         query_db_put(query, data, res)
     }
 });
+app.put('/v2/login/:email_id/change_password', async (req, res) => {
+    // verify auth
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
+
+    const salt = await bcrypt.genSalt(10)
+    try{ hash = await bcrypt.hash(req.body.password, salt)
+    } catch (err) {return res.status(500).send("Error encrypting data, please try again")}
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    //auth verified. Any access_level can use this method.
+    else{
+        bcrypt.compare(req.body.password,payload.user.pass)
+        .then(correct => {
+            if(correct){ 
+                let query = 'UPDATE login SET pass = COALESCE(?,pass) WHERE email= '+con.escape(req.params.email_id)+'';
+
+                data = [
+                    hash
+                ]
+                query_db_put(query, data, res)
+            }
+            else {res.status(401).send('Incorrect password')}
+        });
+    }
+});
 //delete
-app.delete('/v2/login/:user_id_id', (req, res) => {
+app.delete('/v2/login/:email_id', (req, res) => {
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1701,6 +1757,8 @@ app.delete('/v2/login/:user_id_id', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'DELETE FROM login WHERE user_id= '+con.escape(req.params.user_id_id)+'';
 
@@ -1842,6 +1900,8 @@ app.post('/v2/meets', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         console.log(req.body)
         let query = "INSERT INTO meets (dept_code,class_num,section_num,semester,draft,building_code,room_num,time_id) VALUES ?";
@@ -1866,6 +1926,8 @@ app.put('/v2/meets/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:dra
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'UPDATE meets SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), section_num = COALESCE(?,section_num), semester = COALESCE(?,semester), draft = COALESCE(?,draft), building_code = COALESCE(?,building_code), room_num = COALESCE(?,room_num), time_id = COALESCE(?,time_id) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+' AND building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+' AND time_id= '+con.escape(req.params.time_id_id)+'';
 
@@ -1889,6 +1951,8 @@ app.delete('/v2/meets/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'DELETE FROM meets WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+' AND building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+' AND time_id= '+con.escape(req.params.time_id_id)+'';
 
@@ -1970,6 +2034,8 @@ app.post('/v2/room', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         console.log(req.body)
         let query = "INSERT INTO room (building_code,room_num,capacity) VALUES ?";
@@ -1994,6 +2060,8 @@ app.put('/v2/room/:building_code_id/:room_num_id', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'UPDATE room SET building_code = COALESCE(?,building_code), room_num = COALESCE(?,room_num), capacity = COALESCE(?,capacity) WHERE building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+'';
 
@@ -2017,6 +2085,8 @@ app.delete('/v2/room/:building_code_id/:room_num_id', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'DELETE FROM room WHERE building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+'';
 
@@ -2098,6 +2168,8 @@ app.post('/v2/room_feature', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         console.log(req.body)
         let query = "INSERT INTO room_feature (building_code,room_num,feature_id) VALUES ?";
@@ -2122,6 +2194,8 @@ app.put('/v2/room_feature/:building_code_id/:room_num_id/:feature_id_id', (req, 
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'UPDATE room_feature SET building_code = COALESCE(?,building_code), room_num = COALESCE(?,room_num), feature_id = COALESCE(?,feature_id) WHERE building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
 
@@ -2145,6 +2219,8 @@ app.delete('/v2/room_feature/:building_code_id/:room_num_id/:feature_id_id', (re
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'DELETE FROM room_feature WHERE building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
 
@@ -2262,6 +2338,8 @@ app.post('/v2/section', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         console.log(req.body)
         let query = "INSERT INTO section (dept_code,class_num,section_num,semester,draft,capacity) VALUES ?";
@@ -2286,6 +2364,8 @@ app.put('/v2/section/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:d
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'UPDATE section SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), section_num = COALESCE(?,section_num), semester = COALESCE(?,semester), draft = COALESCE(?,draft), capacity = COALESCE(?,capacity) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+'';
 
@@ -2309,6 +2389,8 @@ app.delete('/v2/section/:dept_code_id/:class_num_id/:section_num_id/:semester_id
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'DELETE FROM section WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+'';
 
@@ -2426,6 +2508,8 @@ app.post('/v2/teaches', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         console.log(req.body)
         let query = "INSERT INTO teaches (dept_code,class_num,section_num,semester,draft,faculty_id) VALUES ?";
@@ -2450,6 +2534,8 @@ app.put('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:d
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'UPDATE teaches SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), section_num = COALESCE(?,section_num), semester = COALESCE(?,semester), draft = COALESCE(?,draft), faculty_id = COALESCE(?,faculty_id) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+' AND faculty_id= '+con.escape(req.params.faculty_id_id)+'';
 
@@ -2473,6 +2559,8 @@ app.delete('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'DELETE FROM teaches WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+' AND faculty_id= '+con.escape(req.params.faculty_id_id)+'';
 
@@ -2566,6 +2654,8 @@ app.post('/v2/timeslot', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         console.log(req.body)
         let query = "INSERT INTO timeslot (time_id,day_of_week,time_start,time_end) VALUES ?";
@@ -2590,6 +2680,8 @@ app.put('/v2/timeslot/:time_id_id', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'UPDATE timeslot SET time_id = COALESCE(?,time_id), day_of_week = COALESCE(?,day_of_week), time_start = COALESCE(?,time_start), time_end = COALESCE(?,time_end) WHERE time_id= '+con.escape(req.params.time_id_id)+'';
 
@@ -2613,6 +2705,8 @@ app.delete('/v2/timeslot/:time_id_id', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'DELETE FROM timeslot WHERE time_id= '+con.escape(req.params.time_id_id)+'';
 
@@ -2694,6 +2788,8 @@ app.post('/v2/title', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         console.log(req.body)
         let query = "INSERT INTO title (title_id,title_name,max_load) VALUES ?";
@@ -2718,6 +2814,8 @@ app.put('/v2/title/:title_id_id', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'UPDATE title SET title_id = COALESCE(?,title_id), title_name = COALESCE(?,title_name), max_load = COALESCE(?,max_load) WHERE title_id= '+con.escape(req.params.title_id_id)+'';
 
@@ -2741,6 +2839,8 @@ app.delete('/v2/title/:title_id_id', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'DELETE FROM title WHERE title_id= '+con.escape(req.params.title_id_id)+'';
 
@@ -2765,12 +2865,15 @@ function query_db_get(query, res){ //
     .then(rows => {
       res.status(200).type('application/json').send(rows);
     }).catch(err => {
-      res.status(400).send("Bad Request");
+        error_status = sql_error(err)
+        res.status(error_status[0]).send(error_status[1]);
     });
 }
 
     // query database
 function query_db_add(query, data, res){ //
+    console.log(query)
+    console.log(data)
     new Promise( (resolve, reject) => {
       con.query(query, [data], (err, result) => {
           if (err) {
@@ -2784,7 +2887,8 @@ function query_db_add(query, data, res){ //
     .then(result => {
       res.status(200).send("Entry added successfully");
     }).catch(err => {
-      res.status(400).send("Bad Request");
+        error_status = sql_error(err)
+        res.status(error_status[0]).send(error_status[1]);
     });
 }
 
@@ -2822,11 +2926,13 @@ function query_db_put(query, data, res){
     })
     //return json package
     .then(result => {
-        if (result.affectedRows == 0){res.status(404).send("Record not found")}
-        res.status(200).send("Record updated successfully");
+        console.log(result)
+        if (result.affectedRows == 0){return res.status(404).send("Record not found")}
+        else if (result.changedRows == 0){return res.status(200).send("No change made")}
+        return res.status(200).send("Record updated successfully");
     }).catch(err => {
         error_status = sql_error(err)
-        res.status(error_status[0]).send(error_status[1]);
+        return res.status(error_status[0]).send(error_status[1]);
     });
 }
 
@@ -2851,25 +2957,15 @@ app.post('/v2/signup', async (req, res) => {
       return res.sendStatus(400);
     }
 
-    if (!req.body.username || !req.body.password) {
-        return res.status(400).send('Missing username or password'); 
+    if (!req.body.email || !req.body.password) {
+        return res.status(400).send('Missing email or password'); 
     }
-    if(!req.body.email){ 
-        return res.status(400).send("Email is required. Please enter email");
-    }
-    let loginjson = await get_pass("SELECT * from login where user_id="+con.escape(req.body.username),res);
-    if (!(loginjson.length === 0)) { return res.status(400).send('This username is already associated with an account'); } //which version, this or res send
 
-    /* Works, just not necessary without MFA */
-    let loginjsonemail = await get_pass("SELECT * from login where email="+con.escape(req.body.email),res);
-    if (!(loginjsonemail.length === 0)) { return res.status(400).send('Email is already associated with an account'); } //which version, this or res send
+    let loginemail = await db_get("SELECT * from login where email="+con.escape(req.body.email));
+    if (!(loginemail.length === 0)) { return res.status(409).send('Email is already associated with an account'); } //which version, this or res send
 
     if(req.body.password.length < MIN_PASSWORD_LENGTH || req.body.password.length > MAX_PASSWORD_LENGTH){
         return res.status(400).send('Password must be between ' + MIN_PASSWORD_LENGTH + ' and ' + MAX_PASSWORD_LENGTH + ' characters long');
-    }
-
-    if(req.body.username.length > 30){
-        return res.status(400).send("Username is too long, please try again");
     }
 
     if(req.body.email.length > 130){
@@ -2878,8 +2974,8 @@ app.post('/v2/signup', async (req, res) => {
 
 const salt = await bcrypt.genSalt(10)
 try{ hash = await bcrypt.hash(req.body.password, salt)
-} catch (err) {console.log("bcrypt error", err)}
-login_query_db_post("insert into login values ?",[[[req.body.username, hash, req.body.email, req.body.faculty_id, access_level=2, tmp=000000]]],res)
+} catch (err) {return res.status(500).send("Error encrypting data, please try again")}
+query_db_add("INSERT INTO login VALUES ?",[[ req.body.email, hash, req.body.faculty_id, access_level=0, tmp=null]],res)
 });
 
 //login
@@ -2887,16 +2983,13 @@ app.post('/v2/login', async function (req, res) {
     var passHashed;
     //if (!req.body) { return res.sendStatus(400); }
 
-    if (!req.body.username || !req.body.password) {
-      return res.status(400).send('Missing username or password');
+    if (!req.body.email || !req.body.password) {
+      return res.status(400).send('Missing email or password');
     }
 
-    let loginjson = await get_pass("SELECT * from login where user_id="+con.escape(req.body.username),res);
-    if (loginjson.length === 0) { return res.status(401).send("Username is not recognized"); } 
-    console.log("loginjson: " + loginjson.length);
+    let loginjson = await db_get("SELECT * from login where email="+con.escape(req.body.email));
+    if (loginjson.length === 0) { return res.status(404).send("Account with that email does not exist"); } 
     passHashed = loginjson[0].pass
-    console.log("passHashed: " + passHashed);
-    console.log("passHashed: " + passHashed.length);
     bcrypt.compare(req.body.password,passHashed)
     .then(correct => {
       if(correct){
@@ -2909,42 +3002,10 @@ app.post('/v2/login', async function (req, res) {
           });
         res.status(200).send(token)
       }
-      else {res.status(400).send('Incorrect password')}
+      else {res.status(401).send('Incorrect password')}
     });
-  });
+});
 
-function login_query_db_post(query, data, res) {
-  new Promise((resolve, reject) => {
-      con.query(query, data, (err, result) => {
-          if (err) {
-              reject();
-          } else {
-              resolve(result)
-          }
-      });
-  })
-      //return json package
-      .then(rows => {
-          res.status(201).type('application/json').send([201,"Created",rows]);
-      }).catch(err => {
-          res.status(500).send("Error querying database");
-      });
-}
-function login_query_db(query, res) {
-    return new Promise( (resolve, reject) => {
-        con.query(query, (err, result) => {
-            if (err) {
-                resolve("nope");
-            } else {
-                resolve(result)
-            }
-        });
-    })
-}
-async function get_pass(query,res){
-  let result = await login_query_db(query,res)
-  return result
-}
 function verify(token){
 	// if the cookie is not set, return an unauthorized error
 	if (!token) {
@@ -2965,11 +3026,13 @@ function verify(token){
 			return [401,"Unauthorized error"]
 		}
 		// otherwise, return a bad request error
-		return [400,"Bad Request"]
+		return [401,"Unauthorized no token"]
 	}
   return [200,payload]
 }
 
+// *** v0 is deprecated ***
+/*
 // ****v0****
 function query_db(query, res) {
   // function to query the database
@@ -3068,7 +3131,7 @@ app.post('/building', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/building')
+  //res.redirect('/building')
 });
 //delete
 app.delete('/building', (req, res) => {
@@ -3093,7 +3156,7 @@ app.delete('/building', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/building')
+  //res.redirect('/building')
 });
 //update
 app.put('/building', (req, res) => {
@@ -3138,7 +3201,7 @@ app.put('/building', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/building')
+  //res.redirect('/building')
 });
 
 //***CLASS***
@@ -3228,7 +3291,7 @@ app.post('/class', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/class')
+  //res.redirect('/class')
 });
 //delete
 app.delete('/class', (req, res) => {
@@ -3259,7 +3322,7 @@ app.delete('/class', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/class')
+  //res.redirect('/class')
 });
 //update
 app.put('/class', (req, res) => {
@@ -3317,7 +3380,7 @@ app.put('/class', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/class')
+  //res.redirect('/class')
 });
 
 //***CLASS_FEATURE***
@@ -3406,7 +3469,7 @@ app.post('/class_feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/class_feature')
+  //res.redirect('/class_feature')
 });
 //delete
 app.delete('/class_feature', (req, res) => {
@@ -3437,7 +3500,7 @@ app.delete('/class_feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/class_feature')
+  //res.redirect('/class_feature')
 });
 //update
 app.put('/class_feature', (req, res) => {
@@ -3495,7 +3558,7 @@ app.put('/class_feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/class_feature')
+  //res.redirect('/class_feature')
 });
 
 //***DEPT***
@@ -3561,7 +3624,7 @@ app.post('/dept', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/dept')
+  //res.redirect('/dept')
 });
 //delete
 app.delete('/dept', (req, res) => {
@@ -3586,7 +3649,7 @@ app.delete('/dept', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/dept')
+  //res.redirect('/dept')
 });
 //update
 app.put('/dept', (req, res) => {
@@ -3631,7 +3694,7 @@ app.put('/dept', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/dept')
+  //res.redirect('/dept')
 });
 
 //***FACULTY***
@@ -3781,7 +3844,7 @@ app.post('/faculty', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty')
+  //res.redirect('/faculty')
 });
 //delete
 app.delete('/faculty', (req, res) => {
@@ -3830,7 +3893,7 @@ app.delete('/faculty', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty')
+  //res.redirect('/faculty')
 });
 //update
 app.put('/faculty', (req, res) => {
@@ -3927,7 +3990,7 @@ app.put('/faculty', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty')
+  //res.redirect('/faculty')
 });
 
 //***FACULTY_CLASS***
@@ -4036,7 +4099,7 @@ app.post('/faculty_class', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_class')
+  //res.redirect('/faculty_class')
 });
 //delete
 app.delete('/faculty_class', (req, res) => {
@@ -4073,7 +4136,7 @@ app.delete('/faculty_class', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_class')
+  //res.redirect('/faculty_class')
 });
 //update
 app.put('/faculty_class', (req, res) => {
@@ -4144,7 +4207,7 @@ app.put('/faculty_class', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_class')
+  //res.redirect('/faculty_class')
 });
 
 //***FACULTY_FEATURE***
@@ -4231,7 +4294,7 @@ app.post('/faculty_feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_feature')
+  //res.redirect('/faculty_feature')
 });
 //delete
 app.delete('/faculty_feature', (req, res) => {
@@ -4262,7 +4325,7 @@ app.delete('/faculty_feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_feature')
+  //res.redirect('/faculty_feature')
 });
 //update
 app.put('/faculty_feature', (req, res) => {
@@ -4320,7 +4383,7 @@ app.put('/faculty_feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_feature')
+  //res.redirect('/faculty_feature')
 });
 
 //***FACULTY_OTHER_REQUEST***
@@ -4387,7 +4450,7 @@ app.post('/faculty_other_request', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_other_request')
+  //res.redirect('/faculty_other_request')
 });
 //delete
 app.delete('/faculty_other_request', (req, res) => {
@@ -4412,7 +4475,7 @@ app.delete('/faculty_other_request', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_other_request')
+  //res.redirect('/faculty_other_request')
 });
 //update
 app.put('/faculty_other_request', (req, res) => {
@@ -4457,7 +4520,7 @@ app.put('/faculty_other_request', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_other_request')
+  //res.redirect('/faculty_other_request')
 });
 
 //***FACULTY_TIMESLOT***
@@ -4545,7 +4608,7 @@ app.post('/faculty_timeslot', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_timeslot')
+  //res.redirect('/faculty_timeslot')
 });
 //delete
 app.delete('/faculty_timeslot', (req, res) => {
@@ -4576,7 +4639,7 @@ app.delete('/faculty_timeslot', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_timeslot')
+  //res.redirect('/faculty_timeslot')
 });
 //update
 app.put('/faculty_timeslot', (req, res) => {
@@ -4634,7 +4697,7 @@ app.put('/faculty_timeslot', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/faculty_timeslot')
+  //res.redirect('/faculty_timeslot')
 });
 
 //***FEATURE***
@@ -4699,7 +4762,7 @@ app.post('/feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/feature')
+  //res.redirect('/feature')
 });
 //delete
 app.delete('/feature', (req, res) => {
@@ -4724,7 +4787,7 @@ app.delete('/feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/feature')
+  //res.redirect('/feature')
 });
 //update
 app.put('/feature', (req, res) => {
@@ -4769,7 +4832,7 @@ app.put('/feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/feature')
+  //res.redirect('/feature')
 });
 
 //***LOGIN***
@@ -4858,7 +4921,7 @@ app.post('/login', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/login')
+  //res.redirect('/login')
 });
 //delete
 app.delete('/login', (req, res) => {
@@ -4895,7 +4958,7 @@ app.delete('/login', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/login')
+  //res.redirect('/login')
 });
 //update
 app.put('/login', (req, res) => {
@@ -4966,7 +5029,7 @@ app.put('/login', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/login')
+  //res.redirect('/login')
 });
 
 //***MEETS***
@@ -5159,7 +5222,7 @@ app.post('/meets', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/meets')
+  //res.redirect('/meets')
 });
 //delete
 app.delete('/meets', (req, res) => {
@@ -5220,7 +5283,7 @@ app.delete('/meets', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/meets')
+  //res.redirect('/meets')
 });
 //update
 app.put('/meets', (req, res) => {
@@ -5343,7 +5406,7 @@ app.put('/meets', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/meets')
+  //res.redirect('/meets')
 });
 
 //***ROOM***
@@ -5429,7 +5492,7 @@ app.post('/room', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/room')
+  //res.redirect('/room')
 });
 //delete
 app.delete('/room', (req, res) => {
@@ -5460,7 +5523,7 @@ app.delete('/room', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/room')
+  //res.redirect('/room')
 });
 //update
 app.put('/room', (req, res) => {
@@ -5518,7 +5581,7 @@ app.put('/room', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/room')
+  //res.redirect('/room')
 });
 
 //***ROOM_FEATURE***
@@ -5604,7 +5667,7 @@ app.post('/room_feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/room_feature')
+  //res.redirect('/room_feature')
 });
 //delete
 app.delete('/room_feature', (req, res) => {
@@ -5635,7 +5698,7 @@ app.delete('/room_feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/room_feature')
+  //res.redirect('/room_feature')
 });
 //update
 app.put('/room_feature', (req, res) => {
@@ -5693,7 +5756,7 @@ app.put('/room_feature', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/room_feature')
+  //res.redirect('/room_feature')
 });
 
 //***SECTION***
@@ -5842,7 +5905,7 @@ app.post('/section', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/section')
+  //res.redirect('/section')
 });
 //delete
 app.delete('/section', (req, res) => {
@@ -5891,7 +5954,7 @@ app.delete('/section', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/section')
+  //res.redirect('/section')
 });
 //update
 app.put('/section', (req, res) => {
@@ -5988,7 +6051,7 @@ app.put('/section', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/section')
+  //res.redirect('/section')
 });
 
 //***TEACHES***
@@ -6136,7 +6199,7 @@ app.post('/teaches', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/teaches')
+  //res.redirect('/teaches')
 });
 //delete
 app.delete('/teaches', (req, res) => {
@@ -6185,7 +6248,7 @@ app.delete('/teaches', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/teaches')
+  //res.redirect('/teaches')
 });
 //update
 app.put('/teaches', (req, res) => {
@@ -6282,7 +6345,7 @@ app.put('/teaches', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/teaches')
+  //res.redirect('/teaches')
 });
 
 //***TIMESLOT***
@@ -6391,7 +6454,7 @@ app.post('/timeslot', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/timeslot')
+  //res.redirect('/timeslot')
 });
 //delete
 app.delete('/timeslot', (req, res) => {
@@ -6428,7 +6491,7 @@ app.delete('/timeslot', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/timeslot')
+  //res.redirect('/timeslot')
 });
 //update
 app.put('/timeslot', (req, res) => {
@@ -6499,7 +6562,7 @@ app.put('/timeslot', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/timeslot')
+  //res.redirect('/timeslot')
 });
 
 //***TITLE***
@@ -6585,7 +6648,7 @@ app.post('/title', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/title')
+  //res.redirect('/title')
 });
 //delete
 app.delete('/title', (req, res) => {
@@ -6616,7 +6679,7 @@ app.delete('/title', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/title')
+  //res.redirect('/title')
 });
 //update
 app.put('/title', (req, res) => {
@@ -6674,7 +6737,8 @@ app.put('/title', (req, res) => {
       if (err) throw err
       console.log(result);
   })
-  res.redirect('/title')
+  //res.redirect('/title')
 });
 
 module.exports = app;
+*/
