@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //
 
 // Determine which schema we are modifying
-let schema = "cs_dev" // "db_dev" use for development Database Team
+let schema = "db_dev" // "db_dev" use for development Database Team
 
 // Connection to the database team Azure DB
 var config =
@@ -2975,7 +2975,7 @@ app.post('/v2/signup', async (req, res) => {
 const salt = await bcrypt.genSalt(10)
 try{ hash = await bcrypt.hash(req.body.password, salt)
 } catch (err) {return res.status(500).send("Error encrypting data, please try again")}
-query_db_add("insert into login values ?",[[ req.body.email, hash, req.body.faculty_id, access_level=0, tmp=null]],res)
+query_db_add("INSERT INTO login VALUES ?",[[ req.body.email, hash, req.body.faculty_id, access_level=0, tmp=null]],res)
 });
 
 //login
@@ -3026,7 +3026,7 @@ function verify(token){
 			return [401,"Unauthorized error"]
 		}
 		// otherwise, return a bad request error
-		return [400,"Bad Request"]
+		return [401,"Unauthorized no token"]
 	}
   return [200,payload]
 }
