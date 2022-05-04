@@ -337,10 +337,20 @@ public class AddCourseToScheduleController implements Initializable {
 
         List<LocalDateTime> startDaysAndTimes = new ArrayList<>();
         List<LocalDateTime> endDaysAndTimes = new ArrayList<>();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        for (String day: selectedDates) {
-            startDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + stringStartTime)));
-            endDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + stringEndTime)));
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        try {
+            for (String day : selectedDates) {
+                startDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + stringStartTime)));
+                endDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + stringEndTime)));
+            }
+        } catch (Exception e){
+            for (String day : selectedDates) {
+                System.out.println(day.getClass().getSimpleName());
+                System.out.println("DAY: " + day);
+                System.out.println(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label);
+                System.out.println(stringTime);
+                System.out.println(stringEndTime);
+            }
         }
 
         AppointmentFactory appointmentFactory = new AppointmentFactory(startDaysAndTimes, endDaysAndTimes, course.getSelectionModel().getSelectedItem(), room.getSelectionModel().getSelectedItem(), "test",course.getSelectionModel().getSelectedItem(), course.getSelectionModel().getSelectedItem());
