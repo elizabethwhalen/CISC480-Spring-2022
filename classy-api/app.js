@@ -3044,7 +3044,6 @@ app.delete('/v2/title/:title_id_id', (req, res) => {
 function query_db_get(query, res){
     new Promise( (resolve, reject) => {
       con.query(query, (err, result) => {
-          console.log(query);
           if (err) {
             reject();
           } else {
