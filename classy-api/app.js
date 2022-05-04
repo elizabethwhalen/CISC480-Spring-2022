@@ -2938,10 +2938,9 @@ function query_db_put(query, data, res){
 
 function sql_error(err) {
     err_code = err.code
-    if (err_code === "ER_ROW_IS_REFERENCED_2"){return [400,"Bad Request- This record is referenced somewhere else"]}
+    if (err_code === "ER_ROW_IS_REFERENCED_2"){return [400,"Bad Request- referential integrity would be violated"]}
     else {
-        console.log(err)
-        return [500,"Unknown Server Error- Try again. If error persists contact administrator"]
+        return [500,"Unknown Error- send database team the following error: "+err]
     }
 }
 
