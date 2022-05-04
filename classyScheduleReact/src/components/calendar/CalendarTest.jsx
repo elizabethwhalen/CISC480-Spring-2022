@@ -5,6 +5,7 @@ import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import constraints from 'constraint-solver'
 
 
 const localizer = momentLocalizer(moment);
@@ -201,6 +202,48 @@ export default function CalendarTest() {
                 alert(values);
             });
         }
+
+        const layout = constraints(`
+        editable window.width strong
+        editable window.height
+    
+        editable CISC.class
+        editable CISC.professor
+        editable STAT.class
+        editable STAT.professor
+        
+    
+        modal.width  <= window.width * 0.95   required
+        modal.height <= window.height * 0.95  required
+        
+        modal.left   == (window.width - modal.width) / 2   required
+        modal.top    == (window.height - modal.height) / 2 required
+    
+        playlist.width  == modal.width / 3
+        playlist.height <= videoContainer.height  required
+        playlist.top    == modal.top              required
+        playlist.left   == modal.left + videoContainer.width
+    
+        videoContainer.width  == modal.width * 0.66
+        videoContainer.height == modal.height
+        videoContainer.top    == modal.top            required
+    
+        CISC130.class == (CISC.class  / 2) required
+        CISC130.professor == CISC.professor
+        STAT400.class == (STAT.class)
+        STAT400.professor == STAT.professor
+    `)
+    
+    layout.suggestValue('window.width', 1024)
+    layout.suggestValue('window.height', 768)
+    layout.suggestValue('CISC.class', 8)
+    layout.suggestValue('CISC.professor', 4)
+    layout.suggestValue('STAT.class', 400)
+    layout.suggestValue('STAT.professor', 3)
+    
+    layout.updateVariables()
+    
+    console.log(layout.getValues({ roundToInt: true }))
         
     return (
         <Paper sx={{ padding: '20px' }} elevation={0} >
