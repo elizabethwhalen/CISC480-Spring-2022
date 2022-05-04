@@ -3031,6 +3031,8 @@ function verify(token){
   return [200,payload]
 }
 
+// *** v0 is deprecated ***
+/*
 // ****v0****
 function query_db(query, res) {
   // function to query the database
@@ -6739,3 +6741,4 @@ app.put('/title', (req, res) => {
 });
 
 module.exports = app;
+*/
