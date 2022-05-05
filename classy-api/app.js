@@ -127,7 +127,6 @@ app.post('/v3/class', async (req, res) => {
     if (status != 200){res.status(status).send(payload)}
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
-    //auth validated
     else{
         //check if new dept
         dept_exists = await db_get("SELECT * FROM dept WHERE dept_code="+con.escape(req.body.dept_code))
@@ -6743,3 +6742,4 @@ app.put('/title', (req, res) => {
 */
 
 module.exports = app;
+*/
