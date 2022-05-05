@@ -125,7 +125,8 @@ app.post('/v3/class', async (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
-    //auth validated
+    //auth verified. Only access_level 2 (admin) can use this method.
+    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         //check if new dept
         dept_exists = await db_get("SELECT * FROM dept WHERE dept_code="+con.escape(req.body.dept_code))
@@ -980,9 +981,7 @@ app.get('/v2/faculty_class', (req, res) => {
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
-    console.log(payload)
-    console.log(payload.user.access_level)
-    if (payload.user.access_level==0){res.status(401).send("Unauthorized")}
+    else if (payload.user.access_level<1){res.status(403).send("REQUEST DENIED- admin or faculty method only")}
     else{
         let query = "SELECT * FROM faculty_class";
 
@@ -3030,6 +3029,7 @@ function verify(token){
 	}
   return [200,payload]
 }
+
 
 // *** v0 is deprecated ***
 /*
@@ -6739,6 +6739,7 @@ app.put('/title', (req, res) => {
   })
   //res.redirect('/title')
 });
+*/
 
 module.exports = app;
 */
