@@ -191,17 +191,8 @@ export default function CalendarTest() {
 
     // do curl request to get the number of classes that need to be scheduled
     // at the 100, 200, 300, and 400 level
-    const btn = document.querySelector('#btn');
-        if(btn){
-            btn.addEventListener('click', (event) => {
-                let checkboxes = document.querySelector('input[name="level100"]:checked');
-                let values = [];
-                checkboxes.forEach((checkbox) => {
-                    values.push(checkbox.value);
-                });
-                alert(values);
-            });
-        }
+    
+        
 
         const layout = constraints(`
         editable window.width strong
@@ -233,17 +224,25 @@ export default function CalendarTest() {
         STAT400.class == (STAT.class)
         STAT400.professor == STAT.professor
     `)
+    const myFunction = React.useCallback(() =>{
+        layout.suggestValue('window.width', 1024)
+        layout.suggestValue('window.height', 768)
+        layout.suggestValue('CISC.class', 8)
+        layout.suggestValue('CISC.professor', 4)
+        layout.suggestValue('STAT.class', 400)
+        layout.suggestValue('STAT.professor', 3)
+        
+        layout.updateVariables()
+        
+        console.log(layout.getValues({ roundToInt: true }))
+    });
+
+    const classPool = React.useCallback(() =>{
+        //const cd = document.getElementsByName('level100');
+        //console.log(cd.checked);
+        console.log("test");
+    });
     
-    layout.suggestValue('window.width', 1024)
-    layout.suggestValue('window.height', 768)
-    layout.suggestValue('CISC.class', 8)
-    layout.suggestValue('CISC.professor', 4)
-    layout.suggestValue('STAT.class', 400)
-    layout.suggestValue('STAT.professor', 3)
-    
-    layout.updateVariables()
-    
-    console.log(layout.getValues({ roundToInt: true }))
         
     return (
         <Paper sx={{ padding: '20px' }} elevation={0} >
@@ -272,7 +271,8 @@ export default function CalendarTest() {
                 <label htmlFor="level200">Level 200 classes</label><input type="checkbox" name="level200" value="yes"></input><br></br>
                 <label htmlFor="level300">Level 300 classes</label><input type="checkbox" name="level300" value="yes"></input><br></br>
                 <label htmlFor="level400">Level 400 classes</label><input type="checkbox" name="level400" value="yes"></input><br></br>
-                <button id="btn">Get Selected Classes</button>
+                <button id="btn" onClick={classPool}>Get Selected Classes</button>
+                <button id="algo" onClick= {myFunction}>Algorithm Fun!!!</button>
             </div>
             
         </Paper>
