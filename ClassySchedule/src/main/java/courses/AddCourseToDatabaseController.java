@@ -1,5 +1,6 @@
 package courses;
 
+import database.Database;
 import homescreen.HomescreenController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +14,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import room.RoomController;
 import scenes.ChangeScene;
 import scheduler.SchedulerController;
@@ -22,6 +25,7 @@ import users.FacultyController;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -67,8 +71,14 @@ public class AddCourseToDatabaseController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        deptName.getItems().add("CISC");
-        deptName.getItems().add("STAT");
+        Database database = new Database();
+
+        JSONArray depts = database.getData("dept");
+        for (Object jsonObject: depts) {
+            JSONObject job = (JSONObject)jsonObject;
+            deptName.getItems().add((String) job.get("dept_code"));
+        }
+
     }
 
     public void setStage(Stage stage) {
@@ -108,13 +118,18 @@ public class AddCourseToDatabaseController implements Initializable {
         }
 
 
-        //TODO: Send course to database
-        File file = new File("test.txt");
+        Database database = new Database();
+
+        JSONObject newClass = new JSONObject();
+        newClass.put("dept_code", deptName.getValue());
+        newClass.put("class_num", classNum.getText());
+        newClass.put("class_name", className.getText());
+
         try {
-            FileWriter fw = new FileWriter(file);
-            fw.append("classname: " + className.getText() + " deptname: " + deptName.getValue() + " class number: " + classNum.getText());
-            fw.close();
+            database.insertData("class", newClass);
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 

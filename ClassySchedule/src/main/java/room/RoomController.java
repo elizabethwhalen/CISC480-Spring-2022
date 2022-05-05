@@ -1,5 +1,6 @@
 package room;
 
+import database.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,10 +14,13 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import homescreen.HomescreenController;
 import scenes.ChangeScene;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -24,6 +28,10 @@ import java.util.ResourceBundle;
  * Controls the add room page, which allows a user to add a classroom to the database
  */
 public class RoomController implements Initializable {
+
+    private Stage addRoom;
+    private Scene scene;
+    private Parent root;
     @FXML
     ChoiceBox<String> deptName;
 
@@ -34,10 +42,10 @@ public class RoomController implements Initializable {
     TextField roomNum;
 
     @FXML
-    ChoiceBox<String> buildingCode;
+    ChoiceBox<String> buildingName;
 
     @FXML
-    ChoiceBox<String> campusID;
+    TextField capacity;
 
     @FXML
     Button submitButton;
@@ -64,31 +72,25 @@ public class RoomController implements Initializable {
 
     public RoomController() {}
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        deptName.getItems().add("CISC");
-        deptName.getItems().add("STAT");
-
-        buildingCode.getItems().add("OSS");
-        buildingCode.getItems().add("OWS");
-        campusID.getItems().add("St. Paul");
-
-    }
+    Text capacityWarning;
 
     //May use in the future to reach into database for room options
-    /*@Override
+    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        dept_name.getItems().clear();
+        buildingName.getItems().clear();
         try {
             Database database = new Database();
-            ResultSet rs = database.getData("dept_code", "dept");
-            while (rs.next()) {
-                dept_name.getItems().add(rs.getString(1));
+            JSONArray rs = database.getData("building");
+            for (Object jsonObject: rs) {
+                //buildingName.getItems().add(rs.getString(1));
+                JSONObject job = (JSONObject)jsonObject;
+                buildingName.getItems().add((String) job.get("building_code"));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }*/
+
+    }
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -101,15 +103,15 @@ public class RoomController implements Initializable {
     @FXML
     public void submitData(ActionEvent event) {
 
-        if (campusID.getSelectionModel().isEmpty()) {
-            campusWarning.setVisible(true);
+        if (capacity.getText().isEmpty()) {
+            capacityWarning.setVisible(true);
             return;
         }
         if (roomNum.getText().isBlank()) {
             roomWarning.setVisible(true);
             return;
         }
-        if (buildingCode.getSelectionModel().isEmpty()) {
+        if (buildingName.getSelectionModel().isEmpty()) {
             buildingWarning.setVisible(true);
             return;
         }
@@ -126,23 +128,29 @@ public class RoomController implements Initializable {
             return;
         }
 
-        //made it to the end of validation, send to database and then clear fields
-        //TODO: Send course to database instead of text file
-        File file = new File("testroom.txt");
+        Database database = new Database();
+
+        JSONObject newRoom = new JSONObject();
+        newRoom.put("room_num", roomNum.getText());
+        newRoom.put("building_code", buildingName.getValue());
+        newRoom.put("capacity", capacity.getText());
+
         try {
-            FileWriter fw = new FileWriter(file);
-            fw.append("Campus: " + campusID.getValue() + " building: " + buildingCode.getValue() + " Room number: " + roomNum.getText());
-            fw.close();
+            database.insertData("room", newRoom);
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
-        campusID.setValue(null);
+
+
+        capacity.clear();
         roomNum.clear();
-        buildingCode.setValue(null);
+        buildingName.setValue(null);
         roomWarning.setVisible(false);
         buildingWarning.setVisible(false);
-        campusWarning.setVisible(false);
+        capacityWarning.setVisible(false);
     }
 
     /**
