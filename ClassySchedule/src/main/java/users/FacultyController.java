@@ -79,15 +79,20 @@ public class FacultyController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        facultyFirst.clear();
+        facultyLast.clear();
+        facultyID.clear();
+        type.setValue(null);
         Database database = new Database();
 
         JSONArray types = database.getData("title");
         for (Object jsonObject: types) {
 
             JSONObject job = (JSONObject)jsonObject;
-            if (job.get("title_ID") != JSONObject.NULL) {
-                //change to ENUM
-                type.getItems().add((String) job.get("title_id"));
+            if (job.get("title_id") != JSONObject.NULL) {
+                Title title = Title.valueOfLabel(String.valueOf(job.get("title_id")));
+                type.getItems().add(String.valueOf(title));
+
             }
         }
     }
@@ -112,6 +117,11 @@ public class FacultyController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        facultyFirst.clear();
+        facultyLast.clear();
+        facultyID.clear();
+        type.setValue(null);
+
         addFaculty.setTitle("Classy-Schedule");
         addFaculty.setScene(new Scene(root, 650, 400));
         addFaculty.show();
@@ -120,62 +130,58 @@ public class FacultyController implements Initializable {
 
     @FXML
     public void submitData(ActionEvent event) {
+        firstNameWarning.setVisible(false);
+        lastNameWarning.setVisible(false);
+        IDWarning.setVisible(false);
+        typeWarning.setVisible(false);
+
+        boolean warning = false;
+
         if (facultyFirst.getText().isBlank()) {
             firstNameWarning.setVisible(true);
-            return;
+            warning = true;
         }
         if (facultyLast.getText().isBlank()) {
             lastNameWarning.setVisible(true);
-            return;
+            warning = true;
         }
         if (facultyID.getText().isBlank()) {
             IDWarning.setVisible(true);
-            return;
+            warning = true;
         }
         if (type.getSelectionModel().isEmpty()) {
             typeWarning.setVisible(true);
-            return;
+            warning = true;
         }
-
-        // ID number validation
         try {
             Integer.parseInt(facultyID.getText());
         } catch (NumberFormatException e) {
             IDWarning.setVisible(true);
-            return;
+            warning = true;
+        }
+        if (!warning){
+            //create JSON Object to submit to database
+            Database database = new Database();
+            JSONObject newFaculty = new JSONObject();
+            newFaculty.put("faculty_id", facultyID.getText());
+            newFaculty.put("faculty_first", facultyFirst.getText());
+            newFaculty.put("faculty_last", facultyLast.getText());
+            newFaculty.put("title_id", Title.valueOf(type.getValue()));
+
+            try {
+                database.insertData("faculty", newFaculty);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+
+            facultyFirst.clear();
+            facultyLast.clear();
+            facultyID.clear();
+            type.setValue(null);
         }
 
-
-        Database database = new Database();
-
-        JSONObject newFaculty = new JSONObject();
-        newFaculty.put("faculty_id", facultyID.getText());
-        newFaculty.put("faculty_first", facultyFirst.getText());
-        newFaculty.put("faculty_last", facultyLast.getText());
-        //newFaculty.put("title_id", type.getValue());
-
-        try {
-            database.insertData("faculty", newFaculty);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-
-
-        facultyFirst.clear();
-        facultyLast.clear();
-        facultyID.clear();
-        //email.clear();
-        //deptName.setValue("Dept name");
-        type.setValue(null);
-        firstNameWarning.setVisible(false);
-        lastNameWarning.setVisible(false);
-        IDWarning.setVisible(false);
-        //emailWarning.setVisible(false);
-        //departmentWarning.setVisible(false);
-        typeWarning.setVisible(false);
     }
 
 }

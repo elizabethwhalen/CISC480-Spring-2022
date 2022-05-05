@@ -45,6 +45,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.text.Text?>
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="users.FacultyController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
@@ -125,6 +126,10 @@
                </font>
             </Label>
             <TextField fx:id="facultyID" layoutX="125.0" layoutY="138.0" prefHeight="25.0" prefWidth="200.0" />
+            <Text fx:id="firstNameWarning" layoutX="183.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a valid first name" visible="false" />
+            <Text fx:id="lastNameWarning" layoutX="183.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a valid last name" visible="false" wrappingWidth="134.455078125" />
+            <Text fx:id="IDWarning" layoutX="183.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a valid ID number" visible="false" />
+            <Text fx:id="typeWarning" layoutX="183.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select a type" visible="false" />
       </children>
     </AnchorPane>
   </children>
