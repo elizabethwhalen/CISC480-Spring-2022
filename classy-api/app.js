@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //
 
 // Determine which schema we are modifying
-let schema = "db_dev" // "db_dev" use for development Database Team
+let schema = "cs_dev" // "db_dev" use for development Database Team
 
 // Connection to the database team Azure DB
 var config =
