@@ -5,6 +5,7 @@ import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import AddClassForm from './AddClassForm'
 
 
 const localizer = momentLocalizer(moment);
@@ -19,7 +20,7 @@ export default function CalendarTest() {
     const [popupEventDate, setDate] = React.useState([]);
     const [popupEventStatus, setStatus] = React.useState('busy');
     const [isEdit, setEdit] = React.useState(false);
-    const [isOpen, setOpen] = React.useState(false);
+    const [open, setOpen] = React.useState(false);
     const [anchor, setAnchor] = React.useState(null);
     const minTime = new Date();
     minTime.setHours(8, 0, 0);
@@ -57,9 +58,17 @@ export default function CalendarTest() {
         setTempEvent({ ...args.event });
         // fill popup form with event data
         // load popupform
-        //loadPopupForm(args.event);
+        // loadPopupForm(args.event);
         setOpen(true);
     });
+
+    const onClose = React.useCallback(() => {
+        if (!isEdit) {
+            // refresh the list, if add popup was canceled, to remove the temporary event
+            setEvents([...events]);
+        }
+        setOpen(false);
+    }, [isEdit, events]);
 
     const onEventCreated = React.useCallback((args) => {
         // createNewEvent(args.event, args.target)
@@ -109,14 +118,6 @@ export default function CalendarTest() {
             ];
         }
     }, [isEdit]);
-
-    const onClose = React.useCallback(() => {
-        if (!isEdit) {
-            // refresh the list, if add popup was canceled, to remove the temporary event
-            setEvents([...events]);
-        }
-        setOpen(false);
-    }, [isEdit, events]);
 
     const saveEvent = React.useCallback(()=>{
         // save and edit events 
@@ -204,6 +205,7 @@ export default function CalendarTest() {
         
     return (
         <Paper sx={{ padding: '20px' }} elevation={0} >
+            {open && <AddClassForm open={open} onClose={onClose} />}
             <DnDCalendar
                 min={minTime}
                 max={maxTime}
