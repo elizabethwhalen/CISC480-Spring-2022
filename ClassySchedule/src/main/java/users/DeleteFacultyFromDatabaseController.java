@@ -1,4 +1,4 @@
-package courses;
+package users;
 
 import database.DatabaseStatic;
 import homescreen.HomescreenController;
@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.fxml.FXML;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import scenes.ChangeScene;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -50,6 +51,10 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
 
     private Stage stage;
 
+    /**
+     * The change scene object to change between scenes
+     */
+    private final ChangeScene cs = new ChangeScene();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -111,18 +116,21 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
     private String getTitle() {
         String result = null;
         // References to user selected faculty id
-        Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-        // Iterate through the faculty table
-        JSONArray faculty = DatabaseStatic.getData("faculty");
-        for (Object jsonObject: faculty) {
-            JSONObject job = (JSONObject)jsonObject;
-            job.put("title_id", String.valueOf( job.get("title_id")));
-            // If matching selected faculty id then set result equal to title and break
-            if (job.get("faculty_id").equals(selectedFaculty)) {
-                result = (String) job.get("title_id");
-                break;
+        if (!(facultyID.getValue() == null)) {
+            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
+            // Iterate through the faculty table
+            JSONArray faculty = DatabaseStatic.getData("faculty");
+            for (Object jsonObject: faculty) {
+                JSONObject job = (JSONObject)jsonObject;
+                job.put("title_id", String.valueOf( job.get("title_id")));
+                // If matching selected faculty id then set result equal to title and break
+                if (job.get("faculty_id").equals(selectedFaculty)) {
+                    result = (String) job.get("title_id");
+                    break;
+                }
             }
         }
+
         return result;
     }
 
@@ -134,17 +142,20 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
     private String getFirstName() {
         String result = null;
         // References to user selected faculty id
-        Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-        // Iterate through the faculty table
-        JSONArray faculty = DatabaseStatic.getData("faculty");
-        for (Object jsonObject: faculty) {
-            JSONObject job = (JSONObject)jsonObject;
-            // If matching selected faculty id then set result equal to first name and break
-            if (job.get("faculty_id").equals(selectedFaculty)) {
-                result = (String) job.get("faculty_first");
-                break;
+        if (!(facultyID.getValue() == null)) {
+            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
+            // Iterate through the faculty table
+            JSONArray faculty = DatabaseStatic.getData("faculty");
+            for (Object jsonObject : faculty) {
+                JSONObject job = (JSONObject) jsonObject;
+                // If matching selected faculty id then set result equal to first name and break
+                if (job.get("faculty_id").equals(selectedFaculty)) {
+                    result = (String) job.get("faculty_first");
+                    break;
+                }
             }
         }
+
         return result;
     }
 
@@ -156,17 +167,20 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
     private String getLastName() {
         String result = null;
         // References to user selected faculty id
-        Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-        // Iterate through the faculty table
-        JSONArray faculty = DatabaseStatic.getData("faculty");
-        for (Object jsonObject: faculty) {
-            JSONObject job = (JSONObject)jsonObject;
-            // If matching selected faculty id then set result equal to last name and break
-            if (job.get("faculty_id").equals(selectedFaculty)) {
-                result = (String) job.get("faculty_last");
-                break;
+        if (!(facultyID.getValue() == null)) {
+            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
+            // Iterate through the faculty table
+            JSONArray faculty = DatabaseStatic.getData("faculty");
+            for (Object jsonObject : faculty) {
+                JSONObject job = (JSONObject) jsonObject;
+                // If matching selected faculty id then set result equal to last name and break
+                if (job.get("faculty_id").equals(selectedFaculty)) {
+                    result = (String) job.get("faculty_last");
+                    break;
+                }
             }
         }
+
         return result;
     }
 
@@ -178,18 +192,21 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
     private String getPrevCourseLoad() {
         String result = null;
         // References to user selected faculty id
-        Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-        // Iterate through the faculty table
-        JSONArray faculty = DatabaseStatic.getData("faculty");
-        for (Object jsonObject: faculty) {
-            JSONObject job = (JSONObject)jsonObject;
-            job.put("prev_load", String.valueOf( job.get("prev_load")));
-            // If matching selected faculty id then set result equal to previous course load and break
-            if (job.get("faculty_id").equals(selectedFaculty)) {
-                result = (String) job.get("prev_load");
-                break;
+        if (!(facultyID.getValue() == null)) {
+            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
+            // Iterate through the faculty table
+            JSONArray faculty = DatabaseStatic.getData("faculty");
+            for (Object jsonObject : faculty) {
+                JSONObject job = (JSONObject) jsonObject;
+                job.put("prev_load", String.valueOf(job.get("prev_load")));
+                // If matching selected faculty id then set result equal to previous course load and break
+                if (job.get("faculty_id").equals(selectedFaculty)) {
+                    result = (String) job.get("prev_load");
+                    break;
+                }
             }
         }
+
         return result;
     }
 
@@ -201,18 +218,21 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
     private String getCurrCourseLoad() {
         String result = null;
         // References to user selected faculty id
-        Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-        // Iterate through the faculty table
-        JSONArray faculty = DatabaseStatic.getData("faculty");
-        for (Object jsonObject: faculty) {
-            JSONObject job = (JSONObject)jsonObject;
-            job.put("curr_load", String.valueOf( job.get("curr_load")));
-            // If matching selected faculty id then set result equal to current course load and break
-            if (job.get("faculty_id").equals(selectedFaculty)) {
-                result = (String) job.get("curr_load");
-                break;
+        if (!(facultyID.getValue() == null)) {
+            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
+            // Iterate through the faculty table
+            JSONArray faculty = DatabaseStatic.getData("faculty");
+            for (Object jsonObject : faculty) {
+                JSONObject job = (JSONObject) jsonObject;
+                job.put("curr_load", String.valueOf(job.get("curr_load")));
+                // If matching selected faculty id then set result equal to current course load and break
+                if (job.get("faculty_id").equals(selectedFaculty)) {
+                    result = (String) job.get("curr_load");
+                    break;
+                }
             }
         }
+
         return result;
     }
 
@@ -250,11 +270,12 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
                 if (job.get("faculty_id").equals(Integer.parseInt(facultyIDValue))) {
                     try {
                         System.out.println(job);
-                    /*    job.put("faculty_id", String.valueOf(job.get("faculty_id")));
-                        job.put("prev_load", String.valueOf(job.get("prev_load")));
-                        job.put("curr_load", String.valueOf(job.get("curr_load")));
-                        job.put("title_id", String.valueOf(job.get("title_id")));*/
-
+                        job.remove("prev_load");
+                        job.remove("curr_load");
+                        job.remove("title_id");
+                        job.remove("faculty_last");
+                        job.remove("faculty_first");
+                        job.put("faculty_id", facultyIDValue);
                         System.out.println(job);
                         // Delete the JSON object from the "faculty" table from the database
                         DatabaseStatic.deleteData("faculty", job);
@@ -339,22 +360,65 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
         }
     }
 
-    /**
-     * This method switches the scene back to the home screen
-     */
     @FXML
     public void goBack() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        HomescreenController hsController = loader.getController();
-        hsController.setStage(stage);
-        stage.setTitle("Classy-Schedule");
-        stage.setScene(new Scene(root, 650, 450));
-        stage.show();
+        cs.goToHomepage(stage);
     }
+
+    /**
+     * go to add course scene
+     */
+    @FXML
+    public void goToAddCourse() {
+        cs.addCourseButtonClicked(stage);
+    }
+
+    /**
+     * go to add classroom scene
+     */
+    @FXML
+    public void goToAddClassroom() {
+        cs.addClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to add faculty scene
+     */
+    @FXML
+    public void goToAddFaculty() {
+        cs.addProfessorButtonClicked(stage);
+    }
+
+    /**
+     * go to delete course scene
+     */
+    @FXML
+    public void goToDeleteCourse() {
+        cs.deleteCourseButtonClicked(stage);
+    }
+
+    /**
+     * go to delete classroom scene
+     */
+    @FXML
+    public void goToDeleteClassroom() {
+        cs.deleteClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to delete faculty scene
+     */
+    @FXML
+    public void goToDeleteFaculty() {
+        cs.deleteFacultyButtonClicked(stage);
+    }
+
+    /**
+     * go to view schedule scene
+     */
+    @FXML
+    public void goToViewSchedule() {
+        cs.viewScheduleClicked(stage);
+    }
+
 }

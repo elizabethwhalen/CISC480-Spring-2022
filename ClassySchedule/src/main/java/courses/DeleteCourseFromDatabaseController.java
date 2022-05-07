@@ -18,6 +18,11 @@ import javafx.stage.Stage;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import room.RoomController;
+import scenes.ChangeScene;
+import scheduler.SchedulerController;
+import users.DeleteFacultyFromDatabaseController;
+import users.FacultyController;
 
 import java.io.IOException;
 
@@ -64,6 +69,11 @@ public class DeleteCourseFromDatabaseController implements Initializable {
      */
     @FXML
     private Stage stage;
+
+    /**
+     * The change scene object to change between scenes
+     */
+    private final ChangeScene cs = new ChangeScene();
 
     /**
      * @param url
@@ -137,7 +147,6 @@ public class DeleteCourseFromDatabaseController implements Initializable {
             // If matching selected department then insert class number to class number drop-down
             if (job.get("dept_code").equals(selectedDepartment)) {
                 classNum.getItems().add((String) job.get("class_num"));
-                break;
             }
         }
     }
@@ -152,15 +161,17 @@ public class DeleteCourseFromDatabaseController implements Initializable {
         String selectedClassNumber = classNum.getValue();
         JSONArray classes = DatabaseStatic.getData("class");
         for (Object jsonObject: classes) {
-            JSONObject job = (JSONObject)jsonObject;
+            JSONObject job = (JSONObject) jsonObject;
             // If matching selected class number then set result to that JSON object class name
             if (job.get("class_num").equals(selectedClassNumber)) {
-                result = (String) job.get("class_name");
-                break;
+                if (!(job.get("class_name").equals(null))) {
+                    result = (String) job.get("class_name");
+                }
             }
         }
         return result;
     }
+
 
     /**
      * confirm button to delete the selected course. It checks if the drop-downs
@@ -185,6 +196,7 @@ public class DeleteCourseFromDatabaseController implements Initializable {
                 // If JSON object contain the user's selected request
                 if (job.get("class_num").equals(selectedClassNum) && job.get("dept_code").equals(selectedDept)) {
                     try {
+                        job.remove("class_name");
                         // Delete the JSON object from the "class" table from the database
                         DatabaseStatic.deleteData("class", job);
                         //System.out.println(DatabaseStatic.deleteData("class", job));
@@ -269,22 +281,65 @@ public class DeleteCourseFromDatabaseController implements Initializable {
         }
     }
 
-    /**
-     * This method switches the scene back to the home screen
-     */
     @FXML
     public void goBack() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        HomescreenController hsController = loader.getController();
-        hsController.setStage(stage);
-        stage.setTitle("Classy-Schedule");
-        stage.setScene(new Scene(root, 650, 450));
-        stage.show();
+        cs.goToHomepage(stage);
     }
+
+    /**
+     * go to add course scene
+     */
+    @FXML
+    public void goToAddCourse() {
+        cs.addCourseButtonClicked(stage);
+    }
+
+    /**
+     * go to add classroom scene
+     */
+    @FXML
+    public void goToAddClassroom() {
+        cs.addClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to add faculty scene
+     */
+    @FXML
+    public void goToAddFaculty() {
+        cs.addProfessorButtonClicked(stage);
+    }
+
+    /**
+     * go to delete course scene
+     */
+    @FXML
+    public void goToDeleteCourse() {
+        cs.deleteCourseButtonClicked(stage);
+    }
+
+    /**
+     * go to delete classroom scene
+     */
+    @FXML
+    public void goToDeleteClassroom() {
+        cs.deleteClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to delete faculty scene
+     */
+    @FXML
+    public void goToDeleteFaculty() {
+        cs.deleteFacultyButtonClicked(stage);
+    }
+
+    /**
+     * go to view schedule scene
+     */
+    @FXML
+    public void goToViewSchedule() {
+        cs.viewScheduleClicked(stage);
+    }
+
 }

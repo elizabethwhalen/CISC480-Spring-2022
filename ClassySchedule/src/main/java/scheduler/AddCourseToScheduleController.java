@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import jfxtras.scene.control.agenda.Agenda;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import scenes.ChangeScene;
 
 import java.net.URL;
 import java.text.ParseException;
@@ -118,6 +119,12 @@ public class AddCourseToScheduleController implements Initializable {
      * The confirmation alert to go back to the scheduler
      */
     private Alert confirmBackButton = new Alert(Alert.AlertType.CONFIRMATION);
+
+    /**
+     * The change scene object to change between scenes
+     */
+    private final ChangeScene cs = new ChangeScene();
+
 
     /**
      * The constructor for the add course to schedule controller

@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import homescreen.HomescreenController;
+import scenes.ChangeScene;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -31,6 +32,11 @@ public class RoomController implements Initializable {
     private Stage addRoom;
     private Scene scene;
     private Parent root;
+    @FXML
+    ChoiceBox<String> deptName;
+
+    @FXML
+    ChoiceBox<String> type;
 
     @FXML
     TextField roomNum;
@@ -54,11 +60,19 @@ public class RoomController implements Initializable {
     Text buildingWarning;
 
     @FXML
+    Text campusWarning;
+
+    private Stage stage;
+
+    /**
+     * The change scene object to change between scenes
+     */
+    private final ChangeScene cs = new ChangeScene();
+
+
+    public RoomController() {}
+
     Text capacityWarning;
-
-    public RoomController() {
-    }
-
 
     //May use in the future to reach into database for room options
     @Override
@@ -78,8 +92,8 @@ public class RoomController implements Initializable {
 
     }
 
-    public void setStage(Stage addRoom) {
-        this.addRoom = addRoom;
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     /**
@@ -140,25 +154,66 @@ public class RoomController implements Initializable {
     }
 
     /**
-     * Changes scene back to homescreen when cancelButton is clicked
-     * @param event Clicking on cancelButton
+     * go back to homepage
      */
     @FXML
-    public void cancelButtonClicked(ActionEvent event) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
-            Parent root = null;
-            try {
-                root = loader.load();
-                HomescreenController homescreenController = loader.getController();
-                homescreenController.setStage(addRoom);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            addRoom.setTitle("Classy-Schedule");
-            addRoom.setScene(new Scene(root, 650, 400));
-            addRoom.show();
+    public void goBack() {
+        cs.goToHomepage(stage);
     }
 
+    /**
+     * go to add course scene
+     */
+    @FXML
+    public void goToAddCourse() {
+        cs.addCourseButtonClicked(stage);
+    }
 
+    /**
+     * go to add classroom scene
+     */
+    @FXML
+    public void goToAddClassroom() {
+        cs.addClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to add faculty scene
+     */
+    @FXML
+    public void goToAddFaculty() {
+        cs.addProfessorButtonClicked(stage);
+    }
+
+    /**
+     * go to delete course scene
+     */
+    @FXML
+    public void goToDeleteCourse() {
+        cs.deleteCourseButtonClicked(stage);
+    }
+
+    /**
+     * go to delete classroom scene
+     */
+    @FXML
+    public void goToDeleteClassroom() {
+        cs.deleteClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to delete faculty scene
+     */
+    @FXML
+    public void goToDeleteFaculty() {
+        cs.deleteFacultyButtonClicked(stage);
+    }
+
+    /**
+     * go to view schedule scene
+     */
+    @FXML
+    public void goToViewSchedule() {
+        cs.viewScheduleClicked(stage);
+    }
 }

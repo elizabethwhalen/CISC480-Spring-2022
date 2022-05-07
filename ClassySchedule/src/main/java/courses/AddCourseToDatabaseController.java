@@ -11,11 +11,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import room.RoomController;
+import scenes.ChangeScene;
+import scheduler.SchedulerController;
+import users.DeleteFacultyFromDatabaseController;
+import users.FacultyController;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -28,7 +34,6 @@ import java.util.ResourceBundle;
  * Controls add course page, which allows the user to add a course to the database.
  */
 public class AddCourseToDatabaseController implements Initializable {
-    private Stage addCourse;
     @FXML
     TextField classNum;
 
@@ -53,6 +58,14 @@ public class AddCourseToDatabaseController implements Initializable {
     @FXML
     Text departmentWarning;
 
+    private Stage stage;
+
+    /**
+     * The change scene object to change between scenes
+     */
+    private final ChangeScene cs = new ChangeScene();
+
+
     public AddCourseToDatabaseController() {}
 
     /**
@@ -71,8 +84,8 @@ public class AddCourseToDatabaseController implements Initializable {
         }
     }
 
-    public void setStage(Stage addCourse) {
-        this.addCourse = addCourse;
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     /**
@@ -137,17 +150,63 @@ public class AddCourseToDatabaseController implements Initializable {
 
     @FXML
     public void goBack() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        HomescreenController hsController = loader.getController();
-        hsController.setStage(addCourse);
-        addCourse.setTitle("Classy-Schedule");
-        addCourse.setScene(new Scene(root, 650, 450));
-        addCourse.show();
+        cs.goToHomepage(stage);
     }
+
+    /**
+     * go to add course scene
+     */
+    @FXML
+    public void goToAddCourse() {
+        cs.addCourseButtonClicked(stage);
+    }
+
+    /**
+     * go to add classroom scene
+     */
+    @FXML
+    public void goToAddClassroom() {
+        cs.addClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to add faculty scene
+     */
+    @FXML
+    public void goToAddFaculty() {
+        cs.addProfessorButtonClicked(stage);
+    }
+
+    /**
+     * go to delete course scene
+     */
+    @FXML
+    public void goToDeleteCourse() {
+        cs.deleteCourseButtonClicked(stage);
+    }
+
+    /**
+     * go to delete classroom scene
+     */
+    @FXML
+    public void goToDeleteClassroom() {
+        cs.deleteClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to delete faculty scene
+     */
+    @FXML
+    public void goToDeleteFaculty() {
+        cs.deleteFacultyButtonClicked(stage);
+    }
+
+    /**
+     * go to view schedule scene
+     */
+    @FXML
+    public void goToViewSchedule() {
+        cs.viewScheduleClicked(stage);
+    }
+
 }

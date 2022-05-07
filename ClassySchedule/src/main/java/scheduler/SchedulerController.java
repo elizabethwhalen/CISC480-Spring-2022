@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import jfxtras.scene.control.agenda.Agenda;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import scenes.ChangeScene;
 
 import java.io.IOException;
 import java.net.JarURLConnection;
@@ -61,6 +62,11 @@ public class SchedulerController implements Initializable {
      */
     Agenda agenda;
 
+    /**
+     * The change scene object to change between scenes
+     */
+    private final ChangeScene cs = new ChangeScene();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.agenda = new Agenda();
@@ -74,7 +80,7 @@ public class SchedulerController implements Initializable {
      * @throws IOException
      */
     @FXML
-    public void goToAddCourse(ActionEvent actionEvent) throws IOException {
+    public void goToAddCourseToScheduler(ActionEvent actionEvent) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/AddCourseToSchedule.fxml"));
         Stage stage = new Stage();
         stage.initOwner(addCourseButton.getScene().getWindow());
@@ -86,25 +92,6 @@ public class SchedulerController implements Initializable {
         stage.showAndWait();
     }
 
-    /**
-     * Returns to the homescreen
-     * @param actionEvent
-     */
-    @FXML
-    public void goToHomeScreen(ActionEvent actionEvent) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        HomescreenController hsController = loader.getController();
-        hsController.setStage(stage);
-        stage.setTitle("Classy-Schedule");
-        stage.setScene(new Scene(root, 650, 450));
-        stage.show();
-    }
 
     /**
      * Sets the stage
@@ -222,6 +209,67 @@ public class SchedulerController implements Initializable {
      */
     public void addCourse(List<Agenda.Appointment> appointments) {
         agenda.appointments().addAll(appointments);
+    }
+
+    @FXML
+    public void goBack() {
+        cs.goToHomepage(stage);
+    }
+
+    /**
+     * go to add course scene
+     */
+    @FXML
+    public void goToAddCourse() {
+        cs.addCourseButtonClicked(stage);
+    }
+
+    /**
+     * go to add classroom scene
+     */
+    @FXML
+    public void goToAddClassroom() {
+        cs.addClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to add faculty scene
+     */
+    @FXML
+    public void goToAddFaculty() {
+        cs.addProfessorButtonClicked(stage);
+    }
+
+    /**
+     * go to delete course scene
+     */
+    @FXML
+    public void goToDeleteCourse() {
+        cs.deleteCourseButtonClicked(stage);
+    }
+
+    /**
+     * go to delete classroom scene
+     */
+    @FXML
+    public void goToDeleteClassroom() {
+        cs.deleteClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to delete faculty scene
+     */
+    @FXML
+    public void goToDeleteFaculty() {
+        cs.deleteFacultyButtonClicked(stage);
+    }
+
+    /**
+     * go to view schedule scene
+     */
+    @FXML
+    public void goToViewSchedule() {
+        cs.viewScheduleClicked(stage);
     }
 
 }
