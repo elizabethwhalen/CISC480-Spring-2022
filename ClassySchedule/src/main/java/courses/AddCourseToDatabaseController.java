@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
@@ -40,10 +41,13 @@ public class AddCourseToDatabaseController implements Initializable {
     TextField className;
 
     @FXML
-    ComboBox<String> deptName;
+    ChoiceBox<String> deptName;
 
     @FXML
     Button submit_button;
+
+    @FXML
+    Button back_button;
 
     @FXML
     Text classNumWarning;
@@ -78,7 +82,6 @@ public class AddCourseToDatabaseController implements Initializable {
             JSONObject job = (JSONObject)jsonObject;
             deptName.getItems().add((String) job.get("dept_code"));
         }
-
     }
 
     public void setStage(Stage stage) {
@@ -91,18 +94,22 @@ public class AddCourseToDatabaseController implements Initializable {
      */
     @FXML
     public void submitData(ActionEvent event) {
+        departmentWarning.setVisible(false);
+        classNumWarning.setVisible(false);
+        classNameWarning.setVisible(false);
+        boolean warning = false;
         //checking if user inputs are entered:
         if (deptName.getSelectionModel().isEmpty()) {
             departmentWarning.setVisible(true);
-            return;
+            warning = true;
         }
         if (classNum.getText().isBlank()) {
             classNumWarning.setVisible(true);
-            return;
+            warning = true;
         }
         if (className.getText().isBlank()) {
             classNameWarning.setVisible(true);
-            return;
+            warning = true;
         }
         //checking if length of course code is 3 and course code is type int:
         if (classNum.getLength() == 3) {
@@ -110,35 +117,35 @@ public class AddCourseToDatabaseController implements Initializable {
                 Integer.parseInt(classNum.getText());
             } catch (NumberFormatException e) {
                 classNumWarning.setVisible(true);
-                return;
+                warning = true;
             }
         } else {
             classNumWarning.setVisible(true);
-            return;
+            warning = true;
         }
 
+        if (!warning) {
 
-        Database database = new Database();
+            Database database = new Database();
 
-        JSONObject newClass = new JSONObject();
-        newClass.put("dept_code", deptName.getValue());
-        newClass.put("class_num", classNum.getText());
-        newClass.put("class_name", className.getText());
+            JSONObject newClass = new JSONObject();
+            newClass.put("dept_code", deptName.getValue());
+            newClass.put("class_num", classNum.getText());
+            newClass.put("class_name", className.getText());
 
-        try {
-            database.insertData("class", newClass);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+            try {
+                database.insertData("class", newClass);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+
+            deptName.setValue("Dept name");
+            classNum.clear();
+            className.clear();
+
         }
-
-        deptName.setValue("Dept name");
-        classNum.clear();
-        className.clear();
-        departmentWarning.setVisible(false);
-        classNumWarning.setVisible(false);
-        classNameWarning.setVisible(false);
     }
 
     @FXML
