@@ -1,3 +1,4 @@
+import React from 'react'
 import { Box, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { Avatar } from '@mui/material'
@@ -27,6 +28,13 @@ const useStyles = makeStyles((theme) => ({
 const LoginHeader = (props) => {
 
   const classes = useStyles() // call the hook
+  const loggedIn = props.loggedIn;
+  const currentToken = sessionStorage.getItem('token');
+
+  const handleLogoutClick = () => {
+    props.setLoggedIn(false);
+    props.handleLogOut();
+  }
 
   // return the component
   return (
@@ -38,14 +46,14 @@ const LoginHeader = (props) => {
         Otherwise, display login button
       */}
 
-      {props.login ? (
+      {loggedIn || currentToken  ? (
         <>
           <Avatar sx={{ bgcolor: 'white', color: '#7E16A4' }}>
             KN
           </Avatar>
           
           <Link to='/' className={classes.link}>
-            <Button className={classes.button} onClick={props.handleLogOut}>
+            <Button className={classes.button} onClick={handleLogoutClick}>
               Logout
             </Button>
           </Link>

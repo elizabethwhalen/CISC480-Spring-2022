@@ -23,4 +23,16 @@ curl -X POST "http://databaseconnectionexample.azurewebsites.net/faculty" -H "Co
 }'
 
 ###
-curl "classy-api.ddns.net/faculty"
+curl "classy-api.ddns.net/class"
+
+###
+curl "https://classy-api.ddns.net/v2/signup" -X POST -d "email=[web@stthomas.edu]&password=[webdev]"
+
+###
+curl "https://classy-api.ddns.net/v2/login" -X POST -d "email=classy-schedule-dev@stthomas.edu&password=classyschedule"
+
+###
+curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiY2xhc3N5LXNjaGVkdWxlLWRldkBzdHRob21hcy5lZHUiLCJwYXNzIjoiJDJiJDEwJGtJcUc3b09oczNRbDB4TTNhZ3pIbS5LMTk4ZGRCQW9xT3h5by4yakJRVVR4THNSVjZCbko2IiwiZmFjdWx0eV9pZCI6bnVsbCwiYWNjZXNzX2xldmVsIjozLCJ0bXAiOm51bGx9LCJpYXQiOjE2NTE4NjU0MjIsImV4cCI6MTY1MTk1MTgyMn0.LY5EbarANRCdDxM9j6Ow69msRXDg1tdOnNRB5RlKuvE" "https://classy-api.ddns.net/v2/login/[web@stthomas.edu]" -X PUT -d "access_level=2"
+
+###
+curl "https://classy-api.ddns.net/v2/login" -X POST -d "email=[web@stthomas.edu]&password=[webdev]"

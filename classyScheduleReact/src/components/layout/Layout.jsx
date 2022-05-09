@@ -26,68 +26,48 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 // This function will return the overall layout of the app
-export default function Layout() {
+export default function Layout(props) {
 
   const classes = useStyles() // call the hook
   const [open, setOpen] = React.useState(false) // variable that determines expanding motion of the drawer
-  const [login, setLogin] = React.useState(false) // variable that determines whether the user is logged in
+  const loggedIn = props.loggedIn;
+  const currentToken = sessionStorage.getItem('token');
 
   // This function will set the drawer to open
   const handleDrawerOpen = () => {
     setOpen(true)
   }
 
-   // This function will set the drawer to close
+  // This function will set the drawer to close
   const handleDrawerClose = () => {
     setOpen(false)
   }
 
-  // This function will set the login variable to be true
-  // A.K.A. log user in
-  const handleLogin = (response) =>  {
-    if (response) {
-      setLogin(true);
-    } else {
-      setLogin(false);
-    }
-  }
-
-  // This function will set the login variable to be false
-  // A.K.A. log user out
-  const handleLogOut = () => {
-    setLogin(false)
-  }
-
   return (
     <>
-    {/* 
-        When the login variable is false, the display the Login page
-        Otherwise, open the main page (Home)
-    */}
-      {login ?
+      {loggedIn || currentToken ?
         <div className={classes.root}>
           <CssBaseline />
-          <AppHeader 
-            open={open} 
-            login={login} 
-            handleDrawerOpen={handleDrawerOpen} 
-            handleLogOut={handleLogOut}
+          <AppHeader
+            open={open}
+            loggedIn={props.loggedIn}
+            handleLogOut={props.handleLogOut}
+            handleDrawerOpen={handleDrawerOpen}
+            setLoggedIn={props.setLoggedIn}
           />
 
-          <AppSideNavBar 
-            handleDrawerClose={handleDrawerClose} 
-            handleDrawerOpen={handleDrawerOpen} 
-            open={open} 
+          <AppSideNavBar
+            handleDrawerClose={handleDrawerClose}
+            handleDrawerOpen={handleDrawerOpen}
+            open={open}
           />
 
           <main className={classes.content}>
             <div className={classes.toolbar} />
             <AppRouter></AppRouter>
           </main>
-        </div>
-        :
-        // <Login handleLogin={handleLogin}/>
-        <LogRouter handleLogin = {handleLogin} />
+        </div> :
+        <LogRouter setLoggedIn={props.setLoggedIn} setToken={props.setToken}></LogRouter>
       }
     </>
 

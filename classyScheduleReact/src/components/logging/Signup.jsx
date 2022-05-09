@@ -21,7 +21,8 @@ const useStyles = makeStyles({
     position: 'absolute',
     left: '0px',
     right: '0px',
-    top: '0px'
+    top: '0px',
+    minHeight: '450px'
   },
   container: {
     width: '100%'
@@ -95,7 +96,7 @@ const Signup = (props) => {
     if (email !== '' && password !== '' && confirmPass !== '') {
       if (password === confirmPass) {
         let data = JSON.stringify({
-          username: email,
+          email: email,
           password: password
         });
         let config = {

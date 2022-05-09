@@ -7,6 +7,7 @@ import logo from '../../images/ustlogo.png'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
+
 // Styling components using useStyles
 const useStyles = makeStyles({
   root: {
@@ -79,7 +80,7 @@ const useStyles = makeStyles({
 });
 
 // Login page component with parameter passed under props
-const Login = (props) => {
+export default function Login (props) {
 
   const classes = useStyles(); // use the useStyles
   const [email, setEmail] = React.useState(''); // email
@@ -89,34 +90,36 @@ const Login = (props) => {
     event.preventDefault();
 
     // If either email or password is empty, then don't log user in
-    if (email !== '' && password !== ''){
+    if (email !== '' && password !== '') {
       let token = '';
       // Data for POST to accept request.
       let data = JSON.stringify({
-        username: email,
+        email: email,
         password: password
       });
       // Config for axios specific https request.
       let config = {
         method: 'post',
-        url: 'https://classy-api.ddns.net/v2/login',
+        url: "https://classy-api.ddns.net/v2/login",
         headers: { 'Content-Type': 'application/json' },
         data: data
       };
       // Axios promise is being executed with config data and token is being saved into browser local storage.
       axios(config).then((response) => {
-        if (response.data !== ''){
+        if (response.data !== '') {
           token = response.data;
-          props.handleLogin(true);
-          localStorage.setItem('access_token', token);
-          console.log(token)
+          //props.handleLogin(true);
+          //localStorage.setItem('token', token);
+          console.log(token);
+          props.setToken(token);
+          props.setLoggedIn(true);
         } else {
-          props.handleLogin(false);
+          props.setLoggedIn(false);
         }
       }).catch((error) => {
         console.log(error);
       });
-      
+
     }
   }
 
@@ -135,9 +138,9 @@ const Login = (props) => {
       <Grid container className={classes.container} >
 
         {/* Empty grid item used for place holder */}
-        <Grid item 
+        <Grid item
           alignItems="flex-start"
-          justify="flex-start" 
+          justify="flex-start"
           className={classes.gridItem1} >
         </Grid>
 
@@ -160,7 +163,7 @@ const Login = (props) => {
 
             {/* Form */}
             <Grid item xs={12}>
-              <ValidatorForm onSubmit={handleLogin}>
+              <ValidatorForm onSubmit={(event) => handleLogin(event)}>
                 <Grid container spacing={1}>
 
                   {/* Email */}
@@ -169,10 +172,10 @@ const Login = (props) => {
                       size="small"
                       variant="outlined"
                       label="Email"
-                      fullWidth  
+                      fullWidth
                       name="email"
                       value={email}
-                      onChange={handleChangeEmail}
+                      onChange={(event) => handleChangeEmail(event)}
                       validators={['required', 'isEmail']}
                       errorMessages={['this field is required', 'email is not valid']}
                     />
@@ -188,7 +191,7 @@ const Login = (props) => {
                       name="password"
                       type="password"
                       value={password}
-                      onChange={handleChangePassword}
+                      onChange={(event) => handleChangePassword(event)}
                       validators={['required']}
                       errorMessages={['this field is required']}
                       className={classes.textBox}
@@ -214,9 +217,9 @@ const Login = (props) => {
 
                   {/* Submit button */}
                   <Grid item xs={12} sx={{ marginTop: '30px' }}>
-                      <Button variant="contained" disableElevation type='submit' sx={{backgroundColor: '#6a1b9a', '&:hover' : {backgroundColor: '#4a148c'} }} >
-                        Log In
-                      </Button>                   
+                    <Button variant="contained" disableElevation type='submit' sx={{ backgroundColor: '#6a1b9a', '&:hover': { backgroundColor: '#4a148c' } }} >
+                      Log In
+                    </Button>
                   </Grid>
                 </Grid>
               </ValidatorForm>
@@ -228,4 +231,6 @@ const Login = (props) => {
   )
 }
 
-export default Login;
+// Login.propTypes = {
+//   setToken: PropTypes.func.isRequired
+// };
