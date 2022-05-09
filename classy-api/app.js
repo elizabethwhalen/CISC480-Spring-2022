@@ -2937,10 +2937,9 @@ function query_db_put(query, data, res){
 
 function sql_error(err) {
     err_code = err.code
-    if (err_code === "ER_ROW_IS_REFERENCED_2"){return [400,"Bad Request- This record is referenced somewhere else"]}
+    if (err_code === "ER_ROW_IS_REFERENCED_2"){return [400,"Bad Request- referential integrity would be violated"]}
     else {
-        console.log(err)
-        return [500,"Unknown Server Error- Try again. If error persists contact administrator"]
+        return [500,"Unknown Error- send database team the following error: "+err]
     }
 }
 
@@ -6741,55 +6740,4 @@ app.put('/title', (req, res) => {
 });
 */
 
-// populate schedule
-app.get('/v3/meets/ext', (req, res) =>{
-    /* Query returns information about a section by gathering attributes from the meets,
-        class, timeslot, room, teaches, and faculty tables in the database
-    */
-    // verify auth
-    try{
-        token = req.headers.authorization.split(" ")[1]
-    } catch(e){
-        token = req.body.token
-    }
-
-    var verifyOutput = verify(token)
-    const status=verifyOutput[0]
-    const payload=verifyOutput[1]
-    if (status != 200){res.status(status).send(payload)}
-    else{
-        var query = `SELECT DISTINCT
-                                m.dept_code,
-                                m.class_num,
-                                m.section_num,
-                                c.class_name,
-                                ts.time_start,
-                                ts.time_end,
-                                ts.day_of_week,
-                                r.building_code,
-                                r.room_num,
-                                t.faculty_id,
-                                f.faculty_first,
-                                f.faculty_last
-                            FROM
-                                meets m
-                            INNER JOIN 
-                                class c ON m.class_num = c.class_num
-                                AND m.dept_code = c.dept_code
-                            INNER JOIN 
-                                timeslot ts ON m.time_id = ts.time_id
-                            INNER JOIN 
-                                room r ON m.room_num = r.room_num 
-                                AND m.building_code = r.building_code
-                            INNER JOIN
-                                teaches t ON m.class_num = t.class_num
-                                AND m.dept_code = t.dept_code
-                            INNER JOIN
-                                faculty f ON t.faculty_id = f.faculty_id
-        `
-        query_db_get(query, res);
-    }
-});
-
 module.exports = app;
-*/
