@@ -12,16 +12,15 @@ import {
 import LoginHeader from './LoginHeader'
 import { Link } from 'react-router-dom'
 import logo from '../../images/Updated_Logo.gif'
-import { Box } from '@mui/material'
 
 // Width of the drawer (so that the header can move to exact position as the drawer expands)
 const drawerWidth = 300
 
 // This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
+  // root: {
+  //   display: 'flex',
+  // },
   appBar: {
     backgroundColor: '#7E16A4',
     zIndex: theme.zIndex.drawer + 1,
@@ -136,8 +135,9 @@ export default function AppHeader(props) {
 
         {/* USER'S LOGIN INFO */}
         <LoginHeader
-          login={props.login}
           handleLogOut={props.handleLogOut}
+          setLoggedIn= {props.setLoggedIn}
+          loggedIn = {props.loggedIn}
         ></LoginHeader>
 
       </Toolbar>
