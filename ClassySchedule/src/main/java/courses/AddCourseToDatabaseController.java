@@ -38,7 +38,7 @@ public class AddCourseToDatabaseController implements Initializable {
     TextField className;
 
     @FXML
-    ChoiceBox<String> deptName;
+    ComboBox<String> deptName;
 
     @FXML
     Button submit_button;
