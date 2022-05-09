@@ -225,12 +225,14 @@ export default function CalendarTest() {
         STAT400.professor == STAT.professor
     `)
     const myFunction = React.useCallback(() =>{
+        // these are the literals
         layout.suggestValue('window.width', 1024)
         layout.suggestValue('window.height', 768)
         layout.suggestValue('CISC.class', 8)
         layout.suggestValue('CISC.professor', 4)
         layout.suggestValue('STAT.class', 400)
         layout.suggestValue('STAT.professor', 3)
+        //
         
         layout.updateVariables()
         
