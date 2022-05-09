@@ -170,6 +170,7 @@ public class AddCourseToScheduleController implements Initializable {
         for(int numTimes=0; numTimes < listOfTimes.size(); numTimes++){
             classTimes.getItems().add(listOfTimes.get(numTimes));
         }
+        System.out.println(currentTimeChunk);
     }
 
     /**
@@ -332,8 +333,6 @@ public class AddCourseToScheduleController implements Initializable {
         String stringTime = classTimes.getSelectionModel().getSelectedItem();
         String stringStartTime = stringTime.substring(0, stringTime.indexOf(" "));
         String stringEndTime = stringTime.substring(stringTime.lastIndexOf(" ") + 1);
-//        LocalTime currentStartTime = LocalTime.parse(stringStartTime, DateTimeFormatter.ISO_LOCAL_TIME);
-//        LocalTime currentEndTime = LocalTime.parse(stringEndTime, DateTimeFormatter.ISO_LOCAL_TIME);
 
         List<LocalDateTime> startDaysAndTimes = new ArrayList<>();
         List<LocalDateTime> endDaysAndTimes = new ArrayList<>();
@@ -365,7 +364,7 @@ public class AddCourseToScheduleController implements Initializable {
      * @return false if any test is invalid, else true
      */
     private boolean validateData() {
-        return validateDates() && validateTime();
+        return validateDates();
     }
 
     /**
