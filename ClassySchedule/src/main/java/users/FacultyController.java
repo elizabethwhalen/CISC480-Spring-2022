@@ -1,5 +1,6 @@
 package users;
 
+import alert.MyAlert;
 import database.Database;
 import homescreen.HomescreenController;
 import javafx.event.ActionEvent;
@@ -8,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -35,15 +37,6 @@ public class FacultyController implements Initializable {
     @FXML
     TextField facultyID;
 
-    //not in database
-    //@FXML
-    //TextField email;
-
-    //not in database
-    //@FXML
-    //ChoiceBox<String> deptName;
-
-
     @FXML
     ChoiceBox<String> type;
 
@@ -52,24 +45,6 @@ public class FacultyController implements Initializable {
 
     @FXML
     Button cancelButton;
-
-    @FXML
-    Text firstNameWarning;
-
-    @FXML
-    Text lastNameWarning;
-
-    @FXML
-    Text IDWarning;
-
-    //@FXML
-    //Text emailWarning;
-
-    //@FXML
-    //Text departmentWarning;
-
-    @FXML
-    Text typeWarning;
 
     private Stage stage;
 
@@ -102,19 +77,27 @@ public class FacultyController implements Initializable {
     @FXML
     public void submitData(ActionEvent event) {
         if (facultyFirst.getText().isBlank()) {
-            firstNameWarning.setVisible(true);
+            MyAlert createAlert = new MyAlert("Invalid Faculty First Name", "Please Input In The Faculty First Name", Alert.AlertType.ERROR);
+            Alert alert = createAlert.createAlert();
+            alert.showAndWait();
             return;
         }
         if (facultyLast.getText().isBlank()) {
-            lastNameWarning.setVisible(true);
+            MyAlert createAlert = new MyAlert("Invalid Faculty Last Name", "Please Input In The Faculty Last Name", Alert.AlertType.ERROR);
+            Alert alert = createAlert.createAlert();
+            alert.showAndWait();
             return;
         }
         if (facultyID.getText().isBlank()) {
-            IDWarning.setVisible(true);
+            MyAlert createAlert = new MyAlert("Invalid Faculty ID", "Please Input In The Faculty ID", Alert.AlertType.ERROR);
+            Alert alert = createAlert.createAlert();
+            alert.showAndWait();
             return;
         }
         if (type.getSelectionModel().isEmpty()) {
-            typeWarning.setVisible(true);
+            MyAlert createAlert = new MyAlert("Invalid Faculty Type", "Please Input In The Faculty Type", Alert.AlertType.ERROR);
+            Alert alert = createAlert.createAlert();
+            alert.showAndWait();
             return;
         }
 
@@ -122,7 +105,9 @@ public class FacultyController implements Initializable {
         try {
             Integer.parseInt(facultyID.getText());
         } catch (NumberFormatException e) {
-            IDWarning.setVisible(true);
+            MyAlert createAlert = new MyAlert("Invalid Faculty ID Number", "Please Input In A Valid Faculty ID", Alert.AlertType.ERROR);
+            Alert alert = createAlert.createAlert();
+            alert.showAndWait();
             return;
         }
 
@@ -148,15 +133,6 @@ public class FacultyController implements Initializable {
         facultyFirst.clear();
         facultyLast.clear();
         facultyID.clear();
-        //email.clear();
-        //deptName.setValue("Dept name");
-        type.setValue(null);
-        firstNameWarning.setVisible(false);
-        lastNameWarning.setVisible(false);
-        IDWarning.setVisible(false);
-        //emailWarning.setVisible(false);
-        //departmentWarning.setVisible(false);
-        typeWarning.setVisible(false);
     }
 
 

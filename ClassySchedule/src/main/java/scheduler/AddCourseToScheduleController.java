@@ -1,5 +1,6 @@
 package scheduler;
 
+import alert.MyAlert;
 import database.DatabaseStatic;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -143,8 +144,9 @@ public class AddCourseToScheduleController implements Initializable {
 
 
         // This is the confirmation to go back alert
-        confirmBackButton.setTitle("Back to Scheduler");
-        confirmBackButton.setContentText("Go back to the scheduler page");
+        MyAlert createAlert = new MyAlert("Back To Scheduler", "Go Back To The Scheduler Page", Alert.AlertType.CONFIRMATION);
+        confirmBackButton = createAlert.createAlert();
+
         // Set event to go back to previous scheduler screen if user click "Ok", else do nothing
         EventHandler<ActionEvent> confirmBack = event -> {
             // Set button Ok to be the output button that the user clicked
@@ -294,8 +296,8 @@ public class AddCourseToScheduleController implements Initializable {
         // If the class name has not been selected
         if (course.getSelectionModel().isEmpty()) {
             // Set content of the error alert
-            invalidClassName.setTitle("Invalid course Error");
-            invalidClassName.setContentText("Please select a valid course");
+            MyAlert createAlert = new MyAlert("Invalid Course Error", "Please Select A Valid Course", Alert.AlertType.ERROR);
+            invalidClassName = createAlert.createAlert();
             invalidClassName.showAndWait();
             result = false;
         }
@@ -324,8 +326,8 @@ public class AddCourseToScheduleController implements Initializable {
         // use JavaFX to prompt the user to select at least 1 day of the week.
         if (result == false) {
             // Set content of the error alert
-            invalidDays.setTitle("Invalid Day/Days Error");
-            invalidDays.setContentText("Please select at least one or more day/days of the week");
+            MyAlert createAlert = new MyAlert("Invalid Day/Days Error", "Please Select At Least One or More Day/Days Of The Week", Alert.AlertType.ERROR);
+            invalidDays = createAlert.createAlert();
             invalidDays.showAndWait();
         }
 

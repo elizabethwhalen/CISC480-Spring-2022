@@ -1,5 +1,6 @@
 package users;
 
+import alert.MyAlert;
 import database.DatabaseStatic;
 import homescreen.HomescreenController;
 import javafx.beans.value.ChangeListener;
@@ -295,9 +296,8 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
         // No faculty id has been selected show an error alert
         else {
             result = false;
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("No Faculty Selected");
-            alert.setContentText("Please select a faculty to delete");
+            MyAlert createAlert = new MyAlert("No Faculty Selected", "Please Select A Faculty To Delete", Alert.AlertType.ERROR);
+            Alert alert = createAlert.createAlert();
             alert.showAndWait();
         }
         return result;
@@ -313,9 +313,8 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
      */
     private void back(Button button, String title, String message, Boolean goBackToPrevPage) {
         // Initialize back confirmation button
-        Alert backAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        backAlert.setTitle(title);
-        backAlert.setContentText(message);
+        MyAlert createAlert = new MyAlert(title, message, Alert.AlertType.CONFIRMATION);
+        Alert backAlert = createAlert.createAlert();
         // First scenario to go back to home screen
         if (goBackToPrevPage) {
             // Confirmation to go back to the home screen
@@ -347,9 +346,8 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
                         // If delete was successful
                         if (confirmButton()) {
                             // Successful deletion alert
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Deleted");
-                            alert.setContentText("The selected faculty has been deleted.");
+                            MyAlert createAlert = new MyAlert("Deleted", "The Selected Faculty Has Been Deleted", Alert.AlertType.INFORMATION);
+                            Alert alert = createAlert.createAlert();
                             alert.showAndWait();
                         }
                     }

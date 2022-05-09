@@ -1,5 +1,6 @@
 package courses;
 
+import alert.MyAlert;
 import database.DatabaseStatic;
 
 import homescreen.HomescreenController;
@@ -216,9 +217,8 @@ public class DeleteCourseFromDatabaseController implements Initializable {
         // No course has been selected show an error alert
         else {
             result = false;
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("No Course Selected");
-            alert.setContentText("Please select a course to delete");
+            MyAlert createAlert = new MyAlert("No Course Selected", "Please Select A Course To Delete", Alert.AlertType.ERROR);
+            Alert alert = createAlert.createAlert();
             alert.showAndWait();
         }
         return result;
@@ -234,9 +234,8 @@ public class DeleteCourseFromDatabaseController implements Initializable {
      */
     private void back(Button button, String title, String message, Boolean goBackToPrevPage) {
         // Initialize back confirmation button
-        Alert backAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        backAlert.setTitle(title);
-        backAlert.setContentText(message);
+        MyAlert createAlert = new MyAlert(title, message, Alert.AlertType.CONFIRMATION);
+        Alert backAlert = createAlert.createAlert();
         // First scenario to go back to home screen
         if (goBackToPrevPage) {
             // Confirmation to go back to the home screen
@@ -268,9 +267,8 @@ public class DeleteCourseFromDatabaseController implements Initializable {
                         // If delete was successful
                         if (confirmButton()) {
                             // Successful deletion alert
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Deleted");
-                            alert.setContentText("The selected course has been deleted.");
+                            MyAlert createAlert = new MyAlert("Deleted", "The Selected Course Has Been Deleted", Alert.AlertType.INFORMATION);
+                            Alert alert = createAlert.createAlert();
                             alert.showAndWait();
                         }
                     }
