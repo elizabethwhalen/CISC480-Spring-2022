@@ -2939,8 +2939,7 @@ function sql_error(err) {
     err_code = err.code
     if (err_code === "ER_ROW_IS_REFERENCED_2"){return [400,"Bad Request- This record is referenced somewhere else"]}
     else {
-        console.log(err)
-        return [500,"Unknown Server Error- Try again. If error persists contact administrator"]
+        return [500,"Unknown error- send this to DB team: "+err]
     }
 }
 
@@ -6742,4 +6741,3 @@ app.put('/title', (req, res) => {
 */
 
 module.exports = app;
-*/
