@@ -1,6 +1,7 @@
 package courses;
 
 import database.Database;
+import database.DatabaseStatic;
 import homescreen.HomescreenController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -58,9 +59,9 @@ public class AddCourseToDatabaseController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Database database = new Database();
+        // database = new Database();
 
-        JSONArray depts = database.getData("dept");
+        JSONArray depts = DatabaseStatic.getData("dept");
         for (Object jsonObject: depts) {
             JSONObject job = (JSONObject)jsonObject;
             deptName.getItems().add((String) job.get("dept_code"));
@@ -104,8 +105,27 @@ public class AddCourseToDatabaseController implements Initializable {
             return;
         }
 
+<<<<<<< Updated upstream
 
         Database database = new Database();
+=======
+        if (!warning) {
+
+            //Database database = new Database();
+
+            JSONObject newClass = new JSONObject();
+            newClass.put("dept_code", deptName.getValue());
+            newClass.put("class_num", classNum.getText());
+            newClass.put("class_name", className.getText());
+
+            try {
+                DatabaseStatic.insertData("class", newClass);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+>>>>>>> Stashed changes
 
         JSONObject newClass = new JSONObject();
         newClass.put("dept_code", deptName.getValue());

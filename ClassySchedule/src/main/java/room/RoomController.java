@@ -1,6 +1,7 @@
 package room;
 
 import database.Database;
+import database.DatabaseStatic;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -65,10 +66,9 @@ public class RoomController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         buildingName.getItems().clear();
         try {
-            Database database = new Database();
-            JSONArray rs = database.getData("building");
+            //Database database = new Database();
+            JSONArray rs = DatabaseStatic.getData("building");
             for (Object jsonObject: rs) {
-                //buildingName.getItems().add(rs.getString(1));
                 JSONObject job = (JSONObject)jsonObject;
                 buildingName.getItems().add((String) job.get("building_code"));
             }
@@ -88,6 +88,9 @@ public class RoomController implements Initializable {
      */
     @FXML
     public void submitData(ActionEvent event) {
+        roomWarning.setVisible(false);
+        buildingWarning.setVisible(false);
+        capacityWarning.setVisible(false);
 
         if (capacity.getText().isEmpty()) {
             capacityWarning.setVisible(true);
@@ -108,13 +111,14 @@ public class RoomController implements Initializable {
                 Integer.parseInt(roomNum.getText());
             } else {
                 roomWarning.setVisible(true);
+                return;
             }
         } catch (NumberFormatException e) {
             roomWarning.setVisible(true);
             return;
         }
 
-        Database database = new Database();
+        //Database database = new Database();
 
         JSONObject newRoom = new JSONObject();
         newRoom.put("room_num", roomNum.getText());
@@ -122,21 +126,17 @@ public class RoomController implements Initializable {
         newRoom.put("capacity", capacity.getText());
 
         try {
-            database.insertData("room", newRoom);
+            DatabaseStatic.insertData("room", newRoom);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
-
-
         capacity.clear();
         roomNum.clear();
         buildingName.setValue(null);
-        roomWarning.setVisible(false);
-        buildingWarning.setVisible(false);
-        capacityWarning.setVisible(false);
+
     }
 
     /**

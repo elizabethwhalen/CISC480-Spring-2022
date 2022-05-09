@@ -1,6 +1,7 @@
 package users;
 
 import database.Database;
+import database.DatabaseStatic;
 import homescreen.HomescreenController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -39,15 +40,6 @@ public class FacultyController implements Initializable {
     @FXML
     TextField facultyID;
 
-    //not in database
-    //@FXML
-    //TextField email;
-
-    //not in database
-    //@FXML
-    //ChoiceBox<String> deptName;
-
-
     @FXML
     ChoiceBox<String> type;
 
@@ -66,12 +58,6 @@ public class FacultyController implements Initializable {
     @FXML
     Text IDWarning;
 
-    //@FXML
-    //Text emailWarning;
-
-    //@FXML
-    //Text departmentWarning;
-
     @FXML
     Text typeWarning;
 
@@ -79,9 +65,17 @@ public class FacultyController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+<<<<<<< Updated upstream
         Database database = new Database();
+=======
+        facultyFirst.clear();
+        facultyLast.clear();
+        facultyID.clear();
+        type.setValue(null);
+        //Database database = new Database();
+>>>>>>> Stashed changes
 
-        JSONArray types = database.getData("title");
+        JSONArray types = DatabaseStatic.getData("title");
         for (Object jsonObject: types) {
 
             JSONObject job = (JSONObject)jsonObject;
@@ -144,6 +138,25 @@ public class FacultyController implements Initializable {
             IDWarning.setVisible(true);
             return;
         }
+<<<<<<< Updated upstream
+=======
+        if (!warning){
+            //create JSON Object to submit to database
+            //Database database = new Database();
+            JSONObject newFaculty = new JSONObject();
+            newFaculty.put("faculty_id", facultyID.getText());
+            newFaculty.put("faculty_first", facultyFirst.getText());
+            newFaculty.put("faculty_last", facultyLast.getText());
+            newFaculty.put("title_id", Title.valueOf(type.getValue()));
+
+            try {
+                DatabaseStatic.insertData("faculty", newFaculty);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+>>>>>>> Stashed changes
 
 
         Database database = new Database();
