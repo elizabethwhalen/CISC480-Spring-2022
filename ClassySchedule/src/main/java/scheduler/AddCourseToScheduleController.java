@@ -101,27 +101,6 @@ public class AddCourseToScheduleController implements Initializable {
     private List<CheckBox> datesSelected;
 
     /**
-     * The invalid class name alert error
-     */
-    private Alert invalidClassName = new Alert(Alert.AlertType.ERROR);
-
-
-    /**
-     * The invalid dates alert error
-     */
-    private Alert invalidDays = new Alert(Alert.AlertType.ERROR);
-
-    /**
-     * The invalid time alert error
-     */
-    private Alert invalidStartAndEndTime = new Alert(Alert.AlertType.ERROR);
-
-    /**
-     * The confirmation alert to go back to the scheduler
-     */
-    private Alert confirmBackButton = new Alert(Alert.AlertType.CONFIRMATION);
-
-    /**
      * The change scene object to change between scenes
      */
     private final ChangeScene cs = new ChangeScene();
@@ -145,13 +124,12 @@ public class AddCourseToScheduleController implements Initializable {
 
         // This is the confirmation to go back alert
         MyAlert createAlert = new MyAlert("Back To Scheduler", "Go Back To The Scheduler Page", Alert.AlertType.CONFIRMATION);
-        confirmBackButton = createAlert.createAlert();
 
         // Set event to go back to previous scheduler screen if user click "Ok", else do nothing
         EventHandler<ActionEvent> confirmBack = event -> {
             // Set button Ok to be the output button that the user clicked
             // It is either "Cancel" or "Ok"
-            Optional<ButtonType> Ok = confirmBackButton.showAndWait();
+            Optional<ButtonType> Ok = createAlert.showButton();
             // If button is "Ok", then go back to scheduler
             if (Ok.get().getText().equals("OK")) {
                 // Go back to scheduler
@@ -297,8 +275,7 @@ public class AddCourseToScheduleController implements Initializable {
         if (course.getSelectionModel().isEmpty()) {
             // Set content of the error alert
             MyAlert createAlert = new MyAlert("Invalid Course Error", "Please Select A Valid Course", Alert.AlertType.ERROR);
-            invalidClassName = createAlert.createAlert();
-            invalidClassName.showAndWait();
+            createAlert.show();
             result = false;
         }
         // Probably need to find a way to bind class number and class name??
@@ -327,8 +304,7 @@ public class AddCourseToScheduleController implements Initializable {
         if (result == false) {
             // Set content of the error alert
             MyAlert createAlert = new MyAlert("Invalid Day/Days Error", "Please Select At Least One or More Day/Days Of The Week", Alert.AlertType.ERROR);
-            invalidDays = createAlert.createAlert();
-            invalidDays.showAndWait();
+            createAlert.show();
         }
 
         return result;

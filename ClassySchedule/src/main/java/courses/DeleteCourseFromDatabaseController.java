@@ -218,8 +218,7 @@ public class DeleteCourseFromDatabaseController implements Initializable {
         else {
             result = false;
             MyAlert createAlert = new MyAlert("No Course Selected", "Please Select A Course To Delete", Alert.AlertType.ERROR);
-            Alert alert = createAlert.createAlert();
-            alert.showAndWait();
+            createAlert.show();
         }
         return result;
     }
@@ -235,7 +234,6 @@ public class DeleteCourseFromDatabaseController implements Initializable {
     private void back(Button button, String title, String message, Boolean goBackToPrevPage) {
         // Initialize back confirmation button
         MyAlert createAlert = new MyAlert(title, message, Alert.AlertType.CONFIRMATION);
-        Alert backAlert = createAlert.createAlert();
         // First scenario to go back to home screen
         if (goBackToPrevPage) {
             // Confirmation to go back to the home screen
@@ -243,7 +241,7 @@ public class DeleteCourseFromDatabaseController implements Initializable {
                 @Override
                 public void handle(ActionEvent event) {
                     // The Ok button from the alert
-                    Optional<ButtonType> Ok = backAlert.showAndWait();
+                    Optional<ButtonType> Ok = createAlert.showButton();
                     // If user pressed "OK"
                     if (Ok.get().getText().equals("OK")) {
                         // Go back to home screen
@@ -261,7 +259,7 @@ public class DeleteCourseFromDatabaseController implements Initializable {
                 @Override
                 public void handle(ActionEvent event) {
                     // The Ok button from the alert
-                    Optional<ButtonType> ok = backAlert.showAndWait();
+                    Optional<ButtonType> ok = createAlert.showButton();
                     // If user pressed "OK"
                     if (ok.get().getText().equals("OK")) {
                         // If delete was successful

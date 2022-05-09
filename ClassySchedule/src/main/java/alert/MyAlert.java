@@ -1,6 +1,9 @@
 package alert;
 
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+
+import java.util.Optional;
 
 /**
  * An Alert class for consistency when creating the alert for all the required scenes
@@ -44,5 +47,20 @@ public class MyAlert {
         alert.setAlertType(alertType);
         return alert;
     }
+
+    /**
+     * Display the alert
+     */
+    public void show() {
+        Alert alert = createAlert();
+        alert.showAndWait();
+    }
+
+
+    public Optional<ButtonType> showButton() {
+        Optional<ButtonType> Ok = createAlert().showAndWait();
+        return Ok;
+    }
+
 
 }

@@ -78,26 +78,22 @@ public class FacultyController implements Initializable {
     public void submitData(ActionEvent event) {
         if (facultyFirst.getText().isBlank()) {
             MyAlert createAlert = new MyAlert("Invalid Faculty First Name", "Please Input In The Faculty First Name", Alert.AlertType.ERROR);
-            Alert alert = createAlert.createAlert();
-            alert.showAndWait();
+            createAlert.show();
             return;
         }
         if (facultyLast.getText().isBlank()) {
             MyAlert createAlert = new MyAlert("Invalid Faculty Last Name", "Please Input In The Faculty Last Name", Alert.AlertType.ERROR);
-            Alert alert = createAlert.createAlert();
-            alert.showAndWait();
+            createAlert.show();
             return;
         }
         if (facultyID.getText().isBlank()) {
             MyAlert createAlert = new MyAlert("Invalid Faculty ID", "Please Input In The Faculty ID", Alert.AlertType.ERROR);
-            Alert alert = createAlert.createAlert();
-            alert.showAndWait();
+            createAlert.show();
             return;
         }
         if (type.getSelectionModel().isEmpty()) {
             MyAlert createAlert = new MyAlert("Invalid Faculty Type", "Please Input In The Faculty Type", Alert.AlertType.ERROR);
-            Alert alert = createAlert.createAlert();
-            alert.showAndWait();
+            createAlert.show();
             return;
         }
 
@@ -106,8 +102,7 @@ public class FacultyController implements Initializable {
             Integer.parseInt(facultyID.getText());
         } catch (NumberFormatException e) {
             MyAlert createAlert = new MyAlert("Invalid Faculty ID Number", "Please Input In A Valid Faculty ID", Alert.AlertType.ERROR);
-            Alert alert = createAlert.createAlert();
-            alert.showAndWait();
+            createAlert.show();
             return;
         }
 

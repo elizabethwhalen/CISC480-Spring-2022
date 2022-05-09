@@ -87,20 +87,17 @@ public class AddCourseToDatabaseController implements Initializable {
         if (deptName.getSelectionModel().isEmpty()) {
             warning = true;
             MyAlert createAlert = new MyAlert("No Department Selected", "Please Select A Department", Alert.AlertType.ERROR);
-            Alert alert = createAlert.createAlert();
-            alert.showAndWait();
+            createAlert.show();
         }
         if (classNum.getText().isBlank()) {
             warning = true;
             MyAlert createAlert = new MyAlert("No Class Number", "Please Select A Class Number", Alert.AlertType.ERROR);
-            Alert alert = createAlert.createAlert();
-            alert.showAndWait();
+            createAlert.show();
         }
         if (className.getText().isBlank()) {
             warning = true;
             MyAlert createAlert = new MyAlert("No Class Name", "Please Select A Class Name", Alert.AlertType.ERROR);
-            Alert alert = createAlert.createAlert();
-            alert.showAndWait();
+            createAlert.show();
         }
         //checking if length of course code is 3 and course code is type int:
         if (classNum.getLength() == 3) {
@@ -109,14 +106,12 @@ public class AddCourseToDatabaseController implements Initializable {
             } catch (NumberFormatException e) {
                 warning = true;
                 MyAlert createAlert = new MyAlert("Invalid ClassNumber", "Please Select A Department", Alert.AlertType.ERROR);
-                Alert alert = createAlert.createAlert();
-                alert.showAndWait();
+                createAlert.show();
             }
         } else {
             warning = true;
             MyAlert createAlert = new MyAlert("Invalid Class Number", "Please Input A Valid Class Number", Alert.AlertType.ERROR);
-            Alert alert = createAlert.createAlert();
-            alert.showAndWait();
+            createAlert.show();
         }
 
         if (!warning) {

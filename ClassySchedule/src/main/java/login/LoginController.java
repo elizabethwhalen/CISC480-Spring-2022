@@ -96,8 +96,7 @@ public class LoginController implements Initializable {
 
     private void showIncorrectPasswordError() {
         MyAlert createAlert = new MyAlert("Invalid Password", "INVALID USERNAME OR PASSWORD \n Please re-enter username and password", Alert.AlertType.ERROR);
-        Alert invalidUser = createAlert.createAlert();
-        invalidUser.showAndWait();
+        createAlert.show();
     }
 
     /**
