@@ -41,6 +41,7 @@ public class MyAlert {
         Alert alert = new Alert(alertType);
         alert.setTitle(alertTitle);
         alert.setContentText(alertMessage);
+        alert.setAlertType(alertType);
         return alert;
     }
 
