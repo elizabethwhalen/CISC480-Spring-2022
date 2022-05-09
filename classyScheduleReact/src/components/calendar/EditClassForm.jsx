@@ -1,5 +1,14 @@
 import * as React from 'react';
-import { Grid, Select, FormControl, InputLabel, MenuItem, Modal, Typography, Button, Box } from '@mui/material';
+import { 
+    Grid, 
+    Select, 
+    FormControl, 
+    InputLabel, 
+    MenuItem, 
+    Modal, 
+    Typography, 
+    Box 
+} from '@mui/material';
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles((theme) => ({
@@ -10,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(4),
         position: 'relative',
         flexGrow: 1,
-        height: '100%'
+        height: '100%',
     },
     title: {
         color: '#7E16A4',
@@ -29,17 +38,16 @@ const style = {
     p: 4,
 };
 
-export default function BasicModal(props) {
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+export default function EditClassForm (props) {
+    const open = props.open;
     const classes = useStyles()
+   
     return (
         <div>
-            <Button variant='contained' onClick={handleOpen}>Open modal</Button>
+            {/* <Button variant='contained' onClick={handleOpen}>Open modal</Button> */}
             <Modal
                 open={open}
-                onClose={handleClose}
+                onClose={props.onClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
@@ -51,7 +59,7 @@ export default function BasicModal(props) {
                                 className={classes.title}
                                 gutterBottom
                             >
-                                Add New Class
+                                Edit Class
                             </Typography>
                         </Grid>
 

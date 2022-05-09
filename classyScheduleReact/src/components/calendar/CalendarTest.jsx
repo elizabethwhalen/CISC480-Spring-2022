@@ -1,18 +1,17 @@
-import React, {useRef} from "react";
+import React from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import { Paper, Snackbar } from "@mui/material";
 import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import AddClassForm from './AddClassForm'
-import constraints from 'constraint-solver'
+import EditClassForm from './EditClassForm'
+//import constraints from 'constraint-solver'
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 export default function CalendarTest() {
-    const nodeRef = useRef(null);
     const [events, setEvents] = React.useState([]);
     const [tempEvent, setTempEvent] = React.useState(null);
     const [popupEventTitle, setTitle] = React.useState('');
@@ -30,11 +29,11 @@ export default function CalendarTest() {
     const onEventDrop = (data) => {
         const { start, end, event } = data;
         let id = event.id;
-        const newData =  [...events];
+        const newData = [...events];
         newData.map((e) => {
-            if (e.id === id) { 
+            if (e.id === id) {
                 let title = e.title;
-                let updated = {start: start, end: end, title: title, id : id};
+                let updated = { start: start, end: end, title: title, id: id };
                 newData[e.id] = updated;
                 return null;
             }
@@ -46,7 +45,7 @@ export default function CalendarTest() {
     const onSlotChange = (event) => {
         let { start, end } = event;
         let count = events.length;
-        let newEvent = { start: start, end: end, title: "New event", id: count};
+        let newEvent = { start: start, end: end, title: "New class", id: count };
         const newData = [...events]
         newData.push(newEvent);
         setEvents(newData);
@@ -119,7 +118,7 @@ export default function CalendarTest() {
         }
     }, [isEdit]);
 
-    const saveEvent = React.useCallback(()=>{
+    const saveEvent = React.useCallback(() => {
         // save and edit events 
         const newEvent = {
             id: tempEvent.id,
@@ -128,7 +127,7 @@ export default function CalendarTest() {
             start: popupEventDate[0],
             end: popupEventDate[1]
         };
-        if (isEdit){
+        if (isEdit) {
             // edit event on calendar
             const index = events.findIndex(x => x.id === tempEvent.id);
             const newEventList = [...events];
@@ -137,7 +136,7 @@ export default function CalendarTest() {
             setEvents(newEventList);
             // here you can update your files from storage as well
         }
-        else{
+        else {
             //add ne event to list
             setEvents([...events, newEvent]);
             // add events to your storage as well
@@ -149,10 +148,10 @@ export default function CalendarTest() {
 
     const deleteEvent = React.useCallback((event) => {
         setEvents(events.filter(item => item.id !== event.id));
-        setTimeout(() =>{
+        setTimeout(() => {
             Snackbar({
                 button: {
-                    action: () =>{
+                    action: () => {
                         setEvents(prevEvents => [...prevEvents, event]);
                     },
                     text: 'Undo'
@@ -167,15 +166,15 @@ export default function CalendarTest() {
         setTitle(event.title);
         setDescription(event.description);
         setDate(event.Date);
-        
+
     }, []);
 
     // handle popup form changes
-    const titleChange = React.useCallback((ev) =>{
+    const titleChange = React.useCallback((ev) => {
         setTitle(ev.target.value);
     }, []);
 
-    const descriptionChange = React.useCallback((ev) =>{
+    const descriptionChange = React.useCallback((ev) => {
         setDescription(ev.target.value);
     }, []);
 
@@ -191,62 +190,60 @@ export default function CalendarTest() {
 
     // do curl request to get the number of classes that need to be scheduled
     // at the 100, 200, 300, and 400 level
-    
-        
 
-        const layout = constraints(`
-        editable window.width strong
-        editable window.height
+    // const layout = constraints(`
+    //     editable window.width strong
+    //     editable window.height
     
-        editable CISC.class
-        editable CISC.professor
-        editable STAT.class
-        editable STAT.professor
+    //     editable CISC.class
+    //     editable CISC.professor
+    //     editable STAT.class
+    //     editable STAT.professor
         
     
-        modal.width  <= window.width * 0.95   required
-        modal.height <= window.height * 0.95  required
+    //     modal.width  <= window.width * 0.95   required
+    //     modal.height <= window.height * 0.95  required
         
-        modal.left   == (window.width - modal.width) / 2   required
-        modal.top    == (window.height - modal.height) / 2 required
+    //     modal.left   == (window.width - modal.width) / 2   required
+    //     modal.top    == (window.height - modal.height) / 2 required
     
-        playlist.width  == modal.width / 3
-        playlist.height <= videoContainer.height  required
-        playlist.top    == modal.top              required
-        playlist.left   == modal.left + videoContainer.width
+    //     playlist.width  == modal.width / 3
+    //     playlist.height <= videoContainer.height  required
+    //     playlist.top    == modal.top              required
+    //     playlist.left   == modal.left + videoContainer.width
     
-        videoContainer.width  == modal.width * 0.66
-        videoContainer.height == modal.height
-        videoContainer.top    == modal.top            required
+    //     videoContainer.width  == modal.width * 0.66
+    //     videoContainer.height == modal.height
+    //     videoContainer.top    == modal.top            required
     
-        CISC130.class == (CISC.class  / 2) required
-        CISC130.professor == CISC.professor
-        STAT400.class == (STAT.class)
-        STAT400.professor == STAT.professor
-    `)
-    const myFunction = React.useCallback(() =>{
-        layout.suggestValue('window.width', 1024)
-        layout.suggestValue('window.height', 768)
-        layout.suggestValue('CISC.class', 8)
-        layout.suggestValue('CISC.professor', 4)
-        layout.suggestValue('STAT.class', 400)
-        layout.suggestValue('STAT.professor', 3)
-        
-        layout.updateVariables()
-        
-        console.log(layout.getValues({ roundToInt: true }))
-    });
+    //     CISC130.class == (CISC.class  / 2) required
+    //     CISC130.professor == CISC.professor
+    //     STAT400.class == (STAT.class)
+    //     STAT400.professor == STAT.professor
+    // `)
+    // const myFunction = React.useCallback(() => {
+    //     layout.suggestValue('window.width', 1024)
+    //     layout.suggestValue('window.height', 768)
+    //     layout.suggestValue('CISC.class', 8)
+    //     layout.suggestValue('CISC.professor', 4)
+    //     layout.suggestValue('STAT.class', 400)
+    //     layout.suggestValue('STAT.professor', 3)
 
-    const classPool = React.useCallback(() =>{
+    //     layout.updateVariables()
+
+    //     console.log(layout.getValues({ roundToInt: true }))
+    // });
+
+    const classPool = React.useCallback(() => {
         //const cd = document.getElementsByName('level100');
         //console.log(cd.checked);
         console.log("test");
     });
-    
-        
+
+
     return (
         <Paper sx={{ padding: '20px' }} elevation={0} >
-            {open && <AddClassForm open={open} onClose={onClose} />}
+            {open && <EditClassForm open={open} onClose={onClose}/>}
             <DnDCalendar
                 min={minTime}
                 max={maxTime}
@@ -265,17 +262,16 @@ export default function CalendarTest() {
                 onSelectEvent={event => onEventClick(event)}
                 onSelectSlot={(slotInfo) => onSlotChange(slotInfo)}
                 styles={{ overflow: "hidden" }}
-                ref={nodeRef}
             />
             <div>
                 <label htmlFor="level100">Level 100 classes</label><input type="checkbox" name="level100" value="yes"></input><br></br>
                 <label htmlFor="level200">Level 200 classes</label><input type="checkbox" name="level200" value="yes"></input><br></br>
                 <label htmlFor="level300">Level 300 classes</label><input type="checkbox" name="level300" value="yes"></input><br></br>
                 <label htmlFor="level400">Level 400 classes</label><input type="checkbox" name="level400" value="yes"></input><br></br>
-                <button id="btn" onClick={classPool}>Get Selected Classes</button>
-                <button id="algo" onClick= {myFunction}>Algorithm Fun!!!</button>
+                {/* <button id="btn" onClick={classPool}>Get Selected Classes</button>
+                <button id="algo" onClick={myFunction}>Algorithm Fun!!!</button> */}
             </div>
-            
+
         </Paper>
     );
 };

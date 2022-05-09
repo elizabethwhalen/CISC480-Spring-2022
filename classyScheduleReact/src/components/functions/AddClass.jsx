@@ -101,7 +101,7 @@ const AddClass = () => {
 
             {/* TITLE */}
             <Grid container spacing={2}>
-                <Grid item xs={12} fullWidth>
+                <Grid item xs={12}>
                     <Typography
                         variant="h6"
                         className={classes.title}
@@ -166,7 +166,7 @@ const AddClass = () => {
                             </Grid>
 
                             {/* COURSE NAME */}
-                            <Grid item xs={6} fullWidth >
+                            <Grid item xs={6} >
                                 <TextValidator
                                     size="medium"
                                     variant="outlined"
@@ -197,7 +197,7 @@ const AddClass = () => {
                             )}
 
                             {/* BUTTON */}
-                            <Grid item xs={4} fullWidth>
+                            <Grid item xs={4}>
                                 <Button
                                     variant="contained"
                                     size="large"

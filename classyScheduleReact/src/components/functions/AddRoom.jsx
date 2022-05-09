@@ -77,16 +77,16 @@ const AddRoom = () => {
     return (
         <Paper className={classes.container} elevation={0} >
             <Grid container spacing={2}>
-                <Grid item xs={12} fullWidth>
+                <Grid item xs={12}>
                     <Typography variant="h6" className={classes.title} gutterBottom>
                         Add New Room
                     </Typography>
                 </Grid>
 
-                <Grid item xs={12} fullWidth>
+                <Grid item xs={12} >
                     <ValidatorForm onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
-                            <Grid item xs={4} fullWidth>
+                            <Grid item xs={4}>
                                 <TextValidator
                                     size="medium"
                                     variant="outlined"
@@ -106,7 +106,7 @@ const AddRoom = () => {
                                     onChange={handleChangeBuilding}
                                 />
                             </Grid>
-                            <Grid item xs={4} fullWidth>
+                            <Grid item xs={4}>
                                 <TextValidator
                                     size="medium"
                                     variant="outlined"
@@ -126,7 +126,7 @@ const AddRoom = () => {
                                     onChange={handleChangeRoomNum}
                                 />
                             </Grid>
-                            <Grid item xs={12} fullWidth>
+                            <Grid item xs={12}>
                                 <Button variant="contained"
                                     size="large"
                                     type="submit"
