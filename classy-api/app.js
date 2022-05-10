@@ -54,7 +54,18 @@ app.get('/help', (req, res) => {
 //
 
 //queries
-async function db_get(query){ //
+async function db_get(query){ 
+/*  Queries the database.
+
+    Uses the previously made connection object as the database connection. Uses a Promise object to
+    handle the query and any errors that may come from it.
+
+    @since              3.0.0
+
+    @param {String}     query     Query to send to the database. Should be valid SQL.
+
+    @return{Object}  Returns Query Results
+*/
     console.log(query)
     return new Promise( (resolve, reject) => {
         con.query(query, (err, result) => {
@@ -66,7 +77,19 @@ async function db_get(query){ //
         });
       })
 }
-async function db_post(query, data){ //
+async function db_post(query, data){
+/*  Puts a record in the the database.
+
+    Uses the previously made connection object as the database connection. Uses a Promise object to
+    handle the query and any errors that may come from it. If the row is already in the table, the
+    user is notified. Only users with a high enough access level can use db_post.
+
+    @since              3.0.0
+
+    @param {String}     query     Query to add row(s) to the database. Should be valid SQL.
+
+    @return{Object}  Returns number of affected rows. 
+*/
     console.log(query, data)
     return new Promise( (resolve, reject) => {
         con.query(query, [data], (err, result) => {
@@ -81,6 +104,18 @@ async function db_post(query, data){ //
     })
 }
 async function db_delete(query){
+/*  Deletes a record from the database.
+
+    Uses the previously made connection object as the database connection. Uses a Promise object to
+    handle the query and any errors that may come from it. Only users with a high enough access level
+    can use db_delete.
+
+    @since              3.0.0
+
+    @param {String}     query     Query to delete rows from the database. Should be valid SQL.
+
+    @return{Object}  Returns Query Results
+*/
     return new Promise( (resolve, reject) => {
       con.query(query, (err, result) => {
           if (err) {
@@ -92,6 +127,17 @@ async function db_delete(query){
     })
 }
 async function db_put(query, data){
+/*  Updates a record in the database.
+
+    Uses the previously made connection object as the database connection. Uses a Promise object to
+    handle the query and any errors that may come from it.
+
+    @since              3.0.0
+
+    @param {String}     query     Query to send to the database. Should be valid SQL.
+
+    @return{Object}  Returns Query Results
+*/
     return new Promise( (resolve, reject) => {
       con.query(query, data, (err, result) => {
           if (err) {
@@ -115,6 +161,10 @@ async function db_put(query, data){
 //view
 //add
 app.post('/v3/class', async (req, res) => {
+/*  Update a record in the class table.
+
+     
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -283,6 +333,20 @@ app.post('/v3/class', async (req, res) => {
 //***BUILDING***
 //view
 app.get('/v2/building', (req, res) => {
+/*  Query the building table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be 
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to 
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -406,6 +470,20 @@ app.delete('/v2/building/:building_code_id', (req, res) => {
 //***CLASS***
 //view
 app.get('/v2/class', (req, res) => {
+/*  Query the class table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be 
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to 
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -541,6 +619,20 @@ app.delete('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
 //***CLASS_FEATURE***
 //view
 app.get('/v2/class_feature', (req, res) => {
+/*  Query the class_feature table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be 
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to 
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -676,6 +768,20 @@ app.delete('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req,
 //***DEPT***
 //view
 app.get('/v2/dept', (req, res) => {
+/*  Query the dept table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be 
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to 
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -799,6 +905,20 @@ app.delete('/v2/dept/:dept_code_id', (req, res) => {
 //***FACULTY***
 //view
 app.get('/v2/faculty', (req, res) => {
+/*  Query the faculty table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be 
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to 
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -970,6 +1090,20 @@ app.delete('/v2/faculty/:faculty_id_id', (req, res) => {
 //***FACULTY_CLASS***
 //view
 app.get('/v2/faculty_class', (req, res) => {
+/*  Query the faculty_class table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be 
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to 
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1116,6 +1250,20 @@ app.delete('/v2/faculty_class/:faculty_id_id/:dept_code_id/:class_num_id', (req,
 //***FACULTY_FEATURE***
 //view
 app.get('/v2/faculty_feature', (req, res) => {
+/*  Query the faculty_feature table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be 
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to 
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1244,6 +1392,20 @@ app.delete('/v2/faculty_feature/:faculty_id_id/:feature_id_id', (req, res) => {
 //***FACULTY_OTHER_REQUEST***
 //view
 app.get('/v2/faculty_other_request', (req, res) => {
+/*  Query the faculty_other_request table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be 
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to 
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1360,6 +1522,20 @@ app.delete('/v2/faculty_other_request/:faculty_id_id/:request_id', (req, res) =>
 //***FACULTY_TIMESLOT***
 //view
 app.get('/v2/faculty_timeslot', (req, res) => {
+/*  Query the faculty_timeslot table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be 
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to 
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1488,6 +1664,20 @@ app.delete('/v2/faculty_timeslot/:faculty_id_id/:time_id_id', (req, res) => {
 //***FEATURE***
 //view
 app.get('/v2/feature', (req, res) => {
+/*  Query the feature table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be 
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to 
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1611,6 +1801,20 @@ app.delete('/v2/feature/:feature_id_id', (req, res) => {
 //***LOGIN***
 //view
 app.get('/v2/login', (req, res) => {
+/*  Query the login table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be 
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to 
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1768,6 +1972,20 @@ app.delete('/v2/login/:email_id', (req, res) => {
 //***MEETS***
 //view
 app.get('/v2/meets', (req, res) => {
+/*  Query the meets table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be 
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to 
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1962,6 +2180,20 @@ app.delete('/v2/meets/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:
 //***ROOM***
 //view
 app.get('/v2/room', (req, res) => {
+/*  Query the room table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be 
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to 
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2096,6 +2328,20 @@ app.delete('/v2/room/:building_code_id/:room_num_id', (req, res) => {
 //***ROOM_FEATURE***
 //view
 app.get('/v2/room_feature', (req, res) => {
+/*  Query the room_feature table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be 
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to 
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2230,6 +2476,20 @@ app.delete('/v2/room_feature/:building_code_id/:room_num_id/:feature_id_id', (re
 //***SECTION***
 //view
 app.get('/v2/section', (req, res) => {
+/*  Query the section table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be 
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to 
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2400,6 +2660,20 @@ app.delete('/v2/section/:dept_code_id/:class_num_id/:section_num_id/:semester_id
 //***TEACHES***
 //view
 app.get('/v2/teaches', (req, res) => {
+/*  Query the teaches table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be 
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to 
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2570,6 +2844,20 @@ app.delete('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id
 //***TIMESLOT***
 //view
 app.get('/v2/timeslot', (req, res) => {
+/*  Query the timeslot table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be 
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to 
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2716,6 +3004,20 @@ app.delete('/v2/timeslot/:time_id_id', (req, res) => {
 //***TITLE***
 //view
 app.get('/v2/title', (req, res) => {
+/*  Query the title table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be 
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to 
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2849,7 +3151,18 @@ app.delete('/v2/title/:title_id_id', (req, res) => {
 
 
     // query database
-function query_db_get(query, res){ //
+function query_db_get(query, res){
+/*  Queries the database.
+
+    Uses the previously made connection object as the database connection. Uses a Promise object to
+    handle the query and any errors that may come from it.
+
+    @since              2.0.0
+
+    @param {String}     query     Query to send to the database. Should be valid SQL.
+
+    @return{Object}     Returns json containing 'a status code with query results
+*/
     new Promise( (resolve, reject) => {
       con.query(query, (err, result) => {
           if (err) {
@@ -2869,8 +3182,20 @@ function query_db_get(query, res){ //
     });
 }
 
-    // query database
-function query_db_add(query, data, res){ //
+function query_db_add(query, data, res){ 
+/*  Puts a record in the the database.
+
+    Uses the previously made connection object as the database connection. Uses a Promise object to
+    handle the query and any errors that may come from it. If the row is already in the table, the
+    user is notified. Only users with a high enough access level can use db_post.
+
+    @since              2.0.0
+
+    @param {String}     query     Query to add row(s) to the database. Should be valid SQL.
+
+    @return{Object}     Returns a status code with a message saying the entry was added successfully
+                        or the error message if it failed
+*/
     console.log(query)
     console.log(data)
     new Promise( (resolve, reject) => {
@@ -2893,6 +3218,19 @@ function query_db_add(query, data, res){ //
 
     // query database
 function query_db_delete(query, res){
+/*  Deletes a record from the database.
+
+    Uses the previously made connection object as the database connection. Uses a Promise object to
+    handle the query and any errors that may come from it. Only users with a high enough access level
+    can use db_delete.
+
+    @since              2.0.0
+
+    @param {String}     query     Query to delete rows from the database. Should be valid SQL.
+
+    @return{Object}     Returns JSON containing a status code with a message saying the either the 
+                        record was not found or the error message.
+*/
     new Promise( (resolve, reject) => {
       con.query(query, (err, result) => {
           if (err) {
@@ -2914,6 +3252,19 @@ function query_db_delete(query, res){
 
     // query database
 function query_db_put(query, data, res){
+/*  Updates a record in the database.
+
+    Uses the previously made connection object as the database connection. Uses a Promise object to
+    handle the query and any errors that may come from it.
+
+    @since              2.0.0
+
+    @param {String}     query     Query to send to the database. Should be valid SQL.
+
+    @return{Object}     Returns JSON containing a status code with a message saying the record was not 
+                        found, no changes were made, the record was updated successfully, or the error 
+                        message.
+*/
     new Promise( (resolve, reject) => {
       con.query(query, data, (err, result) => {
           if (err) {
@@ -2936,6 +3287,14 @@ function query_db_put(query, data, res){
 }
 
 function sql_error(err) {
+/*  Formats SQL errors thrown from database.
+
+    @since              v2.0.0
+
+    @param {Object}     err     Error from the database. Contains multiple attributes
+
+    @return List        Returns list containing a status code and an error message
+*/
     err_code = err.code
     if (err_code === "ER_ROW_IS_REFERENCED_2"){return [400,"Bad Request- referential integrity would be violated"]}
     else {
