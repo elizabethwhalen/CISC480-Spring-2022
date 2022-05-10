@@ -39,7 +39,7 @@ const AddFaculty = () => {
         event.preventDefault();
         if (firstName !== '' && lastName !== '' && teachLoad !== 0.0) {
             let data = JSON.stringify({
-                faculty_id: 99, 
+                faculty_id: randomNum, 
                 faculty_first: firstName, 
                 faculty_last: lastName,
                 title_id: 99, 
