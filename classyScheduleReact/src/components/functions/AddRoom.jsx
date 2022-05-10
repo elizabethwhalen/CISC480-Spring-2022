@@ -35,7 +35,7 @@ const AddRoom = () => {
     const [roomNum, setRoomNum] = React.useState('');
     const [building, setBuilding] = React.useState(''); // Room number (e.g., 420, 350, etc.)
     const classes = useStyles();
-    const token = localStorage.getItem('access_token');
+    const token = sessionStorage.getItem('token');
 
     // This function will retrieve the value entered in the Room number field whenever it changes
     const handleChangeRoomNum = (event) => {

@@ -23,7 +23,7 @@ curl -X POST "http://databaseconnectionexample.azurewebsites.net/faculty" -H "Co
 }'
 
 ###
-curl "classy-api.ddns.net/class"
+curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiY2xhc3N5LXNjaGVkdWxlLWRldkBzdHRob21hcy5lZHUiLCJwYXNzIjoiJDJiJDEwJGtJcUc3b09oczNRbDB4TTNhZ3pIbS5LMTk4ZGRCQW9xT3h5by4yakJRVVR4THNSVjZCbko2IiwiZmFjdWx0eV9pZCI6bnVsbCwiYWNjZXNzX2xldmVsIjozLCJ0bXAiOm51bGx9LCJpYXQiOjE2NTIxMzY1NDEsImV4cCI6MTY1MjIyMjk0MX0.l0xto4outSZNBWNmZmmaGK3Wo_MJa0gq9-olVIn-3IU" "https://classy-api.ddns.net/v2/room" 
 
 ###
 curl "https://classy-api.ddns.net/v2/signup" -X POST -d "email=[web@stthomas.edu]&password=[webdev]"

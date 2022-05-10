@@ -33,7 +33,7 @@ const AddFaculty = () => {
     const [firstName, setFirstName] = React.useState('');
     const [lastName, setLastName] = React.useState('');
     const [teachLoad, setTeachLoad] = React.useState('');
-    const token = localStorage.getItem('access_token');
+    const token = sessionStorage.getItem('token');
     
     const submitForm = (event) => {
         event.preventDefault();

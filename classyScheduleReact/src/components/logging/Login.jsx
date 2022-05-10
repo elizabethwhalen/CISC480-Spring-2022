@@ -217,7 +217,14 @@ export default function Login (props) {
 
                   {/* Submit button */}
                   <Grid item xs={12} sx={{ marginTop: '30px' }}>
-                    <Button variant="contained" disableElevation type='submit' sx={{ backgroundColor: '#6a1b9a', '&:hover': { backgroundColor: '#4a148c' } }} >
+                    <Button
+                      variant="contained"
+                      disableElevation
+                      type='submit'
+                      sx={{
+                        backgroundColor: '#6a1b9a',
+                        '&:hover': { backgroundColor: '#4a148c' }
+                      }} >
                       Log In
                     </Button>
                   </Grid>

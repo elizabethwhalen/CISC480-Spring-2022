@@ -1,15 +1,24 @@
 import * as React from 'react';
-import { 
-    Grid, 
-    Select, 
-    FormControl, 
-    InputLabel, 
-    MenuItem, 
-    Modal, 
-    Typography, 
-    Box 
+import {
+    Grid,
+    Select,
+    InputLabel,
+    MenuItem,
+    Modal,
+    Typography,
+    Box,
+    Button,
+    TextField,
+    FormControlLabel,
+    FormGroup,
+    FormControl,
+    Checkbox
 } from '@mui/material';
 import { makeStyles } from '@material-ui/core/styles'
+// import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
         color: '#7E16A4',
         fontWeight: '600',
     },
+    button: {
+        color: "black",
+        bgcolor: "grey"
+    }
 }));
 
 const style = {
@@ -32,16 +45,60 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 800,
+    width: 550,
     bgcolor: 'background.paper',
     border: '1px solid #000',
     p: 4,
 };
 
-export default function EditClassForm (props) {
+export default function EditClassForm(props) {
     const open = props.open;
-    const classes = useStyles()
-   
+    const classes = useStyles();
+    const [course, setCourse] = React.useState('');
+    const [instructor, setInstructor] = React.useState('');
+    const [room, setRoom] = React.useState('');
+    const [startTime, setStartTime] = React.useState("07:30");
+    const [endTime, setEndTime] = React.useState("08:00");
+    const [days, setDays] = React.useState({
+        monday: false,
+        tuesday: false,
+        wednesday: false,
+        thursday: false,
+        friday: false,
+    });
+
+    const handleChangeCourse = (event) => {
+        setCourse(event.target.value);
+    }
+
+    const handleChangeInstructor = (event) => {
+        setInstructor(event.target.value);
+    }
+
+    const handleChangeRoom = (event) => {
+        setRoom(event.target.value);
+    }
+
+    const handleChangeStartTime = (event) => {
+        setStartTime(event.target.value);
+    }
+
+    const handleChangeEndTime = (event) => {
+        setEndTime(event.target.value);
+    }
+
+    const handleChangeDays = (event) => {
+        setDays({
+            ...days,
+            [event.target.name]: event.target.checked,
+        });
+    };
+
+    const handleSubmit = () => {
+        console.log(startTime, endTime, days);
+    }
+    const { monday, tuesday, wednesday, thursday, friday } = days;
+
     return (
         <div>
             {/* <Button variant='contained' onClick={handleOpen}>Open modal</Button> */}
@@ -52,8 +109,8 @@ export default function EditClassForm (props) {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Grid container spacing={1}>
-                        <Grid item xs={12} fullWidth>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
                             <Typography
                                 variant="h6"
                                 className={classes.title}
@@ -62,111 +119,182 @@ export default function EditClassForm (props) {
                                 Edit Class
                             </Typography>
                         </Grid>
+                        <Grid item xs={8}>
+                            <Grid container spacing={2} >
+                                <Grid item xs={12}>
+                                    <FormControl fullWidth size="small">
+                                        <InputLabel id="demo-select-small">Course</InputLabel>
+                                        <Select
+                                            labelId="demo-select-small"
+                                            id="demo-select-small"
+                                            value={course}
+                                            label="Class"
+                                            onChange={handleChangeCourse}
+                                            size='small'
+                                            autoWidth
+                                        >
+                                            <MenuItem value="">
+                                                <em>None</em>
+                                            </MenuItem>
+                                            {props.courseList.map((e) => {
+                                                return <MenuItem key={e} value={e}>{e}</MenuItem>;
+                                            })}
 
-                        <Grid item xs={3}>
-                            <FormControl fullWidth size="small">
-                                <InputLabel id="demo-select-small">Class</InputLabel>
-                                <Select
-                                    labelId="demo-select-small"
-                                    id="demo-select-small"
-                                    value={props.Class}
-                                    label="Class"
-                                    onChange={props.handleChangeClass}
-                                    size='small'
-                                    autoWidth
-                                >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value="CISC 480">CISC 480</MenuItem>
-                                    <MenuItem value="CISC 210">CISC 210</MenuItem>
-                                    <MenuItem value="STAT 420">STAT 420</MenuItem>
-                                </Select>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FormControl fullWidth size="small">
+                                        <InputLabel id="demo-select-small">Instructor</InputLabel>
+                                        <Select
+                                            labelId="demo-select-small"
+                                            id="demo-select-small"
+                                            value={instructor}
+                                            label="Instructor"
+                                            onChange={handleChangeInstructor}
+                                            size='small'
+                                            autoWidth
+                                        >
+                                            <MenuItem value="">
+                                                <em>None</em>
+                                            </MenuItem>
+                                            {props.instructorList.map((e) => {
+                                                return <MenuItem key={e} value={e}>{e}</MenuItem>;
+                                            })}
+
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <FormControl fullWidth size="small">
+                                        <InputLabel id="demo-select-small">Room</InputLabel>
+                                        <Select
+                                            labelId="demo-select-small"
+                                            id="demo-select-small"
+                                            value={room}
+                                            label="Room"
+                                            onChange={handleChangeRoom}
+                                            size='small'
+                                            autoWidth
+                                        >
+                                            <MenuItem value="">
+                                                <em>None</em>
+                                            </MenuItem>
+                                            {props.roomList.map((e) => {
+                                                return <MenuItem key={e} value={e}>{e}</MenuItem>;
+                                            })}
+
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+
+                                <Grid item xs={6}>
+                                    <TextField
+                                        fullWidth
+                                        id="time"
+                                        label="Start Time"
+                                        type="time"
+                                        defaultValue="07:30"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        inputProps={{
+                                            step: 300, // 5 min
+                                        }}
+                                        // sx={{ width: 150 }}
+                                        value={startTime}
+                                        size="small"
+                                        onChange={handleChangeStartTime}
+                                    />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <TextField
+                                        fullWidth
+                                        id="time"
+                                        label="End Time"
+                                        type="time"
+                                        defaultValue="08:00"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        inputProps={{
+                                            step: 300, // 5 min
+                                        }}
+                                        value={endTime}
+                                        size="small"
+                                        onChange={handleChangeEndTime}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+
+
+                        <Grid item xs={4}>
+                            <FormControl component="fieldset" variant="standard">
+                                <FormGroup>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox checked={monday} onChange={handleChangeDays} name="monday" />
+                                        }
+                                        label="Monday"
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox checked={tuesday} onChange={handleChangeDays} name="tuesday" />
+                                        }
+                                        label="Tuesday"
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox checked={wednesday} onChange={handleChangeDays} name="wednesday" />
+                                        }
+                                        label="Wednesday"
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox checked={thursday} onChange={handleChangeDays} name="thursday" />
+                                        }
+                                        label="Thursday"
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox checked={friday} onChange={handleChangeDays} name="friday" />
+                                        }
+                                        label="Friday"
+                                    />
+                                </FormGroup>
                             </FormControl>
                         </Grid>
-                        <Grid item xs={3}>
-                            <FormControl fullWidth size="small">
-                                <InputLabel id="demo-select-small">Instructor</InputLabel>
-                                <Select
-                                    labelId="demo-select-small"
-                                    id="demo-select-small"
-                                    value={props.Instructor}
-                                    label="Instructor"
-                                    onChange={props.handleChangeInstructor}
-                                    size='small'
-                                    autoWidth
-                                >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value={'Chaz'}>Chaz</MenuItem>
-                                    <MenuItem value={"Carl"}>Carl</MenuItem>
-                                    <MenuItem value={"Sue"}>Sue</MenuItem>
-                                    <MenuItem value={"Kevin"}>Kevin</MenuItem>
-                                    <MenuItem value={"Howard"}>Howard</MenuItem>
 
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={3}>
-                            <FormControl fullWidth size="small">
-                                <InputLabel id="demo-select-small">Room</InputLabel>
-                                <Select
-                                    labelId="demo-select-small"
-                                    id="demo-select-small"
-                                    value={props.Room}
-                                    label="Room"
-                                    onChange={props.handleChangeRoom}
-                                    size='small'
-                                    autoWidth
-                                >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value={428}>428</MenuItem>
-                                    <MenuItem value={429}>429</MenuItem>
-                                    <MenuItem value={430}>430</MenuItem>
-                                    <MenuItem value={431}>431</MenuItem>
-                                    <MenuItem value={432}>432</MenuItem>
 
-                                </Select>
-                            </FormControl>
-                        </Grid>
-
-                        <Grid item xs={3}>
-                            <FormControl fullWidth size="small">
-                                {/* anchor */}
-                                <InputLabel id="demo-select-small">Time</InputLabel>
-                                <Select
-                                    labelId="demo-select-small"
-                                    id="demo-select-small"
-                                    value={props.Time}
-                                    label="Time"
-                                    onChange={props.handleChangeTime}
-                                    size='small'
-                                    autoWidth
-                                >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    <MenuItem value={'8AM'}>8AM</MenuItem>
-                                    <MenuItem value={'9AM'}>9AM</MenuItem>
-                                    <MenuItem value={'10AM'}>10AM</MenuItem>
-                                    <MenuItem value={'11AM'}>11AM</MenuItem>
-                                    <MenuItem value={'12PM'}>12PM</MenuItem>
-                                    <MenuItem value={'1PM'}>1PM</MenuItem>
-                                    <MenuItem value={'2PM'}>2PM</MenuItem>
-                                    <MenuItem value={'3PM'}>3PM</MenuItem>
-                                    <MenuItem value={'4PM'}>4PM</MenuItem>
-                                    <MenuItem value={'5PM'}>5PM</MenuItem>
-                                    <MenuItem value={'6PM'}>6PM</MenuItem>
-                                    <MenuItem value={'7PM'}>7PM</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Grid>
-
-                        <Grid item xs={12} fullWidth>
-
+                        <Grid item xs={12}>
+                            <Button
+                                variant="contained"
+                                disableElevation
+                                type='submit'
+                                size='medium'
+                                onClick={handleSubmit}
+                                sx={{
+                                    backgroundColor: '#6a1b9a',
+                                    '&:hover': { backgroundColor: '#4a148c' },
+                                    marginRight: "10px",
+                                }} 
+                            >
+                                Save
+                            </Button>
+                            <Button
+                                variant="outlined"
+                                size="medium"
+                                disableElevation
+                                sx={{
+                                    color: '#6a1b9a',
+                                    '&:hover': { borderColor: '#4a148c' , color: '#4a148c' },
+                                    borderColor: '#6a1b9a',
+                                }} 
+                                onClick={props.onClose}
+                            >
+                                Cancel
+                            </Button>
                         </Grid>
                     </Grid>
                 </Box>

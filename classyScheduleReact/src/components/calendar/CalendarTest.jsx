@@ -7,6 +7,7 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import EditClassForm from './EditClassForm'
 import constraints from 'constraint-solver'
+import axios from "axios"
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
@@ -21,10 +22,89 @@ export default function CalendarTest() {
     const [isEdit, setEdit] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [anchor, setAnchor] = React.useState(null);
+    const [courseList, setCourseList] = React.useState([]);
+    const [instructorList, setInstructorList] = React.useState([]);
+    const [roomList, setRoomList] = React.useState([]);
+    const token = sessionStorage.getItem("token");
     const minTime = new Date();
     minTime.setHours(8, 0, 0);
     const maxTime = new Date();
     maxTime.setHours(21, 0, 0);
+
+    const getCourse = () => {
+        // Config data for https request.
+        let config = {
+            method: 'get',
+            url: 'https://classy-api.ddns.net/v2/class',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+        };
+        // https request Promise executed with Config settings.
+        axios(config).then((response) => {
+            //console.log(JSON.stringify(response.data));
+            let list = [];
+            response.data.map((e) => {
+                let clas = e.dept_code + ' ' + e.class_num;
+                list.push(clas);
+                return courseList;
+            })
+            setCourseList(list);
+        }).catch((error) => {
+            console.log(error);
+        });
+    };
+
+    const getInstructor = () => {
+        // Config data for https request.
+        let config = {
+            method: 'get',
+            url: 'https://classy-api.ddns.net/v2/faculty',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+        };
+        // https request Promise executed with Config settings.
+        axios(config).then((response) => {
+            //console.log(JSON.stringify(response.data));
+            let list = [];
+            response.data.map((e) => {
+                let instruc = e.faculty_first + ' ' + e.faculty_last;
+                list.push(instruc);
+                return list;
+            })
+            setInstructorList(list);
+        }).catch((error) => {
+            console.log(error);
+        });
+    };
+
+    const getRoom = () => {
+        // Config data for https request.
+        let config = {
+            method: 'get',
+            url: 'https://classy-api.ddns.net/v2/room',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+        };
+        // https request Promise executed with Config settings.
+        axios(config).then((response) => {
+            //console.log(JSON.stringify(response.data));
+            let list = [];
+            response.data.map((e) => {
+                let room = e.building_code + ' ' + e.room_num;
+                list.push(room);
+                return list;
+            })
+            setRoomList(list);
+        }).catch((error) => {
+            console.log(error);
+        });
+    };
 
     const onEventDrop = (data) => {
         const { start, end, event } = data;
@@ -53,6 +133,9 @@ export default function CalendarTest() {
     };
 
     const onEventClick = React.useCallback((args) => {
+        getCourse();
+        getInstructor();
+        getRoom();
         setEdit(true);
         setTempEvent({ ...args.event });
         // fill popup form with event data
@@ -191,7 +274,7 @@ export default function CalendarTest() {
     // do curl request to get the number of classes that need to be scheduled
     // at the 100, 200, 300, and 400 level
 
-     const layout = constraints(`
+    const layout = constraints(`
          editable window.width strong
          editable window.height
     
@@ -221,18 +304,18 @@ export default function CalendarTest() {
          STAT400.class == (STAT.class)
          STAT400.professor == STAT.professor
     `)
-     const myFunction = React.useCallback(() => {
-         layout.suggestValue('window.width', 1024)
-         layout.suggestValue('window.height', 768)
-         layout.suggestValue('CISC.class', 8)
-         layout.suggestValue('CISC.professor', 4)
-         layout.suggestValue('STAT.class', 400)
-         layout.suggestValue('STAT.professor', 3)
+    const myFunction = React.useCallback(() => {
+        layout.suggestValue('window.width', 1024)
+        layout.suggestValue('window.height', 768)
+        layout.suggestValue('CISC.class', 8)
+        layout.suggestValue('CISC.professor', 4)
+        layout.suggestValue('STAT.class', 400)
+        layout.suggestValue('STAT.professor', 3)
 
-         layout.updateVariables()
+        layout.updateVariables()
 
-         console.log(layout.getValues({ roundToInt: true }))
-     });
+        console.log(layout.getValues({ roundToInt: true }))
+    });
 
     const classPool = React.useCallback(() => {
         //const cd = document.getElementsByName('level100');
@@ -243,13 +326,20 @@ export default function CalendarTest() {
 
     return (
         <Paper sx={{ padding: '20px' }} elevation={0} >
-            {open && <EditClassForm open={open} onClose={onClose}/>}
+            {open &&
+                <EditClassForm
+                    open={open}
+                    onClose={onClose}
+                    courseList={courseList}
+                    instructorList={instructorList}
+                    roomList={roomList}
+                />}
             <DnDCalendar
                 min={minTime}
                 max={maxTime}
                 defaultDate={moment().toDate()}
-                defaultView="week"
-                views={['week']}
+                defaultView={'work_week'}
+                views={['work_week']}
                 events={events}
                 localizer={localizer}
                 onEventDrop={event => onEventDrop(event)}
@@ -269,7 +359,7 @@ export default function CalendarTest() {
                 <label htmlFor="level300">Level 300 classes</label><input type="checkbox" name="level300" value="yes"></input><br></br>
                 <label htmlFor="level400">Level 400 classes</label><input type="checkbox" name="level400" value="yes"></input><br></br>
                 <button id="btn" onClick={classPool}>Get Selected Classes</button>
-                <button id="algo" onClick={myFunction}>Algorithm Fun!!!</button> 
+                <button id="algo" onClick={myFunction}>Algorithm Fun!!!</button>
             </div>
 
         </Paper>
