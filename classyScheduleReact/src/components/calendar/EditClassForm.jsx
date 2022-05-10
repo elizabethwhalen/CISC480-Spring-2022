@@ -12,13 +12,12 @@ import {
     FormControlLabel,
     FormGroup,
     FormControl,
-    Checkbox
+    Checkbox,
+    FormLabel,
+    Radio
 } from '@mui/material';
 import { makeStyles } from '@material-ui/core/styles'
-// import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-// import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-
+import { pink, blue, yellow, purple, green } from '@mui/material/colors';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,7 +44,7 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 550,
+    width: 800,
     bgcolor: 'background.paper',
     border: '1px solid #000',
     p: 4,
@@ -57,14 +56,31 @@ export default function EditClassForm(props) {
     const [course, setCourse] = React.useState('');
     const [instructor, setInstructor] = React.useState('');
     const [room, setRoom] = React.useState('');
-    const [startTime, setStartTime] = React.useState("07:30");
-    const [endTime, setEndTime] = React.useState("08:00");
+    const [repeat, setRepeat] = React.useState('');
+    const [startTime, setStartTime] = React.useState(props.startTime);
+    const [endTime, setEndTime] = React.useState(props.endTime);
+    const [startRepeat, setStartRepeat] = React.useState(props.date);
+    const [endRepeat, setEndRepeat] = React.useState(props.date);
     const [days, setDays] = React.useState({
         monday: false,
         tuesday: false,
         wednesday: false,
         thursday: false,
         friday: false,
+    });
+    const [errors, setErrors] = React.useState([]);
+    const [color, setColor] = React.useState('a');
+
+    const handleChange = (event) => {
+        setColor(event.target.value);
+    };
+
+    const controlProps = (item) => ({
+        checked: color === item,
+        onChange: handleChange,
+        value: item,
+        name: 'color-radio-button-demo',
+        inputProps: { 'aria-label': item },
     });
 
     const handleChangeCourse = (event) => {
@@ -87,6 +103,14 @@ export default function EditClassForm(props) {
         setEndTime(event.target.value);
     }
 
+    const handleChangeStartRepeat = (event) => {
+        setStartRepeat(event.target.value);
+    }
+
+    const handleChangeEndRepeat = (event) => {
+        setEndRepeat(event.target.value);
+    }
+
     const handleChangeDays = (event) => {
         setDays({
             ...days,
@@ -94,8 +118,53 @@ export default function EditClassForm(props) {
         });
     };
 
+    const handleRepeatChange = (event) => {
+        setRepeat(event.target.value);
+    };
+
     const handleSubmit = () => {
-        console.log(startTime, endTime, days);
+        let error = [];
+        if (course === ''){
+            error.push('Course is not selected');
+        }
+        if (instructor === ''){
+            error.push('Instructor is not selected');
+        }
+        if (room === ''){
+            error.push('Room is not selected');
+        }
+        if (endTime < startTime) {
+            error.push("Meeting time is not valid. Ending time must be greater than starting time.")
+        }
+
+        if (!days.monday && !days.tuesday && !days.wednesday && !days.thursday && !days.friday) {
+            error.push('Meeting days are not selected');
+        }
+
+        if (repeat !== "" ){
+            if (endRepeat < startRepeat){
+                error.push("Recurrence interval is not valid")
+            }
+        }
+        setErrors(error);
+
+        let data = null;
+        if (error.length === 0){
+            data = {
+                course: course,
+                instructor: instructor,
+                room: room,
+                startTime: startTime,
+                endTime: endTime,
+                days: days,
+                repeat: repeat,
+                startRepeat: startRepeat,
+                endRepeat: endRepeat,
+                color: color,
+                selected: props.selected,
+            }
+        }
+        props.onUpdate(data);
     }
     const { monday, tuesday, wednesday, thursday, friday } = days;
 
@@ -109,7 +178,7 @@ export default function EditClassForm(props) {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Grid container spacing={2}>
+                    <Grid container spacing={2} display="flex">
                         <Grid item xs={12}>
                             <Typography
                                 variant="h6"
@@ -119,7 +188,7 @@ export default function EditClassForm(props) {
                                 Edit Class
                             </Typography>
                         </Grid>
-                        <Grid item xs={8}>
+                        <Grid item md={6} xs={8}>
                             <Grid container spacing={2} >
                                 <Grid item xs={12}>
                                     <FormControl fullWidth size="small">
@@ -228,10 +297,12 @@ export default function EditClassForm(props) {
                             </Grid>
                         </Grid>
 
-
-                        <Grid item xs={4}>
+                        <Grid item md={2.5} xs={4}>
                             <FormControl component="fieldset" variant="standard">
                                 <FormGroup>
+                                    <FormLabel>
+                                        Meeting Days
+                                    </FormLabel>
                                     <FormControlLabel
                                         control={
                                             <Checkbox checked={monday} onChange={handleChangeDays} name="monday" />
@@ -266,6 +337,103 @@ export default function EditClassForm(props) {
                             </FormControl>
                         </Grid>
 
+                        <Grid item md={3.5} xs={12}>
+                            <Grid container spacing={2}>
+
+                                <Grid item xs={12}>
+                                    <FormControl fullWidth size="small">
+
+                                        <InputLabel id="demo-simple-select-label">Recurrence</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={repeat}
+                                            label="Recurrence"
+                                            onChange={handleRepeatChange}
+                                            size="small"
+                                        >
+                                            <MenuItem value="">
+                                                <em>None</em>
+                                            </MenuItem>
+                                            <MenuItem value={'weekly'}>Weekly</MenuItem>
+                                            <MenuItem value={'biweekly'}>Biweekly</MenuItem>
+                                            <MenuItem value={'monthly'}>Monthly</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        fullWidth
+                                        id="date"
+                                        label="From"
+                                        type="date"
+                                        defaultValue="2017-05-24"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        value={startRepeat}
+                                        size="small"
+                                        onChange={handleChangeStartRepeat}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        fullWidth
+                                        id="date"
+                                        label="From"
+                                        type="date"
+                                        defaultValue="2017-05-24"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        value={endRepeat}
+                                        size="small"
+                                        onChange={handleChangeEndRepeat}
+                                    />
+                                </Grid>
+
+                                <Grid item xs={12}>
+                                    <Radio
+                                        {...controlProps('pink')}
+                                        sx={{
+                                            color: pink[400],
+                                            '&.Mui-checked': {
+                                                color: pink[400],
+                                            },
+                                        }}
+                                    />
+                                    <Radio
+                                        {...controlProps('blue')}
+                                        sx={{
+                                            color: blue[400],
+                                            '&.Mui-checked': {
+                                                color: blue[400],
+                                            },
+                                        }}
+                                    />
+                                    <Radio
+                                        {...controlProps('yellow')}
+                                        sx={{
+                                            color: yellow[400],
+                                            '&.Mui-checked': {
+                                                color: yellow[400],
+                                            },
+                                        }}
+                                    />
+                                    <Radio
+                                        {...controlProps('green')}
+                                        sx={{
+                                            color: green[400],
+                                            '&.Mui-checked': {
+                                                color: green[400],
+                                            },
+                                        }}
+                                    />
+                                </Grid>
+                            </Grid>
+
+                        </Grid>
+
 
                         <Grid item xs={12}>
                             <Button
@@ -278,7 +446,7 @@ export default function EditClassForm(props) {
                                     backgroundColor: '#6a1b9a',
                                     '&:hover': { backgroundColor: '#4a148c' },
                                     marginRight: "10px",
-                                }} 
+                                }}
                             >
                                 Save
                             </Button>
@@ -288,9 +456,9 @@ export default function EditClassForm(props) {
                                 disableElevation
                                 sx={{
                                     color: '#6a1b9a',
-                                    '&:hover': { borderColor: '#4a148c' , color: '#4a148c' },
+                                    '&:hover': { borderColor: '#4a148c', color: '#4a148c' },
                                     borderColor: '#6a1b9a',
-                                }} 
+                                }}
                                 onClick={props.onClose}
                             >
                                 Cancel
