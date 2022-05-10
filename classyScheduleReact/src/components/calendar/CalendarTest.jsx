@@ -7,7 +7,7 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import EditClassForm from './EditClassForm'
 import constraints from 'constraint-solver'
-import axios from "axios"
+import axios from 'axios'
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
@@ -30,7 +30,7 @@ export default function CalendarTest() {
     minTime.setHours(8, 0, 0);
     const maxTime = new Date();
     maxTime.setHours(21, 0, 0);
-
+    
     const getCourse = () => {
         // Config data for https request.
         let config = {
@@ -274,43 +274,29 @@ export default function CalendarTest() {
     // do curl request to get the number of classes that need to be scheduled
     // at the 100, 200, 300, and 400 level
 
-    const layout = constraints(`
-         editable window.width strong
-         editable window.height
-    
+     const layout = constraints(`
          editable CISC.class
-         editable CISC.professor
-         editable STAT.class
-         editable STAT.professor
-        
+         editable Miracle
+         editable CISC2.class
+         editable Sawin
     
-         modal.width  <= window.width * 0.95   required
-         modal.height <= window.height * 0.95  required
-        
-         modal.left   == (window.width - modal.width) / 2   required
-         modal.top    == (window.height - modal.height) / 2 required
-    
-         playlist.width  == modal.width / 3
-         playlist.height <= videoContainer.height  required
-         playlist.top    == modal.top              required
-         playlist.left   == modal.left + videoContainer.width
-    
-         videoContainer.width  == modal.width * 0.66
-         videoContainer.height == modal.height
-         videoContainer.top    == modal.top            required
-    
-         CISC130.class == (CISC.class  / 2) required
-         CISC130.professor == CISC.professor
-         STAT400.class == (STAT.class)
-         STAT400.professor == STAT.professor
+         CISC131.class == (CISC.class) required
+         CISC131.professor == Miracle
+         CISC480.class == (CISC2.class)
+         CISC480.professor == Sawin
     `)
-    const myFunction = React.useCallback(() => {
-        layout.suggestValue('window.width', 1024)
-        layout.suggestValue('window.height', 768)
-        layout.suggestValue('CISC.class', 8)
-        layout.suggestValue('CISC.professor', 4)
-        layout.suggestValue('STAT.class', 400)
-        layout.suggestValue('STAT.professor', 3)
+     const myFunction = React.useCallback(() => {
+         
+        let CISCprof1 = 'Miracle';
+        let CISCprof2 = 'Sawin';
+        let prefNum1 = 5;
+        let prefNum2 = 4;
+        // the first parameter has to be a string
+        // the second parameter has to be a number
+         layout.suggestValue('CISC.class', 131)
+         layout.suggestValue(CISCprof2, prefNum2)
+         layout.suggestValue('CISC2.class', 480)
+         layout.suggestValue(CISCprof1, prefNum1)
 
         layout.updateVariables()
 
