@@ -65,7 +65,7 @@ export default function EditClassForm(props) {
         friday: false,
     });
     const [errors, setErrors] = React.useState([]);
-    const [color, setColor] = React.useState('a');
+    const [color, setColor] = React.useState('blue');
 
     const handleChange = (event) => {
         setColor(event.target.value);

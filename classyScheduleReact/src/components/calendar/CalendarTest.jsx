@@ -19,11 +19,11 @@ export default function CalendarTest() {
     const [tempEvent, setTempEvent] = React.useState(null);
     const [isEdit, setEdit] = React.useState(false);
     const [open, setOpen] = React.useState(false);
-    const [anchor, setAnchor] = React.useState(null);
+    //const [anchor, setAnchor] = React.useState(null);
     const [courseList, setCourseList] = React.useState([]);
     const [instructorList, setInstructorList] = React.useState([]);
     const [roomList, setRoomList] = React.useState([]);
-    const [sessions, setSessions] = React.useState([]);
+    //const [sessions, setSessions] = React.useState([]);
     const [startTime, setStartTime] = React.useState("");
     const [endTime, setEndTime] = React.useState("");
     const [date, setDate] = React.useState('');
@@ -115,7 +115,6 @@ export default function CalendarTest() {
     const onEventDrop = (data) => {
         const { start, end, event } = data;
         let id = event.id;
-        //console.log(event)
         const newData = [...events];
         newData.map((e) => {
             if (e.id === id) {
@@ -129,7 +128,6 @@ export default function CalendarTest() {
                     id: id
                 };
                 newData[e.id] = updated;
-                return null;
             }
             return null;
         })
@@ -139,7 +137,7 @@ export default function CalendarTest() {
     const onSlotChange = (event) => {
         //setColor('#b3e5fc');
         let { start, end } = event;
-        const { startTime, endTime } = getTimeInterval(event.start, event.end);
+        const { startTime, endTime } = getTimeInterval(start, end);
         setStartTime(startTime);
         setEndTime(endTime);
         setDate(getDate(start));
@@ -150,7 +148,7 @@ export default function CalendarTest() {
             title: "New class",
             instructor: "N/A",
             room: "N/A",
-            color: "b3e5fc",
+            color: "#b3e5fc",
             id: count,
         };
         const newData = [...events]
@@ -159,25 +157,101 @@ export default function CalendarTest() {
         return events;
     };
 
-    const rule = new RRule({
-        freq: RRule.WEEKLY,  // repeate weekly, possible freq [DAILY, WEEKLY, MONTHLY, ]
-        interval: 1,
-        byweekday: [RRule.MO, RRule.FR],
-        dtstart: new Date(Date.UTC(2012, 1, 1, 9, 30)),
-        until: new Date(Date.UTC(2012, 1, 31)),
-        tzid: 'America/Chicago'
-    })
+    const createRecurrence = (data) => {
+        let freq = null;
+        let interval = 1;
+        let byweekday = [];
+        let dtstart = null;
+        let until = null;
 
-    const onUpdateEvents = (event) => {
-        // Color
-        if (event.color === "pink") {
-            //setColor("#f48fb1");
-        } else if (event.color === "blue") {
-            //setColor("#90caf9");
+        if (data.repeat === "weekly") {
+            freq = RRule.WEEKLY;
+            interval = 1;
+        } else if (data.repeat === "biweekly") {
+            freq = RRule.WEEKLY;
+            interval = 2;
+        } else if (data.repeat === "month") {
+            freq = RRule.MONTHLY;
+            interval = 1;
         }
 
-       // setColor(event.color);
-        //console.log(event.color);
+        if (data.days.monday) {
+            byweekday.push(RRule.MO);
+        }
+        if (data.days.tuesday) {
+            byweekday.push(RRule.TU);
+        }
+        if (data.days.wednesday) {
+            byweekday.push(RRule.WE);
+        }
+        if (data.days.thursday) {
+            byweekday.push(RRule.TH);
+        }
+        if (data.days.friday) {
+            byweekday.push(RRule.FR);
+        }
+
+        let time = data.startTime.split(':');
+        let startHour = Number(time[0]) + 5;
+        let startMin = Number(time[1]);
+
+        let startRepeat = data.startRepeat.split("-");
+        let year = Number(startRepeat[0]);
+        let month = Number(startRepeat[1] - 1);
+        let date = Number(startRepeat[2]);
+        dtstart = new Date(Date.UTC(year, month, date, startHour, startMin));
+
+        let endRepeat = data.endRepeat.split("-");
+        year = Number(endRepeat[0]);
+        month = Number(endRepeat[1] - 1);
+        date = Number(endRepeat[2]);
+        until = new Date(Date.UTC(year, month, date));
+
+        const rule = new RRule({
+            freq: freq,  // repeate weekly, possible freq [DAILY, WEEKLY, MONTHLY, ]
+            interval: interval,
+            byweekday: byweekday,
+            dtstart: dtstart,
+            until: until,
+            tzid: 'America/Chicago'
+        })
+
+        return rule.all();
+    }
+
+    const onUpdateEvents = (data) => {
+
+        const newData = deleteEvent(data.id);
+        const list = createRecurrence(data);
+
+        list.map((e) => {
+            let time = data.startTime.split(':');
+            let startHour = Number(time[0]);
+            let startMin = Number(time[1]);
+
+            time = data.endTime.split(':');
+            let endHour = Number(time[0]);
+            let endMin = Number(time[1]);
+
+            let newEvent = {
+                start: new Date(e.getFullYear(), e.getMonth(), e.getDate(), startHour, startMin, 0),
+                end: new Date(e.getFullYear(), e.getMonth(), e.getDate(), endHour, endMin, 0),
+                title: data.course,
+                instructor: data.instructor,
+                room: data.room,
+                color: data.color,
+                id: data.id,
+            }
+
+            newData.push(newEvent);
+        })
+        setEvents(newData);
+    }
+
+    const deleteEvent = (id) => {
+        const array = [...events].filter(e => Number(e.id) !== Number(id));
+        return array;
+
     }
 
     const getDate = (event) => {
@@ -228,7 +302,7 @@ export default function CalendarTest() {
     }
 
     const onEventClick = React.useCallback((args) => {
-        //console.log(args.id)
+        console.log(events)
         setSelectedEvent(args.id);
         getCourse();
         getInstructor();
@@ -249,113 +323,6 @@ export default function CalendarTest() {
         }
         setOpen(false);
     }, [isEdit, events]);
-
-
-
-    const onEventDeleted = React.useCallback((args) => {
-        deleteEvent(args.event)
-    });
-
-    // // popup options
-    // const headerText = React.useMemo(() => isEdit ? 'Edit event' : 'New Event', [isEdit]);
-    // const popupButtons = React.useMemo(() => {
-    //     if (isEdit) {
-    //         return [
-    //             'cancel',
-    //             {
-    //                 handler: () => {
-    //                     saveEvent();
-    //                 },
-    //                 keyCode: 'enter',
-    //                 text: 'Save',
-    //                 cssClass: 'mbsc-popup-button-primary'
-    //             }
-    //         ];
-    //     }
-    //     else {
-    //         return [
-    //             'cancel',
-    //             {
-    //                 handler: () => {
-    //                     saveEvent();
-    //                 },
-    //                 keyCode: 'enter',
-    //                 text: 'Add',
-    //                 cssClass: 'mbsc-popup-button-primary'
-    //             }
-    //         ];
-    //     }
-    // }, [isEdit]);
-
-    // const saveEvent = React.useCallback(() => {
-    //     // save and edit events 
-    //     const newEvent = {
-    //         id: tempEvent.id,
-    //         title: popupEventTitle,
-    //         description: popupEventDescription,
-    //         start: popupEventDate[0],
-    //         end: popupEventDate[1]
-    //     };
-    //     if (isEdit) {
-    //         // edit event on calendar
-    //         const index = events.findIndex(x => x.id === tempEvent.id);
-    //         const newEventList = [...events];
-
-    //         newEventList.splice(index, 1, newEvent);
-    //         setEvents(newEventList);
-    //         // here you can update your files from storage as well
-    //     }
-    //     else {
-    //         //add ne event to list
-    //         setEvents([...events, newEvent]);
-    //         // add events to your storage as well
-    //     }
-    //     setDate(popupEventDate[0]);
-    //     //close popup
-    //     setOpen(false);
-    // }, [isEdit, events, popupEventDate, popupEventDescription, popupEventStatus, popupEventTitle, tempEvent]);
-
-    const deleteEvent = React.useCallback((event) => {
-        setEvents(events.filter(item => item.id !== event.id));
-        setTimeout(() => {
-            Snackbar({
-                button: {
-                    action: () => {
-                        setEvents(prevEvents => [...prevEvents, event]);
-                    },
-                    text: 'Undo'
-                },
-                message: 'event deleted'
-            });
-        });
-
-    }, [events]);
-
-    // const loadPopupForm = React.useCallback((event) => {
-    //     setTitle(event.title);
-    //     setDescription(event.description);
-    //     setDate(event.Date);
-
-    // }, []);
-
-    // // handle popup form changes
-    // const titleChange = React.useCallback((ev) => {
-    //     setTitle(ev.target.value);
-    // }, []);
-
-    // const descriptionChange = React.useCallback((ev) => {
-    //     setDescription(ev.target.value);
-    // }, []);
-
-    // const dateChange = React.useCallback((args) => {
-    //     setDate(args.value);
-    // }, []);
-
-    const onDeleteClick = React.useCallback(() => {
-        deleteEvent(tempEvent);
-        setOpen(false);
-    }, [deleteEvent, tempEvent]);
-    //scheduler options
 
     // do curl request to get the number of classes that need to be scheduled
     // at the 100, 200, 300, and 400 level
@@ -395,24 +362,6 @@ export default function CalendarTest() {
         console.log("test");
     });
 
-    // const eventPropGetter = React.useCallback(
-    //     (event, start, end, isSelected) => ({
-    //       ...(isSelected && {
-    //         style: {
-    //           backgroundColor: '#000',
-    //         },
-    //       }),
-    //       ...(moment(start).hour() < 12 && {
-    //         className: 'powderBlue',
-    //       }),
-    //       ...(event.title.includes('New class') && {
-    //         className: 'darkGreen',
-    //       }),
-    //     }),
-    //     []
-    //   )
-
-
     return (
         <Paper sx={{ padding: '20px' }} elevation={0} >
             {open &&
@@ -446,7 +395,6 @@ export default function CalendarTest() {
                 onEventResize={event => onEventDrop(event)}
                 onSelectEvent={event => onEventClick(event)}
                 onSelectSlot={(slotInfo) => onSlotChange(slotInfo)}
-                //eventPropGetter={eventPropGetter}
             />
             <div>
                 <label htmlFor="level100">Level 100 classes</label><input type="checkbox" name="level100" value="yes"></input><br></br>
