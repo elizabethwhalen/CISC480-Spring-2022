@@ -342,6 +342,7 @@ export default function CalendarTest() {
 
         let CISCprof1 = 'Miracle';
         let CISCprof2 = 'Sawin';
+        let CISCprof3 = 'test';
         let prefNum1 = 5;
         let prefNum2 = 4;
         // the first parameter has to be a string
