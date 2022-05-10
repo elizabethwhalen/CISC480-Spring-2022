@@ -49,9 +49,9 @@ const style = {
 export default function EditClassForm(props) {
     const open = props.open;
     const classes = useStyles();
-    const [course, setCourse] = React.useState('');
-    const [instructor, setInstructor] = React.useState('');
-    const [room, setRoom] = React.useState('');
+    const [course, setCourse] = React.useState(props.event.title);
+    const [instructor, setInstructor] = React.useState(props.event.instructor);
+    const [room, setRoom] = React.useState(props.event);
     const [repeat, setRepeat] = React.useState('');
     const [startTime, setStartTime] = React.useState(props.startTime);
     const [endTime, setEndTime] = React.useState(props.endTime);
@@ -157,7 +157,7 @@ export default function EditClassForm(props) {
                 startRepeat: startRepeat,
                 endRepeat: endRepeat,
                 color: color,
-                id: props.selected,
+                id: props.event.id,
             }
         }
         props.onUpdate(data);
@@ -372,7 +372,7 @@ export default function EditClassForm(props) {
                                     <TextField
                                         fullWidth
                                         id="date"
-                                        label="From"
+                                        label="To"
                                         type="date"
                                         InputLabelProps={{
                                             shrink: true,
