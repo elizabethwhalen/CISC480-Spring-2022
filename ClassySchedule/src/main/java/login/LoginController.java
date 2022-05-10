@@ -1,5 +1,6 @@
 package login;
 
+import alert.MyAlert;
 import database.DatabaseStatic;
 import homescreen.HomescreenController;
 import javafx.application.Platform;
@@ -94,10 +95,8 @@ public class LoginController implements Initializable {
     }
 
     private void showIncorrectPasswordError() {
-        Alert invalidUser = new Alert(Alert.AlertType.ERROR);
-        invalidUser.setTitle("Invalid Password");
-        invalidUser.setContentText("INVALID USERNAME OR PASSWORD \n Please re-enter username and password");
-        invalidUser.showAndWait();
+        MyAlert createAlert = new MyAlert("Invalid Password", "INVALID USERNAME OR PASSWORD \n Please re-enter username and password", Alert.AlertType.ERROR);
+        createAlert.show();
     }
 
     /**

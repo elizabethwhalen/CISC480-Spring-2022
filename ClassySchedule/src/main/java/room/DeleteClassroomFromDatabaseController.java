@@ -1,5 +1,6 @@
 package room;
 
+import alert.MyAlert;
 import database.DatabaseStatic;
 
 import homescreen.HomescreenController;
@@ -167,10 +168,8 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
         // No room has been selected show an error alert
         else {
             result = false;
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("No Room Selected");
-            alert.setContentText("Please select a room to delete");
-            alert.showAndWait();
+            MyAlert createAlert = new MyAlert("No Room Selected", "Please Select A Room To Delete", Alert.AlertType.ERROR);
+            createAlert.show();
         }
         return result;
     }
@@ -185,9 +184,7 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
      */
     private void back(Button button, String title, String message, Boolean goBackToPrevPage) {
         // Initialize back confirmation button
-        Alert backAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        backAlert.setTitle(title);
-        backAlert.setContentText(message);
+        MyAlert createAlert = new MyAlert(title, message, Alert.AlertType.CONFIRMATION);
         // First scenario to go back to home screen
         if (goBackToPrevPage) {
             // Confirmation to go back to the home screen
@@ -195,7 +192,7 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
                 @Override
                 public void handle(ActionEvent event) {
                     // The Ok button from the alert
-                    Optional<ButtonType> Ok = backAlert.showAndWait();
+                    Optional<ButtonType> Ok = createAlert.showButton();
                     // If user pressed "OK"
                     if (Ok.get().getText().equals("OK")) {
                         // Go back to home screen
@@ -213,16 +210,14 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
                 @Override
                 public void handle(ActionEvent event) {
                     // The Ok button from the alert
-                    Optional<ButtonType> ok = backAlert.showAndWait();
+                    Optional<ButtonType> ok = createAlert.showButton();
                     // If user pressed "OK"
                     if (ok.get().getText().equals("OK")) {
                         // If delete was successful
                         if (confirmButton()) {
                             // Successful deletion alert
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Deleted");
-                            alert.setContentText("The selected course has been deleted.");
-                            alert.showAndWait();
+                            MyAlert createAlert = new MyAlert("Deleted", "The Selected Course Has Been Deleted", Alert.AlertType.INFORMATION);
+                            createAlert.show();
                         }
                     }
                 }

@@ -1,5 +1,6 @@
 package room;
 
+import alert.MyAlert;
 import database.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -53,14 +55,6 @@ public class RoomController implements Initializable {
     @FXML
     Button cancelButton;
 
-    @FXML
-    Text roomWarning;
-
-    @FXML
-    Text buildingWarning;
-
-    @FXML
-    Text campusWarning;
 
     private Stage stage;
 
@@ -71,8 +65,6 @@ public class RoomController implements Initializable {
 
 
     public RoomController() {}
-
-    Text capacityWarning;
 
     //May use in the future to reach into database for room options
     @Override
@@ -104,15 +96,21 @@ public class RoomController implements Initializable {
     public void submitData(ActionEvent event) {
 
         if (capacity.getText().isEmpty()) {
-            capacityWarning.setVisible(true);
+            MyAlert createAlert = new MyAlert("Invalid Capacity", "Please Input In The Capacity", Alert.AlertType.ERROR);
+            Alert alert = createAlert.createAlert();
+            alert.showAndWait();
             return;
         }
         if (roomNum.getText().isBlank()) {
-            roomWarning.setVisible(true);
+            MyAlert createAlert = new MyAlert("Invalid Room Number", "Please Input In The Room Number", Alert.AlertType.ERROR);
+            Alert alert = createAlert.createAlert();
+            alert.showAndWait();
             return;
         }
         if (buildingName.getSelectionModel().isEmpty()) {
-            buildingWarning.setVisible(true);
+            MyAlert createAlert = new MyAlert("Invalid Building Name", "Please Select A Building", Alert.AlertType.ERROR);
+            Alert alert = createAlert.createAlert();
+            alert.showAndWait();
             return;
         }
 
@@ -121,10 +119,14 @@ public class RoomController implements Initializable {
             if(roomNum.getLength() == 3) {
                 Integer.parseInt(roomNum.getText());
             } else {
-                roomWarning.setVisible(true);
+                MyAlert createAlert = new MyAlert("Invalid Room Number Length", "Please Input In A Valid Room Number Length", Alert.AlertType.ERROR);
+                Alert alert = createAlert.createAlert();
+                alert.showAndWait();
             }
         } catch (NumberFormatException e) {
-            roomWarning.setVisible(true);
+            MyAlert createAlert = new MyAlert("Invalid Room Number Type", "Please Input In A Valid Room Number", Alert.AlertType.ERROR);
+            Alert alert = createAlert.createAlert();
+            alert.showAndWait();
             return;
         }
 
@@ -148,9 +150,6 @@ public class RoomController implements Initializable {
         capacity.clear();
         roomNum.clear();
         buildingName.setValue(null);
-        roomWarning.setVisible(false);
-        buildingWarning.setVisible(false);
-        capacityWarning.setVisible(false);
     }
 
     /**

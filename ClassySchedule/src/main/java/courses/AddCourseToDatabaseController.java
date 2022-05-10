@@ -1,5 +1,6 @@
 package courses;
 
+import alert.MyAlert;
 import database.Database;
 import homescreen.HomescreenController;
 import javafx.event.ActionEvent;
@@ -8,11 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.json.JSONArray;
@@ -41,22 +38,13 @@ public class AddCourseToDatabaseController implements Initializable {
     TextField className;
 
     @FXML
-    ChoiceBox<String> deptName;
+    ComboBox<String> deptName;
 
     @FXML
     Button submit_button;
 
     @FXML
     Button back_button;
-
-    @FXML
-    Text classNumWarning;
-
-    @FXML
-    Text classNameWarning;
-
-    @FXML
-    Text departmentWarning;
 
     private Stage stage;
 
@@ -94,34 +82,36 @@ public class AddCourseToDatabaseController implements Initializable {
      */
     @FXML
     public void submitData(ActionEvent event) {
-        departmentWarning.setVisible(false);
-        classNumWarning.setVisible(false);
-        classNameWarning.setVisible(false);
         boolean warning = false;
         //checking if user inputs are entered:
         if (deptName.getSelectionModel().isEmpty()) {
-            departmentWarning.setVisible(true);
             warning = true;
+            MyAlert createAlert = new MyAlert("No Department Selected", "Please Select A Department", Alert.AlertType.ERROR);
+            createAlert.show();
         }
         if (classNum.getText().isBlank()) {
-            classNumWarning.setVisible(true);
             warning = true;
+            MyAlert createAlert = new MyAlert("No Class Number", "Please Select A Class Number", Alert.AlertType.ERROR);
+            createAlert.show();
         }
         if (className.getText().isBlank()) {
-            classNameWarning.setVisible(true);
             warning = true;
+            MyAlert createAlert = new MyAlert("No Class Name", "Please Select A Class Name", Alert.AlertType.ERROR);
+            createAlert.show();
         }
         //checking if length of course code is 3 and course code is type int:
         if (classNum.getLength() == 3) {
             try {
                 Integer.parseInt(classNum.getText());
             } catch (NumberFormatException e) {
-                classNumWarning.setVisible(true);
                 warning = true;
+                MyAlert createAlert = new MyAlert("Invalid ClassNumber", "Please Select A Department", Alert.AlertType.ERROR);
+                createAlert.show();
             }
         } else {
-            classNumWarning.setVisible(true);
             warning = true;
+            MyAlert createAlert = new MyAlert("Invalid Class Number", "Please Input A Valid Class Number", Alert.AlertType.ERROR);
+            createAlert.show();
         }
 
         if (!warning) {
