@@ -16,35 +16,31 @@ import {
     FormLabel,
     Radio
 } from '@mui/material';
-import { makeStyles } from '@material-ui/core/styles'
-import { pink, blue, yellow, purple, green } from '@mui/material/colors';
+import { makeStyles } from '@mui/styles'
+import { pink, blue, yellow, green } from '@mui/material/colors';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles ({
     root: {
         display: 'flex',
     },
-    container: {
-        padding: theme.spacing(4),
-        position: 'relative',
-        flexGrow: 1,
-        height: '100%',
-    },
     title: {
         color: '#7E16A4',
-        fontWeight: '600',
+        fontWeight: "600",
     },
     button: {
         color: "black",
         bgcolor: "grey"
+    },
+    grid: {
+        paddingRight: "0"
     }
-}));
+});
 
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 800,
     bgcolor: 'background.paper',
     border: '1px solid #000',
     p: 4,
@@ -161,7 +157,7 @@ export default function EditClassForm(props) {
                 startRepeat: startRepeat,
                 endRepeat: endRepeat,
                 color: color,
-                selected: props.selected,
+                id: props.selected,
             }
         }
         props.onUpdate(data);
@@ -178,7 +174,7 @@ export default function EditClassForm(props) {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Grid container spacing={2} display="flex">
+                    <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <Typography
                                 variant="h6"
@@ -188,9 +184,9 @@ export default function EditClassForm(props) {
                                 Edit Class
                             </Typography>
                         </Grid>
-                        <Grid item md={6} xs={8}>
+                        <Grid item md={6} sm={8} xs={12}>
                             <Grid container spacing={2} >
-                                <Grid item xs={12}>
+                                <Grid item xs={12} className={classes.grid}>
                                     <FormControl fullWidth size="small">
                                         <InputLabel id="demo-select-small">Course</InputLabel>
                                         <Select
@@ -212,7 +208,7 @@ export default function EditClassForm(props) {
                                         </Select>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} className={classes.grid}>
                                     <FormControl fullWidth size="small">
                                         <InputLabel id="demo-select-small">Instructor</InputLabel>
                                         <Select
@@ -234,7 +230,7 @@ export default function EditClassForm(props) {
                                         </Select>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} className={classes.grid}>
                                     <FormControl fullWidth size="small">
                                         <InputLabel id="demo-select-small">Room</InputLabel>
                                         <Select
@@ -263,14 +259,12 @@ export default function EditClassForm(props) {
                                         id="time"
                                         label="Start Time"
                                         type="time"
-                                        defaultValue="07:30"
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
                                         inputProps={{
                                             step: 300, // 5 min
                                         }}
-                                        // sx={{ width: 150 }}
                                         value={startTime}
                                         size="small"
                                         onChange={handleChangeStartTime}
@@ -282,7 +276,6 @@ export default function EditClassForm(props) {
                                         id="time"
                                         label="End Time"
                                         type="time"
-                                        defaultValue="08:00"
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
@@ -297,12 +290,12 @@ export default function EditClassForm(props) {
                             </Grid>
                         </Grid>
 
-                        <Grid item md={2.5} xs={4}>
+                        <Grid item md={2.5} sm={4} xs={12}>
                             <FormControl component="fieldset" variant="standard">
                                 <FormGroup>
-                                    <FormLabel>
+                                    {/* <FormLabel>
                                         Meeting Days
-                                    </FormLabel>
+                                    </FormLabel> */}
                                     <FormControlLabel
                                         control={
                                             <Checkbox checked={monday} onChange={handleChangeDays} name="monday" />
@@ -337,10 +330,10 @@ export default function EditClassForm(props) {
                             </FormControl>
                         </Grid>
 
-                        <Grid item md={3.5} xs={12}>
+                        <Grid item md={3.5} sm={12} xs={12}>
                             <Grid container spacing={2}>
 
-                                <Grid item xs={12}>
+                                <Grid item xs={12} className={classes.grid}>
                                     <FormControl fullWidth size="small">
 
                                         <InputLabel id="demo-simple-select-label">Recurrence</InputLabel>
@@ -361,13 +354,12 @@ export default function EditClassForm(props) {
                                         </Select>
                                     </FormControl>
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} className={classes.grid}>
                                     <TextField
                                         fullWidth
                                         id="date"
                                         label="From"
                                         type="date"
-                                        defaultValue="2017-05-24"
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
@@ -376,13 +368,12 @@ export default function EditClassForm(props) {
                                         onChange={handleChangeStartRepeat}
                                     />
                                 </Grid>
-                                <Grid item xs={12}>
+                                <Grid item xs={12} className={classes.grid}>
                                     <TextField
                                         fullWidth
                                         id="date"
                                         label="From"
                                         type="date"
-                                        defaultValue="2017-05-24"
                                         InputLabelProps={{
                                             shrink: true,
                                         }}
@@ -392,7 +383,7 @@ export default function EditClassForm(props) {
                                     />
                                 </Grid>
 
-                                <Grid item xs={12}>
+                                <Grid item xs={12} className={classes.grid}>
                                     <Radio
                                         {...controlProps('pink')}
                                         sx={{
