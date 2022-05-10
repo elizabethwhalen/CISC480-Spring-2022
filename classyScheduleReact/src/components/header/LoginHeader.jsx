@@ -34,6 +34,7 @@ const LoginHeader = (props) => {
   const handleLogoutClick = () => {
     props.setLoggedIn(false);
     props.handleLogOut();
+    window.location.href="/";
   }
 
   // return the component

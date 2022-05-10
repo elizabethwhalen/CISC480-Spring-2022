@@ -33,15 +33,13 @@ const AddFaculty = () => {
     const [firstName, setFirstName] = React.useState('');
     const [lastName, setLastName] = React.useState('');
     const [teachLoad, setTeachLoad] = React.useState('');
-    const token = localStorage.getItem('access_token');
-
-    let randomNum = Math.floor(Math.random() * 10);
+    const token = sessionStorage.getItem('token');
     
     const submitForm = (event) => {
         event.preventDefault();
         if (firstName !== '' && lastName !== '' && teachLoad !== 0.0) {
             let data = JSON.stringify({
-                faculty_id: randomNum, 
+                faculty_id: 99, 
                 faculty_first: firstName, 
                 faculty_last: lastName,
                 title_id: 99, 
