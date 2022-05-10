@@ -9,6 +9,13 @@ import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import { makeStyles } from '@material-ui/core/styles'
 import axios from 'axios'
 import DoneIcon from '@mui/icons-material/Done'
+import { Grid, Select, FormControl, InputLabel, MenuItem, Modal, Typography, Button, Box } from '@mui/material';
+
+
+
+{/** Work in Progress. Will not work normally in current state. */}
+
+
 
 // This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles((theme) => ({
@@ -38,8 +45,10 @@ const AddClass = () => {
     const [courseNum, setCourseNum] = React.useState(''); // Course number (e.g., 420, 350, etc.)
     const [courseName, setCourseName] = React.useState(''); // Course name (e.g., Info Sec, Computer Graphics, etc.)
     const [added, setAdded] = React.useState(null);
+    const [existingClass, setExistingClass] = React.useState(''); // Course name (e.g., Info Sec, Computer Graphics, etc.)
 
-    const token = sessionStorage.getItem('token');
+
+    const token = localStorage.getItem('access_token');
     // This function will create a Axios request when the form is submitted
     // It will send all information in the form to the database through the call
     const submitForm = (event) => { 
@@ -54,7 +63,7 @@ const AddClass = () => {
             // Config data for https request.
             let config = {
                 method: 'post',
-                url: 'https://classy-api.ddns.net/v2/class',
+                url: 'http://classy-api.ddns.net/v2/class/' + existingDeptCode + "/" + existingCourseNum,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + token
@@ -73,6 +82,7 @@ const AddClass = () => {
             setCode('')
             setCourseNum('')
             setCourseName('')
+            //setExistingClass('')
         } else {
             setAdded(false);
         }
@@ -93,6 +103,11 @@ const AddClass = () => {
         setCourseName(event.target.value);
     }
 
+    // This function will retrieve the value entered in the existing faculty field whenever it changes
+    const handleChangeExistingFac = (event) => {
+        setExistingFac(event.target.value)
+    }
+
     const classes = useStyles() // call the useStyle hook
 
     // Return the main component
@@ -101,14 +116,35 @@ const AddClass = () => {
 
             {/* TITLE */}
             <Grid container spacing={2}>
-                <Grid item xs={12}>
+                <Grid item xs={12} fullWidth>
                     <Typography
                         variant="h6"
                         className={classes.title}
                         gutterBottom
                     >
-                        Add New Class
+                        Modify an Existing Class
                     </Typography>
+                </Grid>
+                {/* SELECT EXISTING FACULTY DROPDOWN */}
+                <Grid item xs={12} fullWidth>
+                <FormControl sx={{ m: 1, minWidth: 80 }}>
+                    <InputLabel id="demo-simple-select-autowidth-label">Age</InputLabel>
+                    <Select
+                        labelId="demo-simple-select-autowidth-label"
+                        id="demo-simple-select-autowidth"
+                        value={ExistingFaculty}
+                        onChange={handleChangeExistingFac}
+                        autoWidth
+                        label="Existing Faculty"
+                    >
+                        <MenuItem value="">
+                            <em>None</em>
+                        </MenuItem>
+                        <MenuItem value={""}>Person 1</MenuItem>
+                        <MenuItem value={""}>Person __________ 2</MenuItem>
+                        <MenuItem value={""}>P 3</MenuItem>
+                    </Select>
+                </FormControl> 
                 </Grid>
 
                 <Grid item xs={12}>
@@ -166,7 +202,7 @@ const AddClass = () => {
                             </Grid>
 
                             {/* COURSE NAME */}
-                            <Grid item xs={6} >
+                            <Grid item xs={6} fullWidth >
                                 <TextValidator
                                     size="medium"
                                     variant="outlined"
@@ -197,7 +233,7 @@ const AddClass = () => {
                             )}
 
                             {/* BUTTON */}
-                            <Grid item xs={4}>
+                            <Grid item xs={4} fullWidth>
                                 <Button
                                     variant="contained"
                                     size="large"
