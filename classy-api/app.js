@@ -102,7 +102,7 @@ async function db_put(query, data){
     })
 }
 
-function check_int_type(value, int_size = null){
+function check_int_type(value, res, int_size = null){
     /*
     Checks if a value is an integer and if the size fits within the column.
 
@@ -114,16 +114,16 @@ function check_int_type(value, int_size = null){
         parseInt(value)
     }
     catch{
-        throw `${value} is not the correct data type for the column`
+        throw res.status(400).send(`${value} is not the correct data type for the column`);
     }
     if(int_size){
         if(value.length > int_size){
-            throw `${value} is too large for the column in the database`;
+            throw res.status(400).send(`${value} is not the correct size for the column`);
         }
     }
 }
 
-function check_str_type(value, str_size = null){
+function check_str_type(value, res, str_size = null){
     /*
     Checks if a value is a STR and if the size fits within the column. 
 
@@ -132,11 +132,12 @@ function check_str_type(value, str_size = null){
     
     */
     if(typeof value !== 'string'){
-        throw `${value} is not the correct data type ${typeof value}`;
+        throw res.status(400).send(`${value} is not the correct data type for the column`);
     }
     if(str_size){
         if(value.length > str_size){
-            throw `${value} is too long for column in the database`;
+            throw res.status(400).send(`${value} is not the correct size for the column`);
+
         }
     }
 }
@@ -355,7 +356,7 @@ app.get('/v2/building', (req, res) => {
             if(i > 0){
                 query = query + " OR"
             }
-            check_str_type(building_code_array[i]);
+            check_str_type(building_code_array[i], res, 5);
             query = query + " building_code = " + con.escape(building_code_array[i]);
         }
         prev = true;
@@ -368,7 +369,7 @@ app.get('/v2/building', (req, res) => {
             if(i > 0){
                 query = query + " OR"
             }
-            check_str_type(building_name_array[i])
+            check_str_type(building_name_array[i], res, 30)
             query = query + " building_name = " + con.escape(building_name_array[i]);
         }
         prev = true;
