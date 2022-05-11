@@ -86,18 +86,7 @@ public class HomescreenController implements Initializable {
 
     @FXML
     public void goToGenerateSchedule() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/GenerateSchedule.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-            GenerateScheduleController generateScheduleController = loader.getController();
-            generateScheduleController.setStage(homeScreenStage);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        homeScreenStage.setTitle("Classy-Schedule");
-        homeScreenStage.setScene(new Scene(root));
-        homeScreenStage.show();
+        cs.goToGenerateSchedule(stage);
     }
 
     /**
