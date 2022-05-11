@@ -1,5 +1,6 @@
 package scheduler;
 
+import alert.MyAlert;
 import database.DatabaseStatic;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,6 +11,7 @@ import javafx.stage.Stage;
 import jfxtras.scene.control.agenda.Agenda;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import scenes.ChangeScene;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -103,10 +105,10 @@ public class AddCourseToScheduleController implements Initializable {
     private List<CheckBox> datesSelected;
 
     /**
-     * This is the dropdown menu for the class times
+     * The change scene object to change between scenes
      */
-    @FXML
-    private ComboBox<String> classTimes;
+    private final ChangeScene cs = new ChangeScene();
+
 
     private List<String> listOfTimes = new ArrayList<>();
 
@@ -160,13 +162,13 @@ public class AddCourseToScheduleController implements Initializable {
 
 
         // This is the confirmation to go back alert
-        confirmBackButton.setTitle("Back to Scheduler");
-        confirmBackButton.setContentText("Go back to the scheduler page");
+        MyAlert createAlert = new MyAlert("Back To Scheduler", "Go Back To The Scheduler Page", Alert.AlertType.CONFIRMATION);
+
         // Set event to go back to previous scheduler screen if user click "Ok", else do nothing
         EventHandler<ActionEvent> confirmBack = event -> {
             // Set button Ok to be the output button that the user clicked
             // It is either "Cancel" or "Ok"
-            Optional<ButtonType> Ok = confirmBackButton.showAndWait();
+            Optional<ButtonType> Ok = createAlert.showButton();
             // If button is "Ok", then go back to scheduler
             if (Ok.get().getText().equals("OK")) {
                 // Go back to scheduler
@@ -177,8 +179,8 @@ public class AddCourseToScheduleController implements Initializable {
         closeButton.setOnAction(confirmBack);
 
         JSONArray classes = DatabaseStatic.getData("class");
-        for (Object jsonObject: classes) {
-            JSONObject json = (JSONObject)jsonObject;
+        for (Object jsonObject : classes) {
+            JSONObject json = (JSONObject) jsonObject;
             StringBuilder str = new StringBuilder((String) json.get("dept_code"));
             if (json.get("class_num") != JSONObject.NULL) {
                 str.append(" ");
@@ -192,8 +194,8 @@ public class AddCourseToScheduleController implements Initializable {
         }
 
         JSONArray rooms = DatabaseStatic.getData("room");
-        for (Object jsonObject: rooms) {
-            JSONObject json = (JSONObject)jsonObject;
+        for (Object jsonObject : rooms) {
+            JSONObject json = (JSONObject) jsonObject;
             StringBuilder str = new StringBuilder((String) json.get("building_code"));
             str.append(" ");
             str.append(json.get("room_num"));
@@ -206,7 +208,22 @@ public class AddCourseToScheduleController implements Initializable {
     }
 
     /**
+     * Gets the current time slots from the database
+     */
+    private void getTimeSlots() {
+        JSONArray currentTimeChunk = DatabaseStatic.getData("timeslot");
+        //JSONObject dayOfWeek = ()
+        for (Object jsonObject : currentTimeChunk) {
+            JSONObject job = (JSONObject) jsonObject;
+            if (job.get("time_start") != JSONObject.NULL && job.get("time_end") != JSONObject.NULL) {
+                timeSlot.getItems().add(job.get("time_start") + " - " + job.get("time_end"));
+            }
+        }
+    }
+
+    /**
      * Sets the stage
+     *
      * @param stage the stage to be set
      */
     public void setStage(Stage stage) {
@@ -252,7 +269,7 @@ public class AddCourseToScheduleController implements Initializable {
             endDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(convertToDayOFWeek(day).label + " " + timeslot.getEndTime())));
         }
 
-        AppointmentFactory appointmentFactory = new AppointmentFactory(startDaysAndTimes, endDaysAndTimes, course.getSelectionModel().getSelectedItem(), room.getSelectionModel().getSelectedItem(), "test",course.getSelectionModel().getSelectedItem(), course.getSelectionModel().getSelectedItem());
+        AppointmentFactory appointmentFactory = new AppointmentFactory(startDaysAndTimes, endDaysAndTimes, course.getSelectionModel().getSelectedItem(), room.getSelectionModel().getSelectedItem(), "TODO: PROFESSOR");
 
         return appointmentFactory.createAppointments();
     }
@@ -297,7 +314,7 @@ public class AddCourseToScheduleController implements Initializable {
      * @return false if any test is invalid, else true
      */
     private boolean validateData() {
-        return validateDates();
+        return validateDates() && validateCourse() && validateTime();
     }
 
     /**
@@ -310,9 +327,8 @@ public class AddCourseToScheduleController implements Initializable {
         // If the class name has not been selected
         if (course.getSelectionModel().isEmpty()) {
             // Set content of the error alert
-            invalidClassName.setTitle("Invalid course Error");
-            invalidClassName.setContentText("Please select a valid course");
-            invalidClassName.showAndWait();
+            MyAlert createAlert = new MyAlert("Invalid Course Error", "Please Select A Valid Course", Alert.AlertType.ERROR);
+            createAlert.show();
             result = false;
         }
         // Probably need to find a way to bind class number and class name??
@@ -322,6 +338,7 @@ public class AddCourseToScheduleController implements Initializable {
     /**
      * This function validate that at least 1 of the day of the week is selected. If not
      * then it will prompt the user to click on at least 1 or more day/days of the week.
+     *
      * @return false is nothing is selected, else return true
      */
     private boolean validateDates() {
@@ -339,9 +356,8 @@ public class AddCourseToScheduleController implements Initializable {
         // use JavaFX to prompt the user to select at least 1 day of the week.
         if (result == false) {
             // Set content of the error alert
-            invalidDays.setTitle("Invalid Day/Days Error");
-            invalidDays.setContentText("Please select at least one or more day/days of the week");
-            invalidDays.showAndWait();
+            MyAlert createAlert = new MyAlert("Invalid Day/Days Error", "Please Select At Least One or More Day/Days Of The Week", Alert.AlertType.ERROR);
+            createAlert.show();
         }
 
         return result;

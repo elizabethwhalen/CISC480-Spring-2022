@@ -7,12 +7,14 @@ import org.apache.hc.client5.http.classic.methods.HttpPut;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.net.URIBuilder;
+import org.apache.hc.core5.util.Timeout;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -21,19 +23,24 @@ import java.net.URISyntaxException;
 
 public final class DatabaseStatic {
     private static final String url = "https://classy-api.ddns.net/v2/";
-    private static final JSONObject tokenObject = new JSONObject();
+    private static JSONObject tokenObject = null;
 
     /**
      * Verifies the given credentials. Populates the token object to be used
      * for future database requests
      *
-     * @param email the username to be checked
+     * @param email the email to be checked
      * @param password the password to be checked
      * @return true if the user is valid, false otherwise
      */
     public static boolean login(String email, String password) {
         try {
-            CloseableHttpClient client = HttpClients.createDefault();
+            int timeout = 5;
+            RequestConfig config = RequestConfig.custom()
+                    .setConnectTimeout(Timeout.ofMilliseconds(timeout * 1000))
+                    .setConnectionRequestTimeout(Timeout.ofMilliseconds(timeout * 1000))
+                    .setResponseTimeout(Timeout.ofMilliseconds(timeout * 1000)).build();
+            CloseableHttpClient client = HttpClientBuilder.create().setDefaultRequestConfig(config).build();
             URIBuilder builder = new URIBuilder(url + "login");
             JSONObject json = new JSONObject();
             json.put("password", password);
@@ -44,13 +51,14 @@ public final class DatabaseStatic {
             httpPost.setEntity(entity);
             CloseableHttpResponse response = client.execute(httpPost);
             if (response.getCode() == 200) {
+                tokenObject = new JSONObject();
                 tokenObject.put("token", EntityUtils.toString(response.getEntity()));
             }
             client.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return tokenObject.get("token") != null;
+        return tokenObject != null;
     }
 
     /**
@@ -164,11 +172,11 @@ public final class DatabaseStatic {
 
         URIBuilder builder = new URIBuilder(url + table);
         for (String key : json.keySet()) {
-            builder.addParameter(key, (String) json.get(key));
+            builder.appendPath((String) json.get(key));
         }
 
         HttpDelete httpDelete = new HttpDelete(builder.build());
-
+                                                                            //https://classy-api.ddns.net/v2/class/OSS/999" -X PUT -d "class_name="example"
         httpDelete.setEntity(new StringEntity(tokenObject.toString()));
         httpDelete.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + tokenObject.get("token"));
 
