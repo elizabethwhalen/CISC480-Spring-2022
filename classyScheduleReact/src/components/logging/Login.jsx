@@ -2,10 +2,11 @@ import React from 'react'
 import { Button, Grid, Paper, Typography, } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
-import background from '../../images/campus.jpg'
-import logo from '../../images/ustlogo.png'
+import background from '../../images/hd_calendar2.jpg'
+import logo from '../../images/Updated_Logo.gif'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import { borderColor } from '@mui/system'
 
 
 // Styling components using useStyles
@@ -40,6 +41,15 @@ const useStyles = makeStyles({
     margin: '0px',
     width: '500px'
   },
+  loginTitleContainer: {
+    padding: '200px 100px 50px 50px',
+  },
+  loginTitle: {
+    padding: '50px 10px 10px 10px',
+    textAlign: 'center',
+    fontWeight: 600,
+    fontSize: '26pt'
+  },
   loginContainer: {
     display: 'flex',
     width: '100%',
@@ -47,12 +57,13 @@ const useStyles = makeStyles({
     margin: '0 auto -55px auto'
   },
   logoGrid: {
-    paddingTop: '50px',
-    paddingBottom: '70px',
+    paddingTop: '30px',
+    paddingBottom: '30px',
   },
   logo: {
-    width: '260px',
-    height: '50px'
+    width: '220px',
+    height: '220px',
+    paddingLeft: '40px'
   },
   text: {
     paddingBottom: '30px'
@@ -142,6 +153,11 @@ export default function Login (props) {
           alignItems="flex-start"
           justify="flex-start"
           className={classes.gridItem1} >
+            {/* <Grid container className={classes.loginTitleContainer}>
+              <Grid item xs={12} className={classes.loginTitle}>
+                CLASSY SCHEDULE
+              </Grid>
+            </Grid> */}
         </Grid>
 
         <Grid item
@@ -150,7 +166,11 @@ export default function Login (props) {
           className={classes.gridItem2}
         >
           <Grid container className={classes.loginContainer}>
-
+            {/* Title */}
+            <Grid item xs={12} className={classes.loginTitle} >
+              CLASSY SCHEDULE
+            </Grid>
+            
             {/* LOGO */}
             <Grid item xs={12} className={classes.logoGrid} >
               <img src={logo} className={classes.logo} alt='logo' ></img>
@@ -158,7 +178,7 @@ export default function Login (props) {
 
             {/* Instruction line */}
             <Grid item xs={12} className={classes.text}>
-              Log in with your organizational account
+              Log in with your Classy Schedule account
             </Grid>
 
             {/* Form */}
