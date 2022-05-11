@@ -44,7 +44,7 @@ public final class DatabaseStatic {
             URIBuilder builder = new URIBuilder(url + "login");
             JSONObject json = new JSONObject();
             json.put("password", password);
-            json.put("username", username);
+            json.put("email", username);
             StringEntity entity = new StringEntity(json.toString());
             HttpPost httpPost = new HttpPost(builder.build());
             httpPost.setHeader("Content-Type", "application/json");

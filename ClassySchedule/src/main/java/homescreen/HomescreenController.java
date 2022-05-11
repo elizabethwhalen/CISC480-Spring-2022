@@ -4,6 +4,7 @@ import courses.AddCourseToDatabaseController;
 import courses.DeleteClassroomFromDatabaseController;
 import courses.DeleteCourseFromDatabaseController;
 import courses.DeleteFacultyFromDatabaseController;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import room.RoomController;
+import scheduler.GenerateScheduleController;
 import scheduler.SchedulerController;
 import users.FacultyController;
 
@@ -28,8 +30,12 @@ import java.util.ResourceBundle;
 public class HomescreenController implements Initializable {
     @FXML
     public Button addCourse;
+    @FXML
     public Button addClassroom;
+    @FXML
     public Button addProfessor;
+    @FXML
+    public Button generateSchedule;
 
     private Stage homeScreenStage;
 
@@ -163,6 +169,23 @@ public class HomescreenController implements Initializable {
             root = loader.load();
             DeleteFacultyFromDatabaseController homeScreenController = loader.getController();
             homeScreenController.setStage(homeScreenStage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        homeScreenStage.setTitle("Classy-Schedule");
+        homeScreenStage.setScene(new Scene(root));
+        homeScreenStage.show();
+    }
+
+
+    @FXML
+    public void goToGenerateSchedule() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/GenerateSchedule.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+            GenerateScheduleController generateScheduleController = loader.getController();
+            generateScheduleController.setStage(homeScreenStage);
         } catch (IOException e) {
             e.printStackTrace();
         }
