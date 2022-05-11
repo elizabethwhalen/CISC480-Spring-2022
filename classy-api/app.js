@@ -2247,7 +2247,7 @@ app.get('/v2/login', (req, res) => {
 //add does not exist. use /v2/signup method.
 //update
 app.put('/v2/login/:email_id', (req, res) => {
-/*  Updates a row in the login table.
+/*  Updates a faculty_id or the access level in the login table.
 
     All primary keys in the table must be present with valid values (a valid value depends 
     on the type and size of the column) in req.body to successfully update the record. If
@@ -2261,9 +2261,6 @@ app.put('/v2/login/:email_id', (req, res) => {
                                 and all columns in the table with valid values in req.body
 
     @returns            nothing. 
-
-    TODO: FIX
-
 */
     // verify auth
     try{
@@ -2290,7 +2287,7 @@ app.put('/v2/login/:email_id', (req, res) => {
     }
 });
 app.put('/v2/login/:email_id/change_password', async (req, res) => {
-/*  Updates a row in the building table.
+/*  Updates a password in the login table.
 
     All primary keys in the table must be present with valid values (a valid value depends 
     on the type and size of the column) in req.body to successfully update the record. If
@@ -2303,10 +2300,7 @@ app.put('/v2/login/:email_id/change_password', async (req, res) => {
     @param{Object}      req     The request info. Needs to contain a header with a token
                                 and all columns in the table with valid values in req.body
 
-    @returns            nothing. 
-
-    TODO: fix
-
+    @returns            nothing.
 */
     // verify auth
     try{
@@ -2316,8 +2310,11 @@ app.put('/v2/login/:email_id/change_password', async (req, res) => {
     }
 
     const salt = await bcrypt.genSalt(10)
-    try{ hash = await bcrypt.hash(req.body.password, salt)
-    } catch (err) {return res.status(500).send("Error encrypting data, please try again")}
+    try{ 
+        hash = await bcrypt.hash(req.body.password, salt)
+    } catch (err) {
+        return res.status(500).send("Error encrypting data, please try again")
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -4012,9 +4009,9 @@ app.post('/v2/signup', async (req, res) => {
 
     All columns in the table must be present with valid values (a valid value depends on
     the type and size of the column) in req.body to successfully add the record. Passwords
-    will be stored in the database after salting and hashing.
+    will be stored in the database after they have been salted and hashed.
 
-    @ since v0
+    @ since v2
 
     @param{Object}      req     The request info. Needs to contain a header with a token
                                 and all columns in the table with valid values in req.body
@@ -4050,7 +4047,15 @@ query_db_add("INSERT INTO login VALUES ?",[[ req.body.email, hash, req.body.facu
 
 //login
 app.post('/v2/login', async function (req, res) {
-    // TODO: add query docs
+/*  Query the login table to see if user should be granted access.
+
+    @since  v2
+
+    @param{Object}      req     The request info. Needs to contain an email address and a 
+                                password to be a valid query. 
+
+    @return             nothing.
+*/
     var passHashed;
     //if (!req.body) { return res.sendStatus(400); }
 
@@ -4078,6 +4083,13 @@ app.post('/v2/login', async function (req, res) {
 });
 
 function verify(token){
+/*  Verify a valid token was passed in the header.
+
+    @param{String}      token       token given to the user upon login
+
+    @returns            Returns a list containing a status code and the payload if the token was
+                        valid or an error message if the token was not valid.
+*/
 	// if the cookie is not set, return an unauthorized error
 	if (!token) {
 		return [401,"Unauthorized no token"]
