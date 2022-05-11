@@ -16,7 +16,7 @@ const DnDCalendar = withDragAndDrop(Calendar);
 
 export default function CalendarTest() {
     const [events, setEvents] = React.useState([]);
-    const [tempEvent, setTempEvent] = React.useState(null);
+    
     const [isEdit, setEdit] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     //const [anchor, setAnchor] = React.useState(null);
@@ -308,7 +308,6 @@ export default function CalendarTest() {
         getInstructor();
         getRoom();
         setEdit(true);
-        setTempEvent({ ...args.event });
         const { startTime, endTime } = getTimeInterval(args.start, args.end);
         setDate(getDate(args.start));
         setStartTime(startTime);
@@ -332,6 +331,7 @@ export default function CalendarTest() {
          editable Miracle
          editable CISC2.class
          editable Sawin
+         
     
          CISC131.class == (CISC.class) required
          CISC131.professor == Miracle
@@ -342,14 +342,16 @@ export default function CalendarTest() {
 
         let CISCprof1 = 'Miracle';
         let CISCprof2 = 'Sawin';
-        let CISCprof3 = 'test';
         let prefNum1 = 5;
         let prefNum2 = 4;
+        //console.log(instructorList);
+        //console.log(instructorList.at(1));
+        //console.log(courseList);
         // the first parameter has to be a string
         // the second parameter has to be a number
-        layout.suggestValue('CISC.class', 131)
-        layout.suggestValue(CISCprof2, prefNum2)
-        layout.suggestValue('CISC2.class', 480)
+        layout.suggestValue('CISC.class', 131) // sets the vaue of CISC class to 131
+        layout.suggestValue(CISCprof2, prefNum2) // sets the value of the first instructor
+        layout.suggestValue('CISC2.class', 480) // sets tje value of CISCclass2 to 480
         layout.suggestValue(CISCprof1, prefNum1)
 
         layout.updateVariables()
