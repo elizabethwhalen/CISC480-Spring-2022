@@ -1,5 +1,6 @@
-package courses;
+package room;
 
+import alert.MyAlert;
 import database.DatabaseStatic;
 
 import homescreen.HomescreenController;
@@ -13,14 +14,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import room.RoomController;
+import scenes.ChangeScene;
+import scheduler.SchedulerController;
+import users.DeleteFacultyFromDatabaseController;
+import users.FacultyController;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -59,6 +62,12 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
      */
     @FXML
     private Stage stage;
+
+    /**
+     * The change scene object to change between scenes
+     */
+    private final ChangeScene cs = new ChangeScene();
+
 
     /**
      * @param url
@@ -112,7 +121,6 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
         for (Object jsonObject: room) {
             JSONObject job = (JSONObject)jsonObject;
             roomNum.getItems().add((String) job.get("room_num"));
-
         }
     }
 
@@ -139,8 +147,9 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
                 // If JSON object contain the user's selected request
                 if (job.get("building_code").equals(selectedBuilding) && job.get("room_num").equals(selectedRoom)) {
                     try {
-                        // String manipulation because capacity is Integer data type from the database
-                        job.put("capacity", String.valueOf( job.get("capacity")));
+                        System.out.println(job);
+                        job.remove("capacity");
+                        System.out.println(job);
                         // Delete the JSON object from the "room" table from the database
                         DatabaseStatic.deleteData("room", job);
                         // Clear the room number drop-down
@@ -159,10 +168,8 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
         // No room has been selected show an error alert
         else {
             result = false;
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("No Room Selected");
-            alert.setContentText("Please select a room to delete");
-            alert.showAndWait();
+            MyAlert createAlert = new MyAlert("No Room Selected", "Please Select A Room To Delete", Alert.AlertType.ERROR);
+            createAlert.show();
         }
         return result;
     }
@@ -177,9 +184,7 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
      */
     private void back(Button button, String title, String message, Boolean goBackToPrevPage) {
         // Initialize back confirmation button
-        Alert backAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        backAlert.setTitle(title);
-        backAlert.setContentText(message);
+        MyAlert createAlert = new MyAlert(title, message, Alert.AlertType.CONFIRMATION);
         // First scenario to go back to home screen
         if (goBackToPrevPage) {
             // Confirmation to go back to the home screen
@@ -187,7 +192,7 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
                 @Override
                 public void handle(ActionEvent event) {
                     // The Ok button from the alert
-                    Optional<ButtonType> Ok = backAlert.showAndWait();
+                    Optional<ButtonType> Ok = createAlert.showButton();
                     // If user pressed "OK"
                     if (Ok.get().getText().equals("OK")) {
                         // Go back to home screen
@@ -205,16 +210,14 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
                 @Override
                 public void handle(ActionEvent event) {
                     // The Ok button from the alert
-                    Optional<ButtonType> ok = backAlert.showAndWait();
+                    Optional<ButtonType> ok = createAlert.showButton();
                     // If user pressed "OK"
                     if (ok.get().getText().equals("OK")) {
                         // If delete was successful
                         if (confirmButton()) {
                             // Successful deletion alert
-                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("Deleted");
-                            alert.setContentText("The selected course has been deleted.");
-                            alert.showAndWait();
+                            MyAlert createAlert = new MyAlert("Deleted", "The Selected Course Has Been Deleted", Alert.AlertType.INFORMATION);
+                            createAlert.show();
                         }
                     }
                 }
@@ -224,23 +227,66 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
         }
     }
 
-    /**
-     * This method switches the scene back to the home screen
-     */
     @FXML
     public void goBack() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        HomescreenController hsController = loader.getController();
-        hsController.setStage(stage);
-        stage.setTitle("Classy-Schedule");
-        stage.setScene(new Scene(root, 650, 450));
-        stage.show();
+        cs.goToHomepage(stage);
     }
+
+    /**
+     * go to add course scene
+     */
+    @FXML
+    public void goToAddCourse() {
+        cs.addCourseButtonClicked(stage);
+    }
+
+    /**
+     * go to add classroom scene
+     */
+    @FXML
+    public void goToAddClassroom() {
+        cs.addClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to add faculty scene
+     */
+    @FXML
+    public void goToAddFaculty() {
+        cs.addProfessorButtonClicked(stage);
+    }
+
+    /**
+     * go to delete course scene
+     */
+    @FXML
+    public void goToDeleteCourse() {
+        cs.deleteCourseButtonClicked(stage);
+    }
+
+    /**
+     * go to delete classroom scene
+     */
+    @FXML
+    public void goToDeleteClassroom() {
+        cs.deleteClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to delete faculty scene
+     */
+    @FXML
+    public void goToDeleteFaculty() {
+        cs.deleteFacultyButtonClicked(stage);
+    }
+
+    /**
+     * go to view schedule scene
+     */
+    @FXML
+    public void goToViewSchedule() {
+        cs.viewScheduleClicked(stage);
+    }
+
 }
 
