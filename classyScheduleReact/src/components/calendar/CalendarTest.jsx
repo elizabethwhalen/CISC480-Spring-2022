@@ -28,7 +28,7 @@ export default function CalendarTest() {
     const [endTime, setEndTime] = React.useState("");
     const [date, setDate] = React.useState('');
     //const [color, setColor] = React.useState('#b3e5fc');
-    const [selectedEvent, setSelectedEvent] = React.useState('');
+    const [selectedEvent, setSelectedEvent] = React.useState({});
 
     const token = sessionStorage.getItem("token");
     const minTime = new Date();
@@ -303,7 +303,7 @@ export default function CalendarTest() {
 
     const onEventClick = React.useCallback((args) => {
         console.log(events)
-        setSelectedEvent(args.id);
+        setSelectedEvent(args);
         getCourse();
         getInstructor();
         getRoom();
@@ -370,7 +370,7 @@ export default function CalendarTest() {
             {open &&
                 <EditClassForm
                     open={open}
-                    selected={selectedEvent}
+                    event={selectedEvent}
                     startTime={startTime}
                     endTime={endTime}
                     date={date}
