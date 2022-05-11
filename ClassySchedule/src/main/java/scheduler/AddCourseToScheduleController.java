@@ -137,100 +137,17 @@ public class AddCourseToScheduleController implements Initializable {
      */
     Alert confirmBackButton = new Alert(Alert.AlertType.CONFIRMATION);
 
+
+    private List<Timeslot> timeslots;
+
     private void getTimeSlots(){
-        //TODO: Find out why i need to call removeDuplicates twice.
-
-        JSONArray currentTimeChunk = DatabaseStatic.getData("timeslot");
-        List<LocalTime> startTime = new ArrayList<LocalTime>();
-        List<LocalTime> endTime = new ArrayList<LocalTime>();
-
-        //grabs a list of times from the database and adds them to a list, removes the duplicates, and sorts them.
-        for (Object jsonObject: currentTimeChunk) {
-            JSONObject job = (JSONObject)jsonObject;
-            int day = (int) job.get("day_of_week");
-            listOfTimes.add((String) job.get("time_start") + " - " + job.get("time_end"));
+        TimeSlotFactory timeSlotList = new TimeSlotFactory();
+        timeslots = timeSlotList.createTimeSlot();
+        for(Timeslot timeslot : timeslots){
+            classTimes.getItems().add(timeslot.toString());
         }
-        System.out.println(listOfTimes.size());
-        removeDuplicateTimes(listOfTimes);
-        System.out.println(listOfTimes.size());
-        //Add Times to startTime and endTime list
-        for(int i=0; i < listOfTimes.size(); i++) {
-            String stringTime = listOfTimes.get(i).toString();
-
-            String stringStartTime = stringTime.substring(0, stringTime.indexOf(" "));
-            String stringEndTime = stringTime.substring(stringTime.lastIndexOf(" ") + 1);
-            LocalTime currentStartTime = LocalTime.parse(stringStartTime, DateTimeFormatter.ISO_LOCAL_TIME);
-            LocalTime currentEndTime = LocalTime.parse(stringEndTime, DateTimeFormatter.ISO_LOCAL_TIME);
-            startTime.add(currentStartTime);
-            endTime.add(currentEndTime);
-        }
-
-        sortTimes(startTime, endTime);
-        //Inserts time slots to the dropdown menu
-        for(int numTimes=0; numTimes < listOfTimes.size(); numTimes++){
-            classTimes.getItems().add(listOfTimes.get(numTimes));
-        }
-        System.out.println(currentTimeChunk);
     }
 
-    /**
-     * This method sorts the times and updates the listoftimes
-     * @param startingTimes
-     * @param endTimes
-     */
-    @SuppressWarnings("DuplicatedCode")
-    private void sortTimes(List<LocalTime> startingTimes, List<LocalTime> endTimes){
-        List<String> sortedTimes = new ArrayList<String>();
-        for (int index = 0; index < startingTimes.size()-1; index++){
-            for(int j=0; j<startingTimes.size()-1-index; j++){
-                LocalTime currentStartTime = startingTimes.get(j);
-                LocalTime currentEndTime = endTimes.get(j);
-                if(currentStartTime.isAfter(startingTimes.get(j+1))){
-                    startingTimes.set(j,startingTimes.get(j+1));
-                    startingTimes.set(j+1, currentStartTime);
-
-                    endTimes.set(j,endTimes.get(j+1));
-                    endTimes.set(j+1, currentEndTime);
-
-                }
-                //Handle the end times
-                if(currentStartTime == startingTimes.get(j+1)) {
-                    if (currentEndTime.isAfter(endTimes.get(j + 1))){
-                        startingTimes.set(j, startingTimes.get(j + 1));
-                        startingTimes.set(j + 1, currentStartTime);
-                        endTimes.set(j, endTimes.get(j + 1));
-                        endTimes.set(j + 1, currentEndTime);
-                    }
-                }
-            }
-        }
-        //Update the current List of Times
-        for(int k =0; k < startingTimes.size(); k++){
-            sortedTimes.add(startingTimes.get(k).toString() + " - " + endTimes.get(k).toString());
-        }
-        listOfTimes = sortedTimes;
-    }
-
-
-    /**
-     * This method removes the duplicate time slots given to us by the database.
-     * @param listOfTimes
-     */
-    private List<String> removeDuplicateTimes(List<String> listOfTimes){
-        boolean removedAllDuplicates = false;
-        while(!removedAllDuplicates) {
-            removedAllDuplicates = true;
-            for (int index = 0; index < listOfTimes.size(); index++) {
-                String currentTimeChunk = listOfTimes.get(index);
-                if (index != listOfTimes.lastIndexOf(currentTimeChunk)) {
-                    listOfTimes.remove(listOfTimes.lastIndexOf(currentTimeChunk));
-                    removedAllDuplicates = false;
-                }
-            }
-        }
-
-        return listOfTimes;
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -324,27 +241,43 @@ public class AddCourseToScheduleController implements Initializable {
      * @throws ParseException
      */
     private List<Agenda.Appointment> createAppointment() throws ParseException {
-        List<String> selectedDates = new ArrayList<>();
-        for (CheckBox radioButton: datesSelected) {
-            if (radioButton.isSelected()) {
-                selectedDates.add(radioButton.getText());
-            }
-        }
-        String stringTime = classTimes.getSelectionModel().getSelectedItem();
-        String stringStartTime = stringTime.substring(0, stringTime.indexOf(" "));
-        String stringEndTime = stringTime.substring(stringTime.lastIndexOf(" ") + 1);
+        Timeslot timeslot = timeslots.get(classTimes.getSelectionModel().getSelectedIndex());
 
+        String[] days = timeslot.getDaysOfWeek().split("");
         List<LocalDateTime> startDaysAndTimes = new ArrayList<>();
         List<LocalDateTime> endDaysAndTimes = new ArrayList<>();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        for (String day : selectedDates) {
-            startDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + stringStartTime)));
-            endDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(DayOfTheWeek.valueOf(day.toUpperCase(Locale.ROOT)).label + " " + stringEndTime)));
+        for (String day : days) {
+            startDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(convertToDayOFWeek(day) + " " + timeslot.getStartTime())));
+            endDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(convertToDayOFWeek(day) + " " + timeslot.getEndTime())));
         }
 
         AppointmentFactory appointmentFactory = new AppointmentFactory(startDaysAndTimes, endDaysAndTimes, course.getSelectionModel().getSelectedItem(), room.getSelectionModel().getSelectedItem(), "test",course.getSelectionModel().getSelectedItem(), course.getSelectionModel().getSelectedItem());
 
         return appointmentFactory.createAppointments();
+    }
+
+    /**
+     * TODO update commetn
+     * @param day
+     * @return
+     */
+    public DayOfTheWeek convertToDayOFWeek(String day) {
+        switch (day.toUpperCase()) {
+            case "M":
+                return DayOfTheWeek.MONDAY;
+            case "T":
+                return DayOfTheWeek.TUESDAY;
+            case "W":
+                return DayOfTheWeek.WEDNESDAY;
+            case "R":
+                return DayOfTheWeek.THURSDAY;
+            case "F":
+                return DayOfTheWeek.FRIDAY;
+            default:
+                return null;
+        }
+
     }
 
     /**

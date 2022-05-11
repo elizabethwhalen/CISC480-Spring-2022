@@ -27,17 +27,17 @@ public final class DatabaseStatic {
      * Verifies the given credentials. Populates the token object to be used
      * for future database requests
      *
-     * @param username the username to be checked
+     * @param email the username to be checked
      * @param password the password to be checked
      * @return true if the user is valid, false otherwise
      */
-    public static boolean login(String username, String password) {
+    public static boolean login(String email, String password) {
         try {
             CloseableHttpClient client = HttpClients.createDefault();
             URIBuilder builder = new URIBuilder(url + "login");
             JSONObject json = new JSONObject();
             json.put("password", password);
-            json.put("username", username);
+            json.put("email", email);
             StringEntity entity = new StringEntity(json.toString());
             HttpPost httpPost = new HttpPost(builder.build());
             httpPost.setHeader("Content-Type", "application/json");

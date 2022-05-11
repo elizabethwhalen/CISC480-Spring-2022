@@ -16,7 +16,6 @@
       <CheckBox fx:id="wednesday" layoutX="31.0" layoutY="125.0" mnemonicParsing="false" text="Wednesday" />
       <CheckBox fx:id="thursday" layoutX="31.0" layoutY="150.0" mnemonicParsing="false" text="Thursday" />
       <CheckBox fx:id="friday" layoutX="31.0" layoutY="175.0" mnemonicParsing="false" text="Friday" />
-      <ComboBox fx:id="timeSlot" layoutX="662.0" layoutY="138.0" prefHeight="25.0" prefWidth="154.0" promptText="Timeslot" />
       <ComboBox fx:id="classTimes" layoutX="428.0" layoutY="70.0" prefWidth="150.0" promptText="Class Time" />
     </children>
 </AnchorPane>
