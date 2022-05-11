@@ -105,13 +105,21 @@ async function db_put(query, data){
 }
 
 function check_int_type(value, res, int_size = null){
-    /*
+/*
     Checks if a value is an integer and if the size fits within the column.
 
     Size is only checked in PUT and UPDATE. If a user is querying values that are too large in a GET or DELETE, 
-    that is their own problem. 
+    that is their own problem. If a wrong type or too large value is detected. The res object is thrown to 
+    notifiy the user of their bad request.
 
-    */
+    @since          v3
+
+    @param          value       value to test if a number and smaller than the maximum allowed size by the column
+    @param{Object}  res         res from the calling function to throw in the case of a failure
+    @param{Integer} int_size    maximum size integer can be
+
+    @returns        Returns nothing if no errors encountered.
+*/
     if(isNaN(value)){
         throw res.status(400).send(`${value} is not the correct data type for the column`);
     };
@@ -123,13 +131,20 @@ function check_int_type(value, res, int_size = null){
 }
 
 function check_str_type(value, res, str_size = null){
-    /*
+/*
     Checks if a value is a STR and if the size fits within the column. 
 
     Size is only checked in PUT and UPDATE. If a user is querying values that are too large in a GET or DELETE, 
     that is their own problem. 
-    
-    */
+
+    @since          v3
+
+    @param          value       value to test if a string and smaller than the maximum allowed size by the column
+    @param{Object}  res         res from the calling function to throw in the case of a failure
+    @param{Integer} int_size    maximum size integer can be
+
+    @returns        Returns nothing if no errors encountered.
+*/
     if(typeof value !== 'string'){
         throw res.status(400).send(`${value} is not the correct data type for the column`);
     }
