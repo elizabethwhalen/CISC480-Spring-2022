@@ -99,7 +99,18 @@ app.get('/help', (req, res) => {
 //
 
 //queries
-async function db_get(query){ //
+async function db_get(query){
+/*  Queries the database.
+
+    Uses the previously made connection object as the database connection. Uses a Promise object to
+    handle the query and any errors that may come from it.
+
+    @since              3.0.0
+
+    @param {String}     query     Query to send to the database. Should be valid SQL.
+
+    @return{Object}  Returns Query Results
+*/
     console.log(query)
     return new Promise( (resolve, reject) => {
         con.query(query, (err, result) => {
@@ -111,7 +122,19 @@ async function db_get(query){ //
         });
       })
 }
-async function db_post(query, data){ //
+async function db_post(query, data){
+/*  Puts a record in the the database.
+
+    Uses the previously made connection object as the database connection. Uses a Promise object to
+    handle the query and any errors that may come from it. If the row is already in the table, the
+    user is notified. Only users with a high enough access level can use db_post.
+
+    @since              3.0.0
+
+    @param {String}     query     Query to add row(s) to the database. Should be valid SQL.
+
+    @return{Object}  Returns number of affected rows.
+*/
     console.log(query, data)
     return new Promise( (resolve, reject) => {
         con.query(query, [data], (err, result) => {
@@ -126,6 +149,18 @@ async function db_post(query, data){ //
     })
 }
 async function db_delete(query){
+/*  Deletes a record from the database.
+
+    Uses the previously made connection object as the database connection. Uses a Promise object to
+    handle the query and any errors that may come from it. Only users with a high enough access level
+    can use db_delete.
+
+    @since              3.0.0
+
+    @param {String}     query     Query to delete rows from the database. Should be valid SQL.
+
+    @return{Object}  Returns Query Results
+*/
     return new Promise( (resolve, reject) => {
       con.query(query, (err, result) => {
           if (err) {
@@ -137,6 +172,17 @@ async function db_delete(query){
     })
 }
 async function db_put(query, data){
+/*  Updates a record in the database.
+
+    Uses the previously made connection object as the database connection. Uses a Promise object to
+    handle the query and any errors that may come from it.
+
+    @since              3.0.0
+
+    @param {String}     query     Query to send to the database. Should be valid SQL.
+
+    @return{Object}  Returns Query Results
+*/
     return new Promise( (resolve, reject) => {
       con.query(query, data, (err, result) => {
           if (err) {
@@ -159,68 +205,7 @@ async function db_put(query, data){
 //***CLASS***
 //view
 //add
-app.post('/v3/class', async (req, res) => {
-    // verify auth
-    try{
-        token = req.headers.authorization.split(" ")[1]
-    } catch(e){
-        token = req.body.token
-    }
-    var verifyOutput = verify(token)
-    const status=verifyOutput[0]
-    const payload=verifyOutput[1]
-    if (status != 200){res.status(status).send(payload)}
-    //auth verified. Only access_level 2 (admin) can use this method.
-    else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
-    else{
-        //check if new dept
-        dept_exists = await db_get("SELECT * FROM dept WHERE dept_code="+con.escape(req.body.dept_code))
-        console.log(dept_exists)
-        if (dept_exists.length==0){return res.status(404).send("Department does not exist")} // could prompt them to add dept maybe??
-        class_exists = await db_get("SELECT * FROM dept WHERE dept_code="+con.escape(req.body.dept_code)+"AND class_num="+con.escape(req.body.class_num))
-        if (class_exists.length==0){return res.status(400).send("Class alreadys exists")}
-        let query = "INSERT INTO class (dept_code,class_num,class_name) VALUES ?";
-        //TO DO:
-        data = [
-            [req.body.dept_code,req.body.class_num,req.body.class_name]
-        ]
-        try{classAdded = await db_post(query, data)
-        } catch(err){
-            return res.status(400).send("Error encountered");
-        } //CHANGETHIS
 
-        //check for features
-        if (req.body.features){
-            feature_array = req.body.features.split(",")
-            for(let i = 0; i < feature_array.length; i++){
-                feature = con.escape(feature_array[i])
-                //check if new dept
-                try { feature_exists = await db_get("SELECT * FROM feature WHERE feature_name="+feature)
-                } catch(err){res.status(400).send("Error entering feature "+feature)}
-                if (feature_exists.length==0){
-                    try {
-                        await db_post("INSERT INTO feature VALUES ?", [[undefined,feature_array[i]]])
-                        try { new_feature = await db_get("SELECT * FROM feature WHERE feature_name="+feature)
-                        } catch(err){res.status(400).send("Error entering feature "+feature)}
-                        feature_id = new_feature[0].feature_id
-                    }catch(err){res.status(400).send("Error entering feature "+feature)}
-                }
-                else{
-                    feature_id = feature_exists[0].feature_id
-                }
-                try{
-                    feature_data = [
-                        [req.body.dept_code,req.body.class_num,feature_id]
-                    ]
-                    await db_post("INSERT INTO class_feature VALUES ?",feature_data)
-                }
-                catch(err){res.status(400).send("Error entering feature "+feature)}
-
-            }
-            return res.status(201).send("Class and features added to database")
-        }
-    }
-});
 //update
 //delete
 
@@ -328,6 +313,20 @@ app.post('/v3/class', async (req, res) => {
 //***BUILDING***
 //view
 app.get('/v2/building', (req, res) => {
+/*  Query the building table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -377,6 +376,19 @@ app.get('/v2/building', (req, res) => {
 });
 //add
 app.post('/v2/building', (req, res) => {
+/*  Adds a record to the building table.
+
+    All columns in the table must be present with valid values (a valid value depends on
+    the type and size of the column) in req.body to successfully add the record.
+
+    @ since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -403,7 +415,24 @@ app.post('/v2/building', (req, res) => {
 });
 //update
 app.put('/v2/building/:building_code_id', (req, res) => {
+/*  Updates a row in the building table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
+
     try{
         token = req.headers.authorization.split(" ")[1]
     } catch(e){
@@ -428,6 +457,19 @@ app.put('/v2/building/:building_code_id', (req, res) => {
 });
 //delete
 app.delete('/v2/building/:building_code_id', (req, res) => {
+/*  Delete a record from the building table.
+
+    All primary keys in the table must be present in req.body to successfully
+    select and subsequently delete the record. If a user does not have a high
+    enough access level to delete records from a table, their request will be
+    denied.
+
+    @since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with
+                                a token and primary key columns and their values
+                                in req.body
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -451,6 +493,20 @@ app.delete('/v2/building/:building_code_id', (req, res) => {
 //***CLASS***
 //view
 app.get('/v2/class', (req, res) => {
+/*  Query the class table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -512,6 +568,19 @@ app.get('/v2/class', (req, res) => {
 });
 //add
 app.post('/v2/class', (req, res) => {
+/*  Adds a record to the class table.
+
+    All columns in the table must be present with valid values (a valid value depends on
+    the type and size of the column) in req.body to successfully add the record.
+
+    @ since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -538,6 +607,22 @@ app.post('/v2/class', (req, res) => {
 });
 //update
 app.put('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
+/*  Updates a row in the class table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -563,6 +648,19 @@ app.put('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
 });
 //delete
 app.delete('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
+/*  Delete a record from the class table.
+
+    All primary keys in the table must be present in req.body to successfully
+    select and subsequently delete the record. If a user does not have a high
+    enough access level to delete records from a table, their request will be
+    denied.
+
+    @since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with
+                                a token and primary key columns and their values
+                                in req.body
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -586,6 +684,20 @@ app.delete('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
 //***CLASS_FEATURE***
 //view
 app.get('/v2/class_feature', (req, res) => {
+/*  Query the class_feature table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -647,6 +759,19 @@ app.get('/v2/class_feature', (req, res) => {
 });
 //add
 app.post('/v2/class_feature', (req, res) => {
+/*  Adds a record to the class_feature table.
+
+    All columns in the table must be present with valid values (a valid value depends on
+    the type and size of the column) in req.body to successfully add the record.
+
+    @ since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -673,6 +798,22 @@ app.post('/v2/class_feature', (req, res) => {
 });
 //update
 app.put('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req, res) => {
+/*  Updates a row in the class_feature table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -698,6 +839,19 @@ app.put('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req, re
 });
 //delete
 app.delete('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req, res) => {
+/*  Delete a record from the class_feature table.
+
+    All primary keys in the table must be present in req.body to successfully
+    select and subsequently delete the record. If a user does not have a high
+    enough access level to delete records from a table, their request will be
+    denied.
+
+    @since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with
+                                a token and primary key columns and their values
+                                in req.body
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -721,6 +875,20 @@ app.delete('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req,
 //***DEPT***
 //view
 app.get('/v2/dept', (req, res) => {
+/*  Query the dept table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -770,6 +938,19 @@ app.get('/v2/dept', (req, res) => {
 });
 //add
 app.post('/v2/dept', (req, res) => {
+/*  Adds a record to the dept table.
+
+    All columns in the table must be present with valid values (a valid value depends on
+    the type and size of the column) in req.body to successfully add the record.
+
+    @ since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -796,6 +977,22 @@ app.post('/v2/dept', (req, res) => {
 });
 //update
 app.put('/v2/dept/:dept_code_id', (req, res) => {
+/*  Updates a row in the dept table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -821,6 +1018,19 @@ app.put('/v2/dept/:dept_code_id', (req, res) => {
 });
 //delete
 app.delete('/v2/dept/:dept_code_id', (req, res) => {
+/*  Delete a record from the dept table.
+
+    All primary keys in the table must be present in req.body to successfully
+    select and subsequently delete the record. If a user does not have a high
+    enough access level to delete records from a table, their request will be
+    denied.
+
+    @since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with
+                                a token and primary key columns and their values
+                                in req.body
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -844,6 +1054,20 @@ app.delete('/v2/dept/:dept_code_id', (req, res) => {
 //***FACULTY***
 //view
 app.get('/v2/faculty', (req, res) => {
+/*  Query the faculty table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -941,6 +1165,19 @@ app.get('/v2/faculty', (req, res) => {
 });
 //add
 app.post('/v2/faculty', (req, res) => {
+/*  Adds a record to the faculty table.
+
+    All columns in the table must be present with valid values (a valid value depends on
+    the type and size of the column) in req.body to successfully add the record.
+
+    @ since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -967,6 +1204,22 @@ app.post('/v2/faculty', (req, res) => {
 });
 //update
 app.put('/v2/faculty/:faculty_id_id', (req, res) => {
+/*  Updates a row in the faculty table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -992,6 +1245,19 @@ app.put('/v2/faculty/:faculty_id_id', (req, res) => {
 });
 //delete
 app.delete('/v2/faculty/:faculty_id_id', (req, res) => {
+/*  Delete a record from the faculty table.
+
+    All primary keys in the table must be present in req.body to successfully
+    select and subsequently delete the record. If a user does not have a high
+    enough access level to delete records from a table, their request will be
+    denied.
+
+    @since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with
+                                a token and primary key columns and their values
+                                in req.body
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1015,6 +1281,20 @@ app.delete('/v2/faculty/:faculty_id_id', (req, res) => {
 //***FACULTY_CLASS***
 //view
 app.get('/v2/faculty_class', (req, res) => {
+/*  Query the faculty_class table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1093,6 +1373,19 @@ app.get('/v2/faculty_class', (req, res) => {
 });
 //add
 app.post('/v2/faculty_class', (req, res) => {
+/*  Adds a record to the faculty_class table.
+
+    All columns in the table must be present with valid values (a valid value depends on
+    the type and size of the column) in req.body to successfully add the record.
+
+    @ since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1117,6 +1410,22 @@ app.post('/v2/faculty_class', (req, res) => {
 });
 //update
 app.put('/v2/faculty_class/:faculty_id_id/:dept_code_id/:class_num_id', (req, res) => {
+/*  Updates a row in the faculty_class table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1140,6 +1449,19 @@ app.put('/v2/faculty_class/:faculty_id_id/:dept_code_id/:class_num_id', (req, re
 });
 //delete
 app.delete('/v2/faculty_class/:faculty_id_id/:dept_code_id/:class_num_id', (req, res) => {
+/*  Delete a record from the faculty_class table.
+
+    All primary keys in the table must be present in req.body to successfully
+    select and subsequently delete the record. If a user does not have a high
+    enough access level to delete records from a table, their request will be
+    denied.
+
+    @since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with
+                                a token and primary key columns and their values
+                                in req.body
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1161,6 +1483,20 @@ app.delete('/v2/faculty_class/:faculty_id_id/:dept_code_id/:class_num_id', (req,
 //***FACULTY_FEATURE***
 //view
 app.get('/v2/faculty_feature', (req, res) => {
+/*  Query the faculty_feature table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1221,6 +1557,19 @@ app.get('/v2/faculty_feature', (req, res) => {
 });
 //add
 app.post('/v2/faculty_feature', (req, res) => {
+/*  Adds a record to the faculty_feature table.
+
+    All columns in the table must be present with valid values (a valid value depends on
+    the type and size of the column) in req.body to successfully add the record.
+
+    @ since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1245,6 +1594,22 @@ app.post('/v2/faculty_feature', (req, res) => {
 });
 //update
 app.put('/v2/faculty_feature/:faculty_id_id/:feature_id_id', (req, res) => {
+/*  Updates a row in the faculty_feature table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1268,6 +1633,19 @@ app.put('/v2/faculty_feature/:faculty_id_id/:feature_id_id', (req, res) => {
 });
 //delete
 app.delete('/v2/faculty_feature/:faculty_id_id/:feature_id_id', (req, res) => {
+/*  Delete a record from the faculty_feature table.
+
+    All primary keys in the table must be present in req.body to successfully
+    select and subsequently delete the record. If a user does not have a high
+    enough access level to delete records from a table, their request will be
+    denied.
+
+    @since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with
+                                a token and primary key columns and their values
+                                in req.body
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1289,6 +1667,20 @@ app.delete('/v2/faculty_feature/:faculty_id_id/:feature_id_id', (req, res) => {
 //***FACULTY_OTHER_REQUEST***
 //view
 app.get('/v2/faculty_other_request', (req, res) => {
+/*  Query the faculty_other_request table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1337,6 +1729,19 @@ app.get('/v2/faculty_other_request', (req, res) => {
 });
 //add
 app.post('/v2/faculty_other_request', (req, res) => {
+/*  Adds a record to the faculty_other_request table.
+
+    All columns in the table must be present with valid values (a valid value depends on
+    the type and size of the column) in req.body to successfully add the record.
+
+    @ since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1361,6 +1766,22 @@ app.post('/v2/faculty_other_request', (req, res) => {
 });
 //update
 app.put('/v2/faculty_other_request/:faculty_id_id/:request_id', (req, res) => {
+/*  Updates a row in the faculty_other_request table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1384,6 +1805,19 @@ app.put('/v2/faculty_other_request/:faculty_id_id/:request_id', (req, res) => {
 });
 //delete
 app.delete('/v2/faculty_other_request/:faculty_id_id/:request_id', (req, res) => {
+/*  Delete a record from the faculty_other_request table.
+
+    All primary keys in the table must be present in req.body to successfully
+    select and subsequently delete the record. If a user does not have a high
+    enough access level to delete records from a table, their request will be
+    denied.
+
+    @since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with
+                                a token and primary key columns and their values
+                                in req.body
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1405,6 +1839,20 @@ app.delete('/v2/faculty_other_request/:faculty_id_id/:request_id', (req, res) =>
 //***FACULTY_TIMESLOT***
 //view
 app.get('/v2/faculty_timeslot', (req, res) => {
+/*  Query the faculty_timeslot table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1465,6 +1913,19 @@ app.get('/v2/faculty_timeslot', (req, res) => {
 });
 //add
 app.post('/v2/faculty_timeslot', (req, res) => {
+/*  Adds a record to the faculty_timeslot table.
+
+    All columns in the table must be present with valid values (a valid value depends on
+    the type and size of the column) in req.body to successfully add the record.
+
+    @ since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1489,6 +1950,22 @@ app.post('/v2/faculty_timeslot', (req, res) => {
 });
 //update
 app.put('/v2/faculty_timeslot/:faculty_id_id/:time_id_id', (req, res) => {
+/*  Updates a row in the faculty_timeslot table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1512,6 +1989,19 @@ app.put('/v2/faculty_timeslot/:faculty_id_id/:time_id_id', (req, res) => {
 });
 //delete
 app.delete('/v2/faculty_timeslot/:faculty_id_id/:time_id_id', (req, res) => {
+/*  Delete a record from the faculty_timeslot table.
+
+    All primary keys in the table must be present in req.body to successfully
+    select and subsequently delete the record. If a user does not have a high
+    enough access level to delete records from a table, their request will be
+    denied.
+
+    @since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with
+                                a token and primary key columns and their values
+                                in req.body
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1533,6 +2023,20 @@ app.delete('/v2/faculty_timeslot/:faculty_id_id/:time_id_id', (req, res) => {
 //***FEATURE***
 //view
 app.get('/v2/feature', (req, res) => {
+/*  Query the feature table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1582,6 +2086,19 @@ app.get('/v2/feature', (req, res) => {
 });
 //add
 app.post('/v2/feature', (req, res) => {
+/*  Adds a record to the feature table.
+
+    All columns in the table must be present with valid values (a valid value depends on
+    the type and size of the column) in req.body to successfully add the record.
+
+    @ since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1608,6 +2125,22 @@ app.post('/v2/feature', (req, res) => {
 });
 //update
 app.put('/v2/feature/:feature_id_id', (req, res) => {
+/*  Updates a row in the feature table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1633,6 +2166,19 @@ app.put('/v2/feature/:feature_id_id', (req, res) => {
 });
 //delete
 app.delete('/v2/feature/:feature_id_id', (req, res) => {
+/*  Delete a record from the feature table.
+
+    All primary keys in the table must be present in req.body to successfully
+    select and subsequently delete the record. If a user does not have a high
+    enough access level to delete records from a table, their request will be
+    denied.
+
+    @since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with
+                                a token and primary key columns and their values
+                                in req.body
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1656,6 +2202,20 @@ app.delete('/v2/feature/:feature_id_id', (req, res) => {
 //***LOGIN***
 //view
 app.get('/v2/login', (req, res) => {
+/*  Query the login table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1732,6 +2292,21 @@ app.get('/v2/login', (req, res) => {
 //add does not exist. use /v2/signup method.
 //update
 app.put('/v2/login/:email_id', (req, res) => {
+/*  Updates a faculty_id or the access level in the login table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1757,6 +2332,21 @@ app.put('/v2/login/:email_id', (req, res) => {
     }
 });
 app.put('/v2/login/:email_id/change_password', async (req, res) => {
+/*  Updates a password in the login table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1765,8 +2355,11 @@ app.put('/v2/login/:email_id/change_password', async (req, res) => {
     }
 
     const salt = await bcrypt.genSalt(10)
-    try{ hash = await bcrypt.hash(req.body.password, salt)
-    } catch (err) {return res.status(500).send("Error encrypting data, please try again")}
+    try{
+        hash = await bcrypt.hash(req.body.password, salt)
+    } catch (err) {
+        return res.status(500).send("Error encrypting data, please try again")
+    }
 
     var verifyOutput = verify(token)
     const status=verifyOutput[0]
@@ -1790,6 +2383,19 @@ app.put('/v2/login/:email_id/change_password', async (req, res) => {
 });
 //delete
 app.delete('/v2/login/:email_id', (req, res) => {
+/*  Delete a record from the login table.
+
+    All primary keys in the table must be present in req.body to successfully
+    select and subsequently delete the record. If a user does not have a high
+    enough access level to delete records from a table, their request will be
+    denied.
+
+    @since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with
+                                a token and primary key columns and their values
+                                in req.body
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1813,6 +2419,20 @@ app.delete('/v2/login/:email_id', (req, res) => {
 //***MEETS***
 //view
 app.get('/v2/meets', (req, res) => {
+/*  Query the meets table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1933,6 +2553,19 @@ app.get('/v2/meets', (req, res) => {
 });
 //add
 app.post('/v2/meets', (req, res) => {
+/*  Adds a record to the meets table.
+
+    All columns in the table must be present with valid values (a valid value depends on
+    the type and size of the column) in req.body to successfully add the record.
+
+    @ since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1959,6 +2592,22 @@ app.post('/v2/meets', (req, res) => {
 });
 //update
 app.put('/v2/meets/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:draft_id/:building_code_id/:room_num_id/:time_id_id', (req, res) => {
+/*  Updates a row in the meets table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -1984,6 +2633,19 @@ app.put('/v2/meets/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:dra
 });
 //delete
 app.delete('/v2/meets/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:draft_id/:building_code_id/:room_num_id/:time_id_id', (req, res) => {
+/*  Delete a record from the meets table.
+
+    All primary keys in the table must be present in req.body to successfully
+    select and subsequently delete the record. If a user does not have a high
+    enough access level to delete records from a table, their request will be
+    denied.
+
+    @since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with
+                                a token and primary key columns and their values
+                                in req.body
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2007,6 +2669,20 @@ app.delete('/v2/meets/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:
 //***ROOM***
 //view
 app.get('/v2/room', (req, res) => {
+/*  Query the room table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2067,6 +2743,19 @@ app.get('/v2/room', (req, res) => {
 });
 //add
 app.post('/v2/room', (req, res) => {
+/*  Adds a record to the room table.
+
+    All columns in the table must be present with valid values (a valid value depends on
+    the type and size of the column) in req.body to successfully add the record.
+
+    @ since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2093,6 +2782,22 @@ app.post('/v2/room', (req, res) => {
 });
 //update
 app.put('/v2/room/:building_code_id/:room_num_id', (req, res) => {
+/*  Updates a row in the room table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2118,6 +2823,19 @@ app.put('/v2/room/:building_code_id/:room_num_id', (req, res) => {
 });
 //delete
 app.delete('/v2/room/:building_code_id/:room_num_id', (req, res) => {
+/*  Delete a record from the room table.
+
+    All primary keys in the table must be present in req.body to successfully
+    select and subsequently delete the record. If a user does not have a high
+    enough access level to delete records from a table, their request will be
+    denied.
+
+    @since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with
+                                a token and primary key columns and their values
+                                in req.body
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2141,6 +2859,20 @@ app.delete('/v2/room/:building_code_id/:room_num_id', (req, res) => {
 //***ROOM_FEATURE***
 //view
 app.get('/v2/room_feature', (req, res) => {
+/*  Query the room_feature table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2201,6 +2933,19 @@ app.get('/v2/room_feature', (req, res) => {
 });
 //add
 app.post('/v2/room_feature', (req, res) => {
+/*  Adds a record to the room_feature table.
+
+    All columns in the table must be present with valid values (a valid value depends on
+    the type and size of the column) in req.body to successfully add the record.
+
+    @ since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2227,6 +2972,22 @@ app.post('/v2/room_feature', (req, res) => {
 });
 //update
 app.put('/v2/room_feature/:building_code_id/:room_num_id/:feature_id_id', (req, res) => {
+/*  Updates a row in the room table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2252,6 +3013,19 @@ app.put('/v2/room_feature/:building_code_id/:room_num_id/:feature_id_id', (req, 
 });
 //delete
 app.delete('/v2/room_feature/:building_code_id/:room_num_id/:feature_id_id', (req, res) => {
+/*  Delete a record from the room_feature table.
+
+    All primary keys in the table must be present in req.body to successfully
+    select and subsequently delete the record. If a user does not have a high
+    enough access level to delete records from a table, their request will be
+    denied.
+
+    @since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with
+                                a token and primary key columns and their values
+                                in req.body
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2275,6 +3049,20 @@ app.delete('/v2/room_feature/:building_code_id/:room_num_id/:feature_id_id', (re
 //***SECTION***
 //view
 app.get('/v2/section', (req, res) => {
+/*  Query the section table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2371,6 +3159,19 @@ app.get('/v2/section', (req, res) => {
 });
 //add
 app.post('/v2/section', (req, res) => {
+/*  Adds a record to the section table.
+
+    All columns in the table must be present with valid values (a valid value depends on
+    the type and size of the column) in req.body to successfully add the record.
+
+    @ since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2397,6 +3198,22 @@ app.post('/v2/section', (req, res) => {
 });
 //update
 app.put('/v2/section/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:draft_id', (req, res) => {
+/*  Updates a row in the section table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2422,6 +3239,19 @@ app.put('/v2/section/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:d
 });
 //delete
 app.delete('/v2/section/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:draft_id', (req, res) => {
+/*  Delete a record from the section table.
+
+    All primary keys in the table must be present in req.body to successfully
+    select and subsequently delete the record. If a user does not have a high
+    enough access level to delete records from a table, their request will be
+    denied.
+
+    @since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with
+                                a token and primary key columns and their values
+                                in req.body
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2445,6 +3275,20 @@ app.delete('/v2/section/:dept_code_id/:class_num_id/:section_num_id/:semester_id
 //***TEACHES***
 //view
 app.get('/v2/teaches', (req, res) => {
+/*  Query the teaches table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2541,6 +3385,19 @@ app.get('/v2/teaches', (req, res) => {
 });
 //add
 app.post('/v2/teaches', (req, res) => {
+/*  Adds a record to the teaches table.
+
+    All columns in the table must be present with valid values (a valid value depends on
+    the type and size of the column) in req.body to successfully add the record.
+
+    @ since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2567,6 +3424,22 @@ app.post('/v2/teaches', (req, res) => {
 });
 //update
 app.put('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:draft_id/:faculty_id_id', (req, res) => {
+/*  Updates a row in the teaches table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2592,6 +3465,19 @@ app.put('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:d
 });
 //delete
 app.delete('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:draft_id/:faculty_id_id', (req, res) => {
+/*  Delete a record from the teaches table.
+
+    All primary keys in the table must be present in req.body to successfully
+    select and subsequently delete the record. If a user does not have a high
+    enough access level to delete records from a table, their request will be
+    denied.
+
+    @since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with
+                                a token and primary key columns and their values
+                                in req.body
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2615,6 +3501,20 @@ app.delete('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id
 //***TIMESLOT***
 //view
 app.get('/v2/timeslot', (req, res) => {
+/*  Query the timeslot table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2687,6 +3587,19 @@ app.get('/v2/timeslot', (req, res) => {
 });
 //add
 app.post('/v2/timeslot', (req, res) => {
+/*  Adds a record to the timeslot table.
+
+    All columns in the table must be present with valid values (a valid value depends on
+    the type and size of the column) in req.body to successfully add the record.
+
+    @ since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2713,6 +3626,22 @@ app.post('/v2/timeslot', (req, res) => {
 });
 //update
 app.put('/v2/timeslot/:time_id_id', (req, res) => {
+/*  Updates a row in the timeslot table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2738,6 +3667,19 @@ app.put('/v2/timeslot/:time_id_id', (req, res) => {
 });
 //delete
 app.delete('/v2/timeslot/:time_id_id', (req, res) => {
+/*  Delete a record from the timeslot table.
+
+    All primary keys in the table must be present in req.body to successfully
+    select and subsequently delete the record. If a user does not have a high
+    enough access level to delete records from a table, their request will be
+    denied.
+
+    @since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with
+                                a token and primary key columns and their values
+                                in req.body
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2761,6 +3703,20 @@ app.delete('/v2/timeslot/:time_id_id', (req, res) => {
 //***TITLE***
 //view
 app.get('/v2/title', (req, res) => {
+/*  Query the title table.
+
+    If no values are passed in req.query a `SELECT *` query with no WHERE clause will be
+    run. If values are passed in req.query, a `SELEECT *` query will be run with a WHERE
+    clause to filter values from the table.
+
+    @since  v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and can optionally contain column names with values to
+                                filter values in the query.
+
+    @return             nothing.
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2821,6 +3777,19 @@ app.get('/v2/title', (req, res) => {
 });
 //add
 app.post('/v2/title', (req, res) => {
+/*  Adds a record to the title table.
+
+    All columns in the table must be present with valid values (a valid value depends on
+    the type and size of the column) in req.body to successfully add the record.
+
+    @ since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2847,6 +3816,22 @@ app.post('/v2/title', (req, res) => {
 });
 //update
 app.put('/v2/title/:title_id_id', (req, res) => {
+/*  Updates a row in the title table.
+
+    All primary keys in the table must be present with valid values (a valid value depends
+    on the type and size of the column) in req.body to successfully update the record. If
+    values are not passed for non-primary key columns, NULL will be inserted in that column
+    in the row. If a value is passed it must be a valid value for the column. If a user
+    does not have a high enough access level to update a table, their request will be denied.
+
+    @since      v0
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2872,6 +3857,19 @@ app.put('/v2/title/:title_id_id', (req, res) => {
 });
 //delete
 app.delete('/v2/title/:title_id_id', (req, res) => {
+/*  Delete a record from the building table.
+
+    All primary keys in the table must be present in req.body to successfully
+    select and subsequently delete the record. If a user does not have a high
+    enough access level to delete records from a table, their request will be
+    denied.
+
+    @since v0
+
+    @param{Object}      req     The request info. Needs to contain a header with
+                                a token and primary key columns and their values
+                                in req.body
+*/
     // verify auth
     try{
         token = req.headers.authorization.split(" ")[1]
@@ -2894,7 +3892,18 @@ app.delete('/v2/title/:title_id_id', (req, res) => {
 
 
     // query database
-function query_db_get(query, res){ //
+function query_db_get(query, res){
+/*  Queries the database.
+
+    Uses the previously made connection object as the database connection. Uses a Promise object to
+    handle the query and any errors that may come from it.
+
+    @since              2.0.0
+
+    @param {String}     query     Query to send to the database. Should be valid SQL.
+
+    @return{Object}     Returns json containing 'a status code with query results
+*/
     new Promise( (resolve, reject) => {
       con.query(query, (err, result) => {
           if (err) {
@@ -2914,8 +3923,20 @@ function query_db_get(query, res){ //
     });
 }
 
-    // query database
-function query_db_add(query, data, res){ //
+function query_db_add(query, data, res){
+/*  Puts a record in the the database.
+
+    Uses the previously made connection object as the database connection. Uses a Promise object to
+    handle the query and any errors that may come from it. If the row is already in the table, the
+    user is notified. Only users with a high enough access level can use db_post.
+
+    @since              2.0.0
+
+    @param {String}     query     Query to add row(s) to the database. Should be valid SQL.
+
+    @return{Object}     Returns a status code with a message saying the entry was added successfully
+                        or the error message if it failed
+*/
     console.log(query)
     console.log(data)
     new Promise( (resolve, reject) => {
@@ -2938,6 +3959,19 @@ function query_db_add(query, data, res){ //
 
     // query database
 function query_db_delete(query, res){
+/*  Deletes a record from the database.
+
+    Uses the previously made connection object as the database connection. Uses a Promise object to
+    handle the query and any errors that may come from it. Only users with a high enough access level
+    can use db_delete.
+
+    @since              2.0.0
+
+    @param {String}     query     Query to delete rows from the database. Should be valid SQL.
+
+    @return{Object}     Returns JSON containing a status code with a message saying the either the
+                        record was not found or the error message.
+*/
     new Promise( (resolve, reject) => {
       con.query(query, (err, result) => {
           if (err) {
@@ -2959,6 +3993,19 @@ function query_db_delete(query, res){
 
     // query database
 function query_db_put(query, data, res){
+/*  Updates a record in the database.
+
+    Uses the previously made connection object as the database connection. Uses a Promise object to
+    handle the query and any errors that may come from it.
+
+    @since              2.0.0
+
+    @param {String}     query     Query to send to the database. Should be valid SQL.
+
+    @return{Object}     Returns JSON containing a status code with a message saying the record was not
+                        found, no changes were made, the record was updated successfully, or the error
+                        message.
+*/
     new Promise( (resolve, reject) => {
       con.query(query, data, (err, result) => {
           if (err) {
@@ -2981,8 +4028,16 @@ function query_db_put(query, data, res){
 }
 
 function sql_error(err) {
+/*  Formats SQL errors thrown from database.
+
+    @since              v2.0.0
+
+    @param {Object}     err     Error from the database. Contains multiple attributes
+
+    @return List        Returns list containing a status code and an error message
+*/
     err_code = err.code
-    if (err_code === "ER_ROW_IS_REFERENCED_2"){return [400,"Bad Request- This record is referenced somewhere else"]}
+    if (err_code === "ER_ROW_IS_REFERENCED_2"){return [400,"Bad Request- referential integrity would be violated"]}
     else {
         return [500,"Unknown error- send this to DB team: "+err]
     }
@@ -2995,6 +4050,20 @@ var users = {};
 
 //create users
 app.post('/v2/signup', async (req, res) => {
+/*  Adds a record to the login table.
+
+    All columns in the table must be present with valid values (a valid value depends on
+    the type and size of the column) in req.body to successfully add the record. Passwords
+    will be stored in the database after they have been salted and hashed.
+
+    @ since v2
+
+    @param{Object}      req     The request info. Needs to contain a header with a token
+                                and all columns in the table with valid values in req.body
+
+    @returns            nothing.
+
+*/
 
     if(!req.body){
       return res.sendStatus(400);
@@ -3023,6 +4092,15 @@ query_db_add("INSERT INTO login VALUES ?",[[ req.body.email, hash, req.body.facu
 
 //login
 app.post('/v2/login', async function (req, res) {
+/*  Query the login table to see if user should be granted access.
+
+    @since  v2
+
+    @param{Object}      req     The request info. Needs to contain an email address and a
+                                password to be a valid query.
+
+    @return             nothing.
+*/
     var passHashed;
     //if (!req.body) { return res.sendStatus(400); }
 
@@ -3038,7 +4116,7 @@ app.post('/v2/login', async function (req, res) {
       if(correct){
         let token = jwt.sign(
           {user: loginjson[0]},
-          bcrypt_seed,
+          secretkey,
           {
               algorithm: "HS256",
               expiresIn: 86400,
@@ -3050,6 +4128,13 @@ app.post('/v2/login', async function (req, res) {
 });
 
 function verify(token){
+/*  Verify a valid token was passed in the header.
+
+    @param{String}      token       token given to the user upon login
+
+    @returns            Returns a list containing a status code and the payload if the token was
+                        valid or an error message if the token was not valid.
+*/
 	// if the cookie is not set, return an unauthorized error
 	if (!token) {
 		return [401,"Unauthorized no token"]
@@ -3061,7 +4146,7 @@ function verify(token){
 		// Note that we are passing the key in this method as well. This method will throw an error
 		// if the token is invalid (if it has expired according to the expiry time we set on sign in),
 		// or if the signature does not match
-		payload = jwt.verify(token, bcrypt_seed)
+		payload = jwt.verify(token, secretkey)
 	} catch (e) {
 		if (e instanceof jwt.JsonWebTokenError) {
 			// if the error thrown is because the JWT is unauthorized, return a 401 error
@@ -3073,7 +4158,5 @@ function verify(token){
 	}
   return [200,payload]
 }
-
-// v0 removed
 
 module.exports = app;
