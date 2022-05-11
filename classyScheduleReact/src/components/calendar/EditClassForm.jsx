@@ -49,9 +49,9 @@ const style = {
 export default function EditClassForm(props) {
     const open = props.open;
     const classes = useStyles();
-    const [course, setCourse] = React.useState(props.event.title);
+    const [course, setCourse] = React.useState(props.event.title === "New class" ? "" : props.event.title);
     const [instructor, setInstructor] = React.useState(props.event.instructor);
-    const [room, setRoom] = React.useState(props.event);
+    const [room, setRoom] = React.useState(props.event.room);
     const [repeat, setRepeat] = React.useState('');
     const [startTime, setStartTime] = React.useState(props.startTime);
     const [endTime, setEndTime] = React.useState(props.endTime);
@@ -145,6 +145,8 @@ export default function EditClassForm(props) {
         setErrors(error);
 
         let data = null;
+        let id = props.event.id;
+
         if (error.length === 0){
             data = {
                 course: course,
@@ -157,11 +159,12 @@ export default function EditClassForm(props) {
                 startRepeat: startRepeat,
                 endRepeat: endRepeat,
                 color: color,
-                id: props.event.id,
+                id: id,
             }
         }
         props.onUpdate(data);
     }
+
     const { monday, tuesday, wednesday, thursday, friday } = days;
 
     return (
