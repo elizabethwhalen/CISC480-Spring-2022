@@ -3,8 +3,6 @@ package homescreen;
 import scenes.ChangeScene;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -83,6 +81,12 @@ public class HomescreenController implements Initializable {
     @FXML
     public void goToViewSchedule() {
         cs.viewScheduleClicked(stage);
+    }
+
+
+    @FXML
+    public void goToGenerateSchedule() {
+        cs.goToGenerateSchedule(stage);
     }
 
     /**

@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import room.RoomController;
+import scheduler.GenerateScheduleController;
 import scheduler.SchedulerController;
 import users.DeleteFacultyFromDatabaseController;
 import users.FacultyController;
@@ -154,6 +155,22 @@ public class ChangeScene {
             e.printStackTrace();
         }
         stage.setTitle("Homepage");
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+
+    public void goToGenerateSchedule(Stage stage) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/GenerateSchedule.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+            GenerateScheduleController generateScheduleController = loader.getController();
+            generateScheduleController.setStage(stage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        stage.setTitle("Classy-Schedule");
         stage.setScene(new Scene(root));
         stage.show();
     }

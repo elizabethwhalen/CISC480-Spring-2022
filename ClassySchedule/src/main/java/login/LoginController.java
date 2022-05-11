@@ -15,9 +15,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+
 import scenes.ChangeScene;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -84,7 +86,7 @@ public class LoginController implements Initializable {
 
 
     @FXML
-    public void submitButton(KeyEvent keyEvent) {
+    public void submitButton(KeyEvent keyEvent) throws IOException, URISyntaxException {
         if (keyEvent.getCode() == KeyCode.ENTER) {
             if (validateLogin(username.getText(), password.getText())) {
                 changeScene();

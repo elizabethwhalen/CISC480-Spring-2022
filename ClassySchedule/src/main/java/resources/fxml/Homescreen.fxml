@@ -78,7 +78,7 @@
                   <Button fx:id="addProfessor" mnemonicParsing="false" onAction="#goToAddFaculty" text="Add Professor" />
                   <Button fx:id="addClassroom" mnemonicParsing="false" onAction="#goToAddClassroom" text="Add Classroom" />
                   <Button mnemonicParsing="false" text="Modify Time Slots" />
-                  <Button mnemonicParsing="false" prefHeight="23.0" prefWidth="164.0" text="Generate Schedule" />
+                  <Button fx:id="generateSchedule" mnemonicParsing="false" onAction="#goToGenerateSchedule" prefHeight="23.0" prefWidth="164.0" text="Generate Schedule" />
               </buttons>
             </ButtonBar>
             <ButtonBar layoutX="-10.0" layoutY="140.0" prefHeight="40.0" prefWidth="647.0">

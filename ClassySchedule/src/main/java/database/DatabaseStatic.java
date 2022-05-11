@@ -76,10 +76,10 @@ public final class DatabaseStatic {
         URIBuilder builder = new URIBuilder(url + table);
         StringEntity entity = new StringEntity(json.toString());
         HttpPost httpPost = new HttpPost(builder.build());
+        httpPost.setEntity(entity);
         httpPost.setHeader("Content-Type", "application/json");
         httpPost.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + tokenObject.get("token"));
 
-        httpPost.setEntity(entity);
         CloseableHttpResponse response = client.execute(httpPost);
         client.close();
         return response.getCode() == 200;
@@ -154,8 +154,10 @@ public final class DatabaseStatic {
         URIBuilder builder = new URIBuilder(url + table);
         StringEntity entity = new StringEntity(json.toString());
         HttpPut httpPut = new HttpPut(builder.build());
-        httpPut.setHeader("Content-Type", "application/json");
         httpPut.setEntity(entity);
+        httpPut.setEntity(new StringEntity(tokenObject.toString()));
+        httpPut.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + tokenObject.get("token"));
+
         CloseableHttpResponse response = client.execute(httpPut);
         client.close();
         return response.getCode() == 200;
@@ -176,7 +178,7 @@ public final class DatabaseStatic {
         }
 
         HttpDelete httpDelete = new HttpDelete(builder.build());
-                                                                            //https://classy-api.ddns.net/v2/class/OSS/999" -X PUT -d "class_name="example"
+
         httpDelete.setEntity(new StringEntity(tokenObject.toString()));
         httpDelete.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + tokenObject.get("token"));
 
