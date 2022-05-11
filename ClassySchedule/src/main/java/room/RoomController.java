@@ -88,21 +88,22 @@ public class RoomController implements Initializable {
      */
     @FXML
     public void submitData(ActionEvent event) {
+        boolean warning = false;
         roomWarning.setVisible(false);
         buildingWarning.setVisible(false);
         capacityWarning.setVisible(false);
 
         if (capacity.getText().isEmpty()) {
             capacityWarning.setVisible(true);
-            return;
+            warning = true;
         }
         if (roomNum.getText().isBlank()) {
             roomWarning.setVisible(true);
-            return;
+            warning = true;
         }
         if (buildingName.getSelectionModel().isEmpty()) {
             buildingWarning.setVisible(true);
-            return;
+            warning = true;
         }
 
         // room number validation
@@ -111,31 +112,31 @@ public class RoomController implements Initializable {
                 Integer.parseInt(roomNum.getText());
             } else {
                 roomWarning.setVisible(true);
-                return;
+                warning = true;
             }
         } catch (NumberFormatException e) {
             roomWarning.setVisible(true);
-            return;
+            warning = true;
         }
 
-        //Database database = new Database();
+        if (!warning){
+            JSONObject newRoom = new JSONObject();
+            newRoom.put("room_num", roomNum.getText());
+            newRoom.put("building_code", buildingName.getValue());
+            newRoom.put("capacity", capacity.getText());
 
-        JSONObject newRoom = new JSONObject();
-        newRoom.put("room_num", roomNum.getText());
-        newRoom.put("building_code", buildingName.getValue());
-        newRoom.put("capacity", capacity.getText());
+            try {
+                DatabaseStatic.insertData("room", newRoom);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
 
-        try {
-            DatabaseStatic.insertData("room", newRoom);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+            capacity.clear();
+            roomNum.clear();
+            buildingName.setValue(null);
         }
-
-        capacity.clear();
-        roomNum.clear();
-        buildingName.setValue(null);
 
     }
 

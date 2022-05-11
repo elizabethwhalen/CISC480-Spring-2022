@@ -18,4 +18,13 @@ public enum Title {
     Title(String label) {
         this.label = label;
     }
+
+    public static String valueOfLabel(String label) {
+        for (Title e : values()) {
+            if (e.label.equals(label)) {
+                return e.toString();
+            }
+        }
+        return null;
+    }
 }

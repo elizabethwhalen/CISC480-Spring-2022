@@ -16,9 +16,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -59,7 +56,6 @@ public class AddCourseToDatabaseController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // database = new Database();
 
         JSONArray depts = DatabaseStatic.getData("dept");
         for (Object jsonObject: depts) {
@@ -79,18 +75,23 @@ public class AddCourseToDatabaseController implements Initializable {
      */
     @FXML
     public void submitData(ActionEvent event) {
+        boolean warning = false;
+        departmentWarning.setVisible(false);
+        classNumWarning.setVisible(false);
+        classNameWarning.setVisible(false);
+
         //checking if user inputs are entered:
         if (deptName.getSelectionModel().isEmpty()) {
             departmentWarning.setVisible(true);
-            return;
+            warning = true;
         }
         if (classNum.getText().isBlank()) {
             classNumWarning.setVisible(true);
-            return;
+            warning = true;
         }
         if (className.getText().isBlank()) {
             classNameWarning.setVisible(true);
-            return;
+            warning = true;
         }
         //checking if length of course code is 3 and course code is type int:
         if (classNum.getLength() == 3) {
@@ -98,20 +99,14 @@ public class AddCourseToDatabaseController implements Initializable {
                 Integer.parseInt(classNum.getText());
             } catch (NumberFormatException e) {
                 classNumWarning.setVisible(true);
-                return;
+                warning = true;
             }
         } else {
             classNumWarning.setVisible(true);
-            return;
+            warning = true;
         }
 
-<<<<<<< Updated upstream
-
-        Database database = new Database();
-=======
         if (!warning) {
-
-            //Database database = new Database();
 
             JSONObject newClass = new JSONObject();
             newClass.put("dept_code", deptName.getValue());
@@ -125,27 +120,12 @@ public class AddCourseToDatabaseController implements Initializable {
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
->>>>>>> Stashed changes
-
-        JSONObject newClass = new JSONObject();
-        newClass.put("dept_code", deptName.getValue());
-        newClass.put("class_num", classNum.getText());
-        newClass.put("class_name", className.getText());
-
-        try {
-            database.insertData("class", newClass);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
         }
 
         deptName.setValue("Dept name");
         classNum.clear();
         className.clear();
-        departmentWarning.setVisible(false);
-        classNumWarning.setVisible(false);
-        classNameWarning.setVisible(false);
+
     }
 
     @FXML

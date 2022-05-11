@@ -1,27 +1,20 @@
 package users;
 
-import database.Database;
 import database.DatabaseStatic;
 import homescreen.HomescreenController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -61,27 +54,21 @@ public class FacultyController implements Initializable {
     @FXML
     Text typeWarning;
 
-    public FacultyController() {}
+    public FacultyController() {
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-<<<<<<< Updated upstream
-        Database database = new Database();
-=======
-        facultyFirst.clear();
-        facultyLast.clear();
-        facultyID.clear();
-        type.setValue(null);
-        //Database database = new Database();
->>>>>>> Stashed changes
 
         JSONArray types = DatabaseStatic.getData("title");
-        for (Object jsonObject: types) {
+        for (Object jsonObject : types) {
+            JSONObject job = (JSONObject) jsonObject;
+            if (job.get("title_id") != null) {
+                //String idCode = (String) job.get("title_id");
+                type.getItems().add(Title.valueOfLabel(job.get("title_id").toString()));
 
-            JSONObject job = (JSONObject)jsonObject;
-            if (job.get("title_ID") != JSONObject.NULL) {
-                //change to ENUM
-                type.getItems().add((String) job.get("title_id"));
+                //String string= jTable1.getValueAt(row, 1).toString();
+                //int TestTreatmentID = Integer.parseInt(string);
             }
         }
     }
@@ -92,6 +79,7 @@ public class FacultyController implements Initializable {
 
     /**
      * Changes scene back to homescreen when cancelButton is clicked
+     *
      * @param event Clicking on cancelButton
      */
     @FXML
@@ -114,21 +102,27 @@ public class FacultyController implements Initializable {
 
     @FXML
     public void submitData(ActionEvent event) {
+        boolean warning = false;
+        firstNameWarning.setVisible(false);
+        lastNameWarning.setVisible(false);
+        IDWarning.setVisible(false);
+        typeWarning.setVisible(false);
+
         if (facultyFirst.getText().isBlank()) {
             firstNameWarning.setVisible(true);
-            return;
+            warning = true;
         }
         if (facultyLast.getText().isBlank()) {
             lastNameWarning.setVisible(true);
-            return;
+            warning = true;
         }
         if (facultyID.getText().isBlank()) {
             IDWarning.setVisible(true);
-            return;
+            warning = true;
         }
         if (type.getSelectionModel().isEmpty()) {
             typeWarning.setVisible(true);
-            return;
+            warning = true;
         }
 
         // ID number validation
@@ -136,11 +130,10 @@ public class FacultyController implements Initializable {
             Integer.parseInt(facultyID.getText());
         } catch (NumberFormatException e) {
             IDWarning.setVisible(true);
-            return;
+            warning = true;
         }
-<<<<<<< Updated upstream
-=======
-        if (!warning){
+
+        if (!warning) {
             //create JSON Object to submit to database
             //Database database = new Database();
             JSONObject newFaculty = new JSONObject();
@@ -156,39 +149,13 @@ public class FacultyController implements Initializable {
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
->>>>>>> Stashed changes
 
-
-        Database database = new Database();
-
-        JSONObject newFaculty = new JSONObject();
-        newFaculty.put("faculty_id", facultyID.getText());
-        newFaculty.put("faculty_first", facultyFirst.getText());
-        newFaculty.put("faculty_last", facultyLast.getText());
-        //newFaculty.put("title_id", type.getValue());
-
-        try {
-            database.insertData("faculty", newFaculty);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+            facultyFirst.clear();
+            facultyLast.clear();
+            facultyID.clear();
+            type.setValue(null);
         }
 
 
-
-        facultyFirst.clear();
-        facultyLast.clear();
-        facultyID.clear();
-        //email.clear();
-        //deptName.setValue("Dept name");
-        type.setValue(null);
-        firstNameWarning.setVisible(false);
-        lastNameWarning.setVisible(false);
-        IDWarning.setVisible(false);
-        //emailWarning.setVisible(false);
-        //departmentWarning.setVisible(false);
-        typeWarning.setVisible(false);
     }
-
 }

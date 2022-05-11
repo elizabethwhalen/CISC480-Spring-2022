@@ -121,9 +121,9 @@
             <Button fx:id="cancelButton" layoutX="217.0" layoutY="308.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="59.0" onAction="#cancelButtonClicked" text="Cancel" textFill="#c32727" />
             <ChoiceBox fx:id="buildingName" layoutX="166.0" layoutY="101.0" prefHeight="25.0" prefWidth="200.0" />
             <TextField fx:id="capacity" layoutX="166.0" layoutY="168.0" prefHeight="25.0" prefWidth="200.0" />
-          <Text fx:id="buildingWarning" layoutX="183.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a valid first name" visible="false" />
-          <Text fx:id="roomWarning" layoutX="183.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a valid last name" visible="false" wrappingWidth="134.455078125" />
-          <Text fx:id="capacityWarning" layoutX="183.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a valid ID number" visible="false" />
+          <Text fx:id="buildingWarning" layoutX="183.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a valid building" visible="false" />
+          <Text fx:id="roomWarning" layoutX="183.0" layoutY="138.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a valid room number" visible="false" wrappingWidth="134.455078125" />
+          <Text fx:id="capacityWarning" layoutX="183.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a valid capacity" visible="false" />
 
       </children>
     </AnchorPane>
