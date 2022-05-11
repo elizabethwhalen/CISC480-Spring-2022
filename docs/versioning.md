@@ -65,7 +65,13 @@ HTTP was disabled on 4/24/2022. All requests must be made over HTTPS now.
 All methods in v2 and up require token authorization to access. 
 
 Login accounts are created via the signup method (`curl "https://classy-api.ddns.net/v2/signup" -X POST -d "username=[username]&password=[password]"`)
+</br>
+System sequence diagram for signup:
+![Alt text](docs/figures/system-sequence-diagram-signup.png?raw=true "System Sequence Diagram Signup")
 
 Tokens are obtained via the login method (`curl "https://classy-api.ddns.net/v2/login" -X POST -d "username=[username]&password=[password]"`)
+</br>
+System sequence diagram for login:
+![Alt text](docs/figures/system-sequence-diagram-login.png?raw=true "System Sequence Diagram Login")
 
 Once the token is acquired, it must be included in the the header after each curl command. In v2, all accounts have full access to all methods. In versions 3 and up, methods will be restricted depending on the access_level and faculty_id associated with login accounts.
