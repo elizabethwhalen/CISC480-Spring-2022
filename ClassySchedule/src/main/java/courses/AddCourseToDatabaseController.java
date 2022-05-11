@@ -1,5 +1,6 @@
 package courses;
 
+import alert.MyAlert;
 import database.Database;
 import homescreen.HomescreenController;
 import javafx.event.ActionEvent;
@@ -8,13 +9,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import room.RoomController;
+import scenes.ChangeScene;
+import scheduler.SchedulerController;
+import users.DeleteFacultyFromDatabaseController;
+import users.FacultyController;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -27,7 +31,6 @@ import java.util.ResourceBundle;
  * Controls add course page, which allows the user to add a course to the database.
  */
 public class AddCourseToDatabaseController implements Initializable {
-    private Stage addCourse;
     @FXML
     TextField classNum;
 
@@ -41,13 +44,15 @@ public class AddCourseToDatabaseController implements Initializable {
     Button submit_button;
 
     @FXML
-    Text classNumWarning;
+    Button back_button;
 
-    @FXML
-    Text classNameWarning;
+    private Stage stage;
 
-    @FXML
-    Text departmentWarning;
+    /**
+     * The change scene object to change between scenes
+     */
+    private final ChangeScene cs = new ChangeScene();
+
 
     public AddCourseToDatabaseController() {}
 
@@ -65,11 +70,10 @@ public class AddCourseToDatabaseController implements Initializable {
             JSONObject job = (JSONObject)jsonObject;
             deptName.getItems().add((String) job.get("dept_code"));
         }
-
     }
 
-    public void setStage(Stage addCourse) {
-        this.addCourse = addCourse;
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     /**
@@ -78,69 +82,121 @@ public class AddCourseToDatabaseController implements Initializable {
      */
     @FXML
     public void submitData(ActionEvent event) {
+        boolean warning = false;
         //checking if user inputs are entered:
         if (deptName.getSelectionModel().isEmpty()) {
-            departmentWarning.setVisible(true);
-            return;
+            warning = true;
+            MyAlert createAlert = new MyAlert("No Department Selected", "Please Select A Department", Alert.AlertType.ERROR);
+            createAlert.show();
         }
         if (classNum.getText().isBlank()) {
-            classNumWarning.setVisible(true);
-            return;
+            warning = true;
+            MyAlert createAlert = new MyAlert("No Class Number", "Please Select A Class Number", Alert.AlertType.ERROR);
+            createAlert.show();
         }
         if (className.getText().isBlank()) {
-            classNameWarning.setVisible(true);
-            return;
+            warning = true;
+            MyAlert createAlert = new MyAlert("No Class Name", "Please Select A Class Name", Alert.AlertType.ERROR);
+            createAlert.show();
         }
         //checking if length of course code is 3 and course code is type int:
         if (classNum.getLength() == 3) {
             try {
                 Integer.parseInt(classNum.getText());
             } catch (NumberFormatException e) {
-                classNumWarning.setVisible(true);
-                return;
+                warning = true;
+                MyAlert createAlert = new MyAlert("Invalid ClassNumber", "Please Select A Department", Alert.AlertType.ERROR);
+                createAlert.show();
             }
         } else {
-            classNumWarning.setVisible(true);
-            return;
+            warning = true;
+            MyAlert createAlert = new MyAlert("Invalid Class Number", "Please Input A Valid Class Number", Alert.AlertType.ERROR);
+            createAlert.show();
         }
 
+        if (!warning) {
 
-        Database database = new Database();
+            Database database = new Database();
 
-        JSONObject newClass = new JSONObject();
-        newClass.put("dept_code", deptName.getValue());
-        newClass.put("class_num", classNum.getText());
-        newClass.put("class_name", className.getText());
+            JSONObject newClass = new JSONObject();
+            newClass.put("dept_code", deptName.getValue());
+            newClass.put("class_num", classNum.getText());
+            newClass.put("class_name", className.getText());
 
-        try {
-            database.insertData("class", newClass);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+            try {
+                database.insertData("class", newClass);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+
+            deptName.setValue("Dept name");
+            classNum.clear();
+            className.clear();
+
         }
-
-        deptName.setValue("Dept name");
-        classNum.clear();
-        className.clear();
-        departmentWarning.setVisible(false);
-        classNumWarning.setVisible(false);
-        classNameWarning.setVisible(false);
     }
 
     @FXML
     public void goBack() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        HomescreenController hsController = loader.getController();
-        hsController.setStage(addCourse);
-        addCourse.setTitle("Classy-Schedule");
-        addCourse.setScene(new Scene(root, 650, 450));
-        addCourse.show();
+        cs.goToHomepage(stage);
     }
+
+    /**
+     * go to add course scene
+     */
+    @FXML
+    public void goToAddCourse() {
+        cs.addCourseButtonClicked(stage);
+    }
+
+    /**
+     * go to add classroom scene
+     */
+    @FXML
+    public void goToAddClassroom() {
+        cs.addClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to add faculty scene
+     */
+    @FXML
+    public void goToAddFaculty() {
+        cs.addProfessorButtonClicked(stage);
+    }
+
+    /**
+     * go to delete course scene
+     */
+    @FXML
+    public void goToDeleteCourse() {
+        cs.deleteCourseButtonClicked(stage);
+    }
+
+    /**
+     * go to delete classroom scene
+     */
+    @FXML
+    public void goToDeleteClassroom() {
+        cs.deleteClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to delete faculty scene
+     */
+    @FXML
+    public void goToDeleteFaculty() {
+        cs.deleteFacultyButtonClicked(stage);
+    }
+
+    /**
+     * go to view schedule scene
+     */
+    @FXML
+    public void goToViewSchedule() {
+        cs.viewScheduleClicked(stage);
+    }
+
 }

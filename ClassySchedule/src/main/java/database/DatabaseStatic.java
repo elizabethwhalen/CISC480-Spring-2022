@@ -29,11 +29,11 @@ public final class DatabaseStatic {
      * Verifies the given credentials. Populates the token object to be used
      * for future database requests
      *
-     * @param username the username to be checked
+     * @param email the email to be checked
      * @param password the password to be checked
      * @return true if the user is valid, false otherwise
      */
-    public static boolean login(String username, String password) {
+    public static boolean login(String email, String password) {
         try {
             int timeout = 5;
             RequestConfig config = RequestConfig.custom()
@@ -44,7 +44,7 @@ public final class DatabaseStatic {
             URIBuilder builder = new URIBuilder(url + "login");
             JSONObject json = new JSONObject();
             json.put("password", password);
-            json.put("email", username);
+            json.put("email", email);
             StringEntity entity = new StringEntity(json.toString());
             HttpPost httpPost = new HttpPost(builder.build());
             httpPost.setHeader("Content-Type", "application/json");
@@ -152,9 +152,6 @@ public final class DatabaseStatic {
     public static boolean updateData(String table, JSONObject json) throws URISyntaxException, IOException {
         CloseableHttpClient client = HttpClients.createDefault();
         URIBuilder builder = new URIBuilder(url + table);
-//        for (String key : json.keySet()) {
-//            builder.addParameter(key, (String) json.get(key));
-//        }
         StringEntity entity = new StringEntity(json.toString());
         HttpPut httpPut = new HttpPut(builder.build());
         httpPut.setEntity(entity);

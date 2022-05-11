@@ -1,23 +1,24 @@
 package users;
 
+import alert.MyAlert;
 import database.Database;
 import homescreen.HomescreenController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import scenes.ChangeScene;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -27,9 +28,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class FacultyController implements Initializable {
-
-    private Stage addFaculty;
-
     @FXML
     TextField facultyLast;
 
@@ -38,15 +36,6 @@ public class FacultyController implements Initializable {
 
     @FXML
     TextField facultyID;
-
-    //not in database
-    //@FXML
-    //TextField email;
-
-    //not in database
-    //@FXML
-    //ChoiceBox<String> deptName;
-
 
     @FXML
     ChoiceBox<String> type;
@@ -57,23 +46,12 @@ public class FacultyController implements Initializable {
     @FXML
     Button cancelButton;
 
-    @FXML
-    Text firstNameWarning;
+    private Stage stage;
 
-    @FXML
-    Text lastNameWarning;
-
-    @FXML
-    Text IDWarning;
-
-    //@FXML
-    //Text emailWarning;
-
-    //@FXML
-    //Text departmentWarning;
-
-    @FXML
-    Text typeWarning;
+    /**
+     * The change scene object to change between scenes
+     */
+    private final ChangeScene cs = new ChangeScene();
 
     public FacultyController() {}
 
@@ -92,48 +70,30 @@ public class FacultyController implements Initializable {
         }
     }
 
-    public void setStage(Stage addFaculty) {
-        this.addFaculty = addFaculty;
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
-
-    /**
-     * Changes scene back to homescreen when cancelButton is clicked
-     * @param event Clicking on cancelButton
-     */
-    @FXML
-    public void cancelButtonClicked(ActionEvent event) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-            HomescreenController homescreenController = loader.getController();
-            homescreenController.setStage(addFaculty);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        addFaculty.setTitle("Classy-Schedule");
-        addFaculty.setScene(new Scene(root, 650, 400));
-        addFaculty.show();
-    }
-
 
     @FXML
     public void submitData(ActionEvent event) {
         if (facultyFirst.getText().isBlank()) {
-            firstNameWarning.setVisible(true);
+            MyAlert createAlert = new MyAlert("Invalid Faculty First Name", "Please Input In The Faculty First Name", Alert.AlertType.ERROR);
+            createAlert.show();
             return;
         }
         if (facultyLast.getText().isBlank()) {
-            lastNameWarning.setVisible(true);
+            MyAlert createAlert = new MyAlert("Invalid Faculty Last Name", "Please Input In The Faculty Last Name", Alert.AlertType.ERROR);
+            createAlert.show();
             return;
         }
         if (facultyID.getText().isBlank()) {
-            IDWarning.setVisible(true);
+            MyAlert createAlert = new MyAlert("Invalid Faculty ID", "Please Input In The Faculty ID", Alert.AlertType.ERROR);
+            createAlert.show();
             return;
         }
         if (type.getSelectionModel().isEmpty()) {
-            typeWarning.setVisible(true);
+            MyAlert createAlert = new MyAlert("Invalid Faculty Type", "Please Input In The Faculty Type", Alert.AlertType.ERROR);
+            createAlert.show();
             return;
         }
 
@@ -141,7 +101,8 @@ public class FacultyController implements Initializable {
         try {
             Integer.parseInt(facultyID.getText());
         } catch (NumberFormatException e) {
-            IDWarning.setVisible(true);
+            MyAlert createAlert = new MyAlert("Invalid Faculty ID Number", "Please Input In A Valid Faculty ID", Alert.AlertType.ERROR);
+            createAlert.show();
             return;
         }
 
@@ -167,15 +128,71 @@ public class FacultyController implements Initializable {
         facultyFirst.clear();
         facultyLast.clear();
         facultyID.clear();
-        //email.clear();
-        //deptName.setValue("Dept name");
-        type.setValue(null);
-        firstNameWarning.setVisible(false);
-        lastNameWarning.setVisible(false);
-        IDWarning.setVisible(false);
-        //emailWarning.setVisible(false);
-        //departmentWarning.setVisible(false);
-        typeWarning.setVisible(false);
+    }
+
+
+    /**
+     * go back to homepage
+     */
+    @FXML
+    public void goBack() {
+        cs.goToHomepage(stage);
+    }
+
+    /**
+     * go to add course scene
+     */
+    @FXML
+    public void goToAddCourse() {
+        cs.addCourseButtonClicked(stage);
+    }
+
+    /**
+     * go to add classroom scene
+     */
+    @FXML
+    public void goToAddClassroom() {
+        cs.addClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to add faculty scene
+     */
+    @FXML
+    public void goToAddFaculty() {
+        cs.addProfessorButtonClicked(stage);
+    }
+
+    /**
+     * go to delete course scene
+     */
+    @FXML
+    public void goToDeleteCourse() {
+        cs.deleteCourseButtonClicked(stage);
+    }
+
+    /**
+     * go to delete classroom scene
+     */
+    @FXML
+    public void goToDeleteClassroom() {
+        cs.deleteClassroomButtonClicked(stage);
+    }
+
+    /**
+     * go to delete faculty scene
+     */
+    @FXML
+    public void goToDeleteFaculty() {
+        cs.deleteFacultyButtonClicked(stage);
+    }
+
+    /**
+     * go to view schedule scene
+     */
+    @FXML
+    public void goToViewSchedule() {
+        cs.viewScheduleClicked(stage);
     }
 
 }

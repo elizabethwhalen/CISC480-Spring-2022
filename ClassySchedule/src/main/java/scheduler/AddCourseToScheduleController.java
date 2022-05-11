@@ -1,5 +1,6 @@
 package scheduler;
 
+import alert.MyAlert;
 import database.DatabaseStatic;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,6 +11,7 @@ import javafx.stage.Stage;
 import jfxtras.scene.control.agenda.Agenda;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import scenes.ChangeScene;
 
 import java.net.URL;
 import java.text.ParseException;
@@ -99,25 +101,10 @@ public class AddCourseToScheduleController implements Initializable {
     private List<CheckBox> datesSelected;
 
     /**
-     * The invalid class name alert error
+     * The change scene object to change between scenes
      */
-    private Alert invalidClassName = new Alert(Alert.AlertType.ERROR);
+    private final ChangeScene cs = new ChangeScene();
 
-
-    /**
-     * The invalid dates alert error
-     */
-    private Alert invalidDays = new Alert(Alert.AlertType.ERROR);
-
-    /**
-     * The invalid time alert error
-     */
-    private Alert invalidStartAndEndTime = new Alert(Alert.AlertType.ERROR);
-
-    /**
-     * The confirmation alert to go back to the scheduler
-     */
-    private Alert confirmBackButton = new Alert(Alert.AlertType.CONFIRMATION);
 
     /**
      * The constructor for the add course to schedule controller
@@ -136,13 +123,13 @@ public class AddCourseToScheduleController implements Initializable {
 
 
         // This is the confirmation to go back alert
-        confirmBackButton.setTitle("Back to Scheduler");
-        confirmBackButton.setContentText("Go back to the scheduler page");
+        MyAlert createAlert = new MyAlert("Back To Scheduler", "Go Back To The Scheduler Page", Alert.AlertType.CONFIRMATION);
+
         // Set event to go back to previous scheduler screen if user click "Ok", else do nothing
         EventHandler<ActionEvent> confirmBack = event -> {
             // Set button Ok to be the output button that the user clicked
             // It is either "Cancel" or "Ok"
-            Optional<ButtonType> Ok = confirmBackButton.showAndWait();
+            Optional<ButtonType> Ok = createAlert.showButton();
             // If button is "Ok", then go back to scheduler
             if (Ok.get().getText().equals("OK")) {
                 // Go back to scheduler
@@ -287,9 +274,8 @@ public class AddCourseToScheduleController implements Initializable {
         // If the class name has not been selected
         if (course.getSelectionModel().isEmpty()) {
             // Set content of the error alert
-            invalidClassName.setTitle("Invalid course Error");
-            invalidClassName.setContentText("Please select a valid course");
-            invalidClassName.showAndWait();
+            MyAlert createAlert = new MyAlert("Invalid Course Error", "Please Select A Valid Course", Alert.AlertType.ERROR);
+            createAlert.show();
             result = false;
         }
         // Probably need to find a way to bind class number and class name??
@@ -317,9 +303,8 @@ public class AddCourseToScheduleController implements Initializable {
         // use JavaFX to prompt the user to select at least 1 day of the week.
         if (result == false) {
             // Set content of the error alert
-            invalidDays.setTitle("Invalid Day/Days Error");
-            invalidDays.setContentText("Please select at least one or more day/days of the week");
-            invalidDays.showAndWait();
+            MyAlert createAlert = new MyAlert("Invalid Day/Days Error", "Please Select At Least One or More Day/Days Of The Week", Alert.AlertType.ERROR);
+            createAlert.show();
         }
 
         return result;
