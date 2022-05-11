@@ -367,7 +367,7 @@ app.get('/v2/building', (req, res) => {
             if(i > 0){
                 query = query + " OR"
             }
-            check_str_type(building_code_array[i], res, 5);
+            check_str_type(building_code_array[i], res);
             query = query + " building_code = " + con.escape(building_code_array[i]);
         }
         prev = true;
@@ -380,7 +380,7 @@ app.get('/v2/building', (req, res) => {
             if(i > 0){
                 query = query + " OR"
             }
-            check_str_type(building_name_array[i], res, 30)
+            check_str_type(building_name_array[i], res)
             query = query + " building_name = " + con.escape(building_name_array[i]);
         }
         prev = true;
@@ -923,7 +923,7 @@ app.get('/v2/faculty', (req, res) => {
     if (faculty_id){
         faculty_id_array = faculty_id.split(",");
         for(let i = 0; i < faculty_id_array.length; i++){
-            check_int_type(faculty_id_array[i], res, 11);
+            check_int_type(faculty_id_array[i], res);
             if(i > 0){
                 query = query + " OR"
             }
@@ -936,7 +936,7 @@ app.get('/v2/faculty', (req, res) => {
     if (faculty_first){
         faculty_first_array = faculty_first.split(",");
         for(let i = 0; i < faculty_first_array.length; i++){
-            check_str_type(faculty_first_array[i], res, 50);
+            check_str_type(faculty_first_array[i], res);
             if(i > 0){
                 query = query + " OR"
             }
@@ -949,7 +949,7 @@ app.get('/v2/faculty', (req, res) => {
     if (faculty_last){
         faculty_last_array = faculty_last.split(",");
         for(let i = 0; i < faculty_last_array.length; i++){
-            check_str_type(faculty_last_array[i],  res, 50);
+            check_str_type(faculty_last_array[i], res);
             if(i > 0){
                 query = query + " OR"
             }
@@ -962,7 +962,7 @@ app.get('/v2/faculty', (req, res) => {
     if (title_id){
         title_id_array = title_id.split(",");
         for(let i = 0; i < title_id_array.length; i++){
-            check_int_type(title_id_array[i], res, 11);
+            check_int_type(title_id_array[i], res);
             if(i > 0){
                 query = query + " OR"
             }
@@ -975,7 +975,7 @@ app.get('/v2/faculty', (req, res) => {
     if (prev_load){
         prev_load_array = prev_load.split(",");
         for(let i = 0; i < prev_load_array.length; i++){
-            check_int_type(prev_load_array[i], res, 11); // TODO add double check type?
+            check_int_type(prev_load_array[i], res); // TODO add double check type?
             if(i > 0){
                 query = query + " OR"
             }
@@ -988,7 +988,7 @@ app.get('/v2/faculty', (req, res) => {
     if (curr_load){
         curr_load_array = curr_load.split(",");
         for(let i = 0; i < curr_load_array.length; i++){
-            check_int_type(curr_load_array[i], res, 11);
+            check_int_type(curr_load_array[i], res);
             if(i > 0){
                 query = query + " OR"
             }
