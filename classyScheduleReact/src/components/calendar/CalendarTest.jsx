@@ -357,14 +357,11 @@ export default function CalendarTest() {
         let CISCprof2 = 'Sawin';
         let prefNum1 = 5;
         let prefNum2 = 4;
-        //console.log(instructorList);
-        //console.log(instructorList.at(1));
-        //console.log(courseList);
         // the first parameter has to be a string
         // the second parameter has to be a number
         layout.suggestValue('CISC.class', 131) // sets the vaue of CISC class to 131
         layout.suggestValue(CISCprof2, prefNum2) // sets the value of the first instructor
-        layout.suggestValue('CISC2.class', 480) // sets tje value of CISCclass2 to 480
+        layout.suggestValue('CISC2.class', 480) // sets the value of CISCclass2 to 480
         layout.suggestValue(CISCprof1, prefNum1)
 
         layout.updateVariables()
