@@ -5,6 +5,7 @@ import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import Toolbar from './Toolbar'
 import EditClassForm from './EditClassForm'
 import constraints from 'constraint-solver'
 import { RRule, RRuleSet, rrulestr } from 'rrule'
@@ -374,8 +375,8 @@ export default function CalendarTest() {
             <DnDCalendar
                 min={minTime}
                 max={maxTime}
-                defaultDate={moment().toDate()}
-                defaultView={'work_week'}
+                date={moment().toDate()}
+                view={'work_week'}
                 views={['work_week']}
                 events={events}
                 localizer={localizer}
@@ -389,6 +390,9 @@ export default function CalendarTest() {
                 onEventResize={event => onEventDrop(event)}
                 onSelectEvent={event => onEventClick(event)}
                 onSelectSlot={(slotInfo) => onSlotChange(slotInfo)}
+                components={{
+                    toolbar: Toolbar
+                }}
             />
             <div>
                 
