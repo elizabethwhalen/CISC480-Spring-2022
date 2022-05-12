@@ -332,7 +332,7 @@ export default function EditClassForm(props) {
 
                         <Grid item md={3.5} sm={12} xs={12}>
                             <Grid container spacing={2}>
-
+                                
                                 <Grid item xs={12} className={classes.grid}>
                                     <FormControl fullWidth size="small">
 

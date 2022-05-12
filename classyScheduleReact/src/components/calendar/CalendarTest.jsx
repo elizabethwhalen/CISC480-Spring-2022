@@ -175,6 +175,8 @@ export default function CalendarTest() {
             interval = 1;
         }
 
+        freq = RRule.WEEKLY;
+        interval = 1;
         if (data.days.monday) {
             byweekday.push(RRule.MO);
         }
@@ -206,19 +208,20 @@ export default function CalendarTest() {
         month = Number(endRepeat[1] - 1);
         date = Number(endRepeat[2]);
         until = new Date(Date.UTC(year, month, date));
-
+        
         const rule = new RRule({
             freq: freq,  // repeate weekly, possible freq [DAILY, WEEKLY, MONTHLY, ]
             interval: interval,
             byweekday: byweekday,
-            dtstart: dtstart,
-            until: until,
+            //dtstart: dtstart,
+            //until: until,
             tzid: 'America/Chicago'
         })
 
         return rule.all();
+        
     }
-
+    
     const onUpdateEvents = (data) => {
 
         const newData = deleteEvent(data.id);
@@ -234,8 +237,8 @@ export default function CalendarTest() {
             let endMin = Number(time[1]);
 
             let newEvent = {
-                start: new Date(e.getFullYear(), e.getMonth(), e.getDate(), startHour, startMin, 0),
-                end: new Date(e.getFullYear(), e.getMonth(), e.getDate(), endHour, endMin, 0),
+                start: new Date( startHour, startMin, 0),
+                end: new Date( endHour, endMin, 0),
                 title: data.course,
                 instructor: data.instructor,
                 room: data.room,
@@ -359,12 +362,6 @@ export default function CalendarTest() {
         console.log(layout.getValues({ roundToInt: true }))
     });
 
-    const classPool = React.useCallback(() => {
-        //const cd = document.getElementsByName('level100');
-        //console.log(cd.checked);
-        console.log("test");
-    });
-
     return (
         <Paper sx={{ padding: '20px' }} elevation={0} >
             {open &&
@@ -400,11 +397,7 @@ export default function CalendarTest() {
                 onSelectSlot={(slotInfo) => onSlotChange(slotInfo)}
             />
             <div>
-                <label htmlFor="level100">Level 100 classes</label><input type="checkbox" name="level100" value="yes"></input><br></br>
-                <label htmlFor="level200">Level 200 classes</label><input type="checkbox" name="level200" value="yes"></input><br></br>
-                <label htmlFor="level300">Level 300 classes</label><input type="checkbox" name="level300" value="yes"></input><br></br>
-                <label htmlFor="level400">Level 400 classes</label><input type="checkbox" name="level400" value="yes"></input><br></br>
-                <button id="btn" onClick={classPool}>Get Selected Classes</button>
+                
                 <button id="algo" onClick={myFunction}>Algorithm Fun!!!</button>
             </div>
 
