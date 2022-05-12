@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: '600',
     },
     subHeader: {
-        fontWeight: '600'
+        fontWeight: '600',
     }
 }))
 
@@ -40,10 +40,10 @@ const AddFaculty = () => {
         if (firstName !== '' && lastName !== '' && teachLoad !== 0.0) {
             let data = JSON.stringify({
                 faculty_id: unique, //unique ID from
-                faculty_first: firstName, 
+                faculty_first: firstName,
                 faculty_last: lastName,
                 title_id: 2, //title ID level 2 is default for created faculty
-                prev_load: 0, 
+                prev_load: 0,
                 curr_load: teachLoad
             });
             let config = {
@@ -196,10 +196,10 @@ const AddFaculty = () => {
                             </Grid> */}
 
                             <Grid item xs={12}>
-                                <Button 
-                                    variant="contained" 
-                                    size="large" 
-                                    type="submit" 
+                                <Button
+                                    variant="contained"
+                                    size="large"
+                                    type="submit"
                                     disableElevation
                                 >
                                     Submit

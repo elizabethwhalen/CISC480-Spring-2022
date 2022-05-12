@@ -84,16 +84,16 @@ const AddRoom = () => {
             axios(config).then((response) => {
                 //console.log(JSON.stringify(response.data));
                 setAdded(1);
-                
+
             }).catch((error) => {
                 //bad response: check that record is not a duplicate
                 console.log("Error: Please verify that the record you are adding does not already exist.  " + error);
                 setAdded(-1);
-                
+
             });
             setRoomNum('');
             setBuilding('');
-        } 
+        }
         setAdded(0);
     }
 
@@ -195,7 +195,7 @@ const AddRoom = () => {
                             {(added === -1) && (
                                 <Grid item xs={12}>
                                     <Typography variant="body1" className={classes.unsucessfulMessage}>
-                                        <CloseIcon /> Room could not be added to the databse. 
+                                        <CloseIcon /> Room could not be added to the databse.
                                         Please verify that the record being added does not already exist.
                                     </Typography>
                                 </Grid>

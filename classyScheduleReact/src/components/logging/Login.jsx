@@ -88,7 +88,7 @@ const useStyles = makeStyles({
 });
 
 // Login page component with parameter passed under props
-export default function Login (props) {
+export default function Login(props) {
 
   const classes = useStyles(); // use the useStyles
   const [email, setEmail] = React.useState(''); // email
@@ -110,7 +110,7 @@ export default function Login (props) {
         method: 'post',
         url: "https://classy-api.ddns.net/v2/login",
         headers: { 'Content-Type': 'application/json' },
-        data: data
+        data: data,
       };
       // Axios promise is being executed with config data and token is being saved into browser local storage.
       axios(config).then((response) => {
@@ -150,7 +150,7 @@ export default function Login (props) {
           alignItems="flex-start"
           justify="flex-start"
           className={classes.gridItem1} >
-            {/* <Grid container className={classes.loginTitleContainer}>
+          {/* <Grid container className={classes.loginTitleContainer}>
               <Grid item xs={12} className={classes.loginTitle}>
                 CLASSY SCHEDULE
               </Grid>
@@ -168,7 +168,7 @@ export default function Login (props) {
             <Grid item xs={12} className={classes.loginTitle} >
               CLASSY SCHEDULE
             </Grid>
-            
+
             {/* LOGO */}
             <Grid item xs={12} className={classes.logoGrid} >
               <img src={logo} className={classes.logo} alt='logo' ></img>

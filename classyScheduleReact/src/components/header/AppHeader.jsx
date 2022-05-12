@@ -77,17 +77,17 @@ const useStyles = makeStyles((theme) => ({
   text: {
     textAlign: 'center',
     fontWeight: '600',
-    color: 'white', 
+    color: 'white',
   },
   link: {
     textDecoration: 'none',
     color: 'white',
   },
   logo: {
-      width: '35px',
-      height: '35px',
-      display: 'inline',
-      marginRight: '10px',
+    width: '35px',
+    height: '35px',
+    display: 'inline',
+    marginRight: '10px',
   }
 }))
 
@@ -118,7 +118,7 @@ export default function AppHeader(props) {
         >
           <MenuIcon fontSize="large" />
         </IconButton>
-        
+
         {/* TITLE */}
         <Container>
           <Typography
@@ -127,18 +127,18 @@ export default function AppHeader(props) {
             noWrap
             align='center'
           >
-            <img src={logo} alt='logo' className={classes.logo}/> 
+            <img src={logo} alt='logo' className={classes.logo} />
             <Link to='/' className={classes.link}>
-              Classy Schedule 
+              Classy Schedule
             </Link>
-          </Typography>          
+          </Typography>
         </Container>
 
         {/* USER'S LOGIN INFO */}
         <LoginHeader
           handleLogOut={props.handleLogOut}
-          setLoggedIn= {props.setLoggedIn}
-          loggedIn = {props.loggedIn}
+          setLoggedIn={props.setLoggedIn}
+          loggedIn={props.loggedIn}
         ></LoginHeader>
 
       </Toolbar>

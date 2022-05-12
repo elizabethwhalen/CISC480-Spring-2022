@@ -13,7 +13,7 @@ import { Grid, Select, FormControl, InputLabel, MenuItem, Modal, Typography, But
 
 
 
-{/** Work in Progress. Will not work normally in current state. */}
+{/** Work in Progress. Will not work normally in current state. */ }
 
 
 
@@ -51,7 +51,7 @@ const AddClass = () => {
     const token = localStorage.getItem('access_token');
     // This function will create a Axios request when the form is submitted
     // It will send all information in the form to the database through the call
-    const submitForm = (event) => { 
+    const submitForm = (event) => {
         event.preventDefault();
         if (code !== '' && courseNum !== '' && courseName !== '') {
             // Data fields for POST request.
@@ -127,24 +127,24 @@ const AddClass = () => {
                 </Grid>
                 {/* SELECT EXISTING FACULTY DROPDOWN */}
                 <Grid item xs={12} fullWidth>
-                <FormControl sx={{ m: 1, minWidth: 80 }}>
-                    <InputLabel id="demo-simple-select-autowidth-label">Age</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-autowidth-label"
-                        id="demo-simple-select-autowidth"
-                        value={ExistingFaculty}
-                        onChange={handleChangeExistingFac}
-                        autoWidth
-                        label="Existing Faculty"
-                    >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={""}>Person 1</MenuItem>
-                        <MenuItem value={""}>Person __________ 2</MenuItem>
-                        <MenuItem value={""}>P 3</MenuItem>
-                    </Select>
-                </FormControl> 
+                    <FormControl sx={{ m: 1, minWidth: 80 }}>
+                        <InputLabel id="demo-simple-select-autowidth-label">Age</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-autowidth-label"
+                            id="demo-simple-select-autowidth"
+                            value={ExistingFaculty}
+                            onChange={handleChangeExistingFac}
+                            autoWidth
+                            label="Existing Faculty"
+                        >
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            <MenuItem value={""}>Person 1</MenuItem>
+                            <MenuItem value={""}>Person __________ 2</MenuItem>
+                            <MenuItem value={""}>P 3</MenuItem>
+                        </Select>
+                    </FormControl>
                 </Grid>
 
                 <Grid item xs={12}>

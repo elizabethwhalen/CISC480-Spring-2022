@@ -4,7 +4,7 @@ import Layout from './components/layout/Layout';
 import useToken from './server/useToken';
 import LogRouter from './router/LogRouter';
 
-export default function App () {
+export default function App() {
   const { token, setToken } = useToken();
   const [loggedIn, setLoggedIn] = React.useState(false);
 

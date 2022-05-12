@@ -33,7 +33,7 @@ export default function CalendarTest() {
     const maxTime = new Date();
     maxTime.setHours(21, 0, 0);
 
-    function getCourse () {
+    function getCourse() {
         // Config data for https request.
         let config = {
             method: 'get',
@@ -44,20 +44,20 @@ export default function CalendarTest() {
             },
         };
         // https request Promise executed with Config settings.
-        axios(config).then( response => {
+        axios(config).then(response => {
             //console.log(JSON.stringify(response.data));
             let list = [];
-            response.data.forEach( e => {
-                let clas = e.dept_code + ' ' + e.class_num;
+            response.data.forEach(e => {
+                let clas = e.dept_code.toUpperCase() + ' ' + e.class_num;
                 list.push(clas);
             })
             setCourseList(list);
-        }).catch( error => {
+        }).catch(error => {
             console.log(error);
         });
     };
 
-    function getInstructor () {
+    function getInstructor() {
         // Config data for https request.
         let config = {
             method: 'get',
@@ -68,21 +68,22 @@ export default function CalendarTest() {
             },
         };
         // https request Promise executed with Config settings.
-        axios(config).then( response => {
+        axios(config).then((response) => {
             //console.log(JSON.stringify(response.data));
             let list = [];
-            response.data.map((e) => {
-                let instruc = e.faculty_last + ', ' + e.faculty_first;
+            response.data.forEach(e => {
+                let lastName = e.faculty_last.charAt(0).toUpperCase() + e.faculty_last.slice(1);
+                let firstName = e.faculty_first.charAt(0).toUpperCase() + e.faculty_first.slice(1);
+                let instruc = lastName + ', ' + firstName;
                 list.push(instruc);
-                return list;
-            })
-            setInstructorList(list);
+            });
+            setInstructorList(list.sort());
         }).catch((error) => {
             console.log(error);
         });
     };
 
-    function getRoom () {
+    function getRoom() {
         // Config data for https request.
         let config = {
             method: 'get',
@@ -110,24 +111,17 @@ export default function CalendarTest() {
     const handleEventResize = data => {
         const { start, end, event } = data;
         let id = event.id;
-        const newData = [...events];
-        newData.map(e => {
+        const update = [...events].map(e => {
             if (e.id === id) {
-                let updated = {
-                    start: start,
-                    end: end,
-                    title: e.title,
-                    instructor: e.instructor,
-                    room: e.room,
-                    color: e.color,
-                    id: id,
-                    days: e.days,
+                return {
+                    ...e,
+                    start: new Date(e.start.getUTCFullYear(), e.start.getMonth(), e.start.getDate(), start.getHours(), start.getMinutes(), 0),
+                    end: new Date(e.end.getUTCFullYear(), e.end.getMonth(), e.end.getDate(), end.getHours(), end.getMinutes(), 0),
                 };
-                newData[e.id] = updated;
             }
-            return null;
+            return e;
         })
-        setEvents(newData);
+        setEvents(update);
     };
 
     const handleEventDrop = data => {
@@ -167,7 +161,6 @@ export default function CalendarTest() {
             title: "New class",
             instructor: "",
             room: "",
-            color: "#b3e5fc",
             id: count,
             days: {
                 monday: false,
@@ -224,7 +217,7 @@ export default function CalendarTest() {
         month = Number(end[1] - 1);
         date = Number(end[2]);
         until = new Date(Date.UTC(year, month, date));
-        
+
         const rule = new RRule({
             freq: RRule.WEEKLY,  // repeate weekly, possible freq [DAILY, WEEKLY, MONTHLY, ]
             interval: 1,
@@ -235,7 +228,7 @@ export default function CalendarTest() {
         })
         return rule.all();
     }
-    
+
     const handleEventUpdate = (data) => {
         setOpen(false);
         const newData = deleteEvent(data.id);
@@ -266,7 +259,7 @@ export default function CalendarTest() {
         setEvents(newData);
     }
 
-    const deleteEvent = (id) => {
+    const deleteEvent = id => {
         const array = [...events].filter(e => Number(e.id) !== Number(id));
         return array;
     }
@@ -352,7 +345,7 @@ export default function CalendarTest() {
          CISC480.class == (CISC2.class)
          CISC480.professor == Sawin
     `)
-    
+
     const myFunction = () => {
 
         let CISCprof1 = 'Miracle';

@@ -42,7 +42,7 @@ const AddClass = () => {
     const token = sessionStorage.getItem('token');
     // This function will create a Axios request when the form is submitted
     // It will send all information in the form to the database through the call
-    const submitForm = (event) => { 
+    const submitForm = (event) => {
         event.preventDefault();
         if (code !== '' && courseNum !== '' && courseName !== '') {
             // Data fields for POST request.

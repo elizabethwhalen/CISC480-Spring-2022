@@ -85,7 +85,7 @@ const useStyles = makeStyles({
   button: {
     backgroundColor: '#0063cc',
   },
-  error:{
+  error: {
     color: 'red',
   }
 });
@@ -229,9 +229,9 @@ const Signup = (props) => {
                     />
                   </Grid>
                   {!passMatch && <Grid item xs={12}>
-                      <Typography className={classes.error}>
-                        Passwords do not match. Please retype.
-                      </Typography>
+                    <Typography className={classes.error}>
+                      Passwords do not match. Please retype.
+                    </Typography>
                   </Grid>}
 
                   {/* Submit button */}
@@ -246,13 +246,13 @@ const Signup = (props) => {
                   </Grid>
 
                   {/* BACK BUTTON */}
-                  <Grid item xs={6} sx={{ marginTop: '20px' }}> 
-                    <Link to='/' style={{"textDecoration":"none"}} >
+                  <Grid item xs={6} sx={{ marginTop: '20px' }}>
+                    <Link to='/' style={{ "textDecoration": "none" }} >
                       <Button
                         variant="contained"
                         disableElevation
                         type='submit'
-                        sx={{ backgroundColor: '#B9BDBB', '&:hover': { backgroundColor: '#4a148c' } }} 
+                        sx={{ backgroundColor: '#B9BDBB', '&:hover': { backgroundColor: '#4a148c' } }}
                       >
                         Back
                       </Button>

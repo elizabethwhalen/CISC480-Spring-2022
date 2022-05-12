@@ -23,7 +23,7 @@ curl -X POST "http://databaseconnectionexample.azurewebsites.net/faculty" -H "Co
 }'
 
 ###
-curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoid2VidXNlckBzdHRob21hcy5lZHUiLCJwYXNzIjoiJDJiJDEwJEhnQk55RnVTa1lTeDAyS2RkNlNjbU9DWHRzL1o0WFhyQTNDWGJJNWgxUW9ZTC41by5YbVMuIiwiZmFjdWx0eV9pZCI6bnVsbCwiYWNjZXNzX2xldmVsIjoyLCJ0bXAiOm51bGx9LCJpYXQiOjE2NTIzNzIwODAsImV4cCI6MTY1MjQ1ODQ4MH0.r8N-rWWut9J-oJYS477gPFx-QvBTJ_ek5Diad9_4RGg" "https://classy-api.ddns.net/v2/building" 
+curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoid2VidXNlckBzdHRob21hcy5lZHUiLCJwYXNzIjoiJDJiJDEwJEhnQk55RnVTa1lTeDAyS2RkNlNjbU9DWHRzL1o0WFhyQTNDWGJJNWgxUW9ZTC41by5YbVMuIiwiZmFjdWx0eV9pZCI6bnVsbCwiYWNjZXNzX2xldmVsIjoyLCJ0bXAiOm51bGx9LCJpYXQiOjE2NTIzNzIwODAsImV4cCI6MTY1MjQ1ODQ4MH0.r8N-rWWut9J-oJYS477gPFx-QvBTJ_ek5Diad9_4RGg" "https://classy-api.ddns.net/v2/section" 
 
 ###
 curl "https://classy-api.ddns.net/v2/signup" -X POST -d "email=[web@stthomas.edu]&password=[webdev]"

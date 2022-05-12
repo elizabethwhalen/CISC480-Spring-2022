@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     color: 'white',
     '&:hover': {
-      fontWeight: '600'
+      fontWeight: '600',
     },
   },
   link: {
@@ -34,7 +34,7 @@ const LoginHeader = (props) => {
   const handleLogoutClick = () => {
     props.setLoggedIn(false);
     props.handleLogOut();
-    window.location.href="/";
+    window.location.href = "/";
   }
 
   // return the component
@@ -47,12 +47,12 @@ const LoginHeader = (props) => {
         Otherwise, display login button
       */}
 
-      {loggedIn || currentToken  ? (
+      {loggedIn || currentToken ? (
         <>
           <Avatar sx={{ bgcolor: 'white', color: '#7E16A4' }}>
             KN
           </Avatar>
-          
+
           <Link to='/' className={classes.link}>
             <Button className={classes.button} onClick={handleLogoutClick}>
               Logout

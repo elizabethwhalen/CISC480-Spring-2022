@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import { makeStyles } from '@mui/styles'
 
-const useStyles = makeStyles ({
+const useStyles = makeStyles({
     title: {
         color: '#7E16A4',
         fontWeight: 600,
@@ -81,13 +81,13 @@ export default function EditClassForm(props) {
 
     const handleSubmit = () => {
         let error = [];
-        if (course === ''){
+        if (course === '') {
             error.push('Course is not selected');
         }
-        if (instructor === ''){
+        if (instructor === '') {
             error.push('Instructor is not selected');
         }
-        if (room === ''){
+        if (room === '') {
             error.push('Room is not selected');
         }
         if (endTime < startTime) {
@@ -103,7 +103,7 @@ export default function EditClassForm(props) {
         let data = null;
         let id = props.event.id;
 
-        if (error.length === 0){
+        if (error.length === 0) {
             data = {
                 course: course,
                 instructor: instructor,
@@ -248,7 +248,7 @@ export default function EditClassForm(props) {
                             </Grid>
                         </Grid>
 
-                        <Grid item md={4} xs={12} style={{"paddingLeft": "40px"}}>
+                        <Grid item md={4} xs={12} style={{ "paddingLeft": "40px" }}>
                             <FormControl fullWidth component="fieldset" variant="standard">
                                 <FormGroup>
                                     <FormControlLabel
