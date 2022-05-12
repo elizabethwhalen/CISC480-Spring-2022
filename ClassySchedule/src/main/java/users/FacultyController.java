@@ -1,27 +1,20 @@
 package users;
 
 import alert.MyAlert;
-import database.Database;
-import homescreen.HomescreenController;
+import database.DatabaseStatic;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import scenes.ChangeScene;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -57,9 +50,8 @@ public class FacultyController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Database database = new Database();
 
-        JSONArray types = database.getData("title");
+        JSONArray types = DatabaseStatic.getData("title");
         for (Object jsonObject: types) {
 
             JSONObject job = (JSONObject)jsonObject;
@@ -106,9 +98,6 @@ public class FacultyController implements Initializable {
             return;
         }
 
-
-        Database database = new Database();
-
         JSONObject newFaculty = new JSONObject();
         newFaculty.put("faculty_id", facultyID.getText());
         newFaculty.put("faculty_first", facultyFirst.getText());
@@ -116,7 +105,7 @@ public class FacultyController implements Initializable {
         //newFaculty.put("title_id", type.getValue());
 
         try {
-            database.insertData("faculty", newFaculty);
+            DatabaseStatic.insertData("faculty", newFaculty);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {

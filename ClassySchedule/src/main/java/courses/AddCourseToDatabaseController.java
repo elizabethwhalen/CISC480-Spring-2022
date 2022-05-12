@@ -2,6 +2,7 @@ package courses;
 
 import alert.MyAlert;
 import database.Database;
+import database.DatabaseStatic;
 import homescreen.HomescreenController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -63,13 +64,13 @@ public class AddCourseToDatabaseController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Database database = new Database();
 
-        JSONArray depts = database.getData("dept");
+        JSONArray depts = DatabaseStatic.getData("dept");
         for (Object jsonObject: depts) {
             JSONObject job = (JSONObject)jsonObject;
             deptName.getItems().add((String) job.get("dept_code"));
         }
+
     }
 
     public void setStage(Stage stage) {

@@ -1,10 +1,9 @@
 package room;
 
 import alert.MyAlert;
-import database.Database;
+import database.DatabaseStatic;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,15 +11,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import homescreen.HomescreenController;
 import scenes.ChangeScene;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -71,10 +66,8 @@ public class RoomController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         buildingName.getItems().clear();
         try {
-            Database database = new Database();
-            JSONArray rs = database.getData("building");
+            JSONArray rs = DatabaseStatic.getData("building");
             for (Object jsonObject: rs) {
-                //buildingName.getItems().add(rs.getString(1));
                 JSONObject job = (JSONObject)jsonObject;
                 buildingName.getItems().add((String) job.get("building_code"));
             }
@@ -122,6 +115,7 @@ public class RoomController implements Initializable {
                 MyAlert createAlert = new MyAlert("Invalid Room Number Length", "Please Input In A Valid Room Number Length", Alert.AlertType.ERROR);
                 Alert alert = createAlert.createAlert();
                 alert.showAndWait();
+                return;
             }
         } catch (NumberFormatException e) {
             MyAlert createAlert = new MyAlert("Invalid Room Number Type", "Please Input In A Valid Room Number", Alert.AlertType.ERROR);
@@ -130,7 +124,6 @@ public class RoomController implements Initializable {
             return;
         }
 
-        Database database = new Database();
 
         JSONObject newRoom = new JSONObject();
         newRoom.put("room_num", roomNum.getText());
@@ -138,7 +131,7 @@ public class RoomController implements Initializable {
         newRoom.put("capacity", capacity.getText());
 
         try {
-            database.insertData("room", newRoom);
+            DatabaseStatic.insertData("room", newRoom);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {
@@ -150,6 +143,7 @@ public class RoomController implements Initializable {
         capacity.clear();
         roomNum.clear();
         buildingName.setValue(null);
+
     }
 
     /**
