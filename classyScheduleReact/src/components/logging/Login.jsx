@@ -6,8 +6,6 @@ import background from '../../images/hd_calendar2.jpg'
 import logo from '../../images/Updated_Logo.gif'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import { borderColor } from '@mui/system'
-
 
 // Styling components using useStyles
 const useStyles = makeStyles({
@@ -119,11 +117,12 @@ export default function Login (props) {
       axios(config).then((response) => {
         if (response.data !== '') {
           token = response.data;
-          //props.handleLogin(true);
-          //localStorage.setItem('token', token);
           console.log(token);
           props.setToken(token);
           props.setLoggedIn(true);
+          sessionStorage.setItem("startRepeat", "2022-01-31");
+          sessionStorage.setItem("endRepeat", "2022-05-20");
+          sessionStorage.setItem("repeat", "weekly");
         } else {
           props.setLoggedIn(false);
         }
