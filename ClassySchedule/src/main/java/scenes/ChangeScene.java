@@ -75,7 +75,7 @@ public class ChangeScene {
     }
 
     public void viewScheduleClicked(Stage stage) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/scheduler.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Scheduler.fxml"));
         Parent root = null;
         try {
             root = loader.load();
