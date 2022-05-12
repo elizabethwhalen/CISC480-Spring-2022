@@ -1,1 +1,0 @@
-classname: asdasd deptname: CISC class number: 123

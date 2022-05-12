@@ -12,17 +12,17 @@ public class MyAlert {
     /**
      * The alert title
      */
-    private String alertTitle;
+    private final String alertTitle;
 
     /**
      * the alert message or context
      */
-    private String alertMessage;
+    private final String alertMessage;
 
     /**
      * The alert type
      */
-    private Alert.AlertType alertType;
+    private final Alert.AlertType alertType;
 
     /**
      * Constructor for the MyAlert class
@@ -58,8 +58,7 @@ public class MyAlert {
 
 
     public Optional<ButtonType> showButton() {
-        Optional<ButtonType> Ok = createAlert().showAndWait();
-        return Ok;
+        return createAlert().showAndWait();
     }
 
 

@@ -7,7 +7,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 import jfxtras.scene.control.agenda.Agenda;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -127,8 +126,8 @@ public class AddCourseToScheduleController implements Initializable {
             course.getItems().add(str.toString());
         }
 
-        JSONArray profesors = DatabaseStatic.getData("faculty");
-        for (Object jsonObject : profesors) {
+        JSONArray professors = DatabaseStatic.getData("faculty");
+        for (Object jsonObject : professors) {
             JSONObject json = (JSONObject) jsonObject;
             StringBuilder str = new StringBuilder();
             if (json.get("faculty_first") != JSONObject.NULL) {
@@ -160,11 +159,10 @@ public class AddCourseToScheduleController implements Initializable {
      * Validates the data inputs
      * Creates a list of class times
      * Adds the classes to the schedule
-     * @param event
      * @throws ParseException
      */
     @FXML
-    public void submitData(ActionEvent event) throws ParseException {
+    public void submitData() throws ParseException {
         // Validate needed data is present
         if (validateData()) {
             // Create appointment from fields
@@ -206,27 +204,21 @@ public class AddCourseToScheduleController implements Initializable {
      * @return the day of the week corresponding with the day
      */
     public DayOfTheWeek convertToDayOFWeek(String day) {
-        switch (day.toUpperCase()) {
-            case "M":
-                return DayOfTheWeek.MONDAY;
-            case "T":
-                return DayOfTheWeek.TUESDAY;
-            case "W":
-                return DayOfTheWeek.WEDNESDAY;
-            case "R":
-                return DayOfTheWeek.THURSDAY;
-            case "F":
-                return DayOfTheWeek.FRIDAY;
-            default:
-                return null;
-        }
+        return switch (day.toUpperCase()) {
+            case "M" -> DayOfTheWeek.MONDAY;
+            case "T" -> DayOfTheWeek.TUESDAY;
+            case "W" -> DayOfTheWeek.WEDNESDAY;
+            case "R" -> DayOfTheWeek.THURSDAY;
+            case "F" -> DayOfTheWeek.FRIDAY;
+            default -> null;
+        };
 
     }
 
     /**
      * Converts a date to local date time
      * @param dateToConvert the date to be converted
-     * @return a date in local date time formatx
+     * @return a date in local date time format
      */
     public LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
         return dateToConvert.toInstant()
@@ -310,7 +302,7 @@ public class AddCourseToScheduleController implements Initializable {
     }
 
     @FXML
-    public void close(ActionEvent actionEvent) {
+    public void close() {
         course.getScene().getWindow().hide();
     }
 }

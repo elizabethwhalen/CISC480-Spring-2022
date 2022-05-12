@@ -9,49 +9,48 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduler.SchedulerController">
-   <children>
-      <BorderPane fx:id="borderPane" layoutX="65.0" layoutY="36.0" prefHeight="560.0" prefWidth="694.0">
-         <top>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0"
+            prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="scheduler.SchedulerController">
+    <BorderPane fx:id="borderPane" layoutX="65.0" layoutY="36.0" prefHeight="560.0" prefWidth="694.0">
+        <top>
             <HBox prefHeight="30.0" prefWidth="800.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Button fx:id="homeButton" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="100.0" text="Home" />
-                  <Button fx:id="addCourseButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#goToAddCourseToScheduler" prefHeight="25.0" prefWidth="98.0" text="Add Course" />
-                  <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Delete Course" />
-               </children>
+                <Button fx:id="homeButton" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0"
+                        prefWidth="100.0" text="Home"/>
+                <Button fx:id="addCourseButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                        onAction="#goToAddCourseToScheduler" prefHeight="25.0" prefWidth="98.0" text="Add Course"/>
+                <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0"
+                        text="Delete Course"/>
             </HBox>
-         </top>
-      </BorderPane>
-      <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="800.0">
-         <menus>
-            <Menu fx:id="goTohome" mnemonicParsing="false" text="Home">
-               <items>
-                  <MenuItem fx:id="goToHome" mnemonicParsing="false" onAction="#goBack" text="Back to Home" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Goto">
-               <items>
-                  <MenuItem fx:id="goToAddCourse" mnemonicParsing="false" onAction="#goToAddCourse" text="Add Course" />
-                  <MenuItem fx:id="goToAddProfessor" mnemonicParsing="false" onAction="#goToAddFaculty" text="Add Professor" />
-                  <MenuItem fx:id="goToAddClassroom" mnemonicParsing="false" onAction="#goToAddClassroom" text="Add Classroom" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="goToEditCourse" mnemonicParsing="false" text="Edit Course" />
-                  <MenuItem fx:id="goToEditProfessor" mnemonicParsing="false" text="Edit Professor" />
-                  <MenuItem fx:id="goToEditClassroom" mnemonicParsing="false" text="Edit Classroom" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="goToDeleteCourse" mnemonicParsing="false" onAction="#goToDeleteCourse" text="Delete Course" />
-                  <MenuItem fx:id="goToDeleteProfessor" mnemonicParsing="false" onAction="#goToDeleteFaculty" text="Delete Professor" />
-                  <MenuItem fx:id="goToDeleteClassroom" mnemonicParsing="false" onAction="#goToDeleteClassroom" text="Delete Classroom" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="goToViewSchedule" mnemonicParsing="false" onAction="#goToViewSchedule" text="View Schedule" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Help">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-               </items>
-            </Menu>
-         </menus>
-      </MenuBar>
-   </children>
+        </top>
+    </BorderPane>
+    <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="800.0">
+        <Menu fx:id="goTohome" mnemonicParsing="false" text="Home">
+            <MenuItem fx:id="goToHome" mnemonicParsing="false" onAction="#goBack" text="Back to Home"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Goto">
+            <MenuItem fx:id="goToAddCourse" mnemonicParsing="false" onAction="#goToAddCourse" text="Add Course"/>
+            <MenuItem fx:id="goToAddProfessor" mnemonicParsing="false" onAction="#goToAddFaculty"
+                      text="Add Professor"/>
+            <MenuItem fx:id="goToAddClassroom" mnemonicParsing="false" onAction="#goToAddClassroom"
+                      text="Add Classroom"/>
+            <SeparatorMenuItem mnemonicParsing="false"/>
+            <MenuItem fx:id="goToEditCourse" mnemonicParsing="false" text="Edit Course"/>
+            <MenuItem fx:id="goToEditProfessor" mnemonicParsing="false" text="Edit Professor"/>
+            <MenuItem fx:id="goToEditClassroom" mnemonicParsing="false" text="Edit Classroom"/>
+            <SeparatorMenuItem mnemonicParsing="false"/>
+            <MenuItem fx:id="goToDeleteCourse" mnemonicParsing="false" onAction="#goToDeleteCourse"
+                      text="Delete Course"/>
+            <MenuItem fx:id="goToDeleteProfessor" mnemonicParsing="false" onAction="#goToDeleteFaculty"
+                      text="Delete Professor"/>
+            <MenuItem fx:id="goToDeleteClassroom" mnemonicParsing="false" onAction="#goToDeleteClassroom"
+                      text="Delete Classroom"/>
+            <SeparatorMenuItem mnemonicParsing="false"/>
+            <MenuItem fx:id="goToViewSchedule" mnemonicParsing="false" onAction="#goToViewSchedule"
+                      text="View Schedule"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+            <MenuItem mnemonicParsing="false" text="About MyHelloApp"/>
+        </Menu>
+    </MenuBar>
 </AnchorPane>

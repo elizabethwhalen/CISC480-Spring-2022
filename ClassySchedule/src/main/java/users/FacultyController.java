@@ -2,7 +2,6 @@ package users;
 
 import alert.MyAlert;
 import database.DatabaseStatic;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -72,7 +71,7 @@ public class FacultyController implements Initializable {
     }
 
     @FXML
-    public void submitData(ActionEvent event) {
+    public void submitData() {
         if (firstName.getText().isBlank()) {
             MyAlert createAlert = new MyAlert("Invalid Faculty First Name", "Please Input In The Faculty First Name", Alert.AlertType.ERROR);
             createAlert.show();
@@ -111,12 +110,9 @@ public class FacultyController implements Initializable {
 
         try {
             DatabaseStatic.insertData("faculty", newFaculty);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
-
 
 
         firstName.clear();

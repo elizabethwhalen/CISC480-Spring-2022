@@ -5,7 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class TimeSlotFactory {
     public TimeSlotFactory(){
@@ -30,16 +29,15 @@ public class TimeSlotFactory {
             timeSlotList.add(currentTimeSlot);
         }
         //sorts by day
-        for(int i=0; i<timeSlotList.size(); i++){
-            Timeslot currentTimeChunk = timeSlotList.get(i);
+        for (Timeslot currentTimeChunk : timeSlotList) {
             String day = currentTimeChunk.getDaysOfWeek();
-            if(day.charAt(0) == 'M'){
+            if (day.charAt(0) == 'M') {
                 mon.add(currentTimeChunk);
-            } else if(day.charAt(0) == 'T'){
+            } else if (day.charAt(0) == 'T') {
                 tues.add(currentTimeChunk);
-            } else if (day.charAt(0) == 'W'){
+            } else if (day.charAt(0) == 'W') {
                 wed.add(currentTimeChunk);
-            } else if(day.charAt(0) == 'R'){
+            } else if (day.charAt(0) == 'R') {
                 thur.add(currentTimeChunk);
             } else {//if(day.charAt(0) == 'F'){
                 //System.out.println(currentTimeChunk);

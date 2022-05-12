@@ -2,11 +2,8 @@ package room;
 
 import alert.MyAlert;
 import database.DatabaseStatic;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -74,10 +71,9 @@ public class RoomController implements Initializable {
 
     /**
      * Submits data that has been entered when submit button is clicked.
-     * @param event submit button being clicked
      */
     @FXML
-    public void submitData(ActionEvent event) {
+    public void submitData() {
 
         if (capacity.getText().isEmpty()) {
             MyAlert createAlert = new MyAlert("Invalid Capacity", "Please Input In The Capacity", Alert.AlertType.ERROR);
@@ -123,12 +119,9 @@ public class RoomController implements Initializable {
 
         try {
             DatabaseStatic.insertData("room", newRoom);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
-
 
 
         capacity.clear();

@@ -25,7 +25,7 @@ public class Lecture implements Course {
 
     private boolean hasLab;
 
-    // Simple 3 parameter Lecture Constrcutor for testing purposes
+    // Simple 3 parameter Lecture Constructor for testing purposes
     public Lecture (String className, int sectionNumber, String department) {
         this.className = className;
 

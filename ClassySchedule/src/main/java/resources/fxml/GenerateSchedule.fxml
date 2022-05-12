@@ -5,13 +5,17 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduler.GenerateScheduleController">
-   <children>
-      <MenuButton fx:id="courseBox" layoutX="23.0" layoutY="99.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="Courses" />
-      <MenuButton fx:id="roomBox" layoutX="170.0" layoutY="99.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="Rooms" />
-      <MenuButton fx:id="professorBox" layoutX="314.0" layoutY="99.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="Professors" />
-      <MenuButton fx:id="timeslotBox" layoutX="456.0" layoutY="99.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="130.0" text="Timeslots" />
-      <Button fx:id="backButton" layoutX="235.0" layoutY="232.0" mnemonicParsing="false" onAction="#goBack" text="Back" />
-      <Button fx:id="generateButton" layoutX="314.0" layoutY="232.0" mnemonicParsing="false" onAction="#generateSchedule" text="Generate" />
-   </children>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="scheduler.GenerateScheduleController">
+    <MenuButton fx:id="courseBox" layoutX="23.0" layoutY="99.0" mnemonicParsing="false" prefHeight="25.0"
+                prefWidth="130.0" text="Courses"/>
+    <MenuButton fx:id="roomBox" layoutX="170.0" layoutY="99.0" mnemonicParsing="false" prefHeight="25.0"
+                prefWidth="130.0" text="Rooms"/>
+    <MenuButton fx:id="professorBox" layoutX="314.0" layoutY="99.0" mnemonicParsing="false" prefHeight="25.0"
+                prefWidth="130.0" text="Professors"/>
+    <MenuButton fx:id="timeslotBox" layoutX="456.0" layoutY="99.0" mnemonicParsing="false" prefHeight="25.0"
+                prefWidth="130.0" text="Timeslots"/>
+    <Button fx:id="backButton" layoutX="235.0" layoutY="232.0" mnemonicParsing="false" onAction="#goBack" text="Back"/>
+    <Button fx:id="generateButton" layoutX="314.0" layoutY="232.0" mnemonicParsing="false" onAction="#generateSchedule"
+            text="Generate"/>
 </AnchorPane>

@@ -11,13 +11,13 @@ import java.util.List;
  * and transforms it into a workable appointment.
  */
 public class AppointmentFactory {
-    List<LocalDateTime> startTimes;
-    List<LocalDateTime> endTimes;
-    private String departmentCode;
-    private String room;
-    private String professor;
-    private String classNumber;
-    private String className;
+    final List<LocalDateTime> startTimes;
+    final List<LocalDateTime> endTimes;
+    private final String departmentCode;
+    private final String room;
+    private final String professor;
+    private final String classNumber;
+    private final String className;
 
     /**
      * Constructor for an appointment factory

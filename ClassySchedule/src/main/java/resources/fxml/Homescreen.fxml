@@ -41,63 +41,62 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="homescreen.HomescreenController">
-  <children>
-    <MenuBar VBox.vgrow="NEVER">
-      <menus>
-        <Menu fx:id="goToHome" mnemonicParsing="false" text="Home" />
-        <Menu mnemonicParsing="false" text="Goto">
-          <items>
-            <MenuItem fx:id="goToAddCourse" mnemonicParsing="false" onAction="#goToAddCourse" text="Add Course" />
-            <MenuItem fx:id="goToAddProfessor" mnemonicParsing="false" onAction="#goToAddFaculty" text="Add Professor" />
-                  <MenuItem fx:id="goToAddClassroom" mnemonicParsing="false" onAction="#goToAddClassroom" text="Add Classroom" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="goToEditCourse" mnemonicParsing="false" text="Edit Course" />
-            <MenuItem fx:id="goToEditProfessor" mnemonicParsing="false" text="Edit Professor" />
-            <MenuItem fx:id="goToEditClassroom" mnemonicParsing="false" text="Edit Classroom" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="goToDeleteCourse" mnemonicParsing="false" onAction="#goToDeleteCourse" text="Delete Course" />
-            <MenuItem fx:id="goToDeleteProfessor" mnemonicParsing="false" onAction="#goToDeleteFaculty" text="Delete Professor" />
-                  <MenuItem fx:id="goToDeleteClassroom" mnemonicParsing="false" onAction="#goToDeleteClassroom" text="Delete Classroom" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="goToViewSchedule" mnemonicParsing="false" onAction="#goToViewSchedule" text="View Schedule" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-          </items>
-        </Menu>
-      </menus>
-    </MenuBar>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-      <children>
-            <ButtonBar layoutX="-10.0" layoutY="80.0" prefHeight="77.0" prefWidth="647.0">
-              <buttons>
-                <Button fx:id="addCourse" mnemonicParsing="false" onAction="#goToAddCourse" prefHeight="25.0" text="Add Course" />
-                  <Button fx:id="addProfessor" mnemonicParsing="false" onAction="#goToAddFaculty" text="Add Professor" />
-                  <Button fx:id="addClassroom" mnemonicParsing="false" onAction="#goToAddClassroom" text="Add Classroom" />
-                  <Button mnemonicParsing="false" text="Modify Time Slots" />
-                  <Button fx:id="generateSchedule" mnemonicParsing="false" onAction="#goToGenerateSchedule" prefHeight="23.0" prefWidth="164.0" text="Generate Schedule" />
-              </buttons>
-            </ButtonBar>
-            <ButtonBar layoutX="-10.0" layoutY="140.0" prefHeight="40.0" prefWidth="647.0">
-              <buttons>
-                <Button mnemonicParsing="false" text="Edit Course" />
-                  <Button mnemonicParsing="false" text="Edit Professor" />
-                  <Button mnemonicParsing="false" text="Edit Classroom" />
-                  <Button mnemonicParsing="false" text="Edit Preferences" />
-                  <Button mnemonicParsing="false" onAction="#goToViewSchedule" prefHeight="25.0" prefWidth="176.0" text="View Schedule" />
-              </buttons>
-            </ButtonBar>
-            <ButtonBar layoutX="52.0" layoutY="180.0" prefHeight="40.0" prefWidth="647.0">
-               <buttons>
-                  <Button fx:id="deleteCourse" mnemonicParsing="false" onAction="#goToDeleteCourse" text="Delete Course" translateX="-335.0" />
-                  <Button fx:id="deleteFaculty" mnemonicParsing="false" onAction="#goToDeleteFaculty" text="Delete Professor" translateX="-325.0" />
-                  <Button fx:id="deleteClassroom" mnemonicParsing="false" onAction="#goToDeleteClassroom" text="Delete Classroom" translateX="-317.0" />
-               </buttons>
-            </ButtonBar>
-      </children>
-    </AnchorPane>
-  </children>
+<VBox prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="homescreen.HomescreenController">
+  <MenuBar VBox.vgrow="NEVER">
+    <Menu fx:id="goToHome" mnemonicParsing="false" text="Home"/>
+    <Menu mnemonicParsing="false" text="Goto">
+      <MenuItem fx:id="goToAddCourse" mnemonicParsing="false" onAction="#goToAddCourse" text="Add Course"/>
+      <MenuItem fx:id="goToAddProfessor" mnemonicParsing="false" onAction="#goToAddFaculty" text="Add Professor"/>
+      <MenuItem fx:id="goToAddClassroom" mnemonicParsing="false" onAction="#goToAddClassroom" text="Add Classroom"/>
+      <SeparatorMenuItem mnemonicParsing="false"/>
+      <MenuItem fx:id="goToEditCourse" mnemonicParsing="false" text="Edit Course"/>
+      <MenuItem fx:id="goToEditProfessor" mnemonicParsing="false" text="Edit Professor"/>
+      <MenuItem fx:id="goToEditClassroom" mnemonicParsing="false" text="Edit Classroom"/>
+      <SeparatorMenuItem mnemonicParsing="false"/>
+      <MenuItem fx:id="goToDeleteCourse" mnemonicParsing="false" onAction="#goToDeleteCourse" text="Delete Course"/>
+      <MenuItem fx:id="goToDeleteProfessor" mnemonicParsing="false" onAction="#goToDeleteFaculty"
+                text="Delete Professor"/>
+      <MenuItem fx:id="goToDeleteClassroom" mnemonicParsing="false" onAction="#goToDeleteClassroom"
+                text="Delete Classroom"/>
+      <SeparatorMenuItem mnemonicParsing="false"/>
+      <MenuItem fx:id="goToViewSchedule" mnemonicParsing="false" onAction="#goToViewSchedule" text="View Schedule"/>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Help">
+      <MenuItem mnemonicParsing="false" text="About MyHelloApp"/>
+    </Menu>
+  </MenuBar>
+  <AnchorPane VBox.vgrow="ALWAYS">
+    <ButtonBar layoutX="-10.0" layoutY="80.0" prefHeight="77.0" prefWidth="647.0">
+      <buttons>
+        <Button fx:id="addCourse" mnemonicParsing="false" onAction="#goToAddCourse" prefHeight="25.0"
+                text="Add Course"/>
+        <Button fx:id="addProfessor" mnemonicParsing="false" onAction="#goToAddFaculty" text="Add Professor"/>
+        <Button fx:id="addClassroom" mnemonicParsing="false" onAction="#goToAddClassroom" text="Add Classroom"/>
+        <Button mnemonicParsing="false" text="Modify Time Slots"/>
+        <Button fx:id="generateSchedule" mnemonicParsing="false" onAction="#goToGenerateSchedule" prefHeight="23.0"
+                prefWidth="164.0" text="Generate Schedule"/>
+      </buttons>
+    </ButtonBar>
+    <ButtonBar layoutX="-10.0" layoutY="140.0" prefHeight="40.0" prefWidth="647.0">
+      <buttons>
+        <Button mnemonicParsing="false" text="Edit Course"/>
+        <Button mnemonicParsing="false" text="Edit Professor"/>
+        <Button mnemonicParsing="false" text="Edit Classroom"/>
+        <Button mnemonicParsing="false" text="Edit Preferences"/>
+        <Button mnemonicParsing="false" onAction="#goToViewSchedule" prefHeight="25.0" prefWidth="176.0"
+                text="View Schedule"/>
+      </buttons>
+    </ButtonBar>
+    <ButtonBar layoutX="52.0" layoutY="180.0" prefHeight="40.0" prefWidth="647.0">
+      <buttons>
+        <Button fx:id="deleteCourse" mnemonicParsing="false" onAction="#goToDeleteCourse" text="Delete Course"
+                translateX="-335.0"/>
+        <Button fx:id="deleteFaculty" mnemonicParsing="false" onAction="#goToDeleteFaculty" text="Delete Professor"
+                translateX="-325.0"/>
+        <Button fx:id="deleteClassroom" mnemonicParsing="false" onAction="#goToDeleteClassroom"
+                text="Delete Classroom" translateX="-317.0"/>
+      </buttons>
+    </ButtonBar>
+  </AnchorPane>
 </VBox>

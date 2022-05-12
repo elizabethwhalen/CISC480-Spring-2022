@@ -4,13 +4,14 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="scheduler.AddCourseToScheduleController">
-    <children>
-        <ComboBox fx:id="course" layoutX="18.0" layoutY="69.0" prefHeight="26.0" prefWidth="136.0" promptText="Class" />
-        <Button fx:id="submit_button" layoutX="524.0" layoutY="360.0" mnemonicParsing="false" onAction="#submitData" text="Submit" />
-      <Button fx:id="closeButton" layoutX="466.0" layoutY="360.0" mnemonicParsing="false" onAction="#close" text="Back" />
-      <ComboBox fx:id="room" layoutX="164.0" layoutY="70.0" prefHeight="25.0" prefWidth="136.0" promptText="Room" />
-      <ComboBox fx:id="classTimes" layoutX="466.0" layoutY="70.0" prefWidth="150.0" promptText="Class Time" />
-      <ComboBox fx:id="professor" layoutX="306.0" layoutY="70.0" prefWidth="150.0" promptText="Professor" />
-    </children>
+<AnchorPane fx:id="anchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="637.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="scheduler.AddCourseToScheduleController">
+    <ComboBox fx:id="course" layoutX="18.0" layoutY="69.0" prefHeight="26.0" prefWidth="136.0" promptText="Class"/>
+    <Button fx:id="submit_button" layoutX="524.0" layoutY="360.0" mnemonicParsing="false" onAction="#submitData"
+            text="Submit"/>
+    <Button fx:id="closeButton" layoutX="466.0" layoutY="360.0" mnemonicParsing="false" onAction="#close" text="Back"/>
+    <ComboBox fx:id="room" layoutX="164.0" layoutY="70.0" prefHeight="25.0" prefWidth="136.0" promptText="Room"/>
+    <ComboBox fx:id="classTimes" layoutX="466.0" layoutY="70.0" prefWidth="150.0" promptText="Class Time"/>
+    <ComboBox fx:id="professor" layoutX="306.0" layoutY="70.0" prefWidth="150.0" promptText="Professor"/>
 </AnchorPane>

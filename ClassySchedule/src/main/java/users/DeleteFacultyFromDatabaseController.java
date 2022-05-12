@@ -2,15 +2,11 @@ package users;
 
 import alert.MyAlert;
 import database.DatabaseStatic;
-import homescreen.HomescreenController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.fxml.FXML;
@@ -69,18 +65,15 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
         // Initialize faculty id drop-down
         getFacultyID();
         // Whenever faculty id is selected/changed
-        facultyID.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // Clear all of the previous text-fields
-                clearTextField();
-                // Initialize all of the text-fields
-                title.setText(getTitle());
-                firstName.setText(getFirstName());
-                lastName.setText(getLastName());
-                prevCourseLoad.setText(getPrevCourseLoad());
-                currCourseLoad.setText(getCurrCourseLoad());
-            }
+        facultyID.valueProperty().addListener((observable, oldValue, newValue) -> {
+            // Clear all of the previous text-fields
+            clearTextField();
+            // Initialize all of the text-fields
+            title.setText(getTitle());
+            firstName.setText(getFirstName());
+            lastName.setText(getLastName());
+            prevCourseLoad.setText(getPrevCourseLoad());
+            currCourseLoad.setText(getCurrCourseLoad());
         });
 
         // Initialize back and confirmation button
@@ -284,9 +277,7 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
                         facultyID.getSelectionModel().clearSelection();
                         // Clear all the text-fields
                         clearTextField();
-                    } catch (URISyntaxException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
+                    } catch (URISyntaxException | IOException e) {
                         e.printStackTrace();
                     }
                     break;
@@ -316,16 +307,13 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
         // First scenario to go back to home screen
         if (goBackToPrevPage) {
             // Confirmation to go back to the home screen
-            EventHandler<ActionEvent> confirmBack = new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    // The Ok button from the alert
-                    Optional<ButtonType> Ok = createAlert.showButton();
-                    // If user pressed "OK"
-                    if (Ok.get().getText().equals("OK")) {
-                        // Go back to home screen
-                        goBack();
-                    }
+            EventHandler<ActionEvent> confirmBack = event -> {
+                // The Ok button from the alert
+                Optional<ButtonType> Ok = createAlert.showButton();
+                // If user pressed "OK"
+                if (Ok.get().getText().equals("OK")) {
+                    // Go back to home screen
+                    goBack();
                 }
             };
             // Set the button to have to go back to home screen functionality
@@ -334,19 +322,16 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
         // 2nd scenario, confirm deletion
         else {
             // Confirmation to delete from the database
-            EventHandler<ActionEvent> confirmDelete = new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    // The Ok button from the alert
-                    Optional<ButtonType> ok = createAlert.showButton();
-                    // If user pressed "OK"
-                    if (ok.get().getText().equals("OK")) {
-                        // If delete was successful
-                        if (confirmButton()) {
-                            // Successful deletion alert
-                            MyAlert createAlert = new MyAlert("Deleted", "The Selected Faculty Has Been Deleted", Alert.AlertType.INFORMATION);
-                            createAlert.show();
-                        }
+            EventHandler<ActionEvent> confirmDelete = event -> {
+                // The Ok button from the alert
+                Optional<ButtonType> ok = createAlert.showButton();
+                // If user pressed "OK"
+                if (ok.get().getText().equals("OK")) {
+                    // If delete was successful
+                    if (confirmButton()) {
+                        // Successful deletion alert
+                        MyAlert createAlert1 = new MyAlert("Deleted", "The Selected Faculty Has Been Deleted", Alert.AlertType.INFORMATION);
+                        createAlert1.show();
                     }
                 }
             };

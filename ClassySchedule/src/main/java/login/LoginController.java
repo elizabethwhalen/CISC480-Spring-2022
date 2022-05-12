@@ -39,7 +39,7 @@ public class LoginController implements Initializable {
     public TextField username;
 
     /**
-     * The passowrd input field
+     * The password input field
      */
     @FXML
     public TextField password;
