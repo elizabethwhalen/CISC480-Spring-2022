@@ -121,7 +121,6 @@ export default function Login (props) {
           props.setLoggedIn(true);
           sessionStorage.setItem("startRepeat", "2022-01-31");
           sessionStorage.setItem("endRepeat", "2022-05-20");
-          sessionStorage.setItem("repeat", "weekly");
         } else {
           props.setLoggedIn(false);
         }

@@ -32,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
     message: {
         color: '#388e3c',
         fontWeight: 600,
-        color: 'red',
     },
     unsucessfulMessage: {
         color: 'red',

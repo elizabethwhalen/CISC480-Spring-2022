@@ -1,16 +1,14 @@
 import React from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
-import { Paper, Snackbar } from "@mui/material";
+import { Paper } from "@mui/material";
 import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import Toolbar from './Toolbar'
 import EditClassForm from './EditClassForm'
 import constraints from 'constraint-solver'
-import { RRule, RRuleSet, rrulestr } from 'rrule'
+import { RRule } from 'rrule'
 import axios from 'axios'
-import { pink, blue, yellow, purple, green } from '@mui/material/colors';
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
@@ -26,42 +24,40 @@ export default function CalendarTest() {
     const [endTime, setEndTime] = React.useState("");
     const [date, setDate] = React.useState('');
     const [selectedEvent, setSelectedEvent] = React.useState({});
-    const repeat = sessionStorage.getItem("repeat");
     const startRepeat = sessionStorage.getItem("startRepeat");
     const endRepeat = sessionStorage.getItem("endRepeat");
-
     const token = sessionStorage.getItem("token");
+
     const minTime = new Date();
     minTime.setHours(8, 0, 0);
     const maxTime = new Date();
     maxTime.setHours(21, 0, 0);
 
-    const getCourse = () => {
+    function getCourse () {
         // Config data for https request.
         let config = {
             method: 'get',
             url: 'https://classy-api.ddns.net/v2/class',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
+                'Authorization': 'Bearer ' + token,
             },
         };
         // https request Promise executed with Config settings.
-        axios(config).then((response) => {
+        axios(config).then( response => {
             //console.log(JSON.stringify(response.data));
             let list = [];
-            response.data.map((e) => {
+            response.data.forEach( e => {
                 let clas = e.dept_code + ' ' + e.class_num;
                 list.push(clas);
-                return courseList;
             })
             setCourseList(list);
-        }).catch((error) => {
+        }).catch( error => {
             console.log(error);
         });
     };
 
-    const getInstructor = () => {
+    function getInstructor () {
         // Config data for https request.
         let config = {
             method: 'get',
@@ -72,11 +68,11 @@ export default function CalendarTest() {
             },
         };
         // https request Promise executed with Config settings.
-        axios(config).then((response) => {
+        axios(config).then( response => {
             //console.log(JSON.stringify(response.data));
             let list = [];
             response.data.map((e) => {
-                let instruc = e.faculty_first + ' ' + e.faculty_last;
+                let instruc = e.faculty_last + ', ' + e.faculty_first;
                 list.push(instruc);
                 return list;
             })
@@ -86,7 +82,7 @@ export default function CalendarTest() {
         });
     };
 
-    const getRoom = () => {
+    function getRoom () {
         // Config data for https request.
         let config = {
             method: 'get',
@@ -111,11 +107,11 @@ export default function CalendarTest() {
         });
     };
 
-    const onEventDrop = (data) => {
+    const handleEventResize = data => {
         const { start, end, event } = data;
         let id = event.id;
         const newData = [...events];
-        newData.map((e) => {
+        newData.map(e => {
             if (e.id === id) {
                 let updated = {
                     start: start,
@@ -134,8 +130,31 @@ export default function CalendarTest() {
         setEvents(newData);
     };
 
-    const onSlotChange = (event) => {
-        //setColor('#b3e5fc');
+    const handleEventDrop = data => {
+        const { start, end, event } = data;
+        let id = event.id;
+        const newData = [...events];
+        newData.map(e => {
+            if (e.id === id) {
+                let updated = {
+                    start: start,
+                    end: end,
+                    title: e.title,
+                    instructor: e.instructor,
+                    room: e.room,
+                    color: e.color,
+                    id: id,
+                    days: e.days,
+                };
+                newData[e.id] = updated;
+            }
+            return null;
+        })
+        setEvents(newData);
+    };
+
+
+    const handleSelectSlot = event => {
         let { start, end } = event;
         const { startTime, endTime } = getTimeInterval(start, end);
         setStartTime(startTime);
@@ -158,7 +177,7 @@ export default function CalendarTest() {
                 friday: false,
             }
         };
-        const newData = [...events]
+        const newData = [...events];
         newData.push(newEvent);
         setEvents(newData);
         setSelectedEvent(newEvent);
@@ -171,8 +190,8 @@ export default function CalendarTest() {
 
     const createRecurrence = (data) => {
         let byweekday = [];
-        let dtstart = startRepeat;
-        let until = endRepeat;
+        let dtstart = null;
+        let until = null;
 
         if (data.days.monday) {
             byweekday.push(RRule.MO);
@@ -214,16 +233,15 @@ export default function CalendarTest() {
             until: until,
             tzid: 'America/Chicago'
         })
-
         return rule.all();
     }
     
-    const onUpdateEvents = (data) => {
+    const handleEventUpdate = (data) => {
         setOpen(false);
         const newData = deleteEvent(data.id);
         const list = createRecurrence(data);
 
-        list.map((e) => {
+        list.forEach(e => {
             let time = data.startTime.split(':');
             let startHour = Number(time[0]);
             let startMin = Number(time[1]);
@@ -233,8 +251,8 @@ export default function CalendarTest() {
             let endMin = Number(time[1]);
 
             let newEvent = {
-                start: new Date( startHour, startMin, 0),
-                end: new Date( endHour, endMin, 0),
+                start: new Date(e.getUTCFullYear(), e.getMonth(), e.getDate(), startHour, startMin, 0),
+                end: new Date(e.getUTCFullYear(), e.getMonth(), e.getDate(), endHour, endMin, 0),
                 title: data.course,
                 instructor: data.instructor,
                 room: data.room,
@@ -243,17 +261,14 @@ export default function CalendarTest() {
                 repeat: data.repeat,
                 days: data.days,
             }
-
             newData.push(newEvent);
         })
         setEvents(newData);
-
     }
 
     const deleteEvent = (id) => {
         const array = [...events].filter(e => Number(e.id) !== Number(id));
         return array;
-
     }
 
     const getDate = (event) => {
@@ -298,12 +313,10 @@ export default function CalendarTest() {
             endTime = end.getHours() + ":" + end.getMinutes();
         }
 
-        return {
-            startTime, endTime
-        }
+        return { startTime, endTime }
     }
 
-    const onEventClick = React.useCallback((args) => {
+    const handleSelectEvent = args => {
         setSelectedEvent(args);
         getCourse();
         getInstructor();
@@ -314,7 +327,7 @@ export default function CalendarTest() {
         setStartTime(startTime);
         setEndTime(endTime);
         setOpen(true);
-    });
+    }
 
     const onClose = React.useCallback(() => {
         if (!isEdit) {
@@ -339,7 +352,8 @@ export default function CalendarTest() {
          CISC480.class == (CISC2.class)
          CISC480.professor == Sawin
     `)
-    const myFunction = React.useCallback(() => {
+    
+    const myFunction = () => {
 
         let CISCprof1 = 'Miracle';
         let CISCprof2 = 'Sawin';
@@ -355,7 +369,7 @@ export default function CalendarTest() {
         layout.updateVariables()
 
         console.log(layout.getValues({ roundToInt: true }))
-    });
+    }
 
     return (
         <Paper sx={{ padding: '20px' }} elevation={0} >
@@ -370,13 +384,13 @@ export default function CalendarTest() {
                     courseList={courseList}
                     instructorList={instructorList}
                     roomList={roomList}
-                    onUpdate={onUpdateEvents}
+                    handleEventUpdate={handleEventUpdate}
                 />}
             <DnDCalendar
                 min={minTime}
                 max={maxTime}
-                date={moment().toDate()}
-                view={'work_week'}
+                defaultDate={moment().toDate()}
+                defaultView={'work_week'}
                 views={['work_week']}
                 events={events}
                 localizer={localizer}
@@ -386,16 +400,12 @@ export default function CalendarTest() {
                 step={5}
                 timeslots={12}
                 styles={{ overflow: "hidden" }}
-                onEventDrop={event => onEventDrop(event)}
-                onEventResize={event => onEventDrop(event)}
-                onSelectEvent={event => onEventClick(event)}
-                onSelectSlot={(slotInfo) => onSlotChange(slotInfo)}
-                components={{
-                    toolbar: Toolbar
-                }}
+                onEventDrop={event => handleEventDrop(event)}
+                onEventResize={event => handleEventResize(event)}
+                onSelectEvent={event => handleSelectEvent(event)}
+                onSelectSlot={(slotInfo) => handleSelectSlot(slotInfo)}
             />
             <div>
-                
                 <button id="algo" onClick={myFunction}>Algorithm Fun!!!</button>
             </div>
 

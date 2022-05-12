@@ -114,7 +114,7 @@ export default function EditClassForm(props) {
                 id: id,
             }
         }
-        props.onUpdate(data);
+        props.handleEventUpdate(data);
     }
 
     const { monday, tuesday, wednesday, thursday, friday } = days;
