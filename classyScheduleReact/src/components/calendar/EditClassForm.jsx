@@ -18,9 +18,6 @@ import {
 import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles ({
-    root: {
-        display: 'flex',
-    },
     title: {
         color: '#7E16A4',
         fontWeight: "600",
