@@ -9,7 +9,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,16 +21,22 @@ import java.util.ResourceBundle;
 
 public class FacultyController implements Initializable {
     @FXML
-    TextField facultyLast;
+    TextField firstName;
 
     @FXML
-    TextField facultyFirst;
+    TextField lastName;
 
     @FXML
     TextField facultyID;
 
     @FXML
     ChoiceBox<String> type;
+
+    /**
+     * TODO: use email for professor account
+     */
+    @FXML
+    TextField email;
 
     @FXML
     Button submitButton;
@@ -55,9 +60,9 @@ public class FacultyController implements Initializable {
         for (Object jsonObject: types) {
 
             JSONObject job = (JSONObject)jsonObject;
-            if (job.get("title_ID") != JSONObject.NULL) {
+            if (job.get("title_id") != JSONObject.NULL) {
                 //change to ENUM
-                type.getItems().add((String) job.get("title_id"));
+                type.getItems().add(String.valueOf(job.get("title_id")));
             }
         }
     }
@@ -68,12 +73,12 @@ public class FacultyController implements Initializable {
 
     @FXML
     public void submitData(ActionEvent event) {
-        if (facultyFirst.getText().isBlank()) {
+        if (firstName.getText().isBlank()) {
             MyAlert createAlert = new MyAlert("Invalid Faculty First Name", "Please Input In The Faculty First Name", Alert.AlertType.ERROR);
             createAlert.show();
             return;
         }
-        if (facultyLast.getText().isBlank()) {
+        if (lastName.getText().isBlank()) {
             MyAlert createAlert = new MyAlert("Invalid Faculty Last Name", "Please Input In The Faculty Last Name", Alert.AlertType.ERROR);
             createAlert.show();
             return;
@@ -100,8 +105,8 @@ public class FacultyController implements Initializable {
 
         JSONObject newFaculty = new JSONObject();
         newFaculty.put("faculty_id", facultyID.getText());
-        newFaculty.put("faculty_first", facultyFirst.getText());
-        newFaculty.put("faculty_last", facultyLast.getText());
+        newFaculty.put("faculty_first", firstName.getText());
+        newFaculty.put("faculty_last", lastName.getText());
         //newFaculty.put("title_id", type.getValue());
 
         try {
@@ -114,8 +119,8 @@ public class FacultyController implements Initializable {
 
 
 
-        facultyFirst.clear();
-        facultyLast.clear();
+        firstName.clear();
+        lastName.clear();
         facultyID.clear();
     }
 
@@ -184,4 +189,8 @@ public class FacultyController implements Initializable {
         cs.viewScheduleClicked(stage);
     }
 
+    @FXML
+    public void cancelButtonClicked() {
+        goBack();
+    }
 }

@@ -45,7 +45,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.text.Text?>
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="room.RoomController">
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
@@ -77,12 +76,11 @@
                </font>
             </Label>
 
-            <TextField fx:id="roomNum" layoutX="164.0" layoutY="133.0" prefHeight="25.0" prefWidth="200.0" />
-            <ChoiceBox fx:id="deptName" layoutX="166.0" layoutY="203.0" prefHeight="25.0" prefWidth="200.0" />
+            <TextField fx:id="roomNum" layoutX="166.0" layoutY="134.0" prefHeight="25.0" prefWidth="200.0" />
+            <ChoiceBox fx:id="campusID" layoutX="166.0" layoutY="203.0" prefHeight="25.0" prefWidth="200.0" />
 <!--            <ChoiceBox fx:id="type" layoutX="166.0" layoutY="239.0" prefHeight="25.0" prefWidth="200.0" />-->
             <Button fx:id="submitButton" layoutX="144.0" layoutY="308.0" mnemonicParsing="false" onAction="#submitData" text="Confirm" textFill="#5ce85c" />
             <Button fx:id="cancelButton" layoutX="217.0" layoutY="308.0" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="59.0" text="Cancel" textFill="#c32727" />
-            <ChoiceBox fx:id="campusID" layoutX="166.0" layoutY="168.0" prefHeight="25.0" prefWidth="200.0" />
             <ChoiceBox fx:id="buildingCode" layoutX="166.0" layoutY="101.0" prefHeight="25.0" prefWidth="200.0" />
             <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="640.0">
                <menus>
@@ -115,6 +113,12 @@
                   </Menu>
                </menus>
             </MenuBar>
+            <Label layoutX="65.0" layoutY="206.0" prefHeight="20.0" prefWidth="79.0" text="Campus ID:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="capacity" layoutX="166.0" layoutY="168.0" prefHeight="25.0" prefWidth="200.0" />
       </children>
     </AnchorPane>
   </children>

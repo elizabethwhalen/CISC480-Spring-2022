@@ -2,13 +2,11 @@ package login;
 
 import alert.MyAlert;
 import database.DatabaseStatic;
-import homescreen.HomescreenController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -18,8 +16,6 @@ import javafx.stage.Stage;
 
 import scenes.ChangeScene;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -86,7 +82,7 @@ public class LoginController implements Initializable {
 
 
     @FXML
-    public void submitButton(KeyEvent keyEvent) throws IOException, URISyntaxException {
+    public void submitButton(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER) {
             if (validateLogin(username.getText(), password.getText())) {
                 changeScene();

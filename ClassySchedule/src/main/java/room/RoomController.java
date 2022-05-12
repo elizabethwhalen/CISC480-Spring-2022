@@ -26,20 +26,11 @@ import java.util.ResourceBundle;
  */
 public class RoomController implements Initializable {
 
-    private Stage addRoom;
-    private Scene scene;
-    private Parent root;
-    @FXML
-    ChoiceBox<String> deptName;
-
-    @FXML
-    ChoiceBox<String> type;
-
     @FXML
     TextField roomNum;
 
     @FXML
-    ChoiceBox<String> buildingName;
+    ChoiceBox<String> buildingCode;
 
     @FXML
     TextField capacity;
@@ -64,12 +55,12 @@ public class RoomController implements Initializable {
     //May use in the future to reach into database for room options
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        buildingName.getItems().clear();
+        buildingCode.getItems().clear();
         try {
             JSONArray rs = DatabaseStatic.getData("building");
             for (Object jsonObject: rs) {
                 JSONObject job = (JSONObject)jsonObject;
-                buildingName.getItems().add((String) job.get("building_code"));
+                buildingCode.getItems().add((String) job.get("building_code"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,7 +91,7 @@ public class RoomController implements Initializable {
             alert.showAndWait();
             return;
         }
-        if (buildingName.getSelectionModel().isEmpty()) {
+        if (buildingCode.getSelectionModel().isEmpty()) {
             MyAlert createAlert = new MyAlert("Invalid Building Name", "Please Select A Building", Alert.AlertType.ERROR);
             Alert alert = createAlert.createAlert();
             alert.showAndWait();
@@ -127,7 +118,7 @@ public class RoomController implements Initializable {
 
         JSONObject newRoom = new JSONObject();
         newRoom.put("room_num", roomNum.getText());
-        newRoom.put("building_code", buildingName.getValue());
+        newRoom.put("building_code", buildingCode.getValue());
         newRoom.put("capacity", capacity.getText());
 
         try {
@@ -142,7 +133,7 @@ public class RoomController implements Initializable {
 
         capacity.clear();
         roomNum.clear();
-        buildingName.setValue(null);
+        buildingCode.setValue(null);
 
     }
 
