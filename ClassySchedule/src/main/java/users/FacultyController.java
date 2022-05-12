@@ -2,26 +2,19 @@ package users;
 
 import alert.MyAlert;
 import database.DatabaseStatic;
-import homescreen.HomescreenController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import scenes.ChangeScene;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -46,17 +39,6 @@ public class FacultyController implements Initializable {
     @FXML
     Button cancelButton;
 
-    @FXML
-    Text firstNameWarning;
-
-    @FXML
-    Text lastNameWarning;
-
-    @FXML
-    Text IDWarning;
-
-    @FXML
-    Text typeWarning;
     private Stage stage;
 
     /**
@@ -123,7 +105,7 @@ public class FacultyController implements Initializable {
         //newFaculty.put("title_id", type.getValue());
 
         try {
-            database.insertData("faculty", newFaculty);
+            DatabaseStatic.insertData("faculty", newFaculty);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {

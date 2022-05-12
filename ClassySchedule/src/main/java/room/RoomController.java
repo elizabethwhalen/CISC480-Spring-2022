@@ -4,7 +4,6 @@ import alert.MyAlert;
 import database.DatabaseStatic;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,15 +11,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import homescreen.HomescreenController;
 import scenes.ChangeScene;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -92,9 +87,6 @@ public class RoomController implements Initializable {
      */
     @FXML
     public void submitData(ActionEvent event) {
-        roomWarning.setVisible(false);
-        buildingWarning.setVisible(false);
-        capacityWarning.setVisible(false);
 
         if (capacity.getText().isEmpty()) {
             MyAlert createAlert = new MyAlert("Invalid Capacity", "Please Input In The Capacity", Alert.AlertType.ERROR);
@@ -123,7 +115,6 @@ public class RoomController implements Initializable {
                 MyAlert createAlert = new MyAlert("Invalid Room Number Length", "Please Input In A Valid Room Number Length", Alert.AlertType.ERROR);
                 Alert alert = createAlert.createAlert();
                 alert.showAndWait();
-                roomWarning.setVisible(true);
                 return;
             }
         } catch (NumberFormatException e) {
