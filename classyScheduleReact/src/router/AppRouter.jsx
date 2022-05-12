@@ -1,10 +1,10 @@
 import { Route, Routes } from 'react-router-dom'
-import AddClass from '../components/functions/AddClass'
+import AddClass from '../components/db_forms/AddClass'
 import CalendarTest from '../components/calendar/CalendarTest'
 import Home from '../components/layout/Home'
-import AddFaculty from '../components/functions/AddFaculty'
+import AddFaculty from '../components/db_forms/AddFaculty'
 import Help from '../components/tools/Help'
-import AddRoom from '../components/functions/AddRoom'
+import AddRoom from '../components/db_forms/AddRoom'
 import Signup from '../components/logging/Signup'
 
 const AppRouter = () => {

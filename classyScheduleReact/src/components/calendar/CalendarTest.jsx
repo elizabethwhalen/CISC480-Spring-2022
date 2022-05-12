@@ -17,26 +17,24 @@ const DnDCalendar = withDragAndDrop(Calendar);
 
 export default function CalendarTest() {
     const [events, setEvents] = React.useState([]);
-    
     const [isEdit, setEdit] = React.useState(false);
     const [open, setOpen] = React.useState(false);
-    //const [anchor, setAnchor] = React.useState(null);
     const [courseList, setCourseList] = React.useState([]);
     const [instructorList, setInstructorList] = React.useState([]);
     const [roomList, setRoomList] = React.useState([]);
-    //const [sessions, setSessions] = React.useState([]);
     const [startTime, setStartTime] = React.useState("");
     const [endTime, setEndTime] = React.useState("");
     const [date, setDate] = React.useState('');
-    //const [color, setColor] = React.useState('#b3e5fc');
     const [selectedEvent, setSelectedEvent] = React.useState({});
+    const repeat = sessionStorage.getItem("repeat");
+    const startRepeat = sessionStorage.getItem("startRepeat");
+    const endRepeat = sessionStorage.getItem("endRepeat");
 
     const token = sessionStorage.getItem("token");
     const minTime = new Date();
     minTime.setHours(8, 0, 0);
     const maxTime = new Date();
     maxTime.setHours(21, 0, 0);
-
 
     const getCourse = () => {
         // Config data for https request.
@@ -126,7 +124,8 @@ export default function CalendarTest() {
                     instructor: e.instructor,
                     room: e.room,
                     color: e.color,
-                    id: id
+                    id: id,
+                    days: e.days,
                 };
                 newData[e.id] = updated;
             }
@@ -147,34 +146,33 @@ export default function CalendarTest() {
             start: start,
             end: end,
             title: "New class",
-            instructor: "N/A",
-            room: "N/A",
+            instructor: "",
+            room: "",
             color: "#b3e5fc",
             id: count,
+            days: {
+                monday: false,
+                tuesday: false,
+                wednesday: false,
+                thursday: false,
+                friday: false,
+            }
         };
         const newData = [...events]
         newData.push(newEvent);
         setEvents(newData);
+        setSelectedEvent(newEvent);
+        setOpen(true);
+        getCourse();
+        getInstructor();
+        getRoom();
         return events;
     };
 
     const createRecurrence = (data) => {
-        let freq = null;
-        let interval = 1;
         let byweekday = [];
         let dtstart = null;
         let until = null;
-
-        if (data.repeat === "weekly") {
-            freq = RRule.WEEKLY;
-            interval = 1;
-        } else if (data.repeat === "biweekly") {
-            freq = RRule.WEEKLY;
-            interval = 2;
-        } else if (data.repeat === "month") {
-            freq = RRule.MONTHLY;
-            interval = 1;
-        }
 
         if (data.days.monday) {
             byweekday.push(RRule.MO);
@@ -196,32 +194,33 @@ export default function CalendarTest() {
         let startHour = Number(time[0]) + 5;
         let startMin = Number(time[1]);
 
-        let startRepeat = data.startRepeat.split("-");
-        let year = Number(startRepeat[0]);
-        let month = Number(startRepeat[1] - 1);
-        let date = Number(startRepeat[2]);
+        let start = startRepeat.split("-");
+        let year = Number(start[0]);
+        let month = Number(start[1] - 1);
+        let date = Number(start[2]);
         dtstart = new Date(Date.UTC(year, month, date, startHour, startMin));
 
-        let endRepeat = data.endRepeat.split("-");
-        year = Number(endRepeat[0]);
-        month = Number(endRepeat[1] - 1);
-        date = Number(endRepeat[2]);
+        let end = endRepeat.split("-");
+        year = Number(end[0]);
+        month = Number(end[1] - 1);
+        date = Number(end[2]);
         until = new Date(Date.UTC(year, month, date));
-
+        
         const rule = new RRule({
-            freq: freq,  // repeate weekly, possible freq [DAILY, WEEKLY, MONTHLY, ]
-            interval: interval,
+            freq: RRule.WEEKLY,  // repeate weekly, possible freq [DAILY, WEEKLY, MONTHLY, ]
+            interval: 1,
             byweekday: byweekday,
-            dtstart: dtstart,
-            until: until,
+            //dtstart: dtstart,
+            //until: until,
             tzid: 'America/Chicago'
         })
 
         return rule.all();
+        
     }
-
+    
     const onUpdateEvents = (data) => {
-
+        setOpen(false);
         const newData = deleteEvent(data.id);
         const list = createRecurrence(data);
 
@@ -235,18 +234,21 @@ export default function CalendarTest() {
             let endMin = Number(time[1]);
 
             let newEvent = {
-                start: new Date(e.getFullYear(), e.getMonth(), e.getDate(), startHour, startMin, 0),
-                end: new Date(e.getFullYear(), e.getMonth(), e.getDate(), endHour, endMin, 0),
+                start: new Date( startHour, startMin, 0),
+                end: new Date( endHour, endMin, 0),
                 title: data.course,
                 instructor: data.instructor,
                 room: data.room,
                 color: data.color,
                 id: data.id,
+                repeat: data.repeat,
+                days: data.days,
             }
 
             newData.push(newEvent);
         })
         setEvents(newData);
+
     }
 
     const deleteEvent = (id) => {
@@ -303,7 +305,6 @@ export default function CalendarTest() {
     }
 
     const onEventClick = React.useCallback((args) => {
-        console.log(events)
         setSelectedEvent(args);
         getCourse();
         getInstructor();
@@ -345,28 +346,17 @@ export default function CalendarTest() {
         let CISCprof2 = 'Sawin';
         let prefNum1 = 5;
         let prefNum2 = 4;
-        //console.log(instructorList);
-        //console.log(instructorList.at(1));
-        //console.log(courseList);
         // the first parameter has to be a string
         // the second parameter has to be a number
         layout.suggestValue('CISC.class', 131) // sets the vaue of CISC class to 131
         layout.suggestValue(CISCprof2, prefNum2) // sets the value of the first instructor
-        layout.suggestValue('CISC2.class', 480) // sets tje value of CISCclass2 to 480
+        layout.suggestValue('CISC2.class', 480) // sets the value of CISCclass2 to 480
         layout.suggestValue(CISCprof1, prefNum1)
 
         layout.updateVariables()
 
         console.log(layout.getValues({ roundToInt: true }))
     });
-
-    const classPool = React.useCallback(() => {
-        //const cd = document.getElementsByName('level100');
-        //console.log(cd.checked);
-        console.log("test");
-    });
-
-    const label = 'Hello';
 
     return (
         <Paper sx={{ padding: '20px' }} elevation={0} >
@@ -394,8 +384,8 @@ export default function CalendarTest() {
                 resizable
                 selectable
                 style={{ height: "100vh" }}
-                step={30}
-                timeslots={2}
+                step={5}
+                timeslots={12}
                 styles={{ overflow: "hidden" }}
                 onEventDrop={event => onEventDrop(event)}
                 onEventResize={event => onEventDrop(event)}
@@ -406,11 +396,7 @@ export default function CalendarTest() {
                 }}
             />
             <div>
-                <label htmlFor="level100">Level 100 classes</label><input type="checkbox" name="level100" value="yes"></input><br></br>
-                <label htmlFor="level200">Level 200 classes</label><input type="checkbox" name="level200" value="yes"></input><br></br>
-                <label htmlFor="level300">Level 300 classes</label><input type="checkbox" name="level300" value="yes"></input><br></br>
-                <label htmlFor="level400">Level 400 classes</label><input type="checkbox" name="level400" value="yes"></input><br></br>
-                <button id="btn" onClick={classPool}>Get Selected Classes</button>
+                
                 <button id="algo" onClick={myFunction}>Algorithm Fun!!!</button>
             </div>
 

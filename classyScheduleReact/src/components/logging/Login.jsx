@@ -6,8 +6,6 @@ import background from '../../images/hd_calendar2.jpg'
 import logo from '../../images/Updated_Logo.gif'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import { borderColor } from '@mui/system'
-
 
 // Styling components using useStyles
 const useStyles = makeStyles({
@@ -57,13 +55,12 @@ const useStyles = makeStyles({
     margin: '0 auto -55px auto'
   },
   logoGrid: {
-    paddingTop: '30px',
-    paddingBottom: '30px',
+    paddingBottom: '10px',
   },
   logo: {
     width: '220px',
     height: '220px',
-    paddingLeft: '40px'
+    paddingLeft: '40px',
   },
   text: {
     paddingBottom: '30px'
@@ -119,11 +116,12 @@ export default function Login (props) {
       axios(config).then((response) => {
         if (response.data !== '') {
           token = response.data;
-          //props.handleLogin(true);
-          //localStorage.setItem('token', token);
           console.log(token);
           props.setToken(token);
           props.setLoggedIn(true);
+          sessionStorage.setItem("startRepeat", "2022-01-31");
+          sessionStorage.setItem("endRepeat", "2022-05-20");
+          sessionStorage.setItem("repeat", "weekly");
         } else {
           props.setLoggedIn(false);
         }
@@ -166,7 +164,8 @@ export default function Login (props) {
           className={classes.gridItem2}
         >
           <Grid container className={classes.loginContainer}>
-            {/* Title */}
+
+            {/* TITLE */}
             <Grid item xs={12} className={classes.loginTitle} >
               CLASSY SCHEDULE
             </Grid>
@@ -176,9 +175,9 @@ export default function Login (props) {
               <img src={logo} className={classes.logo} alt='logo' ></img>
             </Grid>
 
-            {/* Instruction line */}
+            {/* INSTRUCTION TEXT */}
             <Grid item xs={12} className={classes.text}>
-              Log in with your Classy Schedule account
+              Log in with your Classy Schedule Account
             </Grid>
 
             {/* Form */}
@@ -236,14 +235,14 @@ export default function Login (props) {
                   </Grid>
 
                   {/* Submit button */}
-                  <Grid item xs={12} sx={{ marginTop: '30px' }}>
+                  <Grid item xs={12} sx={{ marginTop: '20px' }}>
                     <Button
                       variant="contained"
                       disableElevation
                       type='submit'
                       sx={{
                         backgroundColor: '#6a1b9a',
-                        '&:hover': { backgroundColor: '#4a148c' }
+                        '&:hover': { backgroundColor: '#B9BDBB' }
                       }} >
                       Log In
                     </Button>
