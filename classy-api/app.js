@@ -1,3 +1,15 @@
+// The purpose of the app.js file is to setup a connection to the Azure DB and
+// serve all submitted HTTP requests. Some key features of this file include:
+// 1. We read in a hidden seed (for bcrypt) and a hidden password (for DB connection)
+// 2. Allow users to login to the API, hash their password, and compare against hashed db in table
+// 3. Handle any other HTTP request...
+//
+// Authors: Joe Lambrecht, Gabbie Bolcer, Emma Torres, Jonas Bull, Ben Frey
+// Date: 11 May 2022
+
+// Say hello!
+console.log("Welcome to the Database Team's domain, nice to meet you! :)\n");
+
 //
 // Import packages and setup app
 //
@@ -6,11 +18,11 @@
 var express = require('express');
 var path = require('path');
 var mysql = require('mysql');
+var fs = require('fs')
 
 // Login and token packages
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken')
-const secretkey = "secretkey" //CHANGETHIS
 
 // Setup RESTful app
 var app = express();
@@ -20,28 +32,61 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+//
+// Read in "hidden" files. The "hidden" directory should be in .gitignore but deployed to the server.
+// public users should not be able to view this directory. We have left it in our github to not
+// deter the progress of other teams.
+//
+
+// Read in Azure database password for our access account. Need callback for
+let db_password;
+function makeConnection(callback) {
+    fs.readFile('./hidden/db_password.txt', (err, data) => {
+        if (err) throw err;
+        db_password = data.toString();
+        callback(db_password);
+    });
+}
+
+// Read in seed used for bcrypt. We don't need callback function because hashing
+// occur right when server is initiated.
+let bcrypt_seed;
+fs.readFileSync('./hidden/bcrypt_seed.txt', (err, data) => {
+    if (err) throw err;
+    bcrypt_seed = data.toString();
+    console.log(bcrypt_seed);
+});
+
 ///
 // Database Connection
 //
 
-// Determine which schema we are modifying
-let schema = "cs_dev" // "db_dev" use for development Database Team
+let con;
+makeConnection((password)=> {
+    // Determine which schema we are modifying
+    let schema = "cs_dev" // "db_dev" use for development Database Team
 
-// Connection to the database team Azure DB
-var config =
-{
-    host: 'classy-schedule-database.mysql.database.azure.com',
-    user: 'db_test',
-    password: 'fA!6#_&eaU9-EaeJ',
-    database: schema,
-    port: 3306,
-};
+    // Connect to the Azure database
+    var config =
+    {
+        host: 'classy-schedule-database.mysql.database.azure.com',
+        user: 'db_test',
+        password: password,
+        database: schema,
+        port: 3306,
+    };
 
-// Connect to the database
-const con = new mysql.createConnection(config);
-con.connect(function(err) {
-  if (err) throw err;
-  console.log("Connected to "+schema);
+    // Create the connection and store in "con"
+    con = new mysql.createConnection(config);
+    con.connect(function(err) {
+      if (err) throw err;
+      console.log("Connected to database with the following information:"+
+                    "\nHost: "+config.host+
+                    "\nUser: "+config.user+
+                    "\nPassword: "+config.password+
+                    "\nDB Schema: "+config.database+
+                    "\nPort: "+config.port);
+    });
 });
 
 // Get help information from versioning file
