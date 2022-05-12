@@ -80,7 +80,8 @@ const useStyles = makeStyles((theme) => ({
     color: 'white', 
   },
   link: {
-    textDecoration: 'none'
+    textDecoration: 'none',
+    color: 'white',
   },
   logo: {
       width: '35px',
@@ -120,17 +121,17 @@ export default function AppHeader(props) {
         
         {/* TITLE */}
         <Container>
-          <Link to='/' className={classes.link}>
-            <Typography
-              variant="h4"
-              className={classes.text}
-              noWrap
-              align='center'
-            >
-              <img src={logo} alt='logo' className={classes.logo}/> 
+          <Typography
+            variant="h4"
+            className={classes.text}
+            noWrap
+            align='center'
+          >
+            <img src={logo} alt='logo' className={classes.logo}/> 
+            <Link to='/' className={classes.link}>
               Classy Schedule 
-            </Typography>
-          </Link>          
+            </Link>
+          </Typography>          
         </Container>
 
         {/* USER'S LOGIN INFO */}

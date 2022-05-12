@@ -129,8 +129,7 @@ const Home = () => {
                                         color: "white"
                                     }}
                                 >
-                                    Questions?
-                                </Button>
+                                    Help and FAQ Page</Button>
                             </Link>
                         </Grid>
                     </Grid>

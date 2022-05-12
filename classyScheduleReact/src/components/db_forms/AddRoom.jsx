@@ -3,11 +3,16 @@ import {
     Paper,
     Grid,
     Button,
-    Typography
+    Typography,
+    Select,
+    FormControl,
+    MenuItem,
+    InputLabel
 } from '@material-ui/core'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import { makeStyles } from '@material-ui/core/styles'
 import axios from 'axios';
+
 
 // This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles((theme) => ({
@@ -30,10 +35,41 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
+//This function gets...
+const getBuildingList = () => {
+    const token = sessionStorage.getItem('token');
+    // Config data for https request.
+    let list = []; 
+    let config = {
+        method: 'get',
+        url: 'https://classy-api.ddns.net/v2/building',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+        },
+    };
+    // https request Promise executed with Config settings.
+    axios(config).then((response) => {
+        //console.log(JSON.stringify(response.data));
+        response.data.map((e) => {
+            console.log("response: " + e.building_code)
+            let bd = e.building_code;
+            list.push(bd);
+            return list;
+        })    
+    }).catch((error) => {
+        console.log(error);
+    });
+    console.log(list)
+    return list;
+}
+
 // Main component
 const AddRoom = () => {
     const [roomNum, setRoomNum] = React.useState('');
     const [building, setBuilding] = React.useState(''); // Room number (e.g., 420, 350, etc.)
+    const [buildingList, setBuildingList] = React.useState([]);
+    const bList = getBuildingList();
     const classes = useStyles();
     const token = sessionStorage.getItem('token');
 
@@ -43,7 +79,7 @@ const AddRoom = () => {
     }
 
     // This function will retrieve the value entered in the building field whenever it changes
-    const handleChangeBuilding= (event) => {
+    const handleChangeBuilding = (event) => {
         setBuilding(event.target.value);
     }
 
@@ -87,24 +123,26 @@ const AddRoom = () => {
                     <ValidatorForm onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
                             <Grid item xs={4}>
-                                <TextValidator
-                                    size="medium"
-                                    variant="outlined"
-                                    label="Building"
-                                    fullWidth
-                                    name="Building"
-                                    type="text"
-                                    value={building}
-                                    validators={['matchRegexp:^[A-Z]{1,3}$', 'required']}
-                                    onInput={(e) => {
-                                        e.target.value = e.target.value.slice(0, 4)
-                                    }}
-                                    errorMessages={[
-                                        'Invalid - It should have 3 characters',
-                                        'this field is required',
-                                    ]}
-                                    onChange={handleChangeBuilding}
-                                />
+                                {/* Dropdown for Building Selection */}
+                                <FormControl fullWidth size="small">
+                                    <InputLabel id="demo-select-small">Building</InputLabel>
+                                    <Select
+                                        labelId="demo-select-small"
+                                        id="demo-select-small" 
+                                        value={building}
+                                        label="Building"
+                                        onChange={handleChangeBuilding}
+                                        size='small'
+                                        autoWidth
+                                    >
+                                        <MenuItem value=""> 
+                                            <em>None</em>
+                                        </MenuItem>
+                                        {buildingList.map((e) => {
+                                            return <MenuItem key={e} value={e}>{e}</MenuItem>;
+                                        })}
+                                    </Select>
+                                </FormControl>
                             </Grid>
                             <Grid item xs={4}>
                                 <TextValidator

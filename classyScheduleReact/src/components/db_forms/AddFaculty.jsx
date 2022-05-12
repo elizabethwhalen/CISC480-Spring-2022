@@ -34,15 +34,15 @@ const AddFaculty = () => {
     const [lastName, setLastName] = React.useState('');
     const [teachLoad, setTeachLoad] = React.useState('');
     const token = sessionStorage.getItem('token');
-    
+    let unique = Math.floor(Math.random() * 999999999); //unique ID between 0 and 999,999,999
     const submitForm = (event) => {
         event.preventDefault();
         if (firstName !== '' && lastName !== '' && teachLoad !== 0.0) {
             let data = JSON.stringify({
-                faculty_id: 99, 
+                faculty_id: unique, //unique ID from
                 faculty_first: firstName, 
                 faculty_last: lastName,
-                title_id: 99, 
+                title_id: 2, //title ID level 2 is default for created faculty
                 prev_load: 0, 
                 curr_load: teachLoad
             });
