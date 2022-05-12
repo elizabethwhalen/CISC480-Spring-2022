@@ -20,14 +20,14 @@ import { makeStyles } from '@mui/styles'
 const useStyles = makeStyles ({
     title: {
         color: '#7E16A4',
-        fontWeight: "600",
+        fontWeight: 600,
     },
     button: {
         color: "black",
         bgcolor: "grey",
     },
     grid: {
-        paddingRight: "0px",
+        paddingRight: 0,
     },
 });
 

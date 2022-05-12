@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Paper,
     Grid,
@@ -8,9 +8,9 @@ import {
     FormControl,
     MenuItem,
     InputLabel
-} from '@material-ui/core'
+} from '@mui/material'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import axios from 'axios';
 
 
@@ -20,56 +20,24 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
     },
     container: {
-        padding: theme.spacing(4),
-        position: 'relative',
-        flexGrow: 1,
-        height: '100%'
+        padding: "40px",
     },
     title: {
+        fontWeight: 600,
         color: '#7E16A4',
-        fontWeight: '600',
     },
     message: {
-        color: 'red',
         fontWeight: 600,
+        color: 'red',
     },
 }))
 
-//This function gets...
-const getBuildingList = () => {
-    const token = sessionStorage.getItem('token');
-    // Config data for https request.
-    let list = []; 
-    let config = {
-        method: 'get',
-        url: 'https://classy-api.ddns.net/v2/building',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        },
-    };
-    // https request Promise executed with Config settings.
-    axios(config).then((response) => {
-        //console.log(JSON.stringify(response.data));
-        response.data.map((e) => {
-            console.log("response: " + e.building_code)
-            let bd = e.building_code;
-            list.push(bd);
-            return list;
-        })    
-    }).catch((error) => {
-        console.log(error);
-    });
-    console.log(list)
-    return list;
-}
 
 // Main component
 const AddRoom = () => {
     const [roomNum, setRoomNum] = React.useState('');
     const [building, setBuilding] = React.useState(''); // Room number (e.g., 420, 350, etc.)
     const [buildingList, setBuildingList] = React.useState([]);
-    const bList = getBuildingList();
     const classes = useStyles();
     const token = sessionStorage.getItem('token');
 
@@ -82,6 +50,10 @@ const AddRoom = () => {
     const handleChangeBuilding = (event) => {
         setBuilding(event.target.value);
     }
+
+    useEffect(() => {
+        getBuildingList();
+    }, [])
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -110,6 +82,34 @@ const AddRoom = () => {
         }
     }
 
+    //This function gets...
+    const getBuildingList = () => {
+        const token = sessionStorage.getItem('token');
+        // Config data for https request.
+        let list = [];
+        let config = {
+            method: 'get',
+            url: 'https://classy-api.ddns.net/v2/building',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+        };
+        // https request Promise executed with Config settings.
+        axios(config).then((response) => {
+            //console.log(JSON.stringify(response.data));
+            response.data.map((e) => {
+                let bd = e.building_code;
+                list.push(bd);
+                return list;
+            })
+            setBuildingList(list);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
+
     return (
         <Paper className={classes.container} elevation={0} >
             <Grid container spacing={2}>
@@ -124,23 +124,28 @@ const AddRoom = () => {
                         <Grid container spacing={2}>
                             <Grid item xs={4}>
                                 {/* Dropdown for Building Selection */}
-                                <FormControl fullWidth size="small">
+                                <FormControl fullWidth size="large">
                                     <InputLabel id="demo-select-small">Building</InputLabel>
                                     <Select
                                         labelId="demo-select-small"
-                                        id="demo-select-small" 
+                                        id="demo-select-small"
                                         value={building}
                                         label="Building"
                                         onChange={handleChangeBuilding}
-                                        size='small'
+                                        size='large'
                                         autoWidth
                                     >
-                                        <MenuItem value=""> 
+                                        <MenuItem value="">
                                             <em>None</em>
                                         </MenuItem>
-                                        {buildingList.map((e) => {
-                                            return <MenuItem key={e} value={e}>{e}</MenuItem>;
-                                        })}
+                                        {buildingList.map(e =>
+                                            <MenuItem
+                                                key={e}
+                                                value={e}
+                                            >
+                                                {e}
+                                            </MenuItem>
+                                        )}
                                     </Select>
                                 </FormControl>
                             </Grid>

@@ -5,20 +5,35 @@ import useToken from './server/useToken';
 import LogRouter from './router/LogRouter';
 
 export default function App () {
-  const {token, setToken} = useToken();
+  const { token, setToken } = useToken();
   const [loggedIn, setLoggedIn] = React.useState(false);
 
   if (!token) {
-    return <LogRouter setLoggedIn={setLoggedIn} setToken={setToken}></LogRouter>
+    return (
+      <LogRouter
+        setLoggedIn={setLoggedIn}
+        setToken={setToken}
+      />
+    );
   }
 
   const handleLogOut = () => {
     sessionStorage.clear();
-    return <LogRouter setLoggedIn={setLoggedIn} setToken={setToken}></LogRouter>
+    return (
+      <LogRouter
+        setLoggedIn={setLoggedIn}
+        setToken={setToken}
+      />
+    );
   }
 
   // This component returns a wrapper router for the whole page
   return (
-      <Layout loggedIn={loggedIn} setLoggedIn={setLoggedIn} handleLogOut={handleLogOut} setToken={setToken} />
-  )
+    <Layout
+      loggedIn={loggedIn}
+      setLoggedIn={setLoggedIn}
+      handleLogOut={handleLogOut}
+      setToken={setToken}
+    />
+  );
 }

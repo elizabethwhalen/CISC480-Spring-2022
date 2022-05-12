@@ -170,8 +170,8 @@ export default function CalendarTest() {
 
     const createRecurrence = (data) => {
         let byweekday = [];
-        let dtstart = null;
-        let until = null;
+        let dtstart = startRepeat;
+        let until = endRepeat;
 
         if (data.days.monday) {
             byweekday.push(RRule.MO);
@@ -209,13 +209,12 @@ export default function CalendarTest() {
             freq: RRule.WEEKLY,  // repeate weekly, possible freq [DAILY, WEEKLY, MONTHLY, ]
             interval: 1,
             byweekday: byweekday,
-            //dtstart: dtstart,
-            //until: until,
+            dtstart: dtstart,
+            until: until,
             tzid: 'America/Chicago'
         })
 
         return rule.all();
-        
     }
     
     const onUpdateEvents = (data) => {
