@@ -162,6 +162,9 @@ export default function CalendarTest() {
         setEvents(newData);
         setSelectedEvent(newEvent);
         setOpen(true);
+        getCourse();
+        getInstructor();
+        getRoom();
         return events;
     };
 
