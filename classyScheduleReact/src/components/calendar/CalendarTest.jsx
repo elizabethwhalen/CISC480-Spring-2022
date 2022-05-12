@@ -5,6 +5,7 @@ import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import Toolbar from './Toolbar'
 import EditClassForm from './EditClassForm'
 import constraints from 'constraint-solver'
 import { RRule, RRuleSet, rrulestr } from 'rrule'
@@ -365,6 +366,8 @@ export default function CalendarTest() {
         console.log("test");
     });
 
+    const label = 'Hello';
+
     return (
         <Paper sx={{ padding: '20px' }} elevation={0} >
             {open &&
@@ -383,8 +386,8 @@ export default function CalendarTest() {
             <DnDCalendar
                 min={minTime}
                 max={maxTime}
-                defaultDate={moment().toDate()}
-                defaultView={'work_week'}
+                date={moment().toDate()}
+                view={'work_week'}
                 views={['work_week']}
                 events={events}
                 localizer={localizer}
@@ -398,6 +401,9 @@ export default function CalendarTest() {
                 onEventResize={event => onEventDrop(event)}
                 onSelectEvent={event => onEventClick(event)}
                 onSelectSlot={(slotInfo) => onSlotChange(slotInfo)}
+                components={{
+                    toolbar: Toolbar
+                }}
             />
             <div>
                 <label htmlFor="level100">Level 100 classes</label><input type="checkbox" name="level100" value="yes"></input><br></br>
