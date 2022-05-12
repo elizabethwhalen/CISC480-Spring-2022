@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Paper,
     Grid,
@@ -12,6 +12,9 @@ import {
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import { makeStyles } from '@material-ui/core/styles'
 import axios from 'axios';
+import DoneIcon from '@mui/icons-material/Done';
+import CloseIcon from '@mui/icons-material/Close';
+
 
 
 // This is a React hook used for organizing the styling of each element in this component
@@ -30,48 +33,27 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: '600',
     },
     message: {
-        color: 'red',
+        color: '#388e3c',
         fontWeight: 600,
     },
+    unsucessfulMessage: {
+        color: 'red',
+        fontWeight: 600,
+    }
 }))
 
-//This function gets...
-const getBuildingList = () => {
-    const token = sessionStorage.getItem('token');
-    // Config data for https request.
-    let list = []; 
-    let config = {
-        method: 'get',
-        url: 'https://classy-api.ddns.net/v2/building',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token
-        },
-    };
-    // https request Promise executed with Config settings.
-    axios(config).then((response) => {
-        //console.log(JSON.stringify(response.data));
-        response.data.map((e) => {
-            console.log("response: " + e.building_code)
-            let bd = e.building_code;
-            list.push(bd);
-            return list;
-        })    
-    }).catch((error) => {
-        console.log(error);
-    });
-    console.log(list)
-    return list;
-}
+
 
 // Main component
 const AddRoom = () => {
     const [roomNum, setRoomNum] = React.useState('');
     const [building, setBuilding] = React.useState(''); // Room number (e.g., 420, 350, etc.)
     const [buildingList, setBuildingList] = React.useState([]);
-    const bList = getBuildingList();
     const classes = useStyles();
     const token = sessionStorage.getItem('token');
+    const [added, setAdded] = React.useState(0); //-1 for error, 0 for base, 1 for added successfully
+    // const [notAdded, setNotAdded] = React.useState(null);
+
 
     // This function will retrieve the value entered in the Room number field whenever it changes
     const handleChangeRoomNum = (event) => {
@@ -82,6 +64,37 @@ const AddRoom = () => {
     const handleChangeBuilding = (event) => {
         setBuilding(event.target.value);
     }
+
+    //This function gets...
+    const getBuildingList = () => {
+        const token = sessionStorage.getItem('token');
+        // Config data for https request.
+        let list = []; 
+        let config = {
+            method: 'get',
+            url: 'https://classy-api.ddns.net/v2/building',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+        };
+        // https request Promise executed with Config settings.
+        axios(config).then((response) => {
+            console.log(JSON.stringify(response.data));
+            response.data.map((e) => {
+                let bd = e.building_code;
+                list.push(bd);
+                return list;
+            })    
+            setBuildingList(list);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
+    useEffect(() => {
+        getBuildingList();
+    }, [])
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -101,15 +114,20 @@ const AddRoom = () => {
                 data: data
             };
             axios(config).then((response) => {
-                console.log(JSON.stringify(response.data));
+                //console.log(JSON.stringify(response.data));
+                setAdded(1);
+                
             }).catch((error) => {
-                console.log(error);
+                //bad response: check that record is not a duplicate
+                console.log("Error: Please verify that the record you are adding does not already exist.  " + error);
+                setAdded(-1);
+                
             });
             setRoomNum('');
             setBuilding('');
-        }
+        } 
+        setAdded(0);
     }
-
     return (
         <Paper className={classes.container} elevation={0} >
             <Grid container spacing={2}>
@@ -138,6 +156,9 @@ const AddRoom = () => {
                                         <MenuItem value=""> 
                                             <em>None</em>
                                         </MenuItem>
+                                        {/* <MenuItem value={buildingList[2]}> 
+                                            <em>{buildingList[2]}</em>
+                                        </MenuItem> */}
                                         {buildingList.map((e) => {
                                             return <MenuItem key={e} value={e}>{e}</MenuItem>;
                                         })}
@@ -164,6 +185,23 @@ const AddRoom = () => {
                                     onChange={handleChangeRoomNum}
                                 />
                             </Grid>
+
+                            {(added === 1) && (
+                                <Grid item xs={12}>
+                                    <Typography variant="body1" className={classes.message}>
+                                        <DoneIcon /> Room has been added successfully!
+                                    </Typography>
+                                </Grid>
+                            )}
+                            {(added === -1) && (
+                                <Grid item xs={12}>
+                                    <Typography variant="body1" className={classes.unsucessfulMessage}>
+                                        <CloseIcon /> Room could not be added to the databse. 
+                                        Please verify that the record being added does not already exist.
+                                    </Typography>
+                                </Grid>
+                            )}
+
                             <Grid item xs={12}>
                                 <Button variant="contained"
                                     size="large"
