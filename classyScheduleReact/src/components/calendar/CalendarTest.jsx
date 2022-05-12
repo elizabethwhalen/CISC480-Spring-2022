@@ -146,10 +146,18 @@ export default function CalendarTest() {
             start: start,
             end: end,
             title: "New class",
-            instructor: "N/A",
-            room: "N/A",
+            instructor: "",
+            room: "",
             color: "#b3e5fc",
             id: count,
+            repeat: "",
+            days: {
+                monday: false,
+                tuesday: false,
+                wednesday: false,
+                thursday: false,
+                friday: false,
+            }
         };
         const newData = [...events]
         newData.push(newEvent);
@@ -223,7 +231,7 @@ export default function CalendarTest() {
     }
     
     const onUpdateEvents = (data) => {
-
+        setOpen(false);
         const newData = deleteEvent(data.id);
         const list = createRecurrence(data);
 
@@ -244,11 +252,14 @@ export default function CalendarTest() {
                 room: data.room,
                 color: data.color,
                 id: data.id,
+                repeat: data.repeat,
+                days: data.days,
             }
 
             newData.push(newEvent);
         })
         setEvents(newData);
+
     }
 
     const deleteEvent = (id) => {
@@ -305,7 +316,6 @@ export default function CalendarTest() {
     }
 
     const onEventClick = React.useCallback((args) => {
-        console.log(events)
         setSelectedEvent(args);
         getCourse();
         getInstructor();
