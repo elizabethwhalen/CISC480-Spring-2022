@@ -320,6 +320,25 @@ public class AddCourseToScheduleController implements Initializable {
     }
 
     /**
+     * This function validates the class name. If nothing is selected, then it will prompt the user
+     * to select a class name.
+     * @return false is nothing is selected, else return true
+     */
+    private boolean validateTimeSlot() {
+        boolean result = true;
+        // If the class name has not been selected
+        if (course.getSelectionModel().isEmpty()) {
+            // Set content of the error alert
+            invalidClassName.setTitle("Invalid course Error");
+            invalidClassName.setContentText("Please select a valid course");
+            invalidClassName.showAndWait();
+            result = false;
+        }
+        // Probably need to find a way to bind class number and class name??
+        return result;
+    }
+
+    /**
      * This function validate that at least 1 of the day of the week is selected. If not
      * then it will prompt the user to click on at least 1 or more day/days of the week.
      * @return false is nothing is selected, else return true
