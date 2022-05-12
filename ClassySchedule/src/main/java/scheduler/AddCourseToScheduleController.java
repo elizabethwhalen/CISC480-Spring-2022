@@ -1,15 +1,22 @@
 package scheduler;
 
 import alert.MyAlert;
-import database.DatabaseStatic;
+import courses.Course;
+import courses.CourseFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+
 import jfxtras.scene.control.agenda.Agenda;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import room.Room;
+import room.RoomFactory;
+import users.Faculty;
+import users.FacultyFactory;
 
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -74,26 +81,21 @@ public class AddCourseToScheduleController implements Initializable {
      */
     private List<Timeslot> listOfTimes = new ArrayList<>();
 
+    private List<Course> courses = new ArrayList<>();
+
+    private List<Faculty> faculty = new ArrayList<>();
+
+    private List<Room> rooms = new ArrayList<>();
+
     /**
      * The constructor for the add course to schedule controller
      */
     public AddCourseToScheduleController() {
     }
 
-
-    private void getTimeSlots() {
-        TimeSlotFactory timeSlotList = new TimeSlotFactory();
-        listOfTimes = timeSlotList.createTimeSlot();
-        for(Timeslot timeslot : listOfTimes){
-            classTimes.getItems().add(timeslot.toString());
-        }
-    }
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         course.getItems().clear();
-        getTimeSlots();
         // This is the confirmation to go back alert
         MyAlert createAlert = new MyAlert("Back To Scheduler", "Go back to the scheduler page", Alert.AlertType.CONFIRMATION);
 
@@ -111,48 +113,27 @@ public class AddCourseToScheduleController implements Initializable {
 
         closeButton.setOnAction(confirmBack);
 
-        JSONArray classes = DatabaseStatic.getData("class");
-        for (Object jsonObject : classes) {
-            JSONObject json = (JSONObject) jsonObject;
-            StringBuilder str = new StringBuilder((String) json.get("dept_code"));
-            if (json.get("class_num") != JSONObject.NULL) {
-                str.append(" ");
-                str.append(json.get("class_num"));
-            }
-            if (json.get("class_name") != JSONObject.NULL) {
-                str.append(" ");
-                str.append(json.get("class_name"));
-            }
-            course.getItems().add(str.toString());
+        courses = new CourseFactory().createCourses();
+        faculty = new FacultyFactory().createFaculty();
+        rooms = new RoomFactory().createRooms();
+        listOfTimes = new TimeSlotFactory().createTimeSlot();
+
+        for (Course crs : courses) {
+            course.getItems().add(crs.toString());
         }
 
-        JSONArray professors = DatabaseStatic.getData("faculty");
-        for (Object jsonObject : professors) {
-            JSONObject json = (JSONObject) jsonObject;
-            StringBuilder str = new StringBuilder();
-            if (json.get("faculty_first") != JSONObject.NULL) {
-                str.append((String) json.get("faculty_first"));
-            }
-            str.append(" ");
-            if (json.get("faculty_last") != JSONObject.NULL) {
-                str.append(" ");
-                str.append(json.get("faculty_last"));
-            }
-            professor.getItems().add(str.toString());
+        for (Faculty faculty: faculty) {
+            professor.getItems().add(faculty.toString());
         }
 
-        JSONArray rooms = DatabaseStatic.getData("room");
-        for (Object jsonObject : rooms) {
-            JSONObject json = (JSONObject) jsonObject;
-            StringBuilder str = new StringBuilder((String) json.get("building_code"));
-            str.append(" ");
-            str.append(json.get("room_num"));
-            if (json.get("capacity") != JSONObject.NULL) {
-                str.append(" ");
-                str.append(json.get("capacity"));
-            }
-            room.getItems().add(str.toString());
+        for (Room classRoom: rooms) {
+            room.getItems().add(classRoom.toString());
         }
+
+        for (Timeslot timeslot : listOfTimes) {
+            classTimes.getItems().add(timeslot.toString());
+        }
+
     }
 
     /**
@@ -170,9 +151,14 @@ public class AddCourseToScheduleController implements Initializable {
 
             parentController.addCourse(appointmentList);
 
+            sendDataToDatabase();
             // return to Scheduler
             course.getScene().getWindow().hide();
         }
+
+    }
+
+    private void sendDataToDatabase() {
 
     }
 

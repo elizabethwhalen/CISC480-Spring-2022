@@ -28,7 +28,7 @@ repositories {
     mavenCentral()
     dependencies {
         implementation group: 'org.jfxtras', name: 'jfxtras-controls', version: '14-r2'
-        implementation files('lib/jfxtras-agenda-22.4.4.jar')
+        implementation files('lib/jfxtras-agenda-22.4.4.jar', 'lib/sat_test-1.0.jar')
         implementation group: 'org.json', name: 'json', version: '20220320'
         implementation 'org.apache.httpcomponents.client5:httpclient5:5.1.3'
     }

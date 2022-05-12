@@ -1,83 +1,71 @@
 package users;
 
-public class Faculty implements User {
+public class Faculty {
+    private int facultyID;
+    private String facultyFirst;
+    private String facultyLast;
+    private int titleID;
+    private double prev_load;
+    private double currLoad;
 
-    private String firstName;
-    private String lastName;
-    private int id;
-    private float remainingTeachLoad;
-    private int prepNum;
-    private String password;
-    //TODO: Add list of preferences
-
-    //TODO: add comments
-
-    public Faculty (String firstName, String lastName, int id, float remainingTeachLoad, int prepNum, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.id = id;
-        this.remainingTeachLoad = remainingTeachLoad;
-        this.prepNum = prepNum;
-        this.password = password;
+    public Faculty(int facultyID, String facultyFirst, String facultyLast, int titleID, double prev_load, double currLoad) {
+        this.facultyID = facultyID;
+        this.facultyFirst = facultyFirst;
+        this.facultyLast = facultyLast;
+        this.titleID = titleID;
+        this.prev_load = prev_load;
+        this.currLoad = currLoad;
     }
 
-    @Override
-    public String getFirstName() {
-        return firstName;
+    public int getFacultyID() {
+        return facultyID;
     }
 
-    @Override
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFacultyID(int facultyID) {
+        this.facultyID = facultyID;
     }
 
-    @Override
-    public String getLastName() {
-        return lastName;
+    public String getFacultyFirst() {
+        return facultyFirst;
     }
 
-    @Override
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFacultyFirst(String facultyFirst) {
+        this.facultyFirst = facultyFirst;
     }
 
-    @Override
-    public int getId() {
-        return id;
+    public String getFacultyLast() {
+        return facultyLast;
     }
 
-    @Override
-    public void setId(int id) {
-        this.id = id;
+    public void setFacultyLast(String facultyLast) {
+        this.facultyLast = facultyLast;
     }
 
-    @Override
-    public float getRemainingTeachLoad() {
-        return remainingTeachLoad;
+    public int getTitleID() {
+        return titleID;
     }
 
-    @Override
-    public void setRemainingTeachLoad(float remainingTeachLoad) {
-        this.remainingTeachLoad = remainingTeachLoad;
+    public void setTitleID(int titleID) {
+        this.titleID = titleID;
     }
 
-    @Override
-    public int getPrepNum() {
-        return prepNum;
+    public double getPrev_load() {
+        return prev_load;
     }
 
-    @Override
-    public void setPrepNum(int prepNum) {
-        this.prepNum = prepNum;
+    public void setPrev_load(double prev_load) {
+        this.prev_load = prev_load;
     }
 
-    @Override
-    public String getPassword() {
-        return password;
+    public double getCurrLoad() {
+        return currLoad;
     }
 
-    @Override
-    public void setPassword(String password) {
-        this.password = password;
+    public void setCurrLoad(double currLoad) {
+        this.currLoad = currLoad;
+    }
+
+    public String toString() {
+        return "";
     }
 }

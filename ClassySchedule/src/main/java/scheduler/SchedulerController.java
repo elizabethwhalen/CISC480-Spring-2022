@@ -19,7 +19,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
 
 // TODO: Add comments, persist appointments
 public class SchedulerController implements Initializable {
@@ -96,8 +99,13 @@ public class SchedulerController implements Initializable {
         this.stage = stage;
     }
 
+
+    /**
+     * TODO: redo this method with the new api call
+     * This method populates the schedule with previously saved courses
+     */
     public void populateSchedule() {
-        JSONArray meets = DatabaseStatic.getData("meets");
+        JSONArray meets = DatabaseStatic.getData("meets/ext");
         for (Object course: meets) {
             JSONObject json = (JSONObject) course;
             json.get("dept_code");

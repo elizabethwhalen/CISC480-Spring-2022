@@ -1,51 +1,40 @@
 package courses;
 
-import java.util.*;
-
 /**
  * This interface contains the necessary getter and setter methods
- * for courses and labs. It is implemented by both the Lecture and Lab
- * classes.
+ * for courses. It is implemented by both the Lecture class
  */
 public interface Course {
+
     String getClassName();
 
     void setClassName(String name);
 
-    int getIDNumber();
+    int getSectionNum();
 
-    void setIDNumber(int number);
+    void setSectionNum(int number);
 
-    int getSectionNumber();
+    String getDeptCode();
 
-    void setSectionNumber(int number);
-
-    String getDepartment();
-
-    void setDepartment(String department);
+    void setDeptCode(String deptCode);
 
     int getCapacity();
 
     void setCapacity(int capacity);
 
-    String getModality();
+    String getSemester();
 
-    void setModality(String modality);
-
-    int creditNumber();
-
-    void setCreditNumber(int creditNumber);
+    void setSemester(String semester);
 
     float teachLoad();
 
-    void setTeachLoad(float amount);
+    int getDraft();
 
-    List<Object> getPrerequisite();
+    void setDraft(int draft);
 
-    void setPrerequisite(List<Object> classes);
+    String getClassNum();
 
-    List<Object> getConflicts();
+    void setClassNum(String classNum);
 
-    void setConflicts(List<Object> classes);
 
 }

@@ -2,12 +2,14 @@ package users;
 
 import alert.MyAlert;
 import database.DatabaseStatic;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.fxml.FXML;
 import org.json.JSONArray;
@@ -287,7 +289,8 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
         // No faculty id has been selected show an error alert
         else {
             result = false;
-            MyAlert createAlert = new MyAlert("No Faculty Selected", "Please Select A Faculty To Delete", Alert.AlertType.ERROR);
+            MyAlert createAlert = new MyAlert("No Faculty Selected", "Please Select A Faculty To Delete",
+                    Alert.AlertType.ERROR);
             createAlert.show();
         }
         return result;

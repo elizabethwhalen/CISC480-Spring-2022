@@ -4,7 +4,10 @@ import alert.MyAlert;
 import database.DatabaseStatic;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -73,17 +76,20 @@ public class AddCourseToDatabaseController implements Initializable {
         //checking if user inputs are entered:
         if (deptName.getSelectionModel().isEmpty()) {
             warning = true;
-            MyAlert createAlert = new MyAlert("No Department Selected", "Please Select A Department", Alert.AlertType.ERROR);
+            MyAlert createAlert = new MyAlert("No Department Selected", "Please Select A Department",
+                    Alert.AlertType.ERROR);
             createAlert.show();
         }
         if (classNum.getText().isBlank()) {
             warning = true;
-            MyAlert createAlert = new MyAlert("No Class Number", "Please Select A Class Number", Alert.AlertType.ERROR);
+            MyAlert createAlert = new MyAlert("No Class Number", "Please Select A Class Number",
+                    Alert.AlertType.ERROR);
             createAlert.show();
         }
         if (className.getText().isBlank()) {
             warning = true;
-            MyAlert createAlert = new MyAlert("No Class Name", "Please Select A Class Name", Alert.AlertType.ERROR);
+            MyAlert createAlert = new MyAlert("No Class Name", "Please Select A Class Name",
+                    Alert.AlertType.ERROR);
             createAlert.show();
         }
         //checking if length of course code is 3 and course code is type int:
@@ -92,7 +98,8 @@ public class AddCourseToDatabaseController implements Initializable {
                 Integer.parseInt(classNum.getText());
             } catch (NumberFormatException e) {
                 warning = true;
-                MyAlert createAlert = new MyAlert("Invalid ClassNumber", "Please Select A Department", Alert.AlertType.ERROR);
+                MyAlert createAlert = new MyAlert("Invalid ClassNumber", "Please Select A Department",
+                        Alert.AlertType.ERROR);
                 createAlert.show();
             }
         } else {
