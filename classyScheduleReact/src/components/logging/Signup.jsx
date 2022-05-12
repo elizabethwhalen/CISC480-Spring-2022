@@ -2,8 +2,9 @@ import React from 'react'
 import { Button, Grid, Paper, Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
-import background from '../../images/campus.jpg'
-import logo from '../../images/ustlogo.png'
+import background from '../../images/hd_calendar2.jpg'
+import { Link } from 'react-router-dom'
+import logo from '../../images/Updated_Logo.gif'
 import axios from 'axios'
 
 // Styling components using useStyles
@@ -44,13 +45,22 @@ const useStyles = makeStyles({
     padding: '0px 150px 0px 50px',
     margin: '0 auto -55px auto'
   },
+  loginTitleContainer: {
+    padding: '200px 100px 50px 50px',
+  },
+  loginTitle: {
+    padding: '50px 10px 10px 10px',
+    textAlign: 'center',
+    fontWeight: 600,
+    fontSize: '26pt'
+  },
   logoGrid: {
-    paddingTop: '50px',
-    paddingBottom: '70px',
+    paddingBottom: '10px',
   },
   logo: {
-    width: '260px',
-    height: '50px'
+    width: '220px',
+    height: '220px',
+    padding: '0px 0px 0px 40px',
   },
   text: {
     paddingBottom: '30px'
@@ -89,7 +99,7 @@ const Signup = (props) => {
   const [confirmPass, setConfirmPass] = React.useState('');
   const [passMatch, setPassMatch] = React.useState(true);
 
-  const handleLogin = (event) => {
+  const handleSignup = (event) => {
     event.preventDefault();
 
     // If either email or password is empty, then don't log user in
@@ -150,15 +160,24 @@ const Signup = (props) => {
         >
           <Grid container className={classes.loginContainer}>
 
+            {/* TITLE */}
+            <Grid item xs={12} className={classes.loginTitle} >
+              CLASSY SCHEDULE
+            </Grid>
+
             {/* LOGO */}
             <Grid item xs={12} className={classes.logoGrid} >
               <img src={logo} className={classes.logo} alt='logo' ></img>
             </Grid>
 
+            {/* INSTRUCTION TEXT */}
+            <Grid item xs={12} className={classes.text}>
+              Create a New Classy Schedule Account
+            </Grid>
 
             {/* Form */}
             <Grid item xs={12}>
-              <ValidatorForm onSubmit={handleLogin}>
+              <ValidatorForm onSubmit={handleSignup}>
                 <Grid container spacing={1}>
 
                   {/* Email */}
@@ -193,12 +212,12 @@ const Signup = (props) => {
                     />
                   </Grid>
 
-                  {/* Re-comfirm Password */}
+                  {/* Re-enter Password */}
                   <Grid item xs={12} >
                     <TextValidator
                       size="small"
                       variant="outlined"
-                      label="Re-confirm Password"
+                      label="Re-enter Password"
                       fullWidth
                       name="password"
                       type="password"
@@ -215,9 +234,8 @@ const Signup = (props) => {
                       </Typography>
                   </Grid>}
 
-
                   {/* Submit button */}
-                  <Grid item xs={12} sx={{ marginTop: '30px' }}>
+                  <Grid item xs={6} sx={{ marginTop: '20px' }}>
                     <Button
                       variant="contained"
                       disableElevation
@@ -225,6 +243,20 @@ const Signup = (props) => {
                       sx={{ backgroundColor: '#6a1b9a', '&:hover': { backgroundColor: '#4a148c' } }} >
                       Sign up
                     </Button>
+                  </Grid>
+
+                  {/* BACK BUTTON */}
+                  <Grid item xs={6} sx={{ marginTop: '20px' }}> 
+                    <Link to='/' style={{"textDecoration":"none"}} >
+                      <Button
+                        variant="contained"
+                        disableElevation
+                        type='submit'
+                        sx={{ backgroundColor: '#B9BDBB', '&:hover': { backgroundColor: '#4a148c' } }} 
+                      >
+                        Back
+                      </Button>
+                    </Link>
                   </Grid>
                 </Grid>
               </ValidatorForm>

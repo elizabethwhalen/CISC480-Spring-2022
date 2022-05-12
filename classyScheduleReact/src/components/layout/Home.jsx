@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: 'none',
     },
     button: {
-        color: "black"
+        color: 'black',
+        height: '70px'
     }
 }))
 
@@ -52,6 +53,7 @@ const Home = () => {
                                     fullWidth
                                     sx={{
                                         backgroundColor: "#7E16A4",
+                                        '&:hover': { color: '#7E16A4', borderColor: "#7E16A4" },
                                         color: "white"
                                     }}>
                                     Add New Class
@@ -67,6 +69,7 @@ const Home = () => {
                                     fullWidth
                                     sx={{
                                         backgroundColor: "#7E16A4",
+                                        '&:hover': { color: '#7E16A4', borderColor: "#7E16A4" },
                                         color: "white"
                                     }}>Add New Faculty Member</Button>
                             </Link>
@@ -80,6 +83,7 @@ const Home = () => {
                                     fullWidth
                                     sx={{
                                         backgroundColor: "#7E16A4",
+                                        '&:hover': { color: '#7E16A4', borderColor: "#7E16A4" },
                                         color: "white"
                                     }}>Add New Room</Button>
                             </Link>
@@ -93,6 +97,7 @@ const Home = () => {
                                     fullWidth
                                     sx={{
                                         backgroundColor: "#7E16A4",
+                                        '&:hover': { color: '#7E16A4', borderColor: "#7E16A4" },
                                         color: "white"
                                     }}>View Schedule</Button>
                             </Link>
@@ -109,7 +114,7 @@ const Home = () => {
                                         backgroundColor: "#7E16A4",
                                         '&:hover': { color: '#7E16A4', borderColor: "#7E16A4" },
                                         color: "white"
-                                    }}>Questions?</Button>
+                                    }}>Help & FAQ Page</Button>
                             </Link>
                         </Grid>
                     </Grid>
