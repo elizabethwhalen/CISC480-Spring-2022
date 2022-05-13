@@ -20,9 +20,10 @@ var path = require('path');
 var mysql = require('mysql');
 var fs = require('fs')
 
-// Login and token packages
+// Login, token, and MFA (email sending) packages
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken')
+var sgMail = require('@sendgrid/mail')
 
 // Setup RESTful app
 var app = express();
@@ -85,7 +86,8 @@ makeConnection((password)=> {
                     "\nUser: "+config.user+
                     "\nPassword: "+config.password+
                     "\nDB Schema: "+config.database+
-                    "\nPort: "+config.port);
+                    "\nPort: "+config.port+
+                    "\n");
     });
 });
 
@@ -263,7 +265,7 @@ var MAX_PASSWORD_LENGTH = 16;
 var users = {};
 
 //login
-app.post('/v2/login', async function (req, res) {
+app.post('/v3/login', async function (req, res) {
 /*  Query the login table to see if user should be granted access.
 
     @since  v2
@@ -286,6 +288,7 @@ app.post('/v2/login', async function (req, res) {
     bcrypt.compare(req.body.password,passHashed)
     .then(correct => {
       if(correct){
+        // Generate token based on login attempt and secretkey
         let token = jwt.sign(
           {user: loginjson[0]},
           secretkey,
@@ -293,11 +296,49 @@ app.post('/v2/login', async function (req, res) {
               algorithm: "HS256",
               expiresIn: 86400,
           });
+        
+        // Wait up to 30 seconds for user to confirm their identity by clicking link that was emailed to them
+
+        // Send token to user trying to login
         res.status(200).send(token)
       }
       else {res.status(401).send('Incorrect password')}
     });
 });
+
+// email mfa
+//require('dotenv').config() // this may be problematic when deploying
+sgMail.setApiKey('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') // we will want to read this key in from a "hidden" file
+
+// test send
+//let emailTestRecipient = "frey6131@stthomas.edu"
+let emailTestRecipient = "freynben@gmail.com"
+sendVerifyEmail(emailTestRecipient)
+
+function sendVerifyEmail(emailRecipient, token) {
+    const msg = {
+      to: emailRecipient, 
+      from: 'classyscheduledev01@gmail.com', // I need to get the email login and setup info from jonas for documentaiton purposes
+      subject: 'Autheticate your Classy-Schedule API login request',
+      text: "Hi! We just need you to verify your Classy-Schedule email by clicking the link below, and you're all set!", // I'm not sure that this portion is sent...
+      html: "You have 30 seconds to click the autheticate button below. Your HTTP request will then return with your token.\n BUTTON CODE HERE ALSO EMBED TOKEN IN URL"
+    }
+
+    sgMail
+      .send(msg)
+      .then((response) => {
+        if (response[0].statusCode == 202) {
+            console.log("Email authentification request successfully dispatched to "+emailRecipient+'\n');
+        } else {
+            console.log("There was an issue while sending an authentification request to "+emailRecipient+'\n');
+        }
+        //console.log(response[0].statusCode)
+        //console.log(response[0].headers)
+      })
+      .catch((error) => {
+        //console.error(error)
+      })
+}
 
 //***MEETS***
 //view
