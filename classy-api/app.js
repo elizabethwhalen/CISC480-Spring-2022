@@ -4037,7 +4037,9 @@ function sql_error(err) {
     @return List        Returns list containing a status code and an error message
 */
     err_code = err.code
-    if (err_code === "ER_ROW_IS_REFERENCED_2"){return [400,"Bad Request- referential integrity would be violated"]}
+    if (err_code === "ER_ROW_IS_REFERENCED_2"){return [409,"Bad Request- referential integrity would be violated"]}
+    if (err_code === "ER_NO_REFERENCED_ROW_2"){return [404,"The entry you are trying to access does not exist"]}
+    if (err_code === "ER_DUP_ENTRY"){return [409,"Entry already exists"]}
     else {
         return [500,"Unknown error- send this to DB team: "+err]
     }
