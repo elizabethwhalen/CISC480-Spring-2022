@@ -298,11 +298,12 @@ app.post('/v3/login', async function (req, res) {
           });
         
         // Wait up to 30 seconds for user to confirm their identity by clicking link that was emailed to them
-
+        sendVerifyEmail(req.body.email, token);
+          // still need to implement wait and request auth method server side
         // Send token to user trying to login
-        res.status(200).send(token)
+        res.status(200).send(token);
       }
-      else {res.status(401).send('Incorrect password')}
+      else {res.status(401).send('Incorrect password');}
     });
 });
 
@@ -312,8 +313,8 @@ sgMail.setApiKey('SG.HcMcIbhiRb6o7eaHwfWm7A.-TELdybnfuTyl1p9JuCeyRMsMm8Xi73vkSw-
 
 // test send
 //let emailTestRecipient = "frey6131@stthomas.edu"
-let emailTestRecipient = "freynben@gmail.com"
-sendVerifyEmail(emailTestRecipient)
+//let emailTestRecipient = "freynben@gmail.com"
+//sendVerifyEmail(emailTestRecipient)
 
 function sendVerifyEmail(emailRecipient, token) {
     const msg = {
