@@ -31,10 +31,11 @@ public class AppointmentFactory {
         this.endTimes = endTimes;
         String[] courseInfo = course.split(" ");
         this.departmentCode = courseInfo[0];
-        this.room = room;
-        this.professor = professor;
         this.classNumber = courseInfo[1];
         this.className = courseInfo[2];
+        this.room = room;
+        this.professor = professor;
+
     }
 
     /**

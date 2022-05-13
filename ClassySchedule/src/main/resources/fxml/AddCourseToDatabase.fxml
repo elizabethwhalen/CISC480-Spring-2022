@@ -6,19 +6,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="courses.AddCourseToDatabaseController">
-    <TextField fx:id="classNum" layoutX="28.0" layoutY="93.0" promptText="Course Code"/>
-    <ComboBox fx:id="deptName" layoutX="27.0" layoutY="52.0" prefWidth="150.0" promptText="Dept Name"/>
-    <TextField fx:id="className" layoutX="28.0" layoutY="134.0" promptText="Class name"/>
-    <Button fx:id="submit_button" layoutX="28.0" layoutY="188.0" mnemonicParsing="false" onAction="#submitData"
-            text="Submit"/>
-    <Text fx:id="classNumWarning" layoutX="183.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0"
-          text="Please enter a valid course code" visible="false"/>
-    <Text fx:id="classNameWarning" layoutX="183.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0"
-          text="Please enter a class name" visible="false" wrappingWidth="134.455078125"/>
-    <Text fx:id="departmentWarning" layoutX="183.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0"
-          text="Please select a department name" visible="false"/>
-    <Button fx:id="back_button" layoutX="103.0" layoutY="188.0" mnemonicParsing="false" onAction="#goBack" text="Back"/>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="courses.AddCourseToDatabaseController">
+    <TextField fx:id="classNum" layoutX="28.0" layoutY="93.0" promptText="Course Code" />
+    <ComboBox fx:id="deptName" layoutX="27.0" layoutY="52.0" prefWidth="150.0" promptText="Dept Name" />
+    <TextField fx:id="className" layoutX="28.0" layoutY="134.0" promptText="Class name" />
+    <Button fx:id="submit_button" layoutX="28.0" layoutY="188.0" mnemonicParsing="false" onAction="#submitData" text="Submit" />
+    <Text fx:id="classNumWarning" layoutX="183.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a valid course code" visible="false" />
+    <Text fx:id="classNameWarning" layoutX="183.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a class name" visible="false" wrappingWidth="134.455078125" />
+    <Text fx:id="departmentWarning" layoutX="183.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select a department name" visible="false" />
+    <Button fx:id="back_button" layoutX="103.0" layoutY="188.0" mnemonicParsing="false" onAction="#goBack" text="Back" />
+   <TextField fx:id="sectionNum" layoutX="196.0" layoutY="52.0" prefHeight="25.0" prefWidth="54.0" promptText="Sec #" />
 </AnchorPane>

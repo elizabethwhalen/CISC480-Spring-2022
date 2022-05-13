@@ -105,92 +105,48 @@ public class SchedulerController implements Initializable {
      * This method populates the schedule with previously saved courses
      */
     public void populateSchedule() {
-//        JSONArray meets = DatabaseStatic.getData("meets/ext");
-//        for (Object course: meets) {
-//            JSONObject json = (JSONObject) course;
-//            json.get("dept_code");
-//            json.get("class_num");
-//            JSONObject time = new JSONObject();
-//            time.put("time_id", String.valueOf(json.get("time_id")));
-//            JSONArray times = DatabaseStatic.getData("timeslot", time);
-//            List<LocalDateTime> startTimes = getStartTimes(times);
-//            List<LocalDateTime> endTimes = getEndTimes(times);
-//
-//            AppointmentFactory test = new AppointmentFactory(startTimes, endTimes, "Dept_code classNumber className", json.get("building_code") + (String) json.get("room_num"), "test");
-//            addCourse(test.createAppointments());
-//        }
-    }
+        JSONArray meets = DatabaseStatic.meetsQuery();
 
-    private List<LocalDateTime> getStartTimes(JSONArray times) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<LocalDateTime> startDaysAndTimes = new ArrayList<>();
+        for (Object json: meets) {
+            JSONObject course = (JSONObject) json;
 
-        for (Object time: times) {
-            JSONObject endTime = (JSONObject) time;
-            DayOfTheWeek day = null;
-            switch ((int) endTime.get("day_of_week")) {
-                case 1:
-                    day = DayOfTheWeek.MONDAY;
-                    break;
-                case 2:
-                    day = DayOfTheWeek.TUESDAY;
-                    break;
-                case 3:
-                    day = DayOfTheWeek.WEDNESDAY;
-                    break;
-                case 4:
-                    day = DayOfTheWeek.THURSDAY;
-                    break;
-                case 5:
-                    day = DayOfTheWeek.FRIDAY;
-                    break;
-                default:
-                    break;
-            }
-            try {
-                startDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(day.label + " " + endTime.get("time_start"))));
-            } catch (ParseException e) {
-                e.printStackTrace();
+            String[] days = course.getString("day_of_week").split("");
+
+            List<LocalDateTime> startDaysAndTimes = new ArrayList<>();
+            List<LocalDateTime> endDaysAndTimes = new ArrayList<>();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            for (String day : days) {
+                try {
+                    startDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(convertToDayOFWeek(day).label + " " + course.getString("time_start"))));
+                    endDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(convertToDayOFWeek(day).label + " " + course.getString("time_end"))));
+
+                } catch (ParseException e) {
+                    // no op
+                }
             }
 
+            String crs = course.getString("dept_code") + " " + course.getString("class_num") + " " + course.get("class_name");
+            String room = course.getString("building_code") + " " + course.getString("room_num");
+            String professor = course.getString("faculty_first") + " " + course.getString("faculty_last");
+            AppointmentFactory appointmentFactory = new AppointmentFactory(startDaysAndTimes, endDaysAndTimes, crs, room, professor);
+
+            addCourse(appointmentFactory.createAppointments());
         }
-        return startDaysAndTimes;
     }
-
-    private List<LocalDateTime> getEndTimes(JSONArray times) {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<LocalDateTime> endDaysAndTimes = new ArrayList<>();
-
-        for (Object time: times) {
-            JSONObject endTime = (JSONObject) time;
-            DayOfTheWeek day = null;
-            switch ((int) endTime.get("day_of_week")) {
-                case 1:
-                    day = DayOfTheWeek.MONDAY;
-                    break;
-                case 2:
-                    day = DayOfTheWeek.TUESDAY;
-                    break;
-                case 3:
-                    day = DayOfTheWeek.WEDNESDAY;
-                    break;
-                case 4:
-                    day = DayOfTheWeek.THURSDAY;
-                    break;
-                case 5:
-                    day = DayOfTheWeek.FRIDAY;
-                    break;
-                default:
-                    break;
-            }
-            try {
-                endDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(day.label + " " + endTime.get("time_end"))));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-        }
-        return endDaysAndTimes;
+    /**
+     * Converts a character to a dayOfTheWeek object
+     * @param day the character to convert
+     * @return the day of the week corresponding with the day
+     */
+    public DayOfTheWeek convertToDayOFWeek(String day) {
+        return switch (day.toUpperCase()) {
+            case "M" -> DayOfTheWeek.MONDAY;
+            case "T" -> DayOfTheWeek.TUESDAY;
+            case "W" -> DayOfTheWeek.WEDNESDAY;
+            case "R" -> DayOfTheWeek.THURSDAY;
+            case "F" -> DayOfTheWeek.FRIDAY;
+            default -> null;
+        };
     }
 
 

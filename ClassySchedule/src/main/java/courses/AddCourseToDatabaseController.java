@@ -13,8 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import scenes.ChangeScene;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -27,6 +25,9 @@ public class AddCourseToDatabaseController implements Initializable {
 
     @FXML
     TextField className;
+
+    @FXML
+    TextField sectionNum;
 
     @FXML
     ComboBox<String> deptName;
@@ -108,6 +109,20 @@ public class AddCourseToDatabaseController implements Initializable {
             createAlert.show();
         }
 
+        if (sectionNum.getLength() == 1) {
+            try {
+                Integer.parseInt(sectionNum.getText());
+            } catch (NumberFormatException e) {
+                warning = true;
+                MyAlert createAlert = new MyAlert("Invalid section number", "Section must be a number",
+                        Alert.AlertType.ERROR);
+                createAlert.show();
+            }
+        } else {
+            warning = true;
+            MyAlert createAlert = new MyAlert("Invalid section Number", "Section number must be 2 or less digits", Alert.AlertType.ERROR);
+            createAlert.show();
+        }
         if (!warning) {
 
             JSONObject newClass = new JSONObject();
@@ -118,10 +133,20 @@ public class AddCourseToDatabaseController implements Initializable {
 
             DatabaseStatic.insertData("class", newClass);
 
+            JSONObject newSection = new JSONObject();
+            newSection.put("dept_code", deptName.getValue());
+            newSection.put("class_num", classNum.getText());
+            newSection.put("section_num", Integer.parseInt(sectionNum.getText()));
+            newSection.put("semester", "Spring2022");
+            newSection.put("draft", 1);
+            newSection.put("capacity", 30);
+
+            DatabaseStatic.insertData("section", newSection);
 
             deptName.setValue("Dept name");
             classNum.clear();
             className.clear();
+            sectionNum.clear();
 
         }
     }
