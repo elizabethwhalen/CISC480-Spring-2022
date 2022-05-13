@@ -1,6 +1,6 @@
 # Node garbage #
 #####################
-*.node_modules
+*/node_modules
 *package-lock.json
 
 # Other apps #

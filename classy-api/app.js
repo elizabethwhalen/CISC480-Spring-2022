@@ -4,11 +4,11 @@
 // 2. Allow users to login to the API, hash their password, and compare against hashed db in table
 // 3. Handle any other HTTP request...
 //
-// Authors: Joe Lambrecht, Gabbie Bolcer, Emma Torres, Jonas Bull, Ben Frey
+// Authors: Joe Lambrecht, Gabbie Bolcer, Emma Torres, Jonas Bull, and Ben Frey
 // Date: 11 May 2022
 
 // Say hello!
-console.log("Welcome to the Database Team's domain, nice to meet you! :)\n");
+console.log("Welcome to the Database Team's API, nice to meet you! :)\n");
 
 //
 // Import packages and setup app
@@ -258,10 +258,46 @@ async function db_put(query, data){
 //delete
 
 //***LOGIN***
-//view
-//add
-//update
-//delete
+var MIN_PASSWORD_LENGTH = 8;
+var MAX_PASSWORD_LENGTH = 16;
+var users = {};
+
+//login
+app.post('/v2/login', async function (req, res) {
+/*  Query the login table to see if user should be granted access.
+
+    @since  v2
+
+    @param{Object}      req     The request info. Needs to contain an email address and a 
+                                password to be a valid query. 
+
+    @return             nothing.
+*/
+    var passHashed;
+    //if (!req.body) { return res.sendStatus(400); }
+
+    if (!req.body.email || !req.body.password) {
+      return res.status(400).send('Missing email or password');
+    }
+
+    let loginjson = await db_get("SELECT * from login where email="+con.escape(req.body.email));
+    if (loginjson.length === 0) { return res.status(404).send("Account with that email does not exist"); } 
+    passHashed = loginjson[0].pass
+    bcrypt.compare(req.body.password,passHashed)
+    .then(correct => {
+      if(correct){
+        let token = jwt.sign(
+          {user: loginjson[0]},
+          secretkey,
+          {
+              algorithm: "HS256",
+              expiresIn: 86400,
+          });
+        res.status(200).send(token)
+      }
+      else {res.status(401).send('Incorrect password')}
+    });
+});
 
 //***MEETS***
 //view
