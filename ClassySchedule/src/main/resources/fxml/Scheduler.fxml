@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="629.0"
+            prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="scheduler.SchedulerController">
+    <BorderPane fx:id="borderPane" layoutX="65.0" layoutY="36.0" prefHeight="560.0" prefWidth="694.0">
+        <top>
+            <HBox prefHeight="30.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+                <Button fx:id="homeButton" mnemonicParsing="false" onAction="#goToHomeScreen" prefHeight="25.0"
+                        prefWidth="100.0" text="Home"/>
+                <Button fx:id="addCourseButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                        onAction="#goToAddCourse" prefHeight="25.0" prefWidth="98.0" text="Add Course"/>
+                <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0"
+                        text="Delete Course"/>
+            </HBox>
+        </top>
+    </BorderPane>
+</AnchorPane>

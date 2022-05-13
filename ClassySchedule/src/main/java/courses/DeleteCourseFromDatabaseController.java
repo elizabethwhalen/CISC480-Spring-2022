@@ -3,27 +3,21 @@ package courses;
 import alert.MyAlert;
 import database.DatabaseStatic;
 
-import homescreen.HomescreenController;
-
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import room.RoomController;
 import scenes.ChangeScene;
-import scheduler.SchedulerController;
-import users.DeleteFacultyFromDatabaseController;
-import users.FacultyController;
 
 import java.io.IOException;
 
@@ -88,25 +82,19 @@ public class DeleteCourseFromDatabaseController implements Initializable {
         // Initialize department drop-down
         getDept();
         // Whenever department is selected/changed
-        dept.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // Clear previous class number
-                classNum.getItems().clear();
-                // Initialize class number
-                getClassNumber();
-            }
+        dept.valueProperty().addListener((observable, oldValue, newValue) -> {
+            // Clear previous class number
+            classNum.getItems().clear();
+            // Initialize class number
+            getClassNumber();
         });
 
         // Whenever class number is selected/change
-        classNum.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // Clear previous course text-field
-                course.clear();
-                // Set selected course name
-                course.setText(getCourse());
-            }
+        classNum.valueProperty().addListener((observable, oldValue, newValue) -> {
+            // Clear previous course text-field
+            course.clear();
+            // Set selected course name
+            course.setText(getCourse());
         });
         // Initialize back and confirmation button
         back(back, "Go Back To Home Screen", "Click ok to go back to home screen.", true);
@@ -117,6 +105,7 @@ public class DeleteCourseFromDatabaseController implements Initializable {
 
     /**
      * Set the stage of the scene
+     *
      * @param stage the stage we want to use
      */
     public void setStage(Stage stage) {
@@ -129,8 +118,8 @@ public class DeleteCourseFromDatabaseController implements Initializable {
      */
     private void getDept() {
         JSONArray department = DatabaseStatic.getData("dept");
-        for (Object jsonObject: department) {
-            JSONObject job = (JSONObject)jsonObject;
+        for (Object jsonObject : department) {
+            JSONObject job = (JSONObject) jsonObject;
             dept.getItems().add((String) job.get("dept_code"));
         }
     }
@@ -143,8 +132,8 @@ public class DeleteCourseFromDatabaseController implements Initializable {
         // References to user selected department
         String selectedDepartment = dept.getValue();
         JSONArray classes = DatabaseStatic.getData("class");
-        for (Object jsonObject: classes) {
-            JSONObject job = (JSONObject)jsonObject;
+        for (Object jsonObject : classes) {
+            JSONObject job = (JSONObject) jsonObject;
             // If matching selected department then insert class number to class number drop-down
             if (job.get("dept_code").equals(selectedDepartment)) {
                 classNum.getItems().add((String) job.get("class_num"));
@@ -154,6 +143,7 @@ public class DeleteCourseFromDatabaseController implements Initializable {
 
     /**
      * This method references the selected class number and return the string of the class name of that selected class number
+     *
      * @return class name
      */
     private String getCourse() {
@@ -161,7 +151,7 @@ public class DeleteCourseFromDatabaseController implements Initializable {
         // References to user selected unique class number
         String selectedClassNumber = classNum.getValue();
         JSONArray classes = DatabaseStatic.getData("class");
-        for (Object jsonObject: classes) {
+        for (Object jsonObject : classes) {
             JSONObject job = (JSONObject) jsonObject;
             // If matching selected class number then set result to that JSON object class name
             if (job.get("class_num").equals(selectedClassNumber)) {
@@ -178,6 +168,7 @@ public class DeleteCourseFromDatabaseController implements Initializable {
      * confirm button to delete the selected course. It checks if the drop-downs
      * are empty, if not then it checks for the JSON object of the selected drop-downs of department and class number
      * to delete that JSON object from the database
+     *
      * @return true if the course is deleted and false otherwise
      */
     private boolean confirmButton() {
@@ -192,7 +183,7 @@ public class DeleteCourseFromDatabaseController implements Initializable {
             JSONArray classes = DatabaseStatic.getData("class");
 
             // Iterate through the "class" table and find matching JSON object to the user's request
-            for (Object jsonObject: classes) {
+            for (Object jsonObject : classes) {
                 JSONObject job = (JSONObject) jsonObject;
                 // If JSON object contain the user's selected request
                 if (job.get("class_num").equals(selectedClassNum) && job.get("dept_code").equals(selectedDept)) {
@@ -205,9 +196,7 @@ public class DeleteCourseFromDatabaseController implements Initializable {
                         classNum.getItems().clear();
                         // Set department drop-down back to blank default
                         dept.getSelectionModel().clearSelection();
-                    } catch (URISyntaxException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
+                    } catch (URISyntaxException | IOException e) {
                         e.printStackTrace();
                     }
                     break;
@@ -226,9 +215,10 @@ public class DeleteCourseFromDatabaseController implements Initializable {
     /**
      * This method is the back confirmation action. Its parameters are taken into account for two different scenarios.
      * Scenarios include going back to the home page or canceling the deletion request which just stays on the same page.
-     * @param button the button to initialize
-     * @param title the title of the alert
-     * @param message the message of the alert
+     *
+     * @param button           the button to initialize
+     * @param title            the title of the alert
+     * @param message          the message of the alert
      * @param goBackToPrevPage boolean variable to identify the two scenario
      */
     private void back(Button button, String title, String message, Boolean goBackToPrevPage) {
@@ -237,16 +227,13 @@ public class DeleteCourseFromDatabaseController implements Initializable {
         // First scenario to go back to home screen
         if (goBackToPrevPage) {
             // Confirmation to go back to the home screen
-            EventHandler<ActionEvent> confirmBack = new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    // The Ok button from the alert
-                    Optional<ButtonType> Ok = createAlert.showButton();
-                    // If user pressed "OK"
-                    if (Ok.get().getText().equals("OK")) {
-                        // Go back to home screen
-                        goBack();
-                    }
+            EventHandler<ActionEvent> confirmBack = event -> {
+                // The Ok button from the alert
+                Optional<ButtonType> Ok = createAlert.showButton();
+                // If user pressed "OK"
+                if (Ok.get().getText().equals("OK")) {
+                    // Go back to home screen
+                    goBack();
                 }
             };
             // Set the button to have to go back to home screen functionality
@@ -255,20 +242,16 @@ public class DeleteCourseFromDatabaseController implements Initializable {
         // 2nd scenario, confirm deletion
         else {
             // Confirmation to delete from the database
-            EventHandler<ActionEvent> confirmDelete = new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    // The Ok button from the alert
-                    Optional<ButtonType> ok = createAlert.showButton();
-                    // If user pressed "OK"
-                    if (ok.get().getText().equals("OK")) {
-                        // If delete was successful
-                        if (confirmButton()) {
-                            // Successful deletion alert
-                            MyAlert createAlert = new MyAlert("Deleted", "The Selected Course Has Been Deleted", Alert.AlertType.INFORMATION);
-                            Alert alert = createAlert.createAlert();
-                            alert.showAndWait();
-                        }
+            EventHandler<ActionEvent> confirmDelete = event -> {
+                // The Ok button from the alert
+                Optional<ButtonType> ok = createAlert.showButton();
+                // If user pressed "OK"
+                if (ok.get().getText().equals("OK")) {
+                    // If delete was successful
+                    if (confirmButton()) {
+                        // Successful deletion alert
+                        new MyAlert("Deleted", "The Selected Course Has Been Deleted",
+                                Alert.AlertType.INFORMATION).createAlert().showAndWait();
                     }
                 }
             };

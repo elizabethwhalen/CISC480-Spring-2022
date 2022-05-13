@@ -1,28 +1,18 @@
 package courses;
 
 import alert.MyAlert;
-import database.Database;
 import database.DatabaseStatic;
-import homescreen.HomescreenController;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.text.Text;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import room.RoomController;
 import scenes.ChangeScene;
-import scheduler.SchedulerController;
-import users.DeleteFacultyFromDatabaseController;
-import users.FacultyController;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -59,8 +49,8 @@ public class AddCourseToDatabaseController implements Initializable {
 
     /**
      * Retrieves department codes from database for dropdown menu
-     * @param url
-     * @param resourceBundle
+     * @param url the url of the fxml
+     * @param resourceBundle the resource bundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -79,25 +69,27 @@ public class AddCourseToDatabaseController implements Initializable {
 
     /**
      * Submits data that has been entered to the database.
-     * @param event submit button clicked
      */
     @FXML
-    public void submitData(ActionEvent event) {
+    public void submitData() {
         boolean warning = false;
         //checking if user inputs are entered:
         if (deptName.getSelectionModel().isEmpty()) {
             warning = true;
-            MyAlert createAlert = new MyAlert("No Department Selected", "Please Select A Department", Alert.AlertType.ERROR);
+            MyAlert createAlert = new MyAlert("No Department Selected", "Please Select A Department",
+                    Alert.AlertType.ERROR);
             createAlert.show();
         }
         if (classNum.getText().isBlank()) {
             warning = true;
-            MyAlert createAlert = new MyAlert("No Class Number", "Please Select A Class Number", Alert.AlertType.ERROR);
+            MyAlert createAlert = new MyAlert("No Class Number", "Please Select A Class Number",
+                    Alert.AlertType.ERROR);
             createAlert.show();
         }
         if (className.getText().isBlank()) {
             warning = true;
-            MyAlert createAlert = new MyAlert("No Class Name", "Please Select A Class Name", Alert.AlertType.ERROR);
+            MyAlert createAlert = new MyAlert("No Class Name", "Please Select A Class Name",
+                    Alert.AlertType.ERROR);
             createAlert.show();
         }
         //checking if length of course code is 3 and course code is type int:
@@ -106,7 +98,8 @@ public class AddCourseToDatabaseController implements Initializable {
                 Integer.parseInt(classNum.getText());
             } catch (NumberFormatException e) {
                 warning = true;
-                MyAlert createAlert = new MyAlert("Invalid ClassNumber", "Please Select A Department", Alert.AlertType.ERROR);
+                MyAlert createAlert = new MyAlert("Invalid ClassNumber", "Please Select A Department",
+                        Alert.AlertType.ERROR);
                 createAlert.show();
             }
         } else {
@@ -117,20 +110,14 @@ public class AddCourseToDatabaseController implements Initializable {
 
         if (!warning) {
 
-            Database database = new Database();
-
             JSONObject newClass = new JSONObject();
             newClass.put("dept_code", deptName.getValue());
             newClass.put("class_num", classNum.getText());
             newClass.put("class_name", className.getText());
 
-            try {
-                database.insertData("class", newClass);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
+
+            DatabaseStatic.insertData("class", newClass);
+
 
             deptName.setValue("Dept name");
             classNum.clear();

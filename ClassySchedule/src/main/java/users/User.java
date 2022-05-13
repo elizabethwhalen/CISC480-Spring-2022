@@ -15,9 +15,9 @@ public interface User {
 
     void setId(int id);
 
-    float getRemainingTeachLoad();
+    float getTeachLoad();
 
-    void setRemainingTeachLoad(float remainingTeachLoad);
+    void setTeachLoad(float teachLoad);
 
     int getPrepNum();
 

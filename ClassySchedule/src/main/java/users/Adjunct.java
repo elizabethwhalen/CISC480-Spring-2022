@@ -51,13 +51,13 @@ public class Adjunct implements User {
     }
 
     @Override
-    public float getRemainingTeachLoad() {
+    public float getTeachLoad() {
         return remainingTeachLoad;
     }
 
     @Override
-    public void setRemainingTeachLoad(float remainingTeachLoad) {
-        this.remainingTeachLoad = remainingTeachLoad;
+    public void setTeachLoad(float teachLoad) {
+        this.remainingTeachLoad = teachLoad;
     }
 
     @Override

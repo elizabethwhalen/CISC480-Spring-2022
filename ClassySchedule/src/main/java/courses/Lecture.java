@@ -1,178 +1,77 @@
 package courses;
 
-import java.util.*;
-
 public class Lecture implements Course {
+    private String deptCode;
+    private String classNum;
     private String className;
-
-    private int idNumber;
-
-    private int sectionNumber;
-
-    private String department;
-
+    private int sectionNum;
+    private String semester;
+    private int draft;
     private int capacity;
+    private final float teachLoad = 1;
 
-    private String modality;
-
-    private int creditNumber;
-
-    private float teachLoad;
-
-    private List<Object> prerequisites;
-
-    private List<Object> conflicts;
-
-    private boolean hasLab;
-
-    // Simple 3 parameter Lecture Constrcutor for testing purposes
-    public Lecture (String className, int sectionNumber, String department) {
-        this.className = className;
-
-        this.sectionNumber = sectionNumber;
-
-        this.department = department;
+    public Lecture() {}
+    public String getDeptCode() {
+        return deptCode;
     }
 
-    // Constructor Method
-/*    public Lecture (String className, int idNumber, int sectionNumber, String department,
-                    int capacity, String modality, int creditNumber, float teachLoad,
-                    List<Object> prerequisites, List<Object> conflicts, boolean hasLab) {
-
-        this.className = className;
-        this.idNumber = idNumber;
-        this.sectionNumber = sectionNumber;
-        this.department = department;
-        this.capacity = capacity;
-        this.modality = modality;
-        this.creditNumber = creditNumber;
-        this.teachLoad = teachLoad;
-        this.prerequisites = prerequisites;
-        this.conflicts = conflicts;
-        this.hasLab = hasLab;
-    }*/
-
-    public boolean hasLab() {
-        return this.hasLab;
+    public void setDeptCode(String deptCode) {
+        this.deptCode = deptCode;
     }
 
-    public List<Object> availableLabs(List<Object> labs) {
-        return labs;
+    public String getClassNum() {
+        return classNum;
     }
 
-    // Parking Pass??? Would have to discuss with team more about this.
+    public void setClassNum(String classNum) {
+        this.classNum = classNum;
+    }
 
-    @Override
     public String getClassName() {
-        return this.className;
+        return className;
     }
 
-    @Override
-    public void setClassName(String name) {
-        this.className = name;
+    public void setClassName(String className) {
+        this.className = className;
     }
 
-    @Override
-    public int getIDNumber() {
-        return this.idNumber;
+    public int getSectionNum() {
+        return sectionNum;
     }
 
-    @Override
-    public void setIDNumber(int number) {
-        this.idNumber = number;
+    public void setSectionNum(int sectionNum) {
+        this.sectionNum = sectionNum;
     }
 
-    @Override
-    public int getSectionNumber() {
-        return this.sectionNumber;
+    public String getSemester() {
+        return semester;
     }
 
-    @Override
-    public void setSectionNumber(int number) {
-        this.sectionNumber = number;
+    public void setSemester(String semester) {
+        this.semester = semester;
     }
 
-    @Override
-    public String getDepartment() {
-        return this.department;
+    public int getDraft() {
+        return draft;
     }
 
-    @Override
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setDraft(int draft) {
+        this.draft = draft;
     }
 
-    @Override
     public int getCapacity() {
-        return this.capacity;
+        return capacity;
     }
 
-    @Override
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
 
-    @Override
-    public String getModality() {
-        return this.modality;
-    }
-
-    @Override
-    public void setModality(String modality) {
-        this.modality = modality;
-    }
-
-    @Override
-    public int creditNumber() {
-        return this.creditNumber;
-    }
-
-    @Override
-    public void setCreditNumber(int creditNumber) {
-        this.creditNumber = creditNumber;
-    }
-
-    @Override
     public float teachLoad() {
-        return this.teachLoad;
+        return teachLoad;
     }
 
-    @Override
-    public void setTeachLoad(float amount) {
-        this.teachLoad = amount;
-    }
-
-    @Override
-    public List<Object> getPrerequisite() {
-        return this.prerequisites;
-    }
-
-    @Override
-    public void setPrerequisite(List<Object> classes) {
-        this.prerequisites = classes;
-    }
-
-    @Override
-    public List<Object> getConflicts() {
-        return this.conflicts;
-    }
-
-    @Override
-    public void setConflicts(List<Object> classes) {
-        this.conflicts = classes;
-    }
-
-    /**
-     * This method return the string formatted lecture/course from the given user input
-     * @return user input in string
-     */
-    @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClassName());
-        sb.append(getSectionNumber());
-        sb.append(getDepartment());
-        String output = sb.toString();
-        return output;
+        return getDeptCode() + " " + getClassNum() + " " + getClassName();
     }
 }

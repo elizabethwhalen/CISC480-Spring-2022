@@ -1,20 +1,30 @@
 package scheduler;
 
 import alert.MyAlert;
+import courses.Course;
+import courses.CourseFactory;
 import database.DatabaseStatic;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.stage.Stage;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+
 import jfxtras.scene.control.agenda.Agenda;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import scenes.ChangeScene;
+import room.Room;
+import room.RoomFactory;
+import users.Faculty;
+import users.FacultyFactory;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.util.Optional;
+import java.util.ResourceBundle;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -22,17 +32,11 @@ import java.net.URL;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.*;
 
 /**
  * The controller for adding the course to the scheduler
  */
 public class AddCourseToScheduleController implements Initializable {
-
-    /**
-     * The current stage
-     */
-    private Stage currentStage;
 
     /**
      * The parent controller
@@ -52,10 +56,16 @@ public class AddCourseToScheduleController implements Initializable {
     private ComboBox<String> room;
 
     /**
+     * The professor for the class
+     */
+    @FXML
+    private ComboBox<String> professor;
+
+    /**
      * The timeslot for the class
      */
     @FXML
-    private ComboBox<String> timeSlot;
+    private ComboBox<String> classTimes;
 
     /**
      * The submit button
@@ -64,53 +74,21 @@ public class AddCourseToScheduleController implements Initializable {
     private Button submit_button;
 
     /**
-     * A button to specify Monday
-     */
-    @FXML
-    private CheckBox monday;
-
-    /**
-     * A button to specify Tuesday
-     */
-    @FXML
-    private CheckBox tuesday;
-
-    /**
-     * A button to specify Wednesday
-     */
-    @FXML
-    private CheckBox wednesday;
-
-    /**
-     * A button to specify Thursday
-     */
-    @FXML
-    private CheckBox thursday;
-
-    /**
-     * A button to specify Friday
-     */
-    @FXML
-    private CheckBox friday;
-
-    /**
      * The close button
      */
     @FXML
     private Button closeButton;
 
     /**
-     * The list of the select days
+     * The timeslots available for selection
      */
-    private List<CheckBox> datesSelected;
+    private List<Timeslot> listOfTimes = new ArrayList<>();
 
-    /**
-     * The change scene object to change between scenes
-     */
-    private final ChangeScene cs = new ChangeScene();
+    private List<Course> courses = new ArrayList<>();
 
+    private List<Faculty> faculty = new ArrayList<>();
 
-    private List<String> listOfTimes = new ArrayList<>();
+    private List<Room> rooms = new ArrayList<>();
 
     /**
      * The constructor for the add course to schedule controller
@@ -118,51 +96,11 @@ public class AddCourseToScheduleController implements Initializable {
     public AddCourseToScheduleController() {
     }
 
-    /**
-     * The invalid class name alert error
-     */
-    Alert invalidClassName = new Alert(Alert.AlertType.ERROR);
-
-
-    /**
-     * The invalid dates alert error
-     */
-    Alert invalidDays = new Alert(Alert.AlertType.ERROR);
-
-    /**
-     * The invalid time alert error
-     */
-    Alert invalidStartAndEndTime = new Alert(Alert.AlertType.ERROR);
-
-    /**
-     * The confirmation alert to go back to the scheduler
-     */
-    Alert confirmBackButton = new Alert(Alert.AlertType.CONFIRMATION);
-
-
-    private List<Timeslot> timeslots;
-
-    private void getTimeSlots(){
-        TimeSlotFactory timeSlotList = new TimeSlotFactory();
-        timeslots = timeSlotList.createTimeSlot();
-        for(Timeslot timeslot : timeslots){
-            timeSlot.getItems().add(timeslot.toString());
-        }
-    }
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        datesSelected = Arrays.asList(monday, tuesday, wednesday, thursday, friday);
         course.getItems().clear();
-        getTimeSlots();
-
-        //Add options to dropdown time chunk dropdown menu
-
-
-
         // This is the confirmation to go back alert
-        MyAlert createAlert = new MyAlert("Back To Scheduler", "Go Back To The Scheduler Page", Alert.AlertType.CONFIRMATION);
+        MyAlert createAlert = new MyAlert("Back To Scheduler", "Go back to the scheduler page", Alert.AlertType.CONFIRMATION);
 
         // Set event to go back to previous scheduler screen if user click "Ok", else do nothing
         EventHandler<ActionEvent> confirmBack = event -> {
@@ -178,53 +116,37 @@ public class AddCourseToScheduleController implements Initializable {
 
         closeButton.setOnAction(confirmBack);
 
-        JSONArray classes = DatabaseStatic.getData("class");
-        for (Object jsonObject : classes) {
-            JSONObject json = (JSONObject) jsonObject;
-            StringBuilder str = new StringBuilder((String) json.get("dept_code"));
-            if (json.get("class_num") != JSONObject.NULL) {
-                str.append(" ");
-                str.append(json.get("class_num"));
-            }
-            if (json.get("class_name") != JSONObject.NULL) {
-                str.append(" ");
-                str.append(json.get("class_name"));
-            }
-            course.getItems().add(str.toString());
+        courses = new CourseFactory().createCourses();
+        faculty = new FacultyFactory().createFaculty();
+        rooms = new RoomFactory().createRooms();
+        listOfTimes = new TimeSlotFactory().createTimeSlot();
+
+        for (Course crs : courses) {
+            course.getItems().add(crs.toString());
         }
 
-        JSONArray rooms = DatabaseStatic.getData("room");
-        for (Object jsonObject : rooms) {
-            JSONObject json = (JSONObject) jsonObject;
-            StringBuilder str = new StringBuilder((String) json.get("building_code"));
-            str.append(" ");
-            str.append(json.get("room_num"));
-            if (json.get("capacity") != JSONObject.NULL) {
-                str.append(" ");
-                str.append(json.get("room_num"));
-            }
-            room.getItems().add(str.toString());
+        for (Faculty faculty: faculty) {
+            professor.getItems().add(faculty.toString());
         }
-    }
 
-    /**
-     * Sets the stage
-     *
-     * @param stage the stage to be set
-     */
-    public void setStage(Stage stage) {
-        this.currentStage = stage;
+        for (Room classRoom: rooms) {
+            room.getItems().add(classRoom.toString());
+        }
+
+        for (Timeslot timeslot : listOfTimes) {
+            classTimes.getItems().add(timeslot.toString());
+        }
+
     }
 
     /**
      * Validates the data inputs
      * Creates a list of class times
      * Adds the classes to the schedule
-     * @param event
      * @throws ParseException
      */
     @FXML
-    public void submitData(ActionEvent event) throws ParseException {
+    public void submitData() throws ParseException {
         // Validate needed data is present
         if (validateData()) {
             // Create appointment from fields
@@ -232,10 +154,42 @@ public class AddCourseToScheduleController implements Initializable {
 
             parentController.addCourse(appointmentList);
 
+            sendDataToDatabase();
+
+            JSONArray test = DatabaseStatic.getData("meets");
             // return to Scheduler
             course.getScene().getWindow().hide();
         }
 
+    }
+
+    private void sendDataToDatabase() {
+        Timeslot timeslot = listOfTimes.get(classTimes.getSelectionModel().getSelectedIndex());
+        Course crs = courses.get(course.getSelectionModel().getSelectedIndex());
+        Faculty prof = faculty.get(professor.getSelectionModel().getSelectedIndex());
+        Room rm = rooms.get(room.getSelectionModel().getSelectedIndex());
+
+        JSONArray test = DatabaseStatic.meetsQuery();
+        JSONObject meets = new JSONObject();
+        //dept_code , class_num, section_num, semester, draft, building_code, room_num, time_id
+        meets.put("dept_code", crs.getDeptCode());
+        meets.put("class_num", crs.getClassNum());
+        meets.put("section_num", 1);
+        meets.put("semester", "Spring2022");
+        meets.put("draft", 1);
+        meets.put("building_code", rm.getBuildingCode());
+        meets.put("room_num", rm.getRoomNum());
+        meets.put("time_id", timeslot.getTimeID());
+        DatabaseStatic.insertData("meets", meets);
+        JSONObject teaches = new JSONObject();
+        // dept_code, class_num, section_num, semester, draft, faculty_id
+        teaches.put("dept_code", crs.getDeptCode());
+        teaches.put("class_num", crs.getClassNum());
+        teaches.put("section_num", 1);
+        teaches.put("semester", "Spring2022");
+        teaches.put("draft", 1);
+        teaches.put("faculty_id", prof.getFacultyID());
+        DatabaseStatic.insertData("teaches", teaches);
     }
 
     /**
@@ -244,7 +198,7 @@ public class AddCourseToScheduleController implements Initializable {
      * @throws ParseException
      */
     private List<Agenda.Appointment> createAppointment() throws ParseException {
-        Timeslot timeslot = timeslots.get(timeSlot.getSelectionModel().getSelectedIndex());
+        Timeslot timeslot = listOfTimes.get(classTimes.getSelectionModel().getSelectedIndex());
 
         String[] days = timeslot.getDaysOfWeek().split("");
         List<LocalDateTime> startDaysAndTimes = new ArrayList<>();
@@ -255,38 +209,32 @@ public class AddCourseToScheduleController implements Initializable {
             endDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(convertToDayOFWeek(day).label + " " + timeslot.getEndTime())));
         }
 
-        AppointmentFactory appointmentFactory = new AppointmentFactory(startDaysAndTimes, endDaysAndTimes, course.getSelectionModel().getSelectedItem(), room.getSelectionModel().getSelectedItem(), "TODO: PROFESSOR");
+        AppointmentFactory appointmentFactory = new AppointmentFactory(startDaysAndTimes, endDaysAndTimes, course.getSelectionModel().getSelectedItem(), room.getSelectionModel().getSelectedItem(), professor.getSelectionModel().getSelectedItem());
 
         return appointmentFactory.createAppointments();
     }
 
     /**
-     * TODO update commetn
-     * @param day
-     * @return
+     * Converts a character to a dayOfTheWeek object
+     * @param day the character to convert
+     * @return the day of the week corresponding with the day
      */
     public DayOfTheWeek convertToDayOFWeek(String day) {
-        switch (day.toUpperCase()) {
-            case "M":
-                return DayOfTheWeek.MONDAY;
-            case "T":
-                return DayOfTheWeek.TUESDAY;
-            case "W":
-                return DayOfTheWeek.WEDNESDAY;
-            case "R":
-                return DayOfTheWeek.THURSDAY;
-            case "F":
-                return DayOfTheWeek.FRIDAY;
-            default:
-                return null;
-        }
+        return switch (day.toUpperCase()) {
+            case "M" -> DayOfTheWeek.MONDAY;
+            case "T" -> DayOfTheWeek.TUESDAY;
+            case "W" -> DayOfTheWeek.WEDNESDAY;
+            case "R" -> DayOfTheWeek.THURSDAY;
+            case "F" -> DayOfTheWeek.FRIDAY;
+            default -> null;
+        };
 
     }
 
     /**
      * Converts a date to local date time
      * @param dateToConvert the date to be converted
-     * @return a date in local date time formatx
+     * @return a date in local date time format
      */
     public LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
         return dateToConvert.toInstant()
@@ -300,7 +248,7 @@ public class AddCourseToScheduleController implements Initializable {
      * @return false if any test is invalid, else true
      */
     private boolean validateData() {
-        return validateDates() && validateCourse();
+        return validateDates() && validateCourse() && validateRoom() && validateProfessor();
     }
 
     /**
@@ -309,16 +257,14 @@ public class AddCourseToScheduleController implements Initializable {
      * @return false is nothing is selected, else return true
      */
     private boolean validateCourse() {
-        boolean result = true;
         // If the class name has not been selected
         if (course.getSelectionModel().isEmpty()) {
             // Set content of the error alert
             MyAlert createAlert = new MyAlert("Invalid Course Error", "Please Select A Valid Course", Alert.AlertType.ERROR);
             createAlert.show();
-            result = false;
+            return false;
         }
-        // Probably need to find a way to bind class number and class name??
-        return result;
+        return true;
     }
 
     /**
@@ -328,25 +274,41 @@ public class AddCourseToScheduleController implements Initializable {
      * @return false is nothing is selected, else return true
      */
     private boolean validateDates() {
-        boolean result = false;
-        // Iterate through all 5 days to check if at least 1 day is checked.
-        // If so, set the boolean to true and break.
-        for (CheckBox day : datesSelected) {
-            if (day.isSelected()) {
-                result = true;
-                break;
-            }
+        if (classTimes.getSelectionModel().isEmpty()) {
+            MyAlert alert = new MyAlert("Timeslot alert", "Please select a timeslot for the course", Alert.AlertType.WARNING);
+            alert.show();
+            return false;
         }
-
-        // boolean outcome is false, meaning none of the days has been selected, so
-        // use JavaFX to prompt the user to select at least 1 day of the week.
-        if (result == false) {
-            // Set content of the error alert
-            MyAlert createAlert = new MyAlert("Invalid Day/Days Error", "Please Select At Least One or More Day/Days Of The Week", Alert.AlertType.ERROR);
-            createAlert.show();
+        return true;
+    }
+    /**
+     * This function validate that at least 1 of the day of the week is selected. If not
+     * then it will prompt the user to click on at least 1 or more day/days of the week.
+     *
+     * @return false is nothing is selected, else return true
+     */
+    private boolean validateProfessor() {
+        if (professor.getSelectionModel().isEmpty()) {
+            MyAlert alert = new MyAlert("Professor alert", "Please select a professor for the course", Alert.AlertType.WARNING);
+            alert.show();
+            return false;
         }
+        return true;
+    }
 
-        return result;
+    /**
+     * This function validate that at least 1 of the day of the week is selected. If not
+     * then it will prompt the user to click on at least 1 or more day/days of the week.
+     *
+     * @return false is nothing is selected, else return true
+     */
+    private boolean validateRoom() {
+        if (classTimes.getSelectionModel().isEmpty()) {
+            MyAlert alert = new MyAlert("Room alert", "Please select a room for the course", Alert.AlertType.WARNING);
+            alert.show();
+            return false;
+        }
+        return true;
     }
 
 
@@ -355,7 +317,7 @@ public class AddCourseToScheduleController implements Initializable {
     }
 
     @FXML
-    public void close(ActionEvent actionEvent) {
+    public void close() {
         course.getScene().getWindow().hide();
     }
 }

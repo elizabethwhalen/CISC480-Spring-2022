@@ -11,18 +11,15 @@ import login.LoginController;
 public class Main extends Application {
 
 
-    private Stage primaryStage;
-
     @Override
     public void start(Stage stage) throws Exception {
-        this.primaryStage = stage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/LoginPage.fxml"));
         Parent root = loader.load();
         LoginController loginController = loader.getController();
-        loginController.setStage(primaryStage);
-        primaryStage.setTitle("Classy-Schedule");
-        primaryStage.setScene(new Scene(root, 600, 450));
-        primaryStage.show();
+        loginController.setStage(stage);
+        stage.setTitle("Classy-Schedule");
+        stage.setScene(new Scene(root, 600, 450));
+        stage.show();
     }
 
     public static void main(String[] args) {

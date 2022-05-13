@@ -1,12 +1,9 @@
 package scheduler;
 
 import database.DatabaseStatic;
-import homescreen.HomescreenController;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -17,13 +14,15 @@ import org.json.JSONObject;
 import scenes.ChangeScene;
 
 import java.io.IOException;
-import java.net.JarURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
 
 // TODO: Add comments, persist appointments
 public class SchedulerController implements Initializable {
@@ -76,15 +75,14 @@ public class SchedulerController implements Initializable {
 
     /**
      * Opens the popup dialog
-     * @param actionEvent
      * @throws IOException
      */
     @FXML
-    public void goToAddCourseToScheduler(ActionEvent actionEvent) throws IOException {
+    public void goToAddCourseToScheduler() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/AddCourseToSchedule.fxml"));
         Stage stage = new Stage();
         stage.initOwner(addCourseButton.getScene().getWindow());
-        stage.setScene(new Scene((Parent) loader.load()));
+        stage.setScene(new Scene(loader.load()));
         AddCourseToScheduleController controller = loader.getController();
         controller.setParent(this);
 
@@ -101,21 +99,26 @@ public class SchedulerController implements Initializable {
         this.stage = stage;
     }
 
-    public void populateSchedule() {
-        JSONArray meets = DatabaseStatic.getData("meets");
-        for (Object course: meets) {
-            JSONObject json = (JSONObject) course;
-            json.get("dept_code");
-            json.get("class_num");
-            JSONObject time = new JSONObject();
-            time.put("time_id", String.valueOf(json.get("time_id")));
-            JSONArray times = DatabaseStatic.getData("timeslot", time);
-            List<LocalDateTime> startTimes = getStartTimes(times);
-            List<LocalDateTime> endTimes = getEndTimes(times);
 
-            AppointmentFactory test = new AppointmentFactory(startTimes, endTimes, "Dept_code classNumber className", (String)json.get("building_code") + (String) json.get("room_num"), "test");
-            addCourse(test.createAppointments());
-        }
+    /**
+     * TODO: redo this method with the new api call
+     * This method populates the schedule with previously saved courses
+     */
+    public void populateSchedule() {
+//        JSONArray meets = DatabaseStatic.getData("meets/ext");
+//        for (Object course: meets) {
+//            JSONObject json = (JSONObject) course;
+//            json.get("dept_code");
+//            json.get("class_num");
+//            JSONObject time = new JSONObject();
+//            time.put("time_id", String.valueOf(json.get("time_id")));
+//            JSONArray times = DatabaseStatic.getData("timeslot", time);
+//            List<LocalDateTime> startTimes = getStartTimes(times);
+//            List<LocalDateTime> endTimes = getEndTimes(times);
+//
+//            AppointmentFactory test = new AppointmentFactory(startTimes, endTimes, "Dept_code classNumber className", json.get("building_code") + (String) json.get("room_num"), "test");
+//            addCourse(test.createAppointments());
+//        }
     }
 
     private List<LocalDateTime> getStartTimes(JSONArray times) {
@@ -195,7 +198,7 @@ public class SchedulerController implements Initializable {
      * Converts a date to local date time
      *
      * @param dateToConvert the date to be converted
-     * @return a date in local date time formatx
+     * @return a date in local date time format
      */
     public LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
         return dateToConvert.toInstant()

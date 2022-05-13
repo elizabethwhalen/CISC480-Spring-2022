@@ -2,11 +2,8 @@ package room;
 
 import alert.MyAlert;
 import database.DatabaseStatic;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -26,20 +23,11 @@ import java.util.ResourceBundle;
  */
 public class RoomController implements Initializable {
 
-    private Stage addRoom;
-    private Scene scene;
-    private Parent root;
-    @FXML
-    ChoiceBox<String> deptName;
-
-    @FXML
-    ChoiceBox<String> type;
-
     @FXML
     TextField roomNum;
 
     @FXML
-    ChoiceBox<String> buildingName;
+    ChoiceBox<String> buildingCode;
 
     @FXML
     TextField capacity;
@@ -64,12 +52,12 @@ public class RoomController implements Initializable {
     //May use in the future to reach into database for room options
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        buildingName.getItems().clear();
+        buildingCode.getItems().clear();
         try {
             JSONArray rs = DatabaseStatic.getData("building");
             for (Object jsonObject: rs) {
                 JSONObject job = (JSONObject)jsonObject;
-                buildingName.getItems().add((String) job.get("building_code"));
+                buildingCode.getItems().add((String) job.get("building_code"));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,10 +71,9 @@ public class RoomController implements Initializable {
 
     /**
      * Submits data that has been entered when submit button is clicked.
-     * @param event submit button being clicked
      */
     @FXML
-    public void submitData(ActionEvent event) {
+    public void submitData() {
 
         if (capacity.getText().isEmpty()) {
             MyAlert createAlert = new MyAlert("Invalid Capacity", "Please Input In The Capacity", Alert.AlertType.ERROR);
@@ -100,7 +87,7 @@ public class RoomController implements Initializable {
             alert.showAndWait();
             return;
         }
-        if (buildingName.getSelectionModel().isEmpty()) {
+        if (buildingCode.getSelectionModel().isEmpty()) {
             MyAlert createAlert = new MyAlert("Invalid Building Name", "Please Select A Building", Alert.AlertType.ERROR);
             Alert alert = createAlert.createAlert();
             alert.showAndWait();
@@ -127,22 +114,14 @@ public class RoomController implements Initializable {
 
         JSONObject newRoom = new JSONObject();
         newRoom.put("room_num", roomNum.getText());
-        newRoom.put("building_code", buildingName.getValue());
+        newRoom.put("building_code", buildingCode.getValue());
         newRoom.put("capacity", capacity.getText());
 
-        try {
-            DatabaseStatic.insertData("room", newRoom);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-
+        DatabaseStatic.insertData("room", newRoom);
 
         capacity.clear();
         roomNum.clear();
-        buildingName.setValue(null);
+        buildingCode.setValue(null);
 
     }
 

@@ -39,7 +39,7 @@ public class ChangeScene {
     }
 
     /**
-     * Changes scene to add classroom page when 'Add CLassroom' button is clicked
+     * Changes scene to add classroom page when 'Add Classroom' button is clicked
      */
     public void addClassroomButtonClicked(Stage stage) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/ClassroomNew.fxml"));
@@ -75,7 +75,7 @@ public class ChangeScene {
     }
 
     public void viewScheduleClicked(Stage stage) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/scheduler.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Scheduler.fxml"));
         Parent root = null;
         try {
             root = loader.load();

@@ -5,7 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class TimeSlotFactory {
     public TimeSlotFactory(){
@@ -23,23 +22,23 @@ public class TimeSlotFactory {
         JSONArray currentTimeChunkJSON = DatabaseStatic.getData("timeslot");
         for (Object jsonObject: currentTimeChunkJSON) {
             JSONObject job = (JSONObject)jsonObject;
-            start = (String) job.get("time_start");
-            end = (String) job.get("time_end");
-            days = (String) job.get("day_of_week");
-            Timeslot currentTimeSlot = new Timeslot(days, start, end);
+            start = job.getString("time_start");
+            end = job.getString("time_end");
+            days = job.getString("day_of_week");
+            int timeID = job.getInt("time_id");
+            Timeslot currentTimeSlot = new Timeslot(timeID, days, start, end);
             timeSlotList.add(currentTimeSlot);
         }
         //sorts by day
-        for(int i=0; i<timeSlotList.size(); i++){
-            Timeslot currentTimeChunk = timeSlotList.get(i);
+        for (Timeslot currentTimeChunk : timeSlotList) {
             String day = currentTimeChunk.getDaysOfWeek();
-            if(day.charAt(0) == 'M'){
+            if (day.charAt(0) == 'M') {
                 mon.add(currentTimeChunk);
-            } else if(day.charAt(0) == 'T'){
+            } else if (day.charAt(0) == 'T') {
                 tues.add(currentTimeChunk);
-            } else if (day.charAt(0) == 'W'){
+            } else if (day.charAt(0) == 'W') {
                 wed.add(currentTimeChunk);
-            } else if(day.charAt(0) == 'R'){
+            } else if (day.charAt(0) == 'R') {
                 thur.add(currentTimeChunk);
             } else {//if(day.charAt(0) == 'F'){
                 //System.out.println(currentTimeChunk);
