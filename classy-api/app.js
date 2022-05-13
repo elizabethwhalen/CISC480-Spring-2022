@@ -7,9 +7,6 @@
 // Authors: Joe Lambrecht, Gabbie Bolcer, Emma Torres, Jonas Bull, Ben Frey
 // Date: 11 May 2022
 
-// Say hello!
-console.log("Welcome to the Database Team's domain, nice to meet you! :)\n");
-
 //
 // Import packages and setup app
 //
@@ -48,14 +45,18 @@ function makeConnection(callback) {
     });
 }
 
-// Read in seed used for bcrypt. We don't need callback function because hashing
-// occur right when server is initiated.
-let bcrypt_seed;
-fs.readFileSync('./hidden/bcrypt_seed.txt', (err, data) => {
+// Read in seed used for jwt. We don't need callback function because hashing
+// occurs right when server is initiated.
+try{
+    secretkey = fs.readFileSync('./hidden/bcrypt_seed.txt')
+}
+catch {throw "Server error: security issue. Please try again later"}
+/*fs.readFileSync('./hidden/bcrypt_seed.txt', (err, data) => {
     if (err) throw err;
-    bcrypt_seed = data.toString();
-    console.log(bcrypt_seed);
+    jwt_seed = data.toString();
 });
+secretkey=jwt_seed;
+*/
 
 ///
 // Database Connection
@@ -80,12 +81,6 @@ makeConnection((password)=> {
     con = new mysql.createConnection(config);
     con.connect(function(err) {
       if (err) throw err;
-      console.log("Connected to database with the following information:"+
-                    "\nHost: "+config.host+
-                    "\nUser: "+config.user+
-                    "\nPassword: "+config.password+
-                    "\nDB Schema: "+config.database+
-                    "\nPort: "+config.port);
     });
 });
 
@@ -111,7 +106,6 @@ async function db_get(query){
 
     @return{Object}  Returns Query Results
 */
-    console.log(query)
     return new Promise( (resolve, reject) => {
         con.query(query, (err, result) => {
             if (err) {
@@ -135,14 +129,11 @@ async function db_post(query, data){
 
     @return{Object}  Returns number of affected rows. 
 */
-    console.log(query, data)
     return new Promise( (resolve, reject) => {
         con.query(query, [data], (err, result) => {
             if (err) {
-              console.log("error: " + err);
               reject(err);
             } else {
-              console.log("result: " + result);
               resolve(result)
             }
         });
@@ -403,7 +394,6 @@ app.post('/v2/building', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        console.log(req.body)
         let query = "INSERT INTO building (building_code,building_name) VALUES ?";
         data = [
             [req.body.building_code,req.body.building_name]
@@ -595,7 +585,6 @@ app.post('/v2/class', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        console.log(req.body)
         let query = "INSERT INTO class (dept_code,class_num,class_name) VALUES ?";
         data = [
             [req.body.dept_code,req.body.class_num,req.body.class_name]
@@ -786,7 +775,6 @@ app.post('/v2/class_feature', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        console.log(req.body)
         let query = "INSERT INTO class_feature (dept_code,class_num,feature_id) VALUES ?";
         data = [
             [req.body.dept_code,req.body.class_num,req.body.feature_id]
@@ -965,7 +953,6 @@ app.post('/v2/dept', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        console.log(req.body)
         let query = "INSERT INTO dept (dept_code,dept_name) VALUES ?";
         data = [
             [req.body.dept_code,req.body.dept_name]
@@ -1192,7 +1179,6 @@ app.post('/v2/faculty', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        console.log(req.body)
         let query = "INSERT INTO faculty (faculty_id,faculty_first,faculty_last,title_id,prev_load,curr_load) VALUES ?";
         data = [
             [req.body.faculty_id,req.body.faculty_first,req.body.faculty_last,req.body.title_id,req.body.prev_load,req.body.curr_load]
@@ -1321,7 +1307,6 @@ app.get('/v2/faculty_class', (req, res) => {
     }
     else if (req.query.faculty_id){
         faculty_id = req.query.faculty_id
-        console.log(faculty_id)
         faculty_id_array = faculty_id.split(",");
         for(let i = 0; i < faculty_id_array.length; i++){
             if(i > 0){
@@ -1398,7 +1383,6 @@ app.post('/v2/faculty_class', (req, res) => {
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
-        console.log(req.body)
         let query = "INSERT INTO faculty_class (faculty_id,dept_code,class_num,pref_level) VALUES ?";
         data = [
             [req.body.faculty_id,req.body.dept_code,req.body.class_num,req.body.pref_level]
@@ -1582,7 +1566,6 @@ app.post('/v2/faculty_feature', (req, res) => {
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
-        console.log(req.body)
         let query = "INSERT INTO faculty_feature (faculty_id,feature_id,pref_level) VALUES ?";
         data = [
             [req.body.faculty_id,req.body.feature_id,req.body.pref_level]
@@ -1754,7 +1737,6 @@ app.post('/v2/faculty_other_request', (req, res) => {
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
-        console.log(req.body)
         let query = "INSERT INTO faculty_other_request (faculty_id,request) VALUES ?";
         data = [
             [req.body.faculty_id,req.body.request]
@@ -1938,7 +1920,6 @@ app.post('/v2/faculty_timeslot', (req, res) => {
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
-        console.log(req.body)
         let query = "INSERT INTO faculty_timeslot (faculty_id,time_id,pref_level) VALUES ?";
         data = [
             [req.body.faculty_id,req.body.time_id,req.body.pref_level]
@@ -2113,7 +2094,6 @@ app.post('/v2/feature', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        console.log(req.body)
         let query = "INSERT INTO feature (feature_id,feature_name) VALUES ?";
         data = [
             [req.body.feature_id,req.body.feature_name]
@@ -2580,7 +2560,6 @@ app.post('/v2/meets', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        console.log(req.body)
         let query = "INSERT INTO meets (dept_code,class_num,section_num,semester,draft,building_code,room_num,time_id) VALUES ?";
         data = [
             [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.building_code,req.body.room_num,req.body.time_id]
@@ -2770,7 +2749,6 @@ app.post('/v2/room', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        console.log(req.body)
         let query = "INSERT INTO room (building_code,room_num,capacity) VALUES ?";
         data = [
             [req.body.building_code,req.body.room_num,req.body.capacity]
@@ -2960,7 +2938,6 @@ app.post('/v2/room_feature', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        console.log(req.body)
         let query = "INSERT INTO room_feature (building_code,room_num,feature_id) VALUES ?";
         data = [
             [req.body.building_code,req.body.room_num,req.body.feature_id]
@@ -3186,7 +3163,6 @@ app.post('/v2/section', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        console.log(req.body)
         let query = "INSERT INTO section (dept_code,class_num,section_num,semester,draft,capacity) VALUES ?";
         data = [
             [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.capacity]
@@ -3412,7 +3388,6 @@ app.post('/v2/teaches', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        console.log(req.body)
         let query = "INSERT INTO teaches (dept_code,class_num,section_num,semester,draft,faculty_id) VALUES ?";
         data = [
             [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.faculty_id]
@@ -3614,7 +3589,6 @@ app.post('/v2/timeslot', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        console.log(req.body)
         let query = "INSERT INTO timeslot (time_id,day_of_week,time_start,time_end) VALUES ?";
         data = [
             [req.body.time_id,req.body.day_of_week,req.body.time_start,req.body.time_end]
@@ -3804,7 +3778,6 @@ app.post('/v2/title', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        console.log(req.body)
         let query = "INSERT INTO title (title_id,title_name,max_load) VALUES ?";
         data = [
             [req.body.title_id,req.body.title_name,req.body.max_load]
@@ -3910,7 +3883,6 @@ function query_db_get(query, res){
             reject(err);
           } else {
             resolve(result)
-            console.log(result);
           }
       });
     })
@@ -3937,8 +3909,6 @@ function query_db_add(query, data, res){
     @return{Object}     Returns a status code with a message saying the entry was added successfully
                         or the error message if it failed
 */
-    console.log(query)
-    console.log(data)
     new Promise( (resolve, reject) => {
       con.query(query, [data], (err, result) => {
           if (err) {
@@ -4017,7 +3987,6 @@ function query_db_put(query, data, res){
     })
     //return json package
     .then(result => {
-        console.log(result)
         if (result.affectedRows == 0){return res.status(404).send("Record not found")}
         else if (result.changedRows == 0){return res.status(200).send("No change made")}
         return res.status(200).send("Record updated successfully");
@@ -4152,7 +4121,6 @@ function verify(token){
 	} catch (e) {
 		if (e instanceof jwt.JsonWebTokenError) {
 			// if the error thrown is because the JWT is unauthorized, return a 401 error
-            console.log(e)
 			return [401,"Unauthorized error"]
 		}
 		// otherwise, return a bad request error
@@ -4211,4 +4179,38 @@ app.get('/v3/meets/ext', (req, res) =>{
     }
 });
 
+
+// view section info and class name together
+app.get('/v3/section/ext', (req, res) =>{
+    /* Query returns information about a section by gathering attributes from the meets,
+        class, timeslot, room, teaches, and faculty tables in the database
+    */
+    // verify auth
+    try{
+        token = req.headers.authorization.split(" ")[1]
+    } catch(e){
+        token = req.body.token
+    }
+
+    var verifyOutput = verify(token)
+    const status=verifyOutput[0]
+    const payload=verifyOutput[1]
+    if (status != 200){res.status(status).send(payload)}
+    else{
+        var query = `SELECT DISTINCT
+                                s.dept_code,
+                                s.class_num,
+                                s.section_num,
+                                s.semester,
+                                s.draft,
+                                c.class_name
+                            FROM
+                                section s
+                            INNER JOIN 
+                                class c ON s.class_num = c.class_num
+                                AND s.dept_code = c.dept_code
+        `
+        query_db_get(query, res);
+    }
+});
 module.exports = app;
