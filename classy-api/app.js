@@ -7,12 +7,9 @@
 // Authors: Joe Lambrecht, Gabbie Bolcer, Emma Torres, Jonas Bull, and Ben Frey
 // Date: 11 May 2022
 
-<<<<<<< HEAD
-=======
 // Say hello!
 console.log("Welcome to the Database Team's API, nice to meet you! :)\n");
 
->>>>>>> f8511436080be495dc198d49d0bdf049dbbcc3f2
 //
 // Import packages and setup app
 //
@@ -28,6 +25,9 @@ var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken')
 var sgMail = require('@sendgrid/mail')
 
+// Developmental setting: 0 for local dev, or 1 for production (Azure deployment) 
+var dev = 0;
+
 // Setup RESTful app
 var app = express();
 
@@ -42,7 +42,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // deter the progress of other teams.
 //
 
-// Read in Azure database password for our access account. Need callback for
+// Read in Azure database password for our access account. Need callback 
+// so that the database connection not make too early
 let db_password;
 function makeConnection(callback) {
     fs.readFile('./hidden/db_password.txt', (err, data) => {
@@ -51,19 +52,26 @@ function makeConnection(callback) {
         callback(db_password);
     });
 }
-
 // Read in seed used for jwt. We don't need callback function because hashing
-// occurs right when server is initiated.
-try{
-    secretkey = fs.readFileSync('./hidden/bcrypt_seed.txt')
+// doe not occur right when server is initiated.
+let secretkey;
+try {
+    secretkey = fs.readFileSync('./hidden/jwt_seed.txt').toString();
+} catch {
+    throw "Server error: security issue. Please try again later";
 }
-catch {throw "Server error: security issue. Please try again later"}
-/*fs.readFileSync('./hidden/bcrypt_seed.txt', (err, data) => {
-    if (err) throw err;
-    jwt_seed = data.toString();
-});
-secretkey=jwt_seed;
-*/
+// Read in key used for sendgrid email
+/*
+let sg_key;
+try {
+    sg_key = fs.readFileSync('./hidden/sg_key.txt').toString();
+    //console.log(sg_key);
+    sgMail.setApiKey(sg_key); // we will want to read this key in from a "hidden" file
+    let emailTestRecipient = "freynben@gmail.com";
+    sendVerifyEmail(emailTestRecipient, "test");
+} catch {
+    throw "Server error: security issue. Please try again later";
+}*/
 
 ///
 // Database Connection
@@ -87,17 +95,16 @@ makeConnection((password)=> {
     // Create the connection and store in "con"
     con = new mysql.createConnection(config);
     con.connect(function(err) {
-      if (err) throw err;
-<<<<<<< HEAD
-=======
-      console.log("Connected to database with the following information:"+
+        if (err) throw err;
+        /*
+        console.log("Connected to database with the following information:"+
                     "\nHost: "+config.host+
                     "\nUser: "+config.user+
                     "\nPassword: "+config.password+
                     "\nDB Schema: "+config.database+
                     "\nPort: "+config.port+
                     "\n");
->>>>>>> f8511436080be495dc198d49d0bdf049dbbcc3f2
+        */
     });
 });
 
@@ -265,14 +272,16 @@ async function db_put(query, data){
 //update
 //delete
 
+
 //***LOGIN***
 var MIN_PASSWORD_LENGTH = 8;
 var MAX_PASSWORD_LENGTH = 16;
 var users = {};
 
 //login
+
 app.post('/v3/login', async function (req, res) {
-/*  Query the login table to see if user should be granted access.
+    /*  Query the login table to see if user should be granted access.
 
     @since  v2
 
@@ -280,7 +289,7 @@ app.post('/v3/login', async function (req, res) {
                                 password to be a valid query. 
 
     @return             nothing.
-*/
+    */
     var passHashed;
     //if (!req.body) { return res.sendStatus(400); }
 
@@ -305,7 +314,22 @@ app.post('/v3/login', async function (req, res) {
         
         // Wait up to 30 seconds for user to confirm their identity by clicking link that was emailed to them
         sendVerifyEmail(req.body.email, token);
-          // still need to implement wait and request auth method server side
+        let myTimeout = setTimeout(requestTimeout, 30000);
+
+        app.post('/v3/authenticate/:token', (req2, res2) => {
+            if (res2.body.token == token){
+                res.status(200).send(token);
+                clearTimeout(myTimeout);
+            } else {
+                requestTimeout();
+            }
+        });
+
+        function requestTimeout() {
+            res.status(401).send("Authetication failure. Please try again later.");
+        }
+        
+        // still need to implement wait and request auth method server side
         // Send token to user trying to login
         res.status(200).send(token);
       }
@@ -314,36 +338,40 @@ app.post('/v3/login', async function (req, res) {
 });
 
 // email mfa
-//require('dotenv').config() // this may be problematic when deploying
-sgMail.setApiKey('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') // we will want to read this key in from a "hidden" file
-
-// test send
-//let emailTestRecipient = "frey6131@stthomas.edu"
-//let emailTestRecipient = "freynben@gmail.com"
-//sendVerifyEmail(emailTestRecipient)
-
 function sendVerifyEmail(emailRecipient, token) {
+    // Set link that will be used in button
+    let link;
+    if (dev == 0) {
+        link = "https://localhost:3000/v3/authenticate/"+token;
+    } else {
+        link = "https://classy-api.ddns.net/v3/authenticate/"+token;
+    }
+
+    // Generate html of email
+    let html = 'You have 30 seconds to click the autheticate button below. Your HTTP request will then return with your token.<form action="'+link+'" method="get"><button type="submit" formmethod="post">Verify Login</button></form>';
+
+    // Create message to send to user
     const msg = {
       to: emailRecipient, 
       from: 'classyscheduledev01@gmail.com', // I need to get the email login and setup info from jonas for documentaiton purposes
       subject: 'Autheticate your Classy-Schedule API login request',
       text: "Hi! We just need you to verify your Classy-Schedule email by clicking the link below, and you're all set!", // I'm not sure that this portion is sent...
-      html: "You have 30 seconds to click the autheticate button below. Your HTTP request will then return with your token.\n BUTTON CODE HERE ALSO EMBED TOKEN IN URL"
+      html: 'hello!'
     }
 
     sgMail
       .send(msg)
       .then((response) => {
         if (response[0].statusCode == 202) {
-            console.log("Email authentification request successfully dispatched to "+emailRecipient+'\n');
+            console.log("Email authentification request successfully dispatched to "+emailRecipient+'\n')
         } else {
-            console.log("There was an issue while sending an authentification request to "+emailRecipient+'\n');
+            console.log("There was an issue while sending an authentification request to "+emailRecipient+'\n')
         }
-        //console.log(response[0].statusCode)
-        //console.log(response[0].headers)
+        console.log(response[0].statusCode)
+        console.log(response[0].headers)
       })
       .catch((error) => {
-        //console.error(error)
+        console.error(error)
       })
 }
 
