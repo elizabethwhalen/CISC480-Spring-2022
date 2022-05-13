@@ -19,6 +19,7 @@
     "constraint-solver": "^4.0.0",
     "events": "^3.3.0",
     "moment": "^2.29.2",
+    "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-big-calendar": "^0.40.0",
     "react-big-calendar-like-google": "0.0.3",
