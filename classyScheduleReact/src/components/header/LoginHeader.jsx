@@ -26,10 +26,8 @@ const useStyles = makeStyles({
 })
 
 export default function LoginHeader(props) {
-
   const { loggedIn, setLoggedIn, handleLogOut } = props;
-
-  const classes = useStyles() // call the hook
+  const classes = useStyles()
   const currentToken = sessionStorage.getItem('token');
 
   const handleLogoutClick = () => {
@@ -38,7 +36,6 @@ export default function LoginHeader(props) {
     window.location.href = "/";
   }
 
-  // return the component
   return (
     <Box display="flex" className={classes.container}>
 
