@@ -1,10 +1,10 @@
-import React from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
-import { Paper } from "@mui/material";
-import moment from "moment";
-import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
-import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
-import "react-big-calendar/lib/css/react-big-calendar.css";
+import React from "react"
+import { Calendar, momentLocalizer } from "react-big-calendar"
+import { Paper } from "@mui/material"
+import moment from "moment"
+import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop"
+import "react-big-calendar/lib/addons/dragAndDrop/styles.css"
+import "react-big-calendar/lib/css/react-big-calendar.css"
 import EditClassForm from './EditClassForm'
 import constraints from 'constraint-solver'
 import { RRule } from 'rrule'
@@ -22,7 +22,7 @@ export default function CalendarTest() {
     const [roomList, setRoomList] = React.useState([]);
     const [startTime, setStartTime] = React.useState("");
     const [endTime, setEndTime] = React.useState("");
-    const [date, setDate] = React.useState('');
+    const [date, setDate] = React.useState("");
     const [selectedEvent, setSelectedEvent] = React.useState({});
     const startRepeat = sessionStorage.getItem("startRepeat");
     const endRepeat = sessionStorage.getItem("endRepeat");
@@ -33,81 +33,6 @@ export default function CalendarTest() {
     const maxTime = new Date();
     maxTime.setHours(21, 0, 0);
 
-    function getCourse() {
-        // Config data for https request.
-        let config = {
-            method: 'get',
-            url: 'https://classy-api.ddns.net/v2/class',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token,
-            },
-        };
-        // https request Promise executed with Config settings.
-        axios(config).then(response => {
-            //console.log(JSON.stringify(response.data));
-            let list = [];
-            response.data.forEach(e => {
-                let clas = e.dept_code.toUpperCase() + ' ' + e.class_num;
-                list.push(clas);
-            })
-            setCourseList(list);
-        }).catch(error => {
-            console.log(error);
-        });
-    };
-
-    function getInstructor() {
-        // Config data for https request.
-        let config = {
-            method: 'get',
-            url: 'https://classy-api.ddns.net/v2/faculty',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-            },
-        };
-        // https request Promise executed with Config settings.
-        axios(config).then((response) => {
-            //console.log(JSON.stringify(response.data));
-            let list = [];
-            response.data.forEach(e => {
-                let lastName = e.faculty_last.charAt(0).toUpperCase() + e.faculty_last.slice(1);
-                let firstName = e.faculty_first.charAt(0).toUpperCase() + e.faculty_first.slice(1);
-                let instruc = lastName + ', ' + firstName;
-                list.push(instruc);
-            });
-            setInstructorList(list.sort());
-        }).catch((error) => {
-            console.log(error);
-        });
-    };
-
-    function getRoom() {
-        // Config data for https request.
-        let config = {
-            method: 'get',
-            url: 'https://classy-api.ddns.net/v2/room',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-            },
-        };
-        // https request Promise executed with Config settings.
-        axios(config).then((response) => {
-            //console.log(JSON.stringify(response.data));
-            let list = [];
-            response.data.map((e) => {
-                let room = e.building_code + ' ' + e.room_num;
-                list.push(room);
-                return list;
-            })
-            setRoomList(list);
-        }).catch((error) => {
-            console.log(error);
-        });
-    };
-
     const handleEventResize = data => {
         const { start, end, event } = data;
         let id = event.id;
@@ -115,8 +40,22 @@ export default function CalendarTest() {
             if (e.id === id) {
                 return {
                     ...e,
-                    start: new Date(e.start.getUTCFullYear(), e.start.getMonth(), e.start.getDate(), start.getHours(), start.getMinutes(), 0),
-                    end: new Date(e.end.getUTCFullYear(), e.end.getMonth(), e.end.getDate(), end.getHours(), end.getMinutes(), 0),
+                    start: new Date(
+                        e.start.getUTCFullYear(),
+                        e.start.getMonth(),
+                        e.start.getDate(),
+                        start.getHours(),
+                        start.getMinutes(),
+                        0
+                    ),
+                    end: new Date(
+                        e.end.getUTCFullYear(),
+                        e.end.getMonth(),
+                        e.end.getDate(),
+                        end.getHours(),
+                        end.getMinutes(),
+                        0
+                    ),
                 };
             }
             return e;
@@ -127,29 +66,22 @@ export default function CalendarTest() {
     const handleEventDrop = data => {
         const { start, end, event } = data;
         let id = event.id;
-        const newData = [...events];
-        newData.map(e => {
-            if (e.id === id) {
-                let updated = {
+        let subId = event.subId;
+        const newData = [...events].map(e => {
+            if (e.id === id && e.subId === subId) {
+                return {
+                    ...e,
                     start: start,
                     end: end,
-                    title: e.title,
-                    instructor: e.instructor,
-                    room: e.room,
-                    color: e.color,
-                    id: id,
-                    days: e.days,
                 };
-                newData[e.id] = updated;
             }
-            return null;
+            return e;
         })
         setEvents(newData);
     };
 
-
     const handleSelectSlot = event => {
-        let { start, end } = event;
+        const { start, end } = event;
         const { startTime, endTime } = getTimeInterval(start, end);
         setStartTime(startTime);
         setEndTime(endTime);
@@ -162,6 +94,7 @@ export default function CalendarTest() {
             instructor: "",
             room: "",
             id: count,
+            subId: 0,
             days: {
                 monday: false,
                 tuesday: false,
@@ -181,58 +114,11 @@ export default function CalendarTest() {
         return events;
     };
 
-    const createRecurrence = (data) => {
-        let byweekday = [];
-        let dtstart = null;
-        let until = null;
-
-        if (data.days.monday) {
-            byweekday.push(RRule.MO);
-        }
-        if (data.days.tuesday) {
-            byweekday.push(RRule.TU);
-        }
-        if (data.days.wednesday) {
-            byweekday.push(RRule.WE);
-        }
-        if (data.days.thursday) {
-            byweekday.push(RRule.TH);
-        }
-        if (data.days.friday) {
-            byweekday.push(RRule.FR);
-        }
-
-        let time = data.startTime.split(':');
-        let startHour = Number(time[0]) + 5;
-        let startMin = Number(time[1]);
-
-        let start = startRepeat.split("-");
-        let year = Number(start[0]);
-        let month = Number(start[1] - 1);
-        let date = Number(start[2]);
-        dtstart = new Date(Date.UTC(year, month, date, startHour, startMin));
-
-        let end = endRepeat.split("-");
-        year = Number(end[0]);
-        month = Number(end[1] - 1);
-        date = Number(end[2]);
-        until = new Date(Date.UTC(year, month, date));
-
-        const rule = new RRule({
-            freq: RRule.WEEKLY,  // repeate weekly, possible freq [DAILY, WEEKLY, MONTHLY, ]
-            interval: 1,
-            byweekday: byweekday,
-            dtstart: dtstart,
-            until: until,
-            tzid: 'America/Chicago'
-        })
-        return rule.all();
-    }
-
     const handleEventUpdate = (data) => {
         setOpen(false);
-        const newData = deleteEvent(data.id);
-        const list = createRecurrence(data);
+        let newData = deleteEvent(data.id);
+        let list = createRecurrence(data);
+        let i = 0;
 
         list.forEach(e => {
             let time = data.startTime.split(':');
@@ -251,21 +137,40 @@ export default function CalendarTest() {
                 room: data.room,
                 color: data.color,
                 id: data.id,
+                subId: i,
                 repeat: data.repeat,
                 days: data.days,
             }
             newData.push(newEvent);
+            i = i + 1;
         })
         setEvents(newData);
     }
 
-    const deleteEvent = id => {
-        const array = [...events].filter(e => Number(e.id) !== Number(id));
-        return array;
+    const handleSelectEvent = args => {
+        const { startTime, endTime } = getTimeInterval(args.start, args.end);
+        getCourse();
+        getInstructor();
+        getRoom();
+        setSelectedEvent(args);
+        setEdit(true);
+        setDate(getDate(args.start));
+        setStartTime(startTime);
+        setEndTime(endTime);
+        setOpen(true);
     }
 
+    // Handle pop-up window close function
+    const onClose = React.useCallback(() => {
+        if (!isEdit) {
+            // refresh the list, if add popup was canceled, to remove the temporary event
+            setEvents([...events]);
+        }
+        setOpen(false);
+    }, [isEdit, events]);
+
+    // Formatting event date to string
     const getDate = (event) => {
-        //Tue May 10 2022 11:30:00 GMT-0500 (Central Daylight Time)
         let month = "";
         if ((event.getMonth() + 1) < 10) {
             month = "0" + (event.getMonth() + 1);
@@ -282,6 +187,7 @@ export default function CalendarTest() {
         return event.getUTCFullYear() + "-" + month + "-" + date;
     }
 
+    // Formatting the start and end time to string
     const getTimeInterval = (start, end) => {
         let startTime = '';
         let endTime = '';
@@ -306,29 +212,132 @@ export default function CalendarTest() {
             endTime = end.getHours() + ":" + end.getMinutes();
         }
 
-        return { startTime, endTime }
+        return { startTime, endTime };
     }
 
-    const handleSelectEvent = args => {
-        setSelectedEvent(args);
-        getCourse();
-        getInstructor();
-        getRoom();
-        setEdit(true);
-        const { startTime, endTime } = getTimeInterval(args.start, args.end);
-        setDate(getDate(args.start));
-        setStartTime(startTime);
-        setEndTime(endTime);
-        setOpen(true);
+    const getConfig = (data) => {
+        let config = {
+            method: 'get',
+            url: 'https://classy-api.ddns.net/v2/' + data,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+        };
+        return config;
     }
 
-    const onClose = React.useCallback(() => {
-        if (!isEdit) {
-            // refresh the list, if add popup was canceled, to remove the temporary event
-            setEvents([...events]);
+    function getCourse() {
+        // Config data for https request.
+        let config = getConfig("class");
+        // https request Promise executed with Config settings.
+        axios(config).then(response => {
+            //console.log(JSON.stringify(response.data));
+            let list = [];
+            response.data.forEach(e => {
+                let clas = e.dept_code.toUpperCase() + ' ' + e.class_num;
+                list.push(clas);
+            })
+            setCourseList(list);
+        }).catch(error => {
+            console.log(error);
+        });
+    };
+
+    function getInstructor() {
+        // Config data for https request.
+        let config = getConfig("faculty");
+        // https request Promise executed with Config settings.
+        axios(config).then((response) => {
+            //console.log(JSON.stringify(response.data));
+            let list = [];
+            response.data.forEach(e => {
+                let lastName = e.faculty_last.charAt(0).toUpperCase() + e.faculty_last.slice(1);
+                let firstName = e.faculty_first.charAt(0).toUpperCase() + e.faculty_first.slice(1);
+                let instruc = lastName + ', ' + firstName;
+                list.push(instruc);
+            });
+            setInstructorList(list.sort());
+        }).catch((error) => {
+            console.log(error);
+        });
+    };
+
+    function getRoom() {
+        // Config data for https request.
+        let config = getConfig("room");
+        // https request Promise executed with Config settings.
+        axios(config).then((response) => {
+            //console.log(JSON.stringify(response.data));
+            let list = [];
+            response.data.forEach(e => {
+                let room = e.building_code + ' ' + e.room_num;
+                list.push(room);
+            })
+            setRoomList(list);
+        }).catch((error) => {
+            console.log(error);
+        });
+    };
+
+    const createRecurrence = (data) => {
+        let byweekday = [];
+        let dtstart = null;
+        let until = null;
+
+        if (data.days.monday) {
+            byweekday.push(RRule.MO);
         }
-        setOpen(false);
-    }, [isEdit, events]);
+        if (data.days.tuesday) {
+            byweekday.push(RRule.TU);
+        }
+        if (data.days.wednesday) {
+            byweekday.push(RRule.WE);
+        }
+        if (data.days.thursday) {
+            byweekday.push(RRule.TH);
+        }
+        if (data.days.friday) {
+            byweekday.push(RRule.FR);
+        }
+
+        // Formatting time
+        let time = data.startTime.split(':');
+        let startHour = Number(time[0]) + 5;
+        let startMin = Number(time[1]);
+
+        // Formatting start date of repeat
+        let start = startRepeat.split("-");
+        let year = Number(start[0]);
+        let month = Number(start[1] - 1);
+        let date = Number(start[2]);
+        dtstart = new Date(Date.UTC(year, month, date, startHour, startMin));
+
+        // Formatting end date of repeat
+        let end = endRepeat.split("-");
+        year = Number(end[0]);
+        month = Number(end[1] - 1);
+        date = Number(end[2]);
+        until = new Date(Date.UTC(year, month, date));
+
+        // Generate the rule
+        const rule = new RRule({
+            freq: RRule.WEEKLY,
+            interval: 1,
+            byweekday: byweekday,
+            dtstart: dtstart,
+            until: until,
+            tzid: 'America/Chicago'
+        })
+
+        // Execute and return the list of dates
+        return rule.all();
+    }
+
+    const deleteEvent = id => {
+        const array = [...events].filter(e => Number(e.id) !== Number(id));
+        return array;
+    }
 
     // do curl request to get the number of classes that need to be scheduled
     // at the 100, 200, 300, and 400 level
@@ -365,8 +374,8 @@ export default function CalendarTest() {
     }
 
     return (
-        <Paper sx={{ padding: '20px' }} elevation={0} >
-            {open &&
+        <Paper sx={{ padding: '20px', height: "100%" }} elevation={0} >
+            {open && (
                 <EditClassForm
                     open={open}
                     event={selectedEvent}
@@ -378,7 +387,8 @@ export default function CalendarTest() {
                     instructorList={instructorList}
                     roomList={roomList}
                     handleEventUpdate={handleEventUpdate}
-                />}
+                />
+            )}
             <DnDCalendar
                 min={minTime}
                 max={maxTime}
@@ -389,10 +399,10 @@ export default function CalendarTest() {
                 localizer={localizer}
                 resizable
                 selectable
-                style={{ height: "100vh" }}
+                style={{ height: '100%' }}
                 step={5}
                 timeslots={12}
-                styles={{ overflow: "hidden" }}
+                styles={{ overflow: 'hidden' }}
                 onEventDrop={event => handleEventDrop(event)}
                 onEventResize={event => handleEventResize(event)}
                 onSelectEvent={event => handleSelectEvent(event)}
@@ -401,7 +411,6 @@ export default function CalendarTest() {
             <div>
                 <button id="algo" onClick={myFunction}>Algorithm Fun!!!</button>
             </div>
-
         </Paper>
     );
 };

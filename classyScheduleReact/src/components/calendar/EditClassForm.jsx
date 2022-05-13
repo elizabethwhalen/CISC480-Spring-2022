@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from 'react'
 import {
     Grid,
     Select,
@@ -13,8 +13,7 @@ import {
     FormGroup,
     FormControl,
     Checkbox,
-    FormLabel,
-} from '@mui/material';
+} from '@mui/material'
 import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles({
@@ -82,23 +81,21 @@ export default function EditClassForm(props) {
     const handleSubmit = () => {
         let error = [];
         if (course === '') {
-            error.push('Course is not selected');
+            error.push('Course is not selected.');
         }
         if (instructor === '') {
-            error.push('Instructor is not selected');
+            error.push('Instructor is not selected.');
         }
         if (room === '') {
-            error.push('Room is not selected');
+            error.push('Room is not selected.');
         }
-        if (endTime < startTime) {
-            error.push("Meeting time is not valid. Ending time must be greater than starting time.")
+        if (endTime <= startTime) {
+            error.push("Meeting time is not valid. Ending time must be greater than starting time.");
         }
 
         if (!days.monday && !days.tuesday && !days.wednesday && !days.thursday && !days.friday) {
-            error.push('Meeting days are not selected');
+            error.push('Meeting days are not selected.');
         }
-
-        setErrors(error);
 
         let data = null;
         let id = props.event.id;
@@ -113,8 +110,10 @@ export default function EditClassForm(props) {
                 days: days,
                 id: id,
             }
+            props.handleEventUpdate(data);
+        } else {
+            setErrors(error);
         }
-        props.handleEventUpdate(data);
     }
 
     const { monday, tuesday, wednesday, thursday, friday } = days;
@@ -156,7 +155,7 @@ export default function EditClassForm(props) {
                                             <MenuItem value="">
                                                 <em>None</em>
                                             </MenuItem>
-                                            {props.courseList.map((e) => {
+                                            {props.courseList.map(e => {
                                                 return <MenuItem key={e} value={e}>{e}</MenuItem>;
                                             })}
 
@@ -179,10 +178,9 @@ export default function EditClassForm(props) {
                                             <MenuItem value="">
                                                 <em>None</em>
                                             </MenuItem>
-                                            {props.instructorList.map((e) => {
+                                            {props.instructorList.map(e => {
                                                 return <MenuItem key={e} value={e}>{e}</MenuItem>;
                                             })}
-
                                         </Select>
                                     </FormControl>
                                 </Grid>
@@ -202,7 +200,7 @@ export default function EditClassForm(props) {
                                             <MenuItem value="">
                                                 <em>None</em>
                                             </MenuItem>
-                                            {props.roomList.map((e) => {
+                                            {props.roomList.map(e => {
                                                 return <MenuItem key={e} value={e}>{e}</MenuItem>;
                                             })}
 
@@ -253,37 +251,72 @@ export default function EditClassForm(props) {
                                 <FormGroup>
                                     <FormControlLabel
                                         control={
-                                            <Checkbox checked={monday} onChange={handleChangeDays} name="monday" />
+                                            <Checkbox
+                                                checked={monday}
+                                                onChange={handleChangeDays}
+                                                name="monday"
+                                            />
                                         }
                                         label="Monday"
                                     />
                                     <FormControlLabel
                                         control={
-                                            <Checkbox checked={tuesday} onChange={handleChangeDays} name="tuesday" />
+                                            <Checkbox
+                                                checked={tuesday}
+                                                onChange={handleChangeDays}
+                                                name="tuesday"
+                                            />
                                         }
                                         label="Tuesday"
                                     />
                                     <FormControlLabel
                                         control={
-                                            <Checkbox checked={wednesday} onChange={handleChangeDays} name="wednesday" />
+                                            <Checkbox
+                                                checked={wednesday}
+                                                onChange={handleChangeDays}
+                                                name="wednesday"
+                                            />
                                         }
                                         label="Wednesday"
                                     />
                                     <FormControlLabel
                                         control={
-                                            <Checkbox checked={thursday} onChange={handleChangeDays} name="thursday" />
+                                            <Checkbox
+                                                checked={thursday}
+                                                onChange={handleChangeDays}
+                                                name="thursday"
+                                            />
                                         }
                                         label="Thursday"
                                     />
                                     <FormControlLabel
                                         control={
-                                            <Checkbox checked={friday} onChange={handleChangeDays} name="friday" />
+                                            <Checkbox
+                                                checked={friday}
+                                                onChange={handleChangeDays}
+                                                name="friday"
+                                            />
                                         }
                                         label="Friday"
                                     />
                                 </FormGroup>
                             </FormControl>
                         </Grid>
+
+                        {errors.length !== 0 && (
+                            <Grid item xs={12}>
+                                {errors.map(e => {
+                                    return (
+                                        <Typography
+                                            key={e}
+                                            style={{ color: "red" }}
+                                        >
+                                            {e}
+                                        </Typography>
+                                    );
+                                })}
+                            </Grid>
+                        )}
 
                         <Grid item xs={12}>
                             <Button
@@ -300,16 +333,17 @@ export default function EditClassForm(props) {
                             >
                                 Save
                             </Button>
+
                             <Button
                                 variant="outlined"
                                 size="medium"
                                 disableElevation
+                                onClick={() => props.onClose()}
                                 sx={{
                                     color: '#6a1b9a',
                                     '&:hover': { borderColor: '#4a148c', color: '#4a148c' },
                                     borderColor: '#6a1b9a',
                                 }}
-                                onClick={props.onClose}
                             >
                                 Cancel
                             </Button>
