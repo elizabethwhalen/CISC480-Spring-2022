@@ -4,9 +4,15 @@
 // 2. Allow users to login to the API, hash their password, and compare against hashed db in table
 // 3. Handle any other HTTP request...
 //
-// Authors: Joe Lambrecht, Gabbie Bolcer, Emma Torres, Jonas Bull, Ben Frey
+// Authors: Joe Lambrecht, Gabbie Bolcer, Emma Torres, Jonas Bull, and Ben Frey
 // Date: 11 May 2022
 
+<<<<<<< HEAD
+=======
+// Say hello!
+console.log("Welcome to the Database Team's API, nice to meet you! :)\n");
+
+>>>>>>> f8511436080be495dc198d49d0bdf049dbbcc3f2
 //
 // Import packages and setup app
 //
@@ -17,9 +23,10 @@ var path = require('path');
 var mysql = require('mysql');
 var fs = require('fs')
 
-// Login and token packages
+// Login, token, and MFA (email sending) packages
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken')
+var sgMail = require('@sendgrid/mail')
 
 // Setup RESTful app
 var app = express();
@@ -81,6 +88,16 @@ makeConnection((password)=> {
     con = new mysql.createConnection(config);
     con.connect(function(err) {
       if (err) throw err;
+<<<<<<< HEAD
+=======
+      console.log("Connected to database with the following information:"+
+                    "\nHost: "+config.host+
+                    "\nUser: "+config.user+
+                    "\nPassword: "+config.password+
+                    "\nDB Schema: "+config.database+
+                    "\nPort: "+config.port+
+                    "\n");
+>>>>>>> f8511436080be495dc198d49d0bdf049dbbcc3f2
     });
 });
 
@@ -249,10 +266,86 @@ async function db_put(query, data){
 //delete
 
 //***LOGIN***
-//view
-//add
-//update
-//delete
+var MIN_PASSWORD_LENGTH = 8;
+var MAX_PASSWORD_LENGTH = 16;
+var users = {};
+
+//login
+app.post('/v3/login', async function (req, res) {
+/*  Query the login table to see if user should be granted access.
+
+    @since  v2
+
+    @param{Object}      req     The request info. Needs to contain an email address and a 
+                                password to be a valid query. 
+
+    @return             nothing.
+*/
+    var passHashed;
+    //if (!req.body) { return res.sendStatus(400); }
+
+    if (!req.body.email || !req.body.password) {
+      return res.status(400).send('Missing email or password');
+    }
+
+    let loginjson = await db_get("SELECT * from login where email="+con.escape(req.body.email));
+    if (loginjson.length === 0) { return res.status(404).send("Account with that email does not exist"); } 
+    passHashed = loginjson[0].pass
+    bcrypt.compare(req.body.password,passHashed)
+    .then(correct => {
+      if(correct){
+        // Generate token based on login attempt and secretkey
+        let token = jwt.sign(
+          {user: loginjson[0]},
+          secretkey,
+          {
+              algorithm: "HS256",
+              expiresIn: 86400,
+          });
+        
+        // Wait up to 30 seconds for user to confirm their identity by clicking link that was emailed to them
+        sendVerifyEmail(req.body.email, token);
+          // still need to implement wait and request auth method server side
+        // Send token to user trying to login
+        res.status(200).send(token);
+      }
+      else {res.status(401).send('Incorrect password');}
+    });
+});
+
+// email mfa
+//require('dotenv').config() // this may be problematic when deploying
+sgMail.setApiKey('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') // we will want to read this key in from a "hidden" file
+
+// test send
+//let emailTestRecipient = "frey6131@stthomas.edu"
+//let emailTestRecipient = "freynben@gmail.com"
+//sendVerifyEmail(emailTestRecipient)
+
+function sendVerifyEmail(emailRecipient, token) {
+    const msg = {
+      to: emailRecipient, 
+      from: 'classyscheduledev01@gmail.com', // I need to get the email login and setup info from jonas for documentaiton purposes
+      subject: 'Autheticate your Classy-Schedule API login request',
+      text: "Hi! We just need you to verify your Classy-Schedule email by clicking the link below, and you're all set!", // I'm not sure that this portion is sent...
+      html: "You have 30 seconds to click the autheticate button below. Your HTTP request will then return with your token.\n BUTTON CODE HERE ALSO EMBED TOKEN IN URL"
+    }
+
+    sgMail
+      .send(msg)
+      .then((response) => {
+        if (response[0].statusCode == 202) {
+            console.log("Email authentification request successfully dispatched to "+emailRecipient+'\n');
+        } else {
+            console.log("There was an issue while sending an authentification request to "+emailRecipient+'\n');
+        }
+        //console.log(response[0].statusCode)
+        //console.log(response[0].headers)
+      })
+      .catch((error) => {
+        //console.error(error)
+      })
+}
 
 //***MEETS***
 //view
