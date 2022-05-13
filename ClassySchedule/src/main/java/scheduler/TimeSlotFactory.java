@@ -22,10 +22,11 @@ public class TimeSlotFactory {
         JSONArray currentTimeChunkJSON = DatabaseStatic.getData("timeslot");
         for (Object jsonObject: currentTimeChunkJSON) {
             JSONObject job = (JSONObject)jsonObject;
-            start = (String) job.get("time_start");
-            end = (String) job.get("time_end");
-            days = (String) job.get("day_of_week");
-            Timeslot currentTimeSlot = new Timeslot(days, start, end);
+            start = job.getString("time_start");
+            end = job.getString("time_end");
+            days = job.getString("day_of_week");
+            int timeID = job.getInt("time_id");
+            Timeslot currentTimeSlot = new Timeslot(timeID, days, start, end);
             timeSlotList.add(currentTimeSlot);
         }
         //sorts by day

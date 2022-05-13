@@ -4,11 +4,13 @@ public class Timeslot {
     String startTime;
     String endTime;
     String daysOfWeek;
+    int timeId;
 
-    public Timeslot(String daysOfWeek, String startTime, String endTime) {
+    public Timeslot(int timeId, String daysOfWeek, String startTime, String endTime) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.daysOfWeek = daysOfWeek;
+        this.timeId = timeId;
     }
     public void setStartTime(String startTime){
         this.startTime = startTime;
@@ -32,6 +34,13 @@ public class Timeslot {
         return daysOfWeek;
     }
 
+    public int getTimeID(){
+        return this.timeId;
+    }
+
+    public void setTimeId(int timeID) {
+        this.timeId = timeID;
+    }
 
     @Override
     public String toString() {

@@ -5,6 +5,7 @@ import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.classic.methods.HttpPut;
 import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.entity.EntityBuilder;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
@@ -70,19 +71,25 @@ public final class DatabaseStatic {
      * @throws URISyntaxException
      * @throws IOException
      */
-    public static boolean insertData(String table, JSONObject json) throws URISyntaxException, IOException {
+    public static boolean insertData(String table, JSONObject json) {
         CloseableHttpClient client = HttpClients.createDefault();
         json.put("token", tokenObject.get("token"));
-        URIBuilder builder = new URIBuilder(url + table);
-        StringEntity entity = new StringEntity(json.toString());
-        HttpPost httpPost = new HttpPost(builder.build());
-        httpPost.setEntity(entity);
-        httpPost.setHeader("Content-Type", "application/json");
-        httpPost.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + tokenObject.get("token"));
+        try {
+            URIBuilder builder = new URIBuilder(url + table);
 
-        CloseableHttpResponse response = client.execute(httpPost);
-        client.close();
-        return response.getCode() == 200;
+            StringEntity entity = new StringEntity(json.toString());
+            HttpPost httpPost = new HttpPost(builder.build());
+            httpPost.setEntity(entity);
+            httpPost.setHeader("Content-Type", "application/json");
+            httpPost.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + tokenObject.get("token"));
+
+            CloseableHttpResponse response = client.execute(httpPost);
+            client.close();
+            return response.getCode() == 200;
+        } catch (URISyntaxException | IOException e) {
+            System.out.println("Did not succeed");
+            return false;
+        }
     }
 
     /**
@@ -185,5 +192,11 @@ public final class DatabaseStatic {
         CloseableHttpResponse response = test.execute(httpDelete);
         test.close();
         return response.getCode() == 200;
+    }
+
+    public static JSONArray meetsQuery() {
+        String ur = "https://classy-api.ddns.net/";
+        HttpGet httpGet = new HttpGet(ur + "v3/meets/ext");
+        return executeGet(httpGet);
     }
 }

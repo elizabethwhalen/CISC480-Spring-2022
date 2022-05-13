@@ -32,11 +32,20 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="courses.AddCourseToDatabaseController">
     <AnchorPane VBox.vgrow="ALWAYS">
         <Label alignment="CENTER" layoutX="155.0" layoutY="177.0" style="&#10;" textAlignment="CENTER"
                textFill="#9f9f9f">
@@ -85,12 +94,12 @@
         <Button layoutX="217.0" layoutY="308.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="59.0"
                 text="Cancel" textFill="#c32727"/>
         <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="640.0">
-            <Menu fx:id="goTohome" mnemonicParsing="false" onAction="#homeButtonClicked" text="Home">
+            <Menu fx:id="goTohome" mnemonicParsing="false" onAction="#goBack" text="Home">
                 <MenuItem fx:id="goToHome" mnemonicParsing="false" text="Back to Home"/>
             </Menu>
             <Menu mnemonicParsing="false" text="Goto">
                 <MenuItem fx:id="goToAddCourse" mnemonicParsing="false" text="Add Course"/>
-                <MenuItem fx:id="goToAddProfessor" mnemonicParsing="false" text="Add Professor"/>
+                <MenuItem fx:id="goToAddFaculty" mnemonicParsing="false" text="Add Professor"/>
                 <MenuItem fx:id="goToAddClassroom" mnemonicParsing="false" text="Add Classroom"/>
                 <SeparatorMenuItem mnemonicParsing="false"/>
                 <MenuItem fx:id="goToEditCourse" mnemonicParsing="false" text="Edit Course"/>
@@ -98,7 +107,7 @@
                 <MenuItem fx:id="goToEditClassroom" mnemonicParsing="false" text="Edit Classroom"/>
                 <SeparatorMenuItem mnemonicParsing="false"/>
                 <MenuItem fx:id="goToDeleteCourse" mnemonicParsing="false" text="Delete Course"/>
-                <MenuItem fx:id="goToDeleteProfessor" mnemonicParsing="false" text="Delete Professor"/>
+                <MenuItem fx:id="goToDeleteFaculty" mnemonicParsing="false" text="Delete Professor"/>
                 <MenuItem fx:id="goToDeleteClassroom" mnemonicParsing="false" text="Delete Classroom"/>
                 <SeparatorMenuItem mnemonicParsing="false"/>
                 <MenuItem fx:id="goToViewSchedule" mnemonicParsing="false" text="View Schedule"/>

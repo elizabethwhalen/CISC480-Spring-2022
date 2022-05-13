@@ -8,14 +8,7 @@ public class Faculty {
     private double prev_load;
     private double currLoad;
 
-    public Faculty(int facultyID, String facultyFirst, String facultyLast, int titleID, double prev_load, double currLoad) {
-        this.facultyID = facultyID;
-        this.facultyFirst = facultyFirst;
-        this.facultyLast = facultyLast;
-        this.titleID = titleID;
-        this.prev_load = prev_load;
-        this.currLoad = currLoad;
-    }
+    public Faculty() {}
 
     public int getFacultyID() {
         return facultyID;
@@ -66,6 +59,6 @@ public class Faculty {
     }
 
     public String toString() {
-        return "";
+        return getFacultyFirst() + " " + getFacultyLast();
     }
 }

@@ -117,12 +117,7 @@ public class RoomController implements Initializable {
         newRoom.put("building_code", buildingCode.getValue());
         newRoom.put("capacity", capacity.getText());
 
-        try {
-            DatabaseStatic.insertData("room", newRoom);
-        } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-
+        DatabaseStatic.insertData("room", newRoom);
 
         capacity.clear();
         roomNum.clear();

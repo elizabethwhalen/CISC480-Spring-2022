@@ -5,11 +5,7 @@ public class Room {
     private String roomNum;
     private int capacity;
 
-    public Room(String buildingCode, String roomNum, int capacity) {
-        this.buildingCode = buildingCode;
-        this.roomNum = roomNum;
-        this.capacity = capacity;
-    }
+    public Room() {}
 
     public String getBuildingCode() {
         return buildingCode;
@@ -36,6 +32,6 @@ public class Room {
     }
 
     public String toString() {
-        return "";
+        return getBuildingCode() + " " + getRoomNum();
     }
 }

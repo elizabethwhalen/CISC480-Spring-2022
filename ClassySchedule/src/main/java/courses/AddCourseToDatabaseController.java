@@ -115,11 +115,9 @@ public class AddCourseToDatabaseController implements Initializable {
             newClass.put("class_num", classNum.getText());
             newClass.put("class_name", className.getText());
 
-            try {
-                DatabaseStatic.insertData("class", newClass);
-            } catch (IOException | URISyntaxException e) {
-                e.printStackTrace();
-            }
+
+            DatabaseStatic.insertData("class", newClass);
+
 
             deptName.setValue("Dept name");
             classNum.clear();

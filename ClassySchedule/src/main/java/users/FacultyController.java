@@ -13,8 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import scenes.ChangeScene;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -108,12 +106,7 @@ public class FacultyController implements Initializable {
         newFaculty.put("faculty_last", lastName.getText());
         //newFaculty.put("title_id", type.getValue());
 
-        try {
-            DatabaseStatic.insertData("faculty", newFaculty);
-        } catch (IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-
+        DatabaseStatic.insertData("faculty", newFaculty);
 
         firstName.clear();
         lastName.clear();

@@ -105,20 +105,20 @@ public class SchedulerController implements Initializable {
      * This method populates the schedule with previously saved courses
      */
     public void populateSchedule() {
-        JSONArray meets = DatabaseStatic.getData("meets/ext");
-        for (Object course: meets) {
-            JSONObject json = (JSONObject) course;
-            json.get("dept_code");
-            json.get("class_num");
-            JSONObject time = new JSONObject();
-            time.put("time_id", String.valueOf(json.get("time_id")));
-            JSONArray times = DatabaseStatic.getData("timeslot", time);
-            List<LocalDateTime> startTimes = getStartTimes(times);
-            List<LocalDateTime> endTimes = getEndTimes(times);
-
-            AppointmentFactory test = new AppointmentFactory(startTimes, endTimes, "Dept_code classNumber className", json.get("building_code") + (String) json.get("room_num"), "test");
-            addCourse(test.createAppointments());
-        }
+//        JSONArray meets = DatabaseStatic.getData("meets/ext");
+//        for (Object course: meets) {
+//            JSONObject json = (JSONObject) course;
+//            json.get("dept_code");
+//            json.get("class_num");
+//            JSONObject time = new JSONObject();
+//            time.put("time_id", String.valueOf(json.get("time_id")));
+//            JSONArray times = DatabaseStatic.getData("timeslot", time);
+//            List<LocalDateTime> startTimes = getStartTimes(times);
+//            List<LocalDateTime> endTimes = getEndTimes(times);
+//
+//            AppointmentFactory test = new AppointmentFactory(startTimes, endTimes, "Dept_code classNumber className", json.get("building_code") + (String) json.get("room_num"), "test");
+//            addCourse(test.createAppointments());
+//        }
     }
 
     private List<LocalDateTime> getStartTimes(JSONArray times) {

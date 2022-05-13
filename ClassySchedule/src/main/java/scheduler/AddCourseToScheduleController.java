@@ -3,6 +3,7 @@ package scheduler;
 import alert.MyAlert;
 import courses.Course;
 import courses.CourseFactory;
+import database.DatabaseStatic;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -13,6 +14,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 
 import jfxtras.scene.control.agenda.Agenda;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import room.Room;
 import room.RoomFactory;
 import users.Faculty;
@@ -152,6 +155,8 @@ public class AddCourseToScheduleController implements Initializable {
             parentController.addCourse(appointmentList);
 
             sendDataToDatabase();
+
+            JSONArray test = DatabaseStatic.getData("meets");
             // return to Scheduler
             course.getScene().getWindow().hide();
         }
@@ -159,7 +164,32 @@ public class AddCourseToScheduleController implements Initializable {
     }
 
     private void sendDataToDatabase() {
+        Timeslot timeslot = listOfTimes.get(classTimes.getSelectionModel().getSelectedIndex());
+        Course crs = courses.get(course.getSelectionModel().getSelectedIndex());
+        Faculty prof = faculty.get(professor.getSelectionModel().getSelectedIndex());
+        Room rm = rooms.get(room.getSelectionModel().getSelectedIndex());
 
+        JSONArray test = DatabaseStatic.meetsQuery();
+        JSONObject meets = new JSONObject();
+        //dept_code , class_num, section_num, semester, draft, building_code, room_num, time_id
+        meets.put("dept_code", crs.getDeptCode());
+        meets.put("class_num", crs.getClassNum());
+        meets.put("section_num", 1);
+        meets.put("semester", "Spring2022");
+        meets.put("draft", 1);
+        meets.put("building_code", rm.getBuildingCode());
+        meets.put("room_num", rm.getRoomNum());
+        meets.put("time_id", timeslot.getTimeID());
+        DatabaseStatic.insertData("meets", meets);
+        JSONObject teaches = new JSONObject();
+        // dept_code, class_num, section_num, semester, draft, faculty_id
+        teaches.put("dept_code", crs.getDeptCode());
+        teaches.put("class_num", crs.getClassNum());
+        teaches.put("section_num", 1);
+        teaches.put("semester", "Spring2022");
+        teaches.put("draft", 1);
+        teaches.put("faculty_id", prof.getFacultyID());
+        DatabaseStatic.insertData("teaches", teaches);
     }
 
     /**
@@ -234,7 +264,6 @@ public class AddCourseToScheduleController implements Initializable {
             createAlert.show();
             return false;
         }
-        // Probably need to find a way to bind class number and class name??
         return true;
     }
 
