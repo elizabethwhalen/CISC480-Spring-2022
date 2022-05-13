@@ -41,45 +41,45 @@ const style = {
 };
 
 export default function EditClassForm(props) {
-    const open = props.open;
+    const { open, event, start, end, onClose, courseList } = props;
     const classes = useStyles();
-    const [course, setCourse] = React.useState(props.event.title === "New class" ? "" : props.event.title);
-    const [instructor, setInstructor] = React.useState(props.event.instructor);
-    const [room, setRoom] = React.useState(props.event.room);
-    const [startTime, setStartTime] = React.useState(props.startTime);
-    const [endTime, setEndTime] = React.useState(props.endTime);
-    const [days, setDays] = React.useState(props.event.days);
+    const [course, setCourse] = React.useState(event.title === "New class" ? "" : event.title);
+    const [instructor, setInstructor] = React.useState(event.instructor);
+    const [room, setRoom] = React.useState(event.room);
+    const [startTime, setStartTime] = React.useState(start);
+    const [endTime, setEndTime] = React.useState(end);
+    const [days, setDays] = React.useState(event.days);
     const [errors, setErrors] = React.useState([]);
 
-    const handleChangeCourse = (event) => {
-        setCourse(event.target.value);
+    const handleChangeCourse = (e) => {
+        setCourse(e.target.value);
     }
 
-    const handleChangeInstructor = (event) => {
-        setInstructor(event.target.value);
+    const handleChangeInstructor = (e) => {
+        setInstructor(e.target.value);
     }
 
-    const handleChangeRoom = (event) => {
-        setRoom(event.target.value);
+    const handleChangeRoom = (e) => {
+        setRoom(e.target.value);
     }
 
-    const handleChangeStartTime = (event) => {
-        setStartTime(event.target.value);
+    const handleChangeStartTime = (e) => {
+        setStartTime(e.target.value);
     }
 
-    const handleChangeEndTime = (event) => {
-        setEndTime(event.target.value);
+    const handleChangeEndTime = (e) => {
+        setEndTime(e.target.value);
     }
 
-    const handleChangeDays = (event) => {
+    const handleChangeDays = (e) => {
         setDays({
             ...days,
-            [event.target.name]: event.target.checked,
+            [e.target.name]: e.target.checked,
         });
     };
 
     const handleSubmit = () => {
-        let error = [];
+        const error = [];
         if (course === '') {
             error.push('Course is not selected.');
         }
@@ -98,17 +98,17 @@ export default function EditClassForm(props) {
         }
 
         let data = null;
-        let id = props.event.id;
+        const { id } = event.id;
 
         if (error.length === 0) {
             data = {
-                course: course,
-                instructor: instructor,
-                room: room,
-                startTime: startTime,
-                endTime: endTime,
-                days: days,
-                id: id,
+                course,
+                instructor,
+                room,
+                startTime,
+                endTime,
+                days,
+                id,
             }
             props.handleEventUpdate(data);
         } else {
@@ -122,7 +122,7 @@ export default function EditClassForm(props) {
         <div>
             <Modal
                 open={open}
-                onClose={props.onClose}
+                onClose={onClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
@@ -155,7 +155,7 @@ export default function EditClassForm(props) {
                                             <MenuItem value="">
                                                 <em>None</em>
                                             </MenuItem>
-                                            {props.courseList.map(e => {
+                                            {courseList.map(e => {
                                                 return <MenuItem key={e} value={e}>{e}</MenuItem>;
                                             })}
 
