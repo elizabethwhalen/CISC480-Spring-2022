@@ -65,7 +65,7 @@ const AddFaculty = () => {
             setTeachLoad('');
         }
     };
-
+    
     const handleFirstNameChange = (event) => {
         setFirstName(event.target.value);
     }

@@ -36,3 +36,6 @@ curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7
 
 ###
 curl "https://classy-api.ddns.net/v2/login" -X POST -d "email=webuser@stthomas.edu&password=webpassword"
+
+###
+curl  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoid2VidXNlckBzdHRob21hcy5lZHUiLCJwYXNzIjoiJDJiJDEwJEhnQk55RnVTa1lTeDAyS2RkNlNjbU9DWHRzL1o0WFhyQTNDWGJJNWgxUW9ZTC41by5YbVMuIiwiZmFjdWx0eV9pZCI6bnVsbCwiYWNjZXNzX2xldmVsIjoyLCJ0bXAiOm51bGx9LCJpYXQiOjE2NTI0NzUzMzEsImV4cCI6MTY1MjU2MTczMX0.EMetzP6cCD0I26na7xp4sn63VtZBAbhelxp5e594IJQ" "https://classy-api.ddns.net/v3/meets/ext" 

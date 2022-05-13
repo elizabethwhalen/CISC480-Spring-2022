@@ -19,8 +19,10 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 // new Component 'Help'
-const Help = () => {
+export default function Help() {
     const classes = useStyles();
+
+    
     return (
         <Paper elevation={0} className={classes.container} >
             <Grid container spacing={3}>
@@ -84,4 +86,3 @@ const Help = () => {
         </Paper>
     )
 }
-export default Help
