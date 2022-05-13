@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import * as React from 'react'
 import {
     Grid,
@@ -41,7 +42,17 @@ const style = {
 };
 
 export default function EditClassForm(props) {
-    const { open, event, start, end, onClose, courseList } = props;
+    const {
+        open,
+        event,
+        start,
+        end,
+        onClose,
+        courseList,
+        instructorList,
+        roomList,
+        handleEventUpdate,
+    } = props;
     const classes = useStyles();
     const [course, setCourse] = React.useState(event.title === "New class" ? "" : event.title);
     const [instructor, setInstructor] = React.useState(event.instructor);
@@ -98,7 +109,7 @@ export default function EditClassForm(props) {
         }
 
         let data = null;
-        const { id } = event.id;
+        const { id } = event;
 
         if (error.length === 0) {
             data = {
@@ -110,7 +121,7 @@ export default function EditClassForm(props) {
                 days,
                 id,
             }
-            props.handleEventUpdate(data);
+            handleEventUpdate(data);
         } else {
             setErrors(error);
         }
@@ -155,9 +166,7 @@ export default function EditClassForm(props) {
                                             <MenuItem value="">
                                                 <em>None</em>
                                             </MenuItem>
-                                            {courseList.map(e => {
-                                                return <MenuItem key={e} value={e}>{e}</MenuItem>;
-                                            })}
+                                            {courseList.map(e => <MenuItem key={e} value={e}>{e}</MenuItem>)}
 
                                         </Select>
                                     </FormControl>
@@ -178,9 +187,7 @@ export default function EditClassForm(props) {
                                             <MenuItem value="">
                                                 <em>None</em>
                                             </MenuItem>
-                                            {props.instructorList.map(e => {
-                                                return <MenuItem key={e} value={e}>{e}</MenuItem>;
-                                            })}
+                                            {instructorList.map(e => <MenuItem key={e} value={e}>{e}</MenuItem>)}
                                         </Select>
                                     </FormControl>
                                 </Grid>
@@ -200,10 +207,7 @@ export default function EditClassForm(props) {
                                             <MenuItem value="">
                                                 <em>None</em>
                                             </MenuItem>
-                                            {props.roomList.map(e => {
-                                                return <MenuItem key={e} value={e}>{e}</MenuItem>;
-                                            })}
-
+                                            {roomList.map(e => <MenuItem key={e} value={e}>{e}</MenuItem>)}
                                         </Select>
                                     </FormControl>
                                 </Grid>
@@ -305,16 +309,14 @@ export default function EditClassForm(props) {
 
                         {errors.length !== 0 && (
                             <Grid item xs={12}>
-                                {errors.map(e => {
-                                    return (
-                                        <Typography
-                                            key={e}
-                                            style={{ color: "red" }}
-                                        >
-                                            {e}
-                                        </Typography>
-                                    );
-                                })}
+                                {errors.map(e =>
+                                    <Typography
+                                        key={e}
+                                        style={{ color: "red" }}
+                                    >
+                                        {e}
+                                    </Typography>
+                                )}
                             </Grid>
                         )}
 
@@ -338,7 +340,7 @@ export default function EditClassForm(props) {
                                 variant="outlined"
                                 size="medium"
                                 disableElevation
-                                onClick={() => props.onClose()}
+                                onClick={onClose}
                                 sx={{
                                     color: '#6a1b9a',
                                     '&:hover': { borderColor: '#4a148c', color: '#4a148c' },

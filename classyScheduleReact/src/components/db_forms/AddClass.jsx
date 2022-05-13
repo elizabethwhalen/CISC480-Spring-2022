@@ -5,10 +5,11 @@ import {
     Button,
     Typography
 } from '@material-ui/core'
+import axios from 'axios'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import { makeStyles } from '@material-ui/core/styles'
-import axios from 'axios'
 import DoneIcon from '@mui/icons-material/Done'
+import CloseIcon from '@mui/icons-material/Close';
 
 // This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles((theme) => ({
@@ -29,52 +30,53 @@ const useStyles = makeStyles((theme) => ({
         color: '#388e3c',
         fontWeight: 600,
     },
+    unsucessfulMessage: {
+        color: 'red',
+        fontWeight: 600,
+    },
 }))
 
-// Main component
-const AddClass = () => {
-
+// main function component which exports the AddClass Form UI
+export default function AddClass() {
     const [code, setCode] = React.useState(''); // Department code (e.g., CISC, STAT, etc.)
     const [courseNum, setCourseNum] = React.useState(''); // Course number (e.g., 420, 350, etc.)
     const [courseName, setCourseName] = React.useState(''); // Course name (e.g., Info Sec, Computer Graphics, etc.)
-    const [added, setAdded] = React.useState(null);
-
+    const [added, setAdded] = React.useState(0); // -1 for error, 0 for base, 1 for added successfully
     const token = sessionStorage.getItem('token');
-    // This function will create a Axios request when the form is submitted
-    // It will send all information in the form to the database through the call
+    const classes = useStyles() // call the useStyle hook
+    
+    // This function will create a Axios request to send all information when the form is submitted
     const submitForm = (event) => {
         event.preventDefault();
         if (code !== '' && courseNum !== '' && courseName !== '') {
             // Data fields for POST request.
-            let data = JSON.stringify({
+            const data = JSON.stringify({
                 dept_code: code,
                 class_num: courseNum,
                 class_name: courseName
             });
             // Config data for https request.
-            let config = {
+            const config = {
                 method: 'post',
                 url: 'https://classy-api.ddns.net/v2/class',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                data: data
+                    'Authorization': `Bearer ${token}`,
+                 },
+                // using property shorthand for data
+                data,
             };
             // https request Promise executed with Config settings.
-            axios(config).then((response) => {
-                console.log(JSON.stringify(response.data));
-                setAdded(true);
-            }).catch((error) => {
-                console.log(error);
-                setAdded(false);
+            axios(config).then(() => {
+                // good response
+                setAdded(1);
+            }).catch(() => {
+                // bad response: verify that course number is not a duplicate
+                setAdded(-1);
             });
-
             setCode('')
             setCourseNum('')
             setCourseName('')
-        } else {
-            setAdded(false);
         }
     };
 
@@ -92,25 +94,20 @@ const AddClass = () => {
     const handleChangeCourseName = (event) => {
         setCourseName(event.target.value);
     }
-
-    const classes = useStyles() // call the useStyle hook
-
-    // Return the main component
+    
+    // Return the UI of the component
     return (
         <Paper className={classes.container} elevation={0} >
-
-            {/* TITLE */}
             <Grid container spacing={2}>
+
+                {/* TITLE */}
                 <Grid item xs={12}>
-                    <Typography
-                        variant="h6"
-                        className={classes.title}
-                        gutterBottom
-                    >
+                    <Typography variant="h6" className={classes.title} gutterBottom>
                         Add New Class
                     </Typography>
                 </Grid>
 
+                {/* FORM BODY */}
                 <Grid item xs={12}>
                     <ValidatorForm onSubmit={submitForm}>
                         <Grid container spacing={2}>
@@ -188,15 +185,24 @@ const AddClass = () => {
                                 />
                             </Grid>
 
-                            {added && (
+                            {/* POST-SUBMIT STATUS MESSAGES */}
+                            {(added === 1) && (
                                 <Grid item xs={12}>
                                     <Typography variant="body1" className={classes.message}>
                                         <DoneIcon /> Class has been added successfully!
                                     </Typography>
                                 </Grid>
                             )}
+                            {(added === -1) && (
+                                <Grid item xs={12}>
+                                    <Typography variant="body1" className={classes.unsucessfulMessage}>
+                                        <CloseIcon /> Class could not be added to the databse.
+                                        Please verify that the record being added does not already exist.
+                                    </Typography>
+                                </Grid>
+                            )}
 
-                            {/* BUTTON */}
+                            {/* SUBMIT BUTTON */}
                             <Grid item xs={4}>
                                 <Button
                                     variant="contained"
@@ -210,11 +216,7 @@ const AddClass = () => {
                         </Grid>
                     </ValidatorForm>
                 </Grid>
-
             </Grid>
         </Paper>
     )
 }
-
-// Export the component
-export default AddClass;

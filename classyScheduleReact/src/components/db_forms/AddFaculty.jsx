@@ -5,11 +5,13 @@ import {
     Button,
     Typography
 } from '@material-ui/core'
-
 import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
+import DoneIcon from '@mui/icons-material/Done';
+import CloseIcon from '@mui/icons-material/Close';
 
+// This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -26,73 +28,99 @@ const useStyles = makeStyles((theme) => ({
     },
     subHeader: {
         fontWeight: '600',
-    }
+    },
+    message: {
+        color: '#388e3c',
+        fontWeight: 600,
+    },
+    unsucessfulMessage: {
+        color: 'red',
+        fontWeight: 600,
+    },
 }))
 
-const AddFaculty = () => {
+// main function component which exports the AddFaculty Form UI
+export default function AddFaculty() {
     const [firstName, setFirstName] = React.useState('');
     const [lastName, setLastName] = React.useState('');
     const [teachLoad, setTeachLoad] = React.useState('');
+    const classes = useStyles() // call the useStyle hook
     const token = sessionStorage.getItem('token');
-    let unique = Math.floor(Math.random() * 999999999); //unique ID between 0 and 999,999,999
+    // unique ID value must generated, for flexibility with database changing, random allows for greater flexibility than an incremental approach
+    const unique = Math.floor(Math.random() * 999999999); 
+    const [added, setAdded] = React.useState(0); // -1 for error, 0 for base, 1 for added successfully
+
+    // This function will create a Axios request to send all information when the form is submitted
     const submitForm = (event) => {
         event.preventDefault();
         if (firstName !== '' && lastName !== '' && teachLoad !== 0.0) {
-            let data = JSON.stringify({
-                faculty_id: unique, //unique ID from
+            // Data fields for POST request.
+            const data = JSON.stringify({
+                faculty_id: unique,
                 faculty_first: firstName,
                 faculty_last: lastName,
-                title_id: 2, //title ID level 2 is default for created faculty
+                title_id: 2, // title ID level 2 is default for created faculty
                 prev_load: 0,
-                curr_load: teachLoad
+                curr_load: teachLoad,
             });
-            let config = {
+            // Config data for https request.
+            const config = {
                 method: 'post',
                 url: 'https://classy-api.ddns.net/v2/faculty',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
+                    'Authorization': `Bearer ${token}`,
                 },
-                data: data
+                // using property shorthand
+                data,
             };
-            axios(config).then((response) => {
-                console.log(JSON.stringify(response.data));
-            }).catch((error) => {
-                console.log(error);
+            // https request Promise executed with Config settings.
+            axios(config).then(() => {
+                // good response
+                setAdded(1); 
+            }).catch(() => {
+                // bad response: check that record is not a duplicate
+                setAdded(-1);
             });
             setFirstName('');
             setLastName('');
             setTeachLoad('');
         }
     };
-    
+
+    // This function will retrieve the value selected in the first name field whenever it changes
     const handleFirstNameChange = (event) => {
         setFirstName(event.target.value);
     }
 
+    // This function will retrieve the value selected in the last name field whenever it changes
     const handleLastNameChange = (event) => {
         setLastName(event.target.value);
     }
 
+    // This function will retrieve the value selected in the teach load field whenever it changes
     const handleTeachLoadChange = (event) => {
         setTeachLoad(event.target.value);
     };
 
-    const classes = useStyles()
-
+    // Return the UI of the component
     return (
         <Paper className={classes.container} elevation={0} >
             <Grid container spacing={2}>
+
+                {/* TITLE */}
                 <Grid item xs={12}>
                     <Typography variant="h6" className={classes.title} gutterBottom>
                         Add New Faculty Member
                     </Typography>
                 </Grid>
 
+                {/* FORM BODY */}
                 <Grid item xs={12}>
                     <ValidatorForm onSubmit={submitForm}>
                         <Grid container spacing={2}>
-                            {/* First name */}
+
+                            {/* FIRST NAME */}
                             <Grid item xs={4}>
                                 <TextValidator
                                     size="medium"
@@ -116,7 +144,7 @@ const AddFaculty = () => {
 
                             </Grid>
 
-                            {/* Last name */}
+                            {/* LAST NAME */}
                             <Grid item xs={4}>
                                 <TextValidator
                                     size="medium"
@@ -139,7 +167,7 @@ const AddFaculty = () => {
                                 />
                             </Grid>
 
-                            {/* Teach Load */}
+                            {/* TEACH LOAD */}
                             <Grid item xs={4}>
                                 <TextValidator
                                     size="medium"
@@ -161,40 +189,24 @@ const AddFaculty = () => {
                                 />
                             </Grid>
 
-                            {/* <Grid item xs={12} fullWidth>
-                                <Grid container spacing={1}>
-                                    <Grid item xs={12} fullWidth>
-                                        <Typography className={classes.subHeader}>
-                                            Please Select Preferred Classes for Faculty to Instruct
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={12} fullWidth>
-                                        <FormControl component="fieldset" variant="standard">
-                                            <FormGroup>
-                                                <FormControlLabel
-                                                    control={
-                                                        <Checkbox checked={intro} onChange={handleChangeClassType} name="intro" />
-                                                    }
-                                                    label="Intro to CS"
-                                                />
-                                                <FormControlLabel
-                                                    control={
-                                                        <Checkbox checked={security} onChange={handleChangeClassType} name="security" />
-                                                    }
-                                                    label="Information Security"
-                                                />
-                                                <FormControlLabel
-                                                    control={
-                                                        <Checkbox checked={ai} onChange={handleChangeClassType} name="ai" />
-                                                    }
-                                                    label="Artifical Intelligence"
-                                                />
-                                            </FormGroup>
-                                        </FormControl>
-                                    </Grid>
+                            {/* POST-SUBMIT STATUS MESSAGES */}
+                            {(added === 1) && (
+                                <Grid item xs={12}>
+                                    <Typography variant="body1" className={classes.message}>
+                                        <DoneIcon /> Faculty has been added successfully!
+                                    </Typography>
                                 </Grid>
-                            </Grid> */}
+                            )}
+                            {(added === -1) && (
+                                <Grid item xs={12}>
+                                    <Typography variant="body1" className={classes.unsucessfulMessage}>
+                                        <CloseIcon /> Faculty could not be added to the databse.
+                                        Please verify that the record being added does not already exist.
+                                    </Typography>
+                                </Grid>
+                            )}
 
+                            {/* SUBMIT BUTTON */}
                             <Grid item xs={12}>
                                 <Button
                                     variant="contained"
@@ -205,7 +217,6 @@ const AddFaculty = () => {
                                     Submit
                                 </Button>
                             </Grid>
-
                         </Grid>
                     </ValidatorForm>
                 </Grid>
@@ -213,5 +224,3 @@ const AddFaculty = () => {
         </Paper>
     )
 }
-
-export default AddFaculty;

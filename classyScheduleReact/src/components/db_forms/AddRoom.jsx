@@ -9,16 +9,14 @@ import {
     MenuItem,
     InputLabel
 } from '@mui/material'
+import axios from 'axios';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import { makeStyles } from '@mui/styles'
-import axios from 'axios';
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 
-
-
 // This is a React hook used for organizing the styling of each element in this component
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
         display: 'flex',
     },
@@ -36,19 +34,48 @@ const useStyles = makeStyles((theme) => ({
     unsucessfulMessage: {
         color: 'red',
         fontWeight: 600,
-    }
+    },
 }))
 
-// Main component
-const AddRoom = () => {
+// main function component which exports the AddFaculty Form UI
+export default function AddRoom() {
     const [roomNum, setRoomNum] = React.useState('');
     const [building, setBuilding] = React.useState(''); // Room number (e.g., 420, 350, etc.)
     const [buildingList, setBuildingList] = React.useState([]);
     const classes = useStyles();
     const token = sessionStorage.getItem('token');
-    const [added, setAdded] = React.useState(0); //-1 for error, 0 for base, 1 for added successfully
-    // const [notAdded, setNotAdded] = React.useState(null);
+    const [added, setAdded] = React.useState(0); // -1 for error, 0 for base, 1 for added successfully
 
+    // This function will create a Axios request to send all information when the form is submitted
+    const submitForm = (event) => {
+        event.preventDefault();
+        if (roomNum !== '' && building !== '') {
+            const data = JSON.stringify({
+                building_code: building,
+                room_num: roomNum,
+                capacity: 20
+            });
+            const config = {
+                method: 'post',
+                url: 'https://classy-api.ddns.net/v2/room',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,                
+                },
+                // using property shorthand
+                data
+            };
+            axios(config).then(() => { 
+                // good response
+                setAdded(1); 
+            }).catch(() => {
+                // bad response: check that record is not a duplicate
+                setAdded(-1);
+            });
+            setRoomNum('');
+            setBuilding('');
+        }
+    }
 
     // This function will retrieve the value entered in the Room number field whenever it changes
     const handleChangeRoomNum = (event) => {
@@ -60,84 +87,54 @@ const AddRoom = () => {
         setBuilding(event.target.value);
     }
 
-    useEffect(() => {
-        getBuildingList();
-    }, [])
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        if (roomNum !== '' && building !== '') {
-            let data = JSON.stringify({
-                building_code: building,
-                room_num: roomNum,
-                capacity: 20
-            });
-            let config = {
-                method: 'post',
-                url: 'https://classy-api.ddns.net/v2/room',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                data: data
-            };
-            axios(config).then((response) => {
-                //console.log(JSON.stringify(response.data));
-                setAdded(1);
-
-            }).catch((error) => {
-                //bad response: check that record is not a duplicate
-                console.log("Error: Please verify that the record you are adding does not already exist.  " + error);
-                setAdded(-1);
-
-            });
-            setRoomNum('');
-            setBuilding('');
-        }
-        setAdded(0);
-    }
-
-    //This function gets...
     const getBuildingList = () => {
-        const token = sessionStorage.getItem('token');
+        // list will hold building codes during axios response
+        const list = [];
         // Config data for https request.
-        let list = [];
-        let config = {
+        const config = {
             method: 'get',
             url: 'https://classy-api.ddns.net/v2/building',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
+                'Authorization': `Bearer ${token}`,
             },
         };
         // https request Promise executed with Config settings.
         axios(config).then((response) => {
-            //console.log(JSON.stringify(response.data));
             response.data.map((e) => {
-                let bd = e.building_code;
-                list.push(bd);
+                list.push(e.building_code);
                 return list;
             })
+            // use function to setBuildingList from response
             setBuildingList(list);
         }).catch((error) => {
             console.log(error);
         });
     }
 
+    // call the hook useEffect to populate building list from the GET request
+    useEffect(() => {
+        getBuildingList();
+    }, [])
+
+    // Return the UI of the component
     return (
         <Paper className={classes.container} elevation={0} >
             <Grid container spacing={2}>
+
+                {/* TITLE */}
                 <Grid item xs={12}>
                     <Typography variant="h6" className={classes.title} gutterBottom>
                         Add New Room
                     </Typography>
                 </Grid>
 
+                {/* FORM BODY */}
                 <Grid item xs={12} >
-                    <ValidatorForm onSubmit={handleSubmit}>
+                    <ValidatorForm onSubmit={submitForm}>
                         <Grid container spacing={2}>
                             <Grid item xs={4}>
-                                {/* Dropdown for Building Selection */}
+                                {/* DROPDOWN FOR BUILDING SELECTION */}
                                 <FormControl fullWidth size="large">
                                     <InputLabel id="demo-select-small">Building</InputLabel>
                                     <Select
@@ -152,18 +149,16 @@ const AddRoom = () => {
                                         <MenuItem value="">
                                             <em>None</em>
                                         </MenuItem>
+                                        {/* DYNAMIC MAP OF EXISTING BUILDINGS TO MENU ITEMS */}
                                         {buildingList.map(e =>
-                                            <MenuItem
-                                                key={e}
-                                                value={e}
-                                            >
+                                            <MenuItem key={e} value={e}>
                                                 {e}
                                             </MenuItem>
                                         )}
-
                                     </Select>
                                 </FormControl>
                             </Grid>
+                            {/* ROOM NUMBER */}
                             <Grid item xs={4}>
                                 <TextValidator
                                     size="medium"
@@ -185,6 +180,7 @@ const AddRoom = () => {
                                 />
                             </Grid>
 
+                            {/* POST-SUBMIT STATUS MESSAGES */}
                             {(added === 1) && (
                                 <Grid item xs={12}>
                                     <Typography variant="body1" className={classes.message}>
@@ -201,6 +197,7 @@ const AddRoom = () => {
                                 </Grid>
                             )}
 
+                            {/* SUBMIT BUTTON */} 
                             <Grid item xs={12}>
                                 <Button variant="contained"
                                     size="large"
@@ -220,5 +217,3 @@ const AddRoom = () => {
         </Paper>
     )
 }
-// Export the component
-export default AddRoom
