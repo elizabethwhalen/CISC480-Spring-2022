@@ -10,6 +10,7 @@ import { RRule } from 'rrule'
 import axios from 'axios'
 import EditClassForm from './EditClassForm'
 import { listItemTextClasses } from "@mui/material"
+import Toolbar from "./Toolbar"
 
 const mlocalizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
@@ -450,6 +451,9 @@ export default function CalendarTest() {
                 onEventResize={event => handleEventResize(event)}
                 onSelectEvent={event => handleSelectEvent(event)}
                 onSelectSlot={(slotInfo) => handleSelectSlot(slotInfo)}
+                components={
+                    {toolbar: Toolbar}
+                }
             />
             <div>
                 <Button
