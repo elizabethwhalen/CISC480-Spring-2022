@@ -23,7 +23,7 @@
                <Font size="18.0" />
             </font>
          </Label>
-         <Label layoutX="58.0" layoutY="22.0" prefHeight="70.0" prefWidth="464.0" text="Delete Classroom From Database" textAlignment="CENTER">
+         <Label layoutX="83.0" layoutY="21.0" prefHeight="70.0" prefWidth="464.0" text="Delete Classroom From Database" textAlignment="CENTER">
             <font>
                <Font size="29.0" />
             </font>
@@ -41,7 +41,23 @@
          </Label>
          <ChoiceBox fx:id="buildingCode" layoutX="215.0" layoutY="99.0" prefHeight="25.0" prefWidth="200.0" />
          <ChoiceBox fx:id="roomNum" layoutX="215.0" layoutY="146.0" prefHeight="25.0" prefWidth="200.0" />
-         <Button fx:id="confirm" layoutX="385.0" layoutY="240.0" mnemonicParsing="false" text="Confirm" textFill="#5ce85c" />
+         <Button fx:id="confirm" layoutX="385.0" layoutY="240.0" mnemonicParsing="false" text="Confirm">
+            <textFill>
+               <LinearGradient endX="1.0" endY="1.0">
+                  <stops>
+                     <Stop>
+                        <color>
+                           <Color />
+                        </color>
+                     </Stop>
+                     <Stop offset="1.0">
+                        <color>
+                           <Color />
+                        </color>
+                     </Stop>
+                  </stops>
+               </LinearGradient>
+            </textFill></Button>
          <Button fx:id="back" layoutX="185.0" layoutY="239.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="59.0" text="Back">
             <textFill>
                <LinearGradient>
