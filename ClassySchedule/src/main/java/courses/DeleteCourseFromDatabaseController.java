@@ -208,6 +208,11 @@ public class DeleteCourseFromDatabaseController implements Initializable {
             result = false;
             MyAlert createAlert = new MyAlert("No Course Selected", "Please Select A Course To Delete", Alert.AlertType.ERROR);
             createAlert.show();
+
+            // Clear the class number drop-down
+            classNum.getItems().clear();
+            // Set department drop-down back to blank default
+            dept.getSelectionModel().clearSelection();
         }
         return result;
     }

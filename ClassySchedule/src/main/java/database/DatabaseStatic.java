@@ -155,14 +155,24 @@ public final class DatabaseStatic {
      * @throws URISyntaxException
      * @throws IOException
      */
-    // TODO:  CURRENTLY OUT OF ORDER DO NOT USE
-    public static boolean updateData(String table, JSONObject json) throws URISyntaxException, IOException {
+    public static boolean updateData(String table, JSONObject json, JSONObject change) throws URISyntaxException, IOException {
         CloseableHttpClient client = HttpClients.createDefault();
+
         URIBuilder builder = new URIBuilder(url + table);
-        StringEntity entity = new StringEntity(json.toString());
+
+        if (table.equals("room")) {
+            builder.appendPath((String) json.get("building_code"));
+            builder.appendPath((String) json.get("room_num"));
+        } else {
+            for (String key : json.keySet()) {
+                builder.appendPath((String) json.get(key));
+            }
+        }
+
+        StringEntity entity = new StringEntity(change.toString());
         HttpPut httpPut = new HttpPut(builder.build());
         httpPut.setEntity(entity);
-        httpPut.setEntity(new StringEntity(tokenObject.toString()));
+        httpPut.setHeader("Content-Type", "application/json");
         httpPut.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + tokenObject.get("token"));
 
         CloseableHttpResponse response = client.execute(httpPut);
@@ -180,8 +190,14 @@ public final class DatabaseStatic {
         CloseableHttpClient test = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
 
         URIBuilder builder = new URIBuilder(url + table);
-        for (String key : json.keySet()) {
-            builder.appendPath((String) json.get(key));
+        
+        if (table.equals("room")) {
+            builder.appendPath((String) json.get("building_code"));
+            builder.appendPath((String) json.get("room_num"));
+        } else {
+            for (String key : json.keySet()) {
+                builder.appendPath((String) json.get(key));
+            }
         }
 
         HttpDelete httpDelete = new HttpDelete(builder.build());

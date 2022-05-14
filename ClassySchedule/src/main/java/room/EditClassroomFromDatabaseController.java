@@ -7,10 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import org.json.JSONArray;
@@ -23,7 +20,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class DeleteClassroomFromDatabaseController implements Initializable {
+public class EditClassroomFromDatabaseController implements Initializable {
 
     /**
      * The back button to go back to home screen
@@ -49,6 +46,16 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
     @FXML
     private ChoiceBox<String> roomNum;
 
+    @FXML
+    private TextField changeBuildingCode;
+
+    @FXML
+    private TextField changeRoomNum;
+
+    private boolean changeBuildingCodeVal;
+
+    private boolean changeRoomNumVal;
+
     /**
      * the current stage of this scene
      */
@@ -69,16 +76,50 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize building code drop-down
         getBuildingCode();
+
+        // Hide changing value to start
+        changeBuildingCode.setVisible(false);
+        changeRoomNum.setVisible(false);
+
         // Whenever building code is selected/changed
+        listener();
+
+        // Initialize back and confirmation alerts
+        back(back, "Go Back To Home Screen", "Click ok to go back to home screen.", true);
+        back(confirm, "Confirm Update", "Click 'OK' to update the classroom, or 'Cancel' to cancel the following action.", false);
+    }
+
+    private void listener() {
         buildingCode.valueProperty().addListener((observable, oldValue, newValue) -> {
             // Clear previous room number
             roomNum.getItems().clear();
             // Initialize room number
             getRoomNumber();
         });
-        // Initialize back and confirmation alerts
-        back(back, "Go Back To Home Screen", "Click ok to go back to home screen.", true);
-        back(confirm, "Confirm Deletion", "Click 'OK' to delete the classroom, or 'Cancel' to cancel the following action.", false);
+
+        roomNum.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                changeBuildingCode.setText(buildingCode.getValue());
+                changeBuildingCode.setVisible(true);
+                changeRoomNum.setText(roomNum.getValue());
+                changeRoomNum.setVisible(true);
+
+                buildingCode.setVisible(false);
+                roomNum.setVisible(false);
+            }
+        });
+
+        changeBuildingCode.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && !newValue.equals(buildingCode.getValue())) {
+                setChangeBuildingCodeVal(true);
+            }
+        });
+
+        changeRoomNum.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null && !newValue.equals(roomNum.getValue())) {
+                setChangeRoomNumVal(true);
+            }
+        });
     }
 
     /**
@@ -128,27 +169,40 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
     private boolean confirmButton() {
         boolean result = true;
         // If drop-downs are not empty
-        if (!(buildingCode.getSelectionModel().isEmpty()) && !(roomNum.getSelectionModel().isEmpty())) {
-            // The user selected building and room number
-            String selectedBuilding = buildingCode.getValue();
-            String selectedRoom = roomNum.getValue();
-
+        if (isChangeBuildingCodeVal() || isChangeRoomNumVal()) {
             // The "room" table from the database
             JSONArray classroom = DatabaseStatic.getData("room");
-
             // Iterate through the "room" table and find matching JSON object to the user's request
             for (Object jsonObject: classroom) {
                 JSONObject job = (JSONObject) jsonObject;
                 // If JSON object contain the user's selected request
-                if (job.get("building_code").equals(selectedBuilding) && job.get("room_num").equals(selectedRoom)) {
+                if (job.get("building_code").equals(buildingCode.getValue()) && job.get("room_num").equals(roomNum.getValue())) {
                     try {
+                        // remove non-primary key
                         job.remove("capacity");
+                        // Json object that contain the changing data
+                        JSONObject data = new JSONObject();
+                        if (isChangeBuildingCodeVal()) {
+                            data.put("building_code", changeBuildingCode.getText());
+                        }
+                        if (isChangeRoomNumVal()) {
+                            data.put("room_num", changeRoomNum.getText());
+                        }
                         // Delete the JSON object from the "room" table from the database
-                        DatabaseStatic.deleteData("room", job);
+                        DatabaseStatic.updateData("room", job, data);
+
                         // Clear the room number drop-down
                         roomNum.getItems().clear();
+                        roomNum.setVisible(true);
                         // Set buildingCode drop-down back to blank default
                         buildingCode.getSelectionModel().clearSelection();
+                        buildingCode.setVisible(true);
+                        // Hide changing text-fields
+                        changeBuildingCode.clear();
+                        changeBuildingCode.setVisible(false);
+                        changeRoomNum.clear();
+                        changeRoomNum.setVisible(false);
+
                     } catch (URISyntaxException | IOException e) {
                         e.printStackTrace();
                     }
@@ -159,13 +213,20 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
         // No room has been selected show an error alert
         else {
             result = false;
-            MyAlert createAlert = new MyAlert("No Room Selected", "Please select a room to delete", Alert.AlertType.ERROR);
+            MyAlert createAlert = new MyAlert("No Room Updated", "No new data/information, nothing has changed", Alert.AlertType.INFORMATION);
             createAlert.show();
 
             // Clear the room number drop-down
             roomNum.getItems().clear();
+            roomNum.setVisible(true);
             // Set buildingCode drop-down back to blank default
             buildingCode.getSelectionModel().clearSelection();
+            buildingCode.setVisible(true);
+            // Hide changing text-fields
+            changeBuildingCode.clear();
+            changeBuildingCode.setVisible(false);
+            changeRoomNum.clear();
+            changeRoomNum.setVisible(false);
         }
         return result;
     }
@@ -207,7 +268,7 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
                     // If delete was successful
                     if (confirmButton()) {
                         // Successful deletion alert
-                        MyAlert createAlert1 = new MyAlert("Deleted", "The selected room has been deleted", Alert.AlertType.INFORMATION);
+                        MyAlert createAlert1 = new MyAlert("Deleted", "The selected room has been updated", Alert.AlertType.INFORMATION);
                         createAlert1.show();
                     }
                 }
@@ -278,5 +339,20 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
         cs.viewScheduleClicked(stage);
     }
 
+    public boolean isChangeBuildingCodeVal() {
+        return changeBuildingCodeVal;
+    }
+
+    public void setChangeBuildingCodeVal(boolean changeBuildingCodeVal) {
+        this.changeBuildingCodeVal = changeBuildingCodeVal;
+    }
+
+    public boolean isChangeRoomNumVal() {
+        return changeRoomNumVal;
+    }
+
+    public void setChangeRoomNumVal(boolean changeRoomNumVal) {
+        this.changeRoomNumVal = changeRoomNumVal;
+    }
 }
 

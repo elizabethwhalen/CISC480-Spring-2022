@@ -51,6 +51,15 @@ public class HomescreenController implements Initializable {
         cs.addProfessorButtonClicked(stage);
     }
 
+    @FXML
+    public void goToEditCourse() { cs.editCourseButtonClicked(stage); }
+
+    @FXML
+    public void goToEditFaculty() { cs.editFacultyButtonClicked(stage); }
+
+    @FXML
+    public void goToEditClassroom() { cs.editClassroomButtonClicked(stage); }
+
     /**
      * go to delete course scene
      */
