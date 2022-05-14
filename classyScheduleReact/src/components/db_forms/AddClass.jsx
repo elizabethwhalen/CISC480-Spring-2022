@@ -44,7 +44,7 @@ export default function AddClass() {
     const [added, setAdded] = React.useState(0); // -1 for error, 0 for base, 1 for added successfully
     const token = sessionStorage.getItem('token');
     const classes = useStyles() // call the useStyle hook
-    
+
     // This function will create a Axios request to send all information when the form is submitted
     const submitForm = (event) => {
         event.preventDefault();
@@ -62,8 +62,7 @@ export default function AddClass() {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
-                 },
-                // using property shorthand for data
+                },
                 data,
             };
             // https request Promise executed with Config settings.
@@ -94,7 +93,7 @@ export default function AddClass() {
     const handleChangeCourseName = (event) => {
         setCourseName(event.target.value);
     }
-    
+
     // Return the UI of the component
     return (
         <Paper className={classes.container} elevation={0} >

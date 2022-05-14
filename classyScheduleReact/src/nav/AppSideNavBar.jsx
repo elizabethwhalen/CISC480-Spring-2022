@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import clsx from 'clsx'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
@@ -100,8 +101,12 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 // MAIN COMPONENT CONTAINING THE SIDE NAV BAR
-const AppSideNavBar = (props) => {
-
+export default function AppSideNavBar(props) {
+  const {
+    open,
+    handleDrawerClose,
+    handleDrawerOpen,
+  } = props;
   const classes = useStyles() // call the useStyle hook
   const theme = useTheme() // call the useTheme
   const [openNestedList, setOpenNestedList] = React.useState(false); // variable used to indicate if the nested list is expanded
@@ -110,6 +115,7 @@ const AppSideNavBar = (props) => {
   // This function will set the item selected as "selected"
   // If selected, the list item will change its background color
   const handleListItemClick = (event, index) => {
+    event.preventDefault()
     setSelectedIndex(index)
 
     /*
@@ -118,24 +124,23 @@ const AppSideNavBar = (props) => {
       Otherwise, disable its expandable function
     */
     if (index === 2) {
-      if (props.open) {
+      if (open) {
         setOpenNestedList(!openNestedList)
       } else {
         setOpenNestedList(false)
       }
-
     }
   }
 
   // This function will collapse the nested list when the side nav bar is closed
-  const handleDrawerClose = () => {
-    props.handleDrawerClose();
+  const handleClose = () => {
+    handleDrawerClose();
     setOpenNestedList(false)
   }
 
   const handleFunctionClick = (event) => {
     handleListItemClick(event, 2);
-    props.handleDrawerOpen();
+    handleDrawerOpen();
     setOpenNestedList(true);
   }
 
@@ -144,18 +149,18 @@ const AppSideNavBar = (props) => {
     <Drawer
       variant="permanent"
       className={clsx(classes.drawer, {
-        [classes.drawerOpen]: props.open,
-        [classes.drawerClose]: !props.open,
+        [classes.drawerOpen]: open,
+        [classes.drawerClose]: !open,
       })}
       classes={{
         paper: clsx({
-          [classes.drawerOpen]: props.open,
-          [classes.drawerClose]: !props.open,
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
         }),
       }}
     >
       <div className={classes.toolbar}>
-        <IconButton onClick={handleDrawerClose}>
+        <IconButton onClick={handleClose}>
           {theme.direction === 'rtl' ? (
             <ChevronRightIcon />
           ) : (
@@ -224,7 +229,8 @@ const AppSideNavBar = (props) => {
                 </ListItemText>
               </ListItem>
             </Link>
-            {/* Add Room*/}
+
+            {/* Add Room */}
             <Link to='/AddRoom' className={classes.link} >
               <ListItem button className={classes.collapseLink}>
                 <ListItemIcon>
@@ -273,6 +279,3 @@ const AppSideNavBar = (props) => {
     </Drawer>
   )
 }
-
-// Export the component as default
-export default AppSideNavBar

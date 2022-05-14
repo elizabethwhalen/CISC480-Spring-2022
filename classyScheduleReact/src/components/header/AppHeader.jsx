@@ -14,15 +14,10 @@ import PropTypes from 'prop-types'
 import logo from '../../images/Updated_Logo.gif'
 import LoginHeader from './LoginHeader'
 
-
-// Width of the drawer (so that the header can move to exact position as the drawer expands)
 const drawerWidth = 300
 
 // This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles((theme) => ({
-  // root: {
-  //   display: 'flex',
-  // },
   appBar: {
     backgroundColor: '#7E16A4',
     zIndex: theme.zIndex.drawer + 1,
