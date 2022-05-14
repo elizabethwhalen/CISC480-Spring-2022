@@ -622,9 +622,9 @@ app.post('/v2/class', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO class (dept_code,class_num,class_name) VALUES ?";
-        check_str_type(dept_code, res, 5);
-        check_str_type(class_num, res, 5);
-        check_str_type(class_name, res, 100);
+        check_str_type(req.body.dept_code, res, 5);
+        check_str_type(req.body.class_num, res, 5);
+        check_str_type(req.body.class_name, res, 100);
         data = [
             [req.body.dept_code,req.body.class_num,req.body.class_name]
         ]
@@ -707,9 +707,9 @@ app.delete('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_str_type(dept_code, res, 5);
-        check_str_type(class_num, res, 5);
-        check_str_type(class_name, res, 100);
+        check_str_type(req.body.dept_code, res, 5);
+        check_str_type(req.body.class_num, res, 5);
+        check_str_type(req.body.class_name, res, 100);
 
         let query = 'DELETE FROM class WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
 
