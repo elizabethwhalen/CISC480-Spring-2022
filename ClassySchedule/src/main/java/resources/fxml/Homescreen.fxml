@@ -48,7 +48,6 @@
         <Button fx:id="addCourse" mnemonicParsing="false" onAction="#goToAddCourse" prefHeight="25.0" text="Add Course" />
         <Button fx:id="addProfessor" mnemonicParsing="false" onAction="#goToAddFaculty" text="Add Professor" />
         <Button fx:id="addClassroom" mnemonicParsing="false" onAction="#goToAddClassroom" text="Add Classroom" />
-        <Button mnemonicParsing="false" text="Modify Time Slots" />
         <Button fx:id="generateSchedule" mnemonicParsing="false" onAction="#goToGenerateSchedule" prefHeight="23.0" prefWidth="164.0" text="Generate Schedule" />
       </buttons>
     </ButtonBar>
@@ -57,15 +56,14 @@
         <Button mnemonicParsing="false" onAction="#goToEditCourse" text="Edit Course" />
         <Button mnemonicParsing="false" onAction="#goToEditFaculty" text="Edit Professor" />
         <Button mnemonicParsing="false" onAction="#goToEditClassroom" text="Edit Classroom" />
-        <Button mnemonicParsing="false" text="Edit Preferences" />
         <Button mnemonicParsing="false" onAction="#goToViewSchedule" prefHeight="25.0" prefWidth="176.0" text="View Schedule" />
       </buttons>
     </ButtonBar>
-    <ButtonBar layoutX="52.0" layoutY="180.0" prefHeight="40.0" prefWidth="647.0">
+    <ButtonBar layoutX="-10.0" layoutY="180.0" prefHeight="40.0" prefWidth="489.0">
       <buttons>
-        <Button fx:id="deleteCourse" mnemonicParsing="false" onAction="#goToDeleteCourse" text="Delete Course" translateX="-335.0" />
-        <Button fx:id="deleteFaculty" mnemonicParsing="false" onAction="#goToDeleteFaculty" text="Delete Professor" translateX="-325.0" />
-        <Button fx:id="deleteClassroom" mnemonicParsing="false" onAction="#goToDeleteClassroom" text="Delete Classroom" translateX="-317.0" />
+        <Button fx:id="deleteCourse" mnemonicParsing="false" onAction="#goToDeleteCourse" prefHeight="26.0" prefWidth="199.0" text="Delete Course" />
+        <Button fx:id="deleteFaculty" mnemonicParsing="false" onAction="#goToDeleteFaculty" text="Delete Professor" />
+        <Button fx:id="deleteClassroom" mnemonicParsing="false" onAction="#goToDeleteClassroom" prefHeight="26.0" text="Delete Classroom" />
       </buttons>
     </ButtonBar>
       <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="700.0">

@@ -27,7 +27,7 @@ public class RoomController implements Initializable {
     TextField roomNum;
 
     @FXML
-    ChoiceBox<String> buildingCode;
+    TextField buildingCode;
 
     @FXML
     TextField capacity;
@@ -52,16 +52,6 @@ public class RoomController implements Initializable {
     //May use in the future to reach into database for room options
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        buildingCode.getItems().clear();
-        try {
-            JSONArray rs = DatabaseStatic.getData("building");
-            for (Object jsonObject: rs) {
-                JSONObject job = (JSONObject)jsonObject;
-                buildingCode.getItems().add((String) job.get("building_code"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
     }
 
@@ -77,20 +67,17 @@ public class RoomController implements Initializable {
 
         if (capacity.getText().isEmpty()) {
             MyAlert createAlert = new MyAlert("Invalid Capacity", "Please Input In The Capacity", Alert.AlertType.ERROR);
-            Alert alert = createAlert.createAlert();
-            alert.showAndWait();
+            createAlert.show();
             return;
         }
         if (roomNum.getText().isBlank()) {
             MyAlert createAlert = new MyAlert("Invalid Room Number", "Please Input In The Room Number", Alert.AlertType.ERROR);
-            Alert alert = createAlert.createAlert();
-            alert.showAndWait();
+            createAlert.show();
             return;
         }
-        if (buildingCode.getSelectionModel().isEmpty()) {
+        if (buildingCode.getText().isBlank()) {
             MyAlert createAlert = new MyAlert("Invalid Building Name", "Please Select A Building", Alert.AlertType.ERROR);
-            Alert alert = createAlert.createAlert();
-            alert.showAndWait();
+            createAlert.show();
             return;
         }
 
@@ -100,28 +87,29 @@ public class RoomController implements Initializable {
                 Integer.parseInt(roomNum.getText());
             } else {
                 MyAlert createAlert = new MyAlert("Invalid Room Number Length", "Please Input In A Valid Room Number Length", Alert.AlertType.ERROR);
-                Alert alert = createAlert.createAlert();
-                alert.showAndWait();
+                createAlert.show();
                 return;
             }
         } catch (NumberFormatException e) {
             MyAlert createAlert = new MyAlert("Invalid Room Number Type", "Please Input In A Valid Room Number", Alert.AlertType.ERROR);
-            Alert alert = createAlert.createAlert();
-            alert.showAndWait();
+            createAlert.show();
             return;
         }
 
 
         JSONObject newRoom = new JSONObject();
         newRoom.put("room_num", roomNum.getText());
-        newRoom.put("building_code", buildingCode.getValue());
+        newRoom.put("building_code", buildingCode.getText());
         newRoom.put("capacity", capacity.getText());
 
         DatabaseStatic.insertData("room", newRoom);
 
+
+        MyAlert createAlert = new MyAlert("Insertion Completed", "The classroom has been added", Alert.AlertType.INFORMATION);
+        createAlert.show();
         capacity.clear();
         roomNum.clear();
-        buildingCode.setValue(null);
+        buildingCode.clear();
 
     }
 

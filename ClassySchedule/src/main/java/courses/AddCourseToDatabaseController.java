@@ -30,7 +30,7 @@ public class AddCourseToDatabaseController implements Initializable {
     TextField sectionNum;
 
     @FXML
-    ComboBox<String> deptName;
+    TextField deptName;
 
     @FXML
     Button submit_button;
@@ -56,12 +56,6 @@ public class AddCourseToDatabaseController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        JSONArray depts = DatabaseStatic.getData("dept");
-        for (Object jsonObject: depts) {
-            JSONObject job = (JSONObject)jsonObject;
-            deptName.getItems().add((String) job.get("dept_code"));
-        }
-
     }
 
     public void setStage(Stage stage) {
@@ -75,7 +69,7 @@ public class AddCourseToDatabaseController implements Initializable {
     public void submitData() {
         boolean warning = false;
         //checking if user inputs are entered:
-        if (deptName.getSelectionModel().isEmpty()) {
+        if (deptName.getText().isBlank()) {
             warning = true;
             MyAlert createAlert = new MyAlert("No Department Selected", "Please Select A Department",
                     Alert.AlertType.ERROR);
@@ -93,13 +87,14 @@ public class AddCourseToDatabaseController implements Initializable {
                     Alert.AlertType.ERROR);
             createAlert.show();
         }
+
         //checking if length of course code is 3 and course code is type int:
         if (classNum.getLength() == 3) {
             try {
                 Integer.parseInt(classNum.getText());
             } catch (NumberFormatException e) {
                 warning = true;
-                MyAlert createAlert = new MyAlert("Invalid ClassNumber", "Please Select A Department",
+                MyAlert createAlert = new MyAlert("Invalid ClassNumber", "Please select a department",
                         Alert.AlertType.ERROR);
                 createAlert.show();
             }
@@ -126,7 +121,7 @@ public class AddCourseToDatabaseController implements Initializable {
         if (!warning) {
 
             JSONObject newClass = new JSONObject();
-            newClass.put("dept_code", deptName.getValue());
+            newClass.put("dept_code", deptName.getText());
             newClass.put("class_num", classNum.getText());
             newClass.put("class_name", className.getText());
 
@@ -134,7 +129,7 @@ public class AddCourseToDatabaseController implements Initializable {
             DatabaseStatic.insertData("class", newClass);
 
             JSONObject newSection = new JSONObject();
-            newSection.put("dept_code", deptName.getValue());
+            newSection.put("dept_code", deptName.getText());
             newSection.put("class_num", classNum.getText());
             newSection.put("section_num", Integer.parseInt(sectionNum.getText()));
             newSection.put("semester", "Spring2022");
@@ -143,7 +138,11 @@ public class AddCourseToDatabaseController implements Initializable {
 
             DatabaseStatic.insertData("section", newSection);
 
-            deptName.setValue("Dept name");
+
+            MyAlert createAlert = new MyAlert("Insertion Complete", "The class has been added to the database", Alert.AlertType.INFORMATION);
+            createAlert.show();
+
+            deptName.clear();
             classNum.clear();
             className.clear();
             sectionNum.clear();
