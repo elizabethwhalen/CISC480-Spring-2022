@@ -27,6 +27,11 @@ public class HomescreenController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {}
 
 
+    @FXML
+    public void goBack() {
+        cs.goToHomepage(stage);
+    }
+
     /**
      * go to add course scene
      */
@@ -50,6 +55,24 @@ public class HomescreenController implements Initializable {
     public void goToAddFaculty() {
         cs.addProfessorButtonClicked(stage);
     }
+
+    /**
+     * go to edit course scene
+     */
+    @FXML
+    public void goToEditCourse() { cs.editCourseButtonClicked(stage); }
+
+    /**
+     * go to edit faculty scene
+     */
+    @FXML
+    public void goToEditFaculty() { cs.editFacultyButtonClicked(stage); }
+
+    /**
+     * go to edit classroom scene
+     */
+    @FXML
+    public void goToEditClassroom() { cs.editClassroomButtonClicked(stage); }
 
     /**
      * go to delete course scene
@@ -83,11 +106,8 @@ public class HomescreenController implements Initializable {
         cs.viewScheduleClicked(stage);
     }
 
-
     @FXML
-    public void goToGenerateSchedule() {
-        cs.goToGenerateSchedule(stage);
-    }
+    public void goToGenerateSchedule() { cs.goToGenerateSchedule(stage);}
 
     /**
      * Sets stage to homescreen

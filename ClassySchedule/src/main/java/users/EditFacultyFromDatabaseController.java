@@ -2,14 +2,12 @@ package users;
 
 import alert.MyAlert;
 import database.DatabaseStatic;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.fxml.FXML;
 import org.json.JSONArray;
@@ -22,33 +20,91 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class DeleteFacultyFromDatabaseController implements Initializable {
+public class EditFacultyFromDatabaseController implements Initializable {
 
+    /**
+     * The back button
+     */
     @FXML
     private Button back;
 
+    /**
+     * The confirm button
+     */
     @FXML
     private Button confirm;
 
+    /**
+     * The current course load text field
+     */
     @FXML
     private TextField currCourseLoad;
 
+    /**
+     * The faculty id choice box
+     */
     @FXML
     private ChoiceBox<String> facultyID;
 
+    /**
+     * The faculty first name
+     */
     @FXML
     private TextField firstName;
 
+    /**
+     * The faculty last name
+     */
     @FXML
     private TextField lastName;
 
+    /**
+     * The previous course load text field
+     */
     @FXML
     private TextField prevCourseLoad;
 
+    /**
+     * the faculty title text field
+     */
     @FXML
     private TextField title;
 
+    /**
+     * the stage of the scene
+     */
     private Stage stage;
+
+    @FXML
+    private TextField changeCurrLoad;
+
+    @FXML
+    private TextField changeFacultyId;
+
+    @FXML
+    private TextField changeFirst;
+
+    @FXML
+    private TextField changeLast;
+
+    @FXML
+    private TextField changePrevLoad;
+
+    @FXML
+    private TextField changeTitle;
+
+    private boolean changeFacultyIdVal;
+
+    private boolean changeTitleVal;
+
+    private boolean changeFirstVal;
+
+    private boolean changeLastVal;
+
+    private boolean changePrevVal;
+
+    private boolean changeCurrVal;
+
 
     /**
      * The change scene object to change between scenes
@@ -64,23 +120,127 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
         prevCourseLoad.setEditable(false);
         currCourseLoad.setEditable(false);
 
+        // Hide the change text fields
+        changeFacultyId.setVisible(false);
+        changeFirst.setVisible(false);
+        changePrevLoad.setVisible(false);
+        changeCurrLoad.setVisible(false);
+        changeTitle.setVisible(false);
+        changeLast.setVisible(false);
+
         // Initialize faculty id drop-down
         getFacultyID();
-        // Whenever faculty id is selected/changed
-        facultyID.valueProperty().addListener((observable, oldValue, newValue) -> {
-            // Clear all of the previous text-fields
-            clearTextField();
-            // Initialize all of the text-fields
-            title.setText(getTitle());
-            firstName.setText(getFirstName());
-            lastName.setText(getLastName());
-            prevCourseLoad.setText(getPrevCourseLoad());
-            currCourseLoad.setText(getCurrCourseLoad());
-        });
+
+        listener();
 
         // Initialize back and confirmation button
         back(back, "Go Back To Home Screen", "Click ok to go back to home screen.", true);
-        back(confirm, "Confirm Deletion", "Click 'OK' to delete the faculty, or 'Cancel' to cancel the following action.", false);
+        back(confirm, "Confirm Update", "Click 'OK' to update the faculty, or 'Cancel' to cancel the following action.", false);
+    }
+
+    private void listener() {
+        // Whenever faculty id is selected/changed
+        facultyID.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // Clear all the previous text-fields
+                clearTextField();
+                // Initialize all the selected text-fields
+                title.setText(getTitle());
+                firstName.setText(getFirstName());
+                lastName.setText(getLastName());
+                prevCourseLoad.setText(getPrevCourseLoad());
+                currCourseLoad.setText(getCurrCourseLoad());
+
+                // Hide selected variables
+                facultyID.setVisible(false);
+                title.setVisible(false);
+                firstName.setVisible(false);
+                lastName.setVisible(false);
+                prevCourseLoad.setVisible(false);
+                currCourseLoad.setVisible(false);
+
+                // Initialize user input changes text-fields and show them
+                changeFacultyId.setText(facultyID.getValue());
+                changeFacultyId.setVisible(true);
+                changeTitle.setText(title.getText());
+                changeTitle.setVisible(true);
+                changeFirst.setText(firstName.getText());
+                changeFirst.setVisible(true);
+                changeLast.setText(lastName.getText());
+                changeLast.setVisible(true);
+                changePrevLoad.setText(prevCourseLoad.getText());
+                changePrevLoad.setVisible(true);
+                changeCurrLoad.setText(currCourseLoad.getText());
+                changeCurrLoad.setVisible(true);
+            }
+        });
+
+        changeFacultyId.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // If the new value is not null and does not equal the selected value,
+                // then it is a new value so set its parameter to true to indicate changes
+                if (newValue != null && !newValue.equals(facultyID.getValue())) {
+                    setChangeFacultyIdVal(true);
+                }
+            }
+        });
+
+        changeTitle.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // If the new value is not null and does not equal the selected value,
+                // then it is a new value so set its parameter to true to indicate changes
+                if (newValue != null && !newValue.equals(title.getText())) {
+                    setChangeTitleVal(true);
+                }
+            }
+        });
+
+        changeFirst.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // If the new value is not null and does not equal the selected value,
+                // then it is a new value so set its parameter to true to indicate changes
+                if (newValue != null && !newValue.equals(firstName.getText())) {
+                    setChangeFirstVal(true);
+                }
+            }
+        });
+
+        changeLast.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // If the new value is not null and does not equal the selected value,
+                // then it is a new value so set its parameter to true to indicate changes
+                if (newValue != null && !newValue.equals(lastName.getText())) {
+                    setChangeLastVal(true);
+                }
+            }
+        });
+
+        changePrevLoad.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // If the new value is not null and does not equal the selected value,
+                // then it is a new value so set its parameter to true to indicate changes
+                if (newValue != null && !newValue.equals(prevCourseLoad.getText())) {
+                    setChangePrevVal(true);
+                }
+            }
+        });
+
+        changeCurrLoad.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // If the new value is not null and does not equal the selected value,
+                // then it is a new value so set its parameter to true to indicate changes
+                if (newValue != null && !newValue.equals(currCourseLoad.getText())) {
+                    setChangeCurrVal(true);
+                }
+            }
+        });
     }
 
     /**
@@ -251,47 +411,45 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
      */
     private boolean confirmButton() {
         boolean result = true;
-        // If drop-down iss not empty
-        if (!(facultyID.getSelectionModel().isEmpty())) {
-            // The user selected faculty id
-            //Integer facultyIDValue = Integer.parseInt(facultyID.getValue());
-            String facultyIDValue = facultyID.getValue();
-            // The "faculty" table from the database
+        if (isChangeFacultyIdVal() || isChangeTitleVal() || isChangeFirstVal() || isChangeLastVal() || isChangePrevVal() || isChangeCurrVal()) {
             JSONArray faculty = DatabaseStatic.getData("faculty");
+            String facultyIDValue = facultyID.getValue();
 
             // Iterate through the "faculty" table and find matching JSON object to the user's request
-            for (Object jsonObject: faculty) {
+            for (Object jsonObject : faculty) {
                 JSONObject job = (JSONObject) jsonObject;
-                // If JSON object contain the user's selected request
                 if (job.get("faculty_id").equals(Integer.parseInt(facultyIDValue))) {
                     try {
-                        System.out.println(job);
-                        job.remove("prev_load");
-                        job.remove("curr_load");
-                        job.remove("title_id");
-                        job.remove("faculty_last");
-                        job.remove("faculty_first");
-                        job.put("faculty_id", facultyIDValue);
-                        System.out.println(job);
-                        // Delete the JSON object from the "faculty" table from the database
-                        DatabaseStatic.deleteData("faculty", job);
-                        // Set faculty id drop-down back to blank default
-                        facultyID.getSelectionModel().clearSelection();
-                        // Clear all the text-fields
-                        clearTextField();
-                    } catch (URISyntaxException | IOException e) {
+                        JSONObject data = new JSONObject();
+                        if (isChangeFacultyIdVal()) {
+                            data.put("faculty_id", changeFacultyId.getText());
+                        }
+                        if (isChangeTitleVal()) {
+                            data.put("title_id", changeTitle.getText());
+                        }
+                        if (isChangeFirstVal()) {
+                            data.put("faculty_first", changeFirst.getText());
+                        }
+                        if (isChangeLastVal()) {
+                            data.put("faculty_last", changeLast.getText());
+                        }
+                        if (isChangePrevVal()) {
+                            data.put("prev_load", changePrevLoad.getText());
+                        }
+                        if (isChangeCurrVal()) {
+                            data.put("curr_load", changeCurrLoad.getText());
+                        }
+                        System.out.println(data);
+                        DatabaseStatic.updateData("faculty", job, data);
+                    } catch (URISyntaxException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    break;
                 }
             }
-        }
-        // No faculty id has been selected show an error alert
-        else {
+        } else {
             result = false;
-            MyAlert createAlert = new MyAlert("No Faculty Selected", "Please Select A Faculty To Delete",
-                    Alert.AlertType.ERROR);
-            createAlert.show();
         }
         return result;
     }
@@ -310,13 +468,16 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
         // First scenario to go back to home screen
         if (goBackToPrevPage) {
             // Confirmation to go back to the home screen
-            EventHandler<ActionEvent> confirmBack = event -> {
-                // The Ok button from the alert
-                Optional<ButtonType> Ok = createAlert.showButton();
-                // If user pressed "OK"
-                if (Ok.get().getText().equals("OK")) {
-                    // Go back to home screen
-                    goBack();
+            EventHandler<ActionEvent> confirmBack = new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    // The Ok button from the alert
+                    Optional<ButtonType> Ok = createAlert.showButton();
+                    // If user pressed "OK"
+                    if (Ok.get().getText().equals("OK")) {
+                        // Go back to home screen
+                        goBack();
+                    }
                 }
             };
             // Set the button to have to go back to home screen functionality
@@ -325,16 +486,19 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
         // 2nd scenario, confirm deletion
         else {
             // Confirmation to delete from the database
-            EventHandler<ActionEvent> confirmDelete = event -> {
-                // The Ok button from the alert
-                Optional<ButtonType> ok = createAlert.showButton();
-                // If user pressed "OK"
-                if (ok.get().getText().equals("OK")) {
-                    // If delete was successful
-                    if (confirmButton()) {
-                        // Successful deletion alert
-                        MyAlert createAlert1 = new MyAlert("Deleted", "The Selected Faculty Has Been Deleted", Alert.AlertType.INFORMATION);
-                        createAlert1.show();
+            EventHandler<ActionEvent> confirmDelete = new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    // The Ok button from the alert
+                    Optional<ButtonType> ok = createAlert.showButton();
+                    // If user pressed "OK"
+                    if (ok.get().getText().equals("OK")) {
+                        // If delete was successful
+                        if (confirmButton()) {
+                            // Successful deletion alert
+                            MyAlert createAlert = new MyAlert("Deleted", "The Selected Faculty Has Been Deleted", Alert.AlertType.INFORMATION);
+                            createAlert.show();
+                        }
                     }
                 }
             };
@@ -420,5 +584,53 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
     @FXML
     public void goToViewSchedule() {
         cs.viewScheduleClicked(stage);
+    }
+
+    public boolean isChangeFacultyIdVal() {
+        return changeFacultyIdVal;
+    }
+
+    public void setChangeFacultyIdVal(boolean changeFacultyIdVal) {
+        this.changeFacultyIdVal = changeFacultyIdVal;
+    }
+
+    public boolean isChangeTitleVal() {
+        return changeTitleVal;
+    }
+
+    public void setChangeTitleVal(boolean changeTitleVal) {
+        this.changeTitleVal = changeTitleVal;
+    }
+
+    public boolean isChangeFirstVal() {
+        return changeFirstVal;
+    }
+
+    public void setChangeFirstVal(boolean changeFirstVal) {
+        this.changeFirstVal = changeFirstVal;
+    }
+
+    public boolean isChangeLastVal() {
+        return changeLastVal;
+    }
+
+    public void setChangeLastVal(boolean changeLastVal) {
+        this.changeLastVal = changeLastVal;
+    }
+
+    public boolean isChangePrevVal() {
+        return changePrevVal;
+    }
+
+    public void setChangePrevVal(boolean changePrevVal) {
+        this.changePrevVal = changePrevVal;
+    }
+
+    public boolean isChangeCurrVal() {
+        return changeCurrVal;
+    }
+
+    public void setChangeCurrVal(boolean changeCurrVal) {
+        this.changeCurrVal = changeCurrVal;
     }
 }
