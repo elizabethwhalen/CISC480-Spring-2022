@@ -150,8 +150,8 @@ export default function Signup() {
         <Grid item
           alignItems="flex-start"
           justify="flex-start"
-          className={classes.gridItem1} >
-        </Grid>
+          className={classes.gridItem1}
+        />
 
         <Grid item
           alignItems="flex-end"
@@ -167,7 +167,7 @@ export default function Signup() {
 
             {/* LOGO */}
             <Grid item xs={12} className={classes.logoGrid} >
-              <img src={logo} className={classes.logo} alt='logo' ></img>
+              <img src={logo} className={classes.logo} alt='logo' />
             </Grid>
 
             {/* INSTRUCTION TEXT */}
