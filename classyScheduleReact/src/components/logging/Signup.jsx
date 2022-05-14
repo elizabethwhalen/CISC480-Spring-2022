@@ -2,10 +2,10 @@ import React from 'react'
 import { Button, Grid, Paper, Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
-import background from '../../images/hd_calendar2.jpg'
 import { Link } from 'react-router-dom'
-import logo from '../../images/Updated_Logo.gif'
 import axios from 'axios'
+import background from '../../images/hd_calendar2.jpg'
+import logo from '../../images/Updated_Logo.gif'
 
 // Styling components using useStyles
 const useStyles = makeStyles({
@@ -91,7 +91,7 @@ const useStyles = makeStyles({
 });
 
 // Login page component with parameter passed under props
-const Signup = (props) => {
+export default function Signup() {
 
   const classes = useStyles(); // use the useStyles
   const [email, setEmail] = React.useState(''); // email
@@ -105,15 +105,15 @@ const Signup = (props) => {
     // If either email or password is empty, then don't log user in
     if (email !== '' && password !== '' && confirmPass !== '') {
       if (password === confirmPass) {
-        let data = JSON.stringify({
-          email: email,
-          password: password
+        const data = JSON.stringify({
+          email,
+          password
         });
-        let config = {
+        const config = {
           method: 'post',
           url: 'https://classy-api.ddns.net/v2/signup',
           headers: { 'Content-Type': 'application/json' },
-          data: data
+          data
         };
         axios(config).then().catch((error) => {
           console.log(error);
@@ -148,14 +148,14 @@ const Signup = (props) => {
 
         {/* Empty grid item used for place holder */}
         <Grid item
-          // alignItems="flex-start"
-          // justify="flex-start" 
+          alignItems="flex-start"
+          justify="flex-start"
           className={classes.gridItem1} >
         </Grid>
 
         <Grid item
-          // alignItems="flex-end"
-          // justify="flex-end"
+          alignItems="flex-end"
+          justify="flex-end"
           className={classes.gridItem2}
         >
           <Grid container className={classes.loginContainer}>
@@ -235,29 +235,32 @@ const Signup = (props) => {
                   </Grid>}
 
                   {/* Submit button */}
-                  <Grid item xs={6} sx={{ marginTop: '20px' }}>
+                  <Grid item xs={12} sx={{ marginTop: '20px' }}>
                     <Button
                       variant="contained"
                       disableElevation
                       type='submit'
-                      sx={{ backgroundColor: '#6a1b9a', '&:hover': { backgroundColor: '#4a148c' } }} >
+                      sx={{ backgroundColor: '#6a1b9a', '&:hover': { backgroundColor: '#4a148c' } }}
+                    >
                       Sign up
                     </Button>
-                  </Grid>
 
-                  {/* BACK BUTTON */}
-                  <Grid item xs={6} sx={{ marginTop: '20px' }}>
-                    <Link to='/' style={{ "textDecoration": "none" }} >
+                    <Link to='/' style={{ 'textDecoration': 'none' }} >
                       <Button
                         variant="contained"
                         disableElevation
                         type='submit'
-                        sx={{ backgroundColor: '#B9BDBB', '&:hover': { backgroundColor: '#4a148c' } }}
+                        sx={{
+                          backgroundColor: '#6a1b9a',
+                          '&:hover': { backgroundColor: '#4a148c' },
+                          marginLeft: '15px',
+                        }}
                       >
                         Back
                       </Button>
                     </Link>
                   </Grid>
+
                 </Grid>
               </ValidatorForm>
             </Grid>
@@ -267,5 +270,3 @@ const Signup = (props) => {
     </Paper>
   )
 }
-
-export default Signup;
