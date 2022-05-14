@@ -4,7 +4,7 @@ import { Grid, Paper, Button, Typography } from "@mui/material"
 import { Link } from 'react-router-dom'
 
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
         display: 'flex',
     },
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const Home = () => {
+function Home() {
     const classes = useStyles();
 
     return (
@@ -44,7 +44,7 @@ const Home = () => {
 
                 <Grid item xs={12}>
                     <Grid container spacing={2}>
-                        {/*This button will take you to the add new class tab*/}
+                        {/* This button will take you to the add new class tab */}
                         <Grid item md={3} sm={6} xs={12}>
                             <Link to='/AddClass' className={classes.link}>
                                 <Button
@@ -62,7 +62,7 @@ const Home = () => {
                             </Link>
                         </Grid>
 
-                        {/*This button will take you to the add New Faculty tab*/}
+                        {/* This button will take you to the add New Faculty tab */}
                         <Grid item md={3} sm={6} xs={12}>
                             <Link to='/AddFaculty' className={classes.link}>
                                 <Button
@@ -80,7 +80,7 @@ const Home = () => {
                             </Link>
                         </Grid>
 
-                        {/*This button will take you to the add New Room tab*/}
+                        {/* This button will take you to the add New Room tab */}
                         <Grid item md={3} sm={6} xs={12}>
                             <Link to='/AddRoom' className={classes.link}>
                                 <Button
@@ -98,7 +98,7 @@ const Home = () => {
                             </Link>
                         </Grid>
 
-                        {/*This button will take you to the Calendar */}
+                        {/* This button will take you to the Calendar */}
                         <Grid item md={3} sm={6} xs={12}>
                             <Link to='/Calendar' className={classes.link}>
                                 <Button
@@ -116,7 +116,7 @@ const Home = () => {
                             </Link>
                         </Grid>
 
-                        {/*This button will take you to the Questions tab*/}
+                        {/* This button will take you to the Questions tab */}
                         <Grid item xs={12}>
                             <Link to='/Help' className={classes.link}>
                                 <Button
@@ -139,7 +139,7 @@ const Home = () => {
 
             </Grid>
 
-            {/* Add a footer that talks about classy scheduler*/}
+            {/* Add a footer that talks about classy scheduler */}
         </Paper>
 
     )
