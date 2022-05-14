@@ -15,6 +15,7 @@
     <TextField fx:id="className" layoutX="28.0" layoutY="134.0" promptText="Class name" />
     <Button fx:id="submit_button" layoutX="28.0" layoutY="188.0" mnemonicParsing="false" onAction="#submitData" text="Submit" />
     <Button fx:id="back_button" layoutX="103.0" layoutY="188.0" mnemonicParsing="false" onAction="#goBack" text="Back" />
+    <TextField fx:id="sectionNum" layoutX="196.0" layoutY="52.0" prefHeight="25.0" prefWidth="54.0" promptText="Sec #" />
     <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="600.0">
         <Menu fx:id="goTohome" mnemonicParsing="false" text="Home">
             <MenuItem fx:id="goToHome" mnemonicParsing="false" onAction="#goBack" text="Back to Home" />
