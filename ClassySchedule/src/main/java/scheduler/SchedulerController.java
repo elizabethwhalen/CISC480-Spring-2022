@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-// TODO: Add comments, persist appointments
+// TODO: Add comments
 public class SchedulerController implements Initializable {
 
     /**
@@ -101,7 +101,6 @@ public class SchedulerController implements Initializable {
 
 
     /**
-     * TODO: redo this method with the new api call
      * This method populates the schedule with previously saved courses
      */
     public void populateSchedule() {
