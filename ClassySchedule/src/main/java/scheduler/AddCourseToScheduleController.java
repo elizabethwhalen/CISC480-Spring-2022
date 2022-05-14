@@ -260,7 +260,7 @@ public class AddCourseToScheduleController implements Initializable {
         // If the class name has not been selected
         if (course.getSelectionModel().isEmpty()) {
             // Set content of the error alert
-            MyAlert createAlert = new MyAlert("Invalid Course Error", "Please Select A Valid Course", Alert.AlertType.ERROR);
+            MyAlert createAlert = new MyAlert("Invalid Course Alert", "Please Select a valid course.", Alert.AlertType.WARNING);
             createAlert.show();
             return false;
         }
@@ -275,7 +275,7 @@ public class AddCourseToScheduleController implements Initializable {
      */
     private boolean validateDates() {
         if (classTimes.getSelectionModel().isEmpty()) {
-            MyAlert alert = new MyAlert("Timeslot alert", "Please select a timeslot for the course", Alert.AlertType.WARNING);
+            MyAlert alert = new MyAlert("Invalid Timeslot Alert", "Please select a timeslot for the course.", Alert.AlertType.WARNING);
             alert.show();
             return false;
         }
@@ -289,7 +289,7 @@ public class AddCourseToScheduleController implements Initializable {
      */
     private boolean validateProfessor() {
         if (professor.getSelectionModel().isEmpty()) {
-            MyAlert alert = new MyAlert("Professor alert", "Please select a professor for the course", Alert.AlertType.WARNING);
+            MyAlert alert = new MyAlert("Invalid Professor Alert", "Please select a professor for the course.", Alert.AlertType.WARNING);
             alert.show();
             return false;
         }
@@ -303,8 +303,8 @@ public class AddCourseToScheduleController implements Initializable {
      * @return false is nothing is selected, else return true
      */
     private boolean validateRoom() {
-        if (classTimes.getSelectionModel().isEmpty()) {
-            MyAlert alert = new MyAlert("Room alert", "Please select a room for the course", Alert.AlertType.WARNING);
+        if (room.getSelectionModel().isEmpty()) {
+            MyAlert alert = new MyAlert("Invalid Room Alert", "Please select a room for the course.", Alert.AlertType.WARNING);
             alert.show();
             return false;
         }
