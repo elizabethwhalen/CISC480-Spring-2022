@@ -7,12 +7,9 @@
 // Authors: Joe Lambrecht, Gabbie Bolcer, Emma Torres, Jonas Bull, and Ben Frey
 // Date: 11 May 2022
 
-<<<<<<< Updated upstream
 // Say hello!
-console.log("Welcome to the Database Team's API, nice to meet you! :)\n");
+//console.log("Welcome to the Database Team's API, nice to meet you! :)\n");
 
-=======
->>>>>>> Stashed changes
 //
 // Import packages and setup app
 //
@@ -26,6 +23,8 @@ var fs = require('fs')
 // Login, token, and MFA (email sending) packages
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken')
+const sgMail = require('@sendgrid/mail');
+//require('dotenv').config(); // This might be an issue moving forward on deployment
 
 // Developmental setting: 0 for local dev, or 1 for production (Azure deployment) 
 var dev = 0;
@@ -62,23 +61,16 @@ try {
 } catch {
     throw "Server error: security issue. Please try again later";
 }
-<<<<<<< Updated upstream
-// Read in key used for sendgrid email
-/*
+// Read in API key used for sendgrid email
 let sg_key;
 try {
     sg_key = fs.readFileSync('./hidden/sg_key.txt').toString();
-    //console.log(sg_key);
-    sgMail.setApiKey(sg_key); // we will want to read this key in from a "hidden" file
-    let emailTestRecipient = "freynben@gmail.com";
-    sendVerifyEmail(emailTestRecipient, "test");
+    sgMail.setApiKey(sg_key);
+    //let emailTestRecipient = "ben.frey@stthomas.edu";
+    //sendVerifyEmail(emailTestRecipient, "test");
 } catch {
     throw "Server error: security issue. Please try again later";
-}*/
-=======
-catch {throw "Server error: security issue. Please try again later"}
-
->>>>>>> Stashed changes
+}
 
 ///
 // Database Connection
@@ -102,7 +94,6 @@ makeConnection((password)=> {
     // Create the connection and store in "con"
     con = new mysql.createConnection(config);
     con.connect(function(err) {
-<<<<<<< Updated upstream
         if (err) throw err;
         /*
         console.log("Connected to database with the following information:"+
@@ -113,9 +104,6 @@ makeConnection((password)=> {
                     "\nPort: "+config.port+
                     "\n");
         */
-=======
-      if (err) throw err;
->>>>>>> Stashed changes
     });
 });
 
@@ -283,7 +271,6 @@ async function db_put(query, data){
 //update
 //delete
 
-<<<<<<< Updated upstream
 
 //***LOGIN***
 var MIN_PASSWORD_LENGTH = 8;
@@ -291,9 +278,8 @@ var MAX_PASSWORD_LENGTH = 16;
 var users = {};
 
 //login
-
 app.post('/v3/login', async function (req, res) {
-    /*  Query the login table to see if user should be granted access.
+    /*Query the login table to see if user should be granted access. As part of our 
 
     @since  v2
 
@@ -325,15 +311,17 @@ app.post('/v3/login', async function (req, res) {
           });
         
         // Wait up to 30 seconds for user to confirm their identity by clicking link that was emailed to them
-        sendVerifyEmail(req.body.email, token);
+        sendVerifyEmail("freynben@gmail.com", token);
         let myTimeout = setTimeout(requestTimeout, 30000);
 
-        app.post('/v3/authenticate/:token', (req2, res2) => {
-            if (res2.body.token == token){
+        app.get('/v3/authenticate/:token', (req2, res2) => {            
+            if (req2.params.token == token){
+                console.log("Give them the key!")
                 res.status(200).send(token);
-                clearTimeout(myTimeout);
+                //clearTimeout(myTimeout);
             } else {
-                requestTimeout();
+                console.log("Something went wrong with key viewing!")
+                //requestTimeout();
             }
         });
 
@@ -343,32 +331,68 @@ app.post('/v3/login', async function (req, res) {
         
         // still need to implement wait and request auth method server side
         // Send token to user trying to login
-        res.status(200).send(token);
+        //res.status(200).send(token);
       }
       else {res.status(401).send('Incorrect password');}
     });
 });
+
+/*
+app.get('/v3/authenticate/:token', (req2, res2) => {
+    console.log(req2.params.token);
+    
+    if (req2.params.token == "test"){
+        console.log("Give them the key!")
+        res2.status(200).send("MYKEY");
+        //clearTimeout(myTimeout);
+    } else {
+        console.log("Something went wrong with key viewing!")
+        //requestTimeout();
+    }
+});*/
+
+/*
+sendVerifyEmail("freynben@gmail.com");
+function sendVerifyEmail(email){
+    const msg = {
+      to: email, // Change to your recipient
+      from: 'classyscheduledev01@gmail.com', // Change to your verified sender
+      subject: 'Verify your ClassySchedule Email',
+      text: "Hi! We just need you to verify your Classy-Schedule email by clicking the link below, and you're all set!",
+      html: "A link goes here which presumably submits a request to update the table with some sort of verification"
+    }
+
+    sgMail
+      .send(msg)
+      .then((response) => {
+        console.log(response[0].statusCode)
+        console.log(response[0].headers)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+}*/
 
 // email mfa
 function sendVerifyEmail(emailRecipient, token) {
     // Set link that will be used in button
     let link;
     if (dev == 0) {
-        link = "https://localhost:3000/v3/authenticate/"+token;
+        link = "http://localhost:3000/v3/authenticate/"+token;
     } else {
         link = "https://classy-api.ddns.net/v3/authenticate/"+token;
     }
 
-    // Generate html of email
-    let html = 'You have 30 seconds to click the autheticate button below. Your HTTP request will then return with your token.<form action="'+link+'" method="get"><button type="submit" formmethod="post">Verify Login</button></form>';
+    // Generate html of email (button appears not to work in stthomas OutLook, us link instead)
+    //let html = 'You have 30 seconds to click the autheticate button below. Your HTTP request will then return with your token.<form action="'+link+'" method="get"><button type="submit" formmethod="get">Verify Login</button></form>';
+    let html = 'You have 30 seconds to click the authetication link below. Your HTTP request will then return with your token.<a href="'+link+'">'+link+'</a>';
 
     // Create message to send to user
     const msg = {
       to: emailRecipient, 
       from: 'classyscheduledev01@gmail.com', // I need to get the email login and setup info from jonas for documentaiton purposes
       subject: 'Autheticate your Classy-Schedule API login request',
-      text: "Hi! We just need you to verify your Classy-Schedule email by clicking the link below, and you're all set!", // I'm not sure that this portion is sent...
-      html: 'hello!'
+      html: html
     }
 
     sgMail
@@ -386,13 +410,6 @@ function sendVerifyEmail(emailRecipient, token) {
         console.error(error)
       })
 }
-=======
-//***LOGIN***/
-//view
-//add
-//update
-//delete
->>>>>>> Stashed changes
 
 //***MEETS***
 //view
