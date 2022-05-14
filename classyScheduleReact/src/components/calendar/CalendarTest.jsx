@@ -394,38 +394,6 @@ export default function CalendarTest() {
         setOpen(false);
     }, [isEdit, events]);
 
-    // do curl request to get the number of classes that need to be scheduled
-    // at the 100, 200, 300, and 400 level
-
-    const layout = constraints(`
-         editable CISC.class
-         editable Miracle
-         editable CISC2.class
-         editable Sawin
-         
-    
-         CISC131.class == (CISC.class) required
-         CISC131.professor == Miracle
-         CISC480.class == (CISC2.class)
-         CISC480.professor == Sawin
-    `)
-
-    const myFunction = () => {
-        const CISCprof1 = 'Miracle';
-        const CISCprof2 = 'Sawin';
-        const prefNum1 = 5;
-        const prefNum2 = 4;
-        // the first parameter has to be a string
-        // the second parameter has to be a number
-        layout.suggestValue('CISC.class', 131) // sets the vaue of CISC class to 131
-        layout.suggestValue(CISCprof2, prefNum2) // sets the value of the first instructor
-        layout.suggestValue('CISC2.class', 480) // sets the value of CISCclass2 to 480
-        layout.suggestValue(CISCprof1, prefNum1)
-
-        layout.updateVariables()
-
-        console.log(layout.getValues({ roundToInt: true }))
-    }
 
     return (
         <Paper sx={{ padding: '20px', height: "100%" }} elevation={0} >
