@@ -1,11 +1,12 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import { Button, Grid, Paper, Typography, } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
-import background from '../../images/hd_calendar2.jpg'
-import logo from '../../images/Updated_Logo.gif'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import background from '../../images/hd_calendar2.jpg'
+import logo from '../../images/Updated_Logo.gif'
 
 // Styling components using useStyles
 const useStyles = makeStyles({
@@ -89,40 +90,38 @@ const useStyles = makeStyles({
 
 // Login page component with parameter passed under props
 export default function Login(props) {
-
   const classes = useStyles(); // use the useStyles
   const [email, setEmail] = React.useState(''); // email
   const [password, setPassword] = React.useState(''); // password
+  const { setToken, setLoggedIn } = props;
 
   const handleLogin = (event) => {
     event.preventDefault();
 
     // If either email or password is empty, then don't log user in
     if (email !== '' && password !== '') {
-      let token = '';
       // Data for POST to accept request.
-      let data = JSON.stringify({
-        email: email,
-        password: password
+      const data = JSON.stringify({
+        email,
+        password
       });
       // Config for axios specific https request.
-      let config = {
+      const config = {
         method: 'post',
         url: "https://classy-api.ddns.net/v2/login",
         headers: { 'Content-Type': 'application/json' },
-        data: data,
+        data,
       };
       // Axios promise is being executed with config data and token is being saved into browser local storage.
       axios(config).then((response) => {
         if (response.data !== '') {
-          token = response.data;
-          console.log(token);
-          props.setToken(token);
-          props.setLoggedIn(true);
+          const token = response.data;
+          setToken(token);
+          setLoggedIn(true);
           sessionStorage.setItem("startRepeat", "2022-01-31");
           sessionStorage.setItem("endRepeat", "2022-05-20");
         } else {
-          props.setLoggedIn(false);
+          setLoggedIn(false);
         }
       }).catch((error) => {
         console.log(error);
@@ -171,7 +170,7 @@ export default function Login(props) {
 
             {/* LOGO */}
             <Grid item xs={12} className={classes.logoGrid} >
-              <img src={logo} className={classes.logo} alt='logo' ></img>
+              <img src={logo} className={classes.logo} alt='logo' />
             </Grid>
 
             {/* INSTRUCTION TEXT */}
