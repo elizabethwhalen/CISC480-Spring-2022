@@ -1017,8 +1017,8 @@ app.post('/v2/dept', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO dept (dept_code,dept_name) VALUES ?";
-        check_str_type(dept_code, res, 5);
-        check_str_type(dept_name, res, 5);
+        check_str_type(req.body.dept_code, res, 5);
+        check_str_type(req.body.dept_name, res, 5);
         data = [
             [req.body.dept_code,req.body.dept_name]
         ]
@@ -1256,12 +1256,12 @@ app.post('/v2/faculty', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO faculty (faculty_id,faculty_first,faculty_last,title_id,prev_load,curr_load) VALUES ?";
-        check_int_type(faculty_id, res, 11);
-        check_str_type(faculty_first, res, 50);
-        check_str_type(faculty_last, res, 50);
-        check_int_type(title_id, res, 11);
-        check_int_type(prev_load, res, 15);
-        check_int_type(curr_load, res, 15);
+        check_int_type(req.body.faculty_id, res, 11);
+        check_str_type(req.body.faculty_first, res, 50);
+        check_str_type(req.body.faculty_last, res, 50);
+        check_int_type(req.body.title_id, res, 11);
+        check_int_type(req.body.prev_load, res, 15);
+        check_int_type(req.body.curr_load, res, 15);
         data = [
             [req.body.faculty_id,req.body.faculty_first,req.body.faculty_last,req.body.title_id,req.body.prev_load,req.body.curr_load]
         ]
@@ -1480,10 +1480,10 @@ app.post('/v2/faculty_class', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO faculty_class (faculty_id,dept_code,class_num,pref_level) VALUES ?";
-        check_int_type(faculty_id, res, 11);
-        check_str_type(dept_code, res, 5);
-        check_str_type(class_num, res, 5);
-        check_int_type(pref_level, res, 11);
+        check_int_type(req.body.faculty_id, res, 11);
+        check_str_type(req.body.dept_code, res, 5);
+        check_str_type(req.body.class_num, res, 5);
+        check_int_type(req.body.pref_level, res, 11);
         data = [
             [req.body.faculty_id,req.body.dept_code,req.body.class_num,req.body.pref_level]
         ]
@@ -1680,9 +1680,9 @@ app.post('/v2/faculty_feature', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO faculty_feature (faculty_id,feature_id,pref_level) VALUES ?";
-        check_int_type(faculty_id, res, 11);
-        check_int_type(feature_id, res, 11);
-        check_int_type(pref_level, res, 11);
+        check_int_type(req.body.faculty_id, res, 11);
+        check_int_type(req.body.feature_id, res, 11);
+        check_int_type(req.body.pref_level, res, 11);
         data = [
             [req.body.faculty_id,req.body.feature_id,req.body.pref_level]
         ]
@@ -1863,8 +1863,8 @@ app.post('/v2/faculty_other_request', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO faculty_other_request (faculty_id,request) VALUES ?";
-        check_int_type(faculty_id, res, 11);
-        check_str_type(request, res, 130);
+        check_int_type(req.body.faculty_id, res, 11);
+        check_str_type(req.body.request, res, 130);
         data = [
             [req.body.faculty_id,req.body.request]
         ]
@@ -2055,9 +2055,9 @@ app.post('/v2/faculty_timeslot', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO faculty_timeslot (faculty_id,time_id,pref_level) VALUES ?";
-        check_int_type(faculty_id, res, 11);
-        check_int_type(time_id, res, 11);
-        check_int_type(pref_level, res, 11);
+        check_int_type(req.body.faculty_id, res, 11);
+        check_int_type(req.body.time_id, res, 11);
+        check_int_type(req.body.pref_level, res, 11);
         data = [
             [req.body.faculty_id,req.body.time_id,req.body.pref_level]
         ]
@@ -2628,7 +2628,7 @@ app.get('/v2/meets', (req, res) => {
     if (section_num){
         section_num_array = section_num.split(",");
         for(let i = 0; i < section_num_array.length; i++){
-            check_int_type(section_num_array[i]);
+            check_int_type(section_num_array[i], res);
             if(i > 0){
                 query = query + " OR"
             }
@@ -2735,14 +2735,14 @@ app.post('/v2/meets', (req, res) => {
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         console.log(req.body)
-        check_str_type(dept_code, res, 5);
-        check_str_type(class_num, res, 5);
-        check_int_type(section_num, res, 11);
-        check_str_type(semester, res, 15);
-        check_int_type(draft, res, 11);
-        check_str_type(building_code, res, 5);
-        check_str_type(room_num, res, 5);
-        check_int_type(time_id, res, 11);
+        check_str_type(req.body.dept_code, res, 5);
+        check_str_type(req.body.class_num, res, 5);
+        check_int_type(req.body.section_num, res, 11);
+        check_str_type(req.body.semester, res, 15);
+        check_int_type(req.body.draft, res, 11);
+        check_str_type(req.body.building_code, res, 5);
+        check_str_type(req.body.room_num, res, 5);
+        check_int_type(req.body.time_id, res, 11);
         let query = "INSERT INTO meets (dept_code,class_num,section_num,semester,draft,building_code,room_num,time_id) VALUES ?";
         data = [
             [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.building_code,req.body.room_num,req.body.time_id]
@@ -2953,9 +2953,9 @@ app.post('/v2/room', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO room (building_code,room_num,capacity) VALUES ?";
-        check_str_type(building_code, res, 5);
-        check_str_type(room_num, res, 5);
-        check_int_type(capacity, res, 11);
+        check_str_type(req.body.building_code, res, 5);
+        check_str_type(req.body.room_num, res, 5);
+        check_int_type(req.body.capacity, res, 11);
         data = [
             [req.body.building_code,req.body.room_num,req.body.capacity]
         ]
@@ -3085,7 +3085,7 @@ app.get('/v2/room_feature', (req, res) => {
     if (building_code){
         building_code_array = building_code.split(",");
         for(let i = 0; i < building_code_array.length; i++){
-            check_str_type(building_code_array[i], 5);
+            check_str_type(building_code_array[i], res, 5);
             if(i > 0){
                 query = query + " OR"
             }
@@ -3152,9 +3152,9 @@ app.post('/v2/room_feature', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_str_type(building_code, res, 5);
-        check_str_type(room_num, res, 5);
-        check_int_type(feature_id, res, 11);
+        check_str_type(req.body.building_code, res, 5);
+        check_str_type(req.body.room_num, res, 5);
+        check_int_type(req.body.feature_id, res, 11);
         let query = "INSERT INTO room_feature (building_code,room_num,feature_id) VALUES ?";
         data = [
             [req.body.building_code,req.body.room_num,req.body.feature_id]
@@ -3393,12 +3393,12 @@ app.post('/v2/section', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO section (dept_code,class_num,section_num,semester,draft,capacity) VALUES ?";
-        check_str_type(dept_code, res, 5);
-        check_str_type(class_num, res, 5);
-        check_int_type(seciton_num, res, 11);
-        check_str_type(semester, res, 15);
-        check_int_type(draft, res, 11);
-        check_int_type(capacity, res, 11);
+        check_str_type(req.body.dept_code, res, 5);
+        check_str_type(req.body.class_num, res, 5);
+        check_int_type(req.body.seciton_num, res, 11);
+        check_str_type(req.body.semester, res, 15);
+        check_int_type(req.body.draft, res, 11);
+        check_int_type(req.body.capacity, res, 11);
         data = [
             [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.capacity]
         ]
@@ -3642,12 +3642,12 @@ app.post('/v2/teaches', (req, res) => {
     else{
         console.log(req.body)
         let query = "INSERT INTO teaches (dept_code,class_num,section_num,semester,draft,faculty_id) VALUES ?";
-        check_str_type(dept_code, res, 5);
-        check_str_type(class_num, res, 5);
-        check_int_type(section_num, res, 11);
-        check_str_type(semester, res, 15);
-        check_int_type(draft, res, 11);
-        check_int_type(facutly_id, res, 11);
+        check_str_type(req.body.dept_code, res, 5);
+        check_str_type(req.body.class_num, res, 5);
+        check_int_type(req.body.section_num, res, 11);
+        check_str_type(req.body.semester, res, 15);
+        check_int_type(req.body.draft, res, 11);
+        check_int_type(req.body.facutly_id, res, 11);
         data = [
             [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.faculty_id]
         ]
@@ -3864,8 +3864,8 @@ app.post('/v2/timeslot', (req, res) => {
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         console.log(req.body)
-        check_int_type(time_id, res, 11);
-        check_int_type(day_of_week, res, 11);
+        check_int_type(req.body.time_id, res, 11);
+        check_int_type(req.body.day_of_week, res, 11);
         let query = "INSERT INTO timeslot (time_id,day_of_week,time_start,time_end) VALUES ?";
         data = [
             [req.body.time_id,req.body.day_of_week,req.body.time_start,req.body.time_end]
@@ -4063,9 +4063,9 @@ app.post('/v2/title', (req, res) => {
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         console.log(req.body)
-        check_int_type(title_id, res, 11);
-        check_str_type(title_name, res, 30);
-        check_int_type(max_load, res, 15);
+        check_int_type(req.body.title_id, res, 11);
+        check_str_type(req.body.title_name, res, 30);
+        check_int_type(req.body.max_load, res, 15);
         let query = "INSERT INTO title (title_id,title_name,max_load) VALUES ?";
         data = [
             [req.body.title_id,req.body.title_name,req.body.max_load]
