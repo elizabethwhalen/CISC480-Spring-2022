@@ -9,12 +9,13 @@ import constraints from 'constraint-solver'
 import { RRule } from 'rrule'
 import axios from 'axios'
 import EditClassForm from './EditClassForm'
+import { listItemTextClasses } from "@mui/material"
 
 const mlocalizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 export default function CalendarTest() {
-    const [events, setEvents] = React.useState([]);
+    const [events, setEvents] = React.useState([]);//getDatafromAPI
     const [isEdit, setEdit] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [courseList, setCourseList] = React.useState([]);
@@ -324,7 +325,6 @@ export default function CalendarTest() {
                 title: data.course,
                 instructor: data.instructor,
                 room: data.room,
-                color: data.color,
                 id: data.id,
                 subId: i,
                 repeat: data.repeat,
@@ -334,6 +334,62 @@ export default function CalendarTest() {
             i += 1;
         })
         setEvents(newData);
+
+    }
+
+    const getDatafromAPI = () => {
+        // list will hold new event data during axios response
+        const list = [];
+        
+        // Config data for https request.
+        const config = {
+            method: 'get',
+            url: 'https://classy-api.ddns.net/v3/meets/ext',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        };
+        // https request Promise executed with Config settings.
+        axios(config).then((response) => {
+            console.log(response);
+            
+            // pasrse JSON for DATA we need
+            response.data.map((e) => {
+                // Things we need:
+                // dept_code
+                // class_num
+                // faculty_first
+                // faculty_last
+                // Building_code
+                // room_num 
+                // time_start
+                // time_end
+                // day_of_week
+                list.push(e.dept_code);
+                list.push(e.class_num);
+                list.push(e.faculty_first);
+                list.push(e.faculty_last);
+                list.push(e.building_code);
+                list.push(e.room_num);
+                list.push(e.time_start);
+                list.push(e.time_end);
+                list.push(e.day_of_week);
+                
+                for (let i = 0; i < e.day_of_week; i++) {
+                    console.log(e.day_of_week.charAt(i));
+                }
+                
+                
+                return list;
+            })
+            // use function to setBuildingList from response
+            console.log("here is our list " + list);
+            //handleEventUpdate(list);
+            
+        }).catch((error) => {
+            console.log(error);
+        });
     }
 
     const handleSelectEvent = args => {
@@ -358,38 +414,6 @@ export default function CalendarTest() {
         setOpen(false);
     }, [isEdit, events]);
 
-    // do curl request to get the number of classes that need to be scheduled
-    // at the 100, 200, 300, and 400 level
-
-    const layout = constraints(`
-         editable CISC.class
-         editable Miracle
-         editable CISC2.class
-         editable Sawin
-         
-    
-         CISC131.class == (CISC.class) required
-         CISC131.professor == Miracle
-         CISC480.class == (CISC2.class)
-         CISC480.professor == Sawin
-    `)
-
-    const myFunction = () => {
-        const CISCprof1 = 'Miracle';
-        const CISCprof2 = 'Sawin';
-        const prefNum1 = 5;
-        const prefNum2 = 4;
-        // the first parameter has to be a string
-        // the second parameter has to be a number
-        layout.suggestValue('CISC.class', 131) // sets the vaue of CISC class to 131
-        layout.suggestValue(CISCprof2, prefNum2) // sets the value of the first instructor
-        layout.suggestValue('CISC2.class', 480) // sets the value of CISCclass2 to 480
-        layout.suggestValue(CISCprof1, prefNum1)
-
-        layout.updateVariables()
-
-        console.log(layout.getValues({ roundToInt: true }))
-    }
 
     return (
         <Paper sx={{ padding: '20px', height: "100%" }} elevation={0} >
@@ -429,11 +453,11 @@ export default function CalendarTest() {
             />
             <div>
                 <Button
-                    id="algo"
+                    id="test"
                     type="submit"
-                    onClick={myFunction}
+                    onClick={getDatafromAPI}
                 >
-                    Algorithm Fun!!!
+                    test GEt APi!!!
                 </Button>
             </div>
         </Paper>

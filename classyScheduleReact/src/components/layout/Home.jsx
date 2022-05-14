@@ -75,7 +75,7 @@ function Home() {
                                         color: "white"
                                     }}
                                 >
-                                    Add New Faculty Member
+                                    Add New Faculty
                                 </Button>
                             </Link>
                         </Grid>
