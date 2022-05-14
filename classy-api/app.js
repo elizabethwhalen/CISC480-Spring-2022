@@ -66,8 +66,6 @@ let sg_key;
 try {
     sg_key = fs.readFileSync('./hidden/sg_key.txt').toString();
     sgMail.setApiKey(sg_key);
-    //let emailTestRecipient = "ben.frey@stthomas.edu";
-    //sendVerifyEmail(emailTestRecipient, "test");
 } catch {
     throw "Server error: security issue. Please try again later";
 }
@@ -279,9 +277,11 @@ var users = {};
 
 //login
 app.post('/v3/login', async function (req, res) {
-    /*Query the login table to see if user should be granted access. As part of our 
+    /*Query the login table to see if user should be granted access. As part of our initiative to implement 
+    multi-factor authentication, this v3 method also requires the user to verify their login attempt by
+    clicking a link sent to their email address.
 
-    @since  v2
+    @since  v3
 
     @param{Object}      req     The request info. Needs to contain an email address and a 
                                 password to be a valid query. 
@@ -289,18 +289,26 @@ app.post('/v3/login', async function (req, res) {
     @return             nothing.
     */
     var passHashed;
-    //if (!req.body) { return res.sendStatus(400); }
 
+    // If email or password is missing, notify the user.
     if (!req.body.email || !req.body.password) {
       return res.status(400).send('Missing email or password');
     }
 
+    // Query DB for matching username (email)
     let loginjson = await db_get("SELECT * from login where email="+con.escape(req.body.email));
-    if (loginjson.length === 0) { return res.status(404).send("Account with that email does not exist"); } 
+    if (loginjson.length === 0) { return res.status(404).send("Account with that email does not exist"); }
+    
+    // Check for matching password hash in DB
     passHashed = loginjson[0].pass
     bcrypt.compare(req.body.password,passHashed)
     .then(correct => {
       if(correct){
+        // If the email and hashed password combo were correct: 
+        // (1) generate a token for the user login attempt
+        // (2) send the user an email with an link request to verify their login
+        // (3) if user clicks this link within 30 sec., their token will be returned to original HTTP request
+
         // Generate token based on login attempt and secretkey
         let token = jwt.sign(
           {user: loginjson[0]},
@@ -310,82 +318,53 @@ app.post('/v3/login', async function (req, res) {
               expiresIn: 86400,
           });
         
-        // Wait up to 30 seconds for user to confirm their identity by clicking link that was emailed to them
-        sendVerifyEmail("freynben@gmail.com", token);
-        let myTimeout = setTimeout(requestTimeout, 30000);
+        // Send email and wait up to 30 seconds for user to confirm their identity by clicking link that was emailed to them
+        console.log("- User "+loginjson[0].email+" is requesting login and has been sent an email to verify their identity.")
+        sendVerifyEmail(loginjson[0].email, token);
+        let myTimeout = setTimeout(requestTimeout, 10000);
 
+        // This HTTP request is made when the user clicks the link in their inbox (or possibly junk folder)
         app.get('/v3/authenticate/:token', (req2, res2) => {            
             if (req2.params.token == token){
-                console.log("Give them the key!")
+                // Send the user their token
+                console.log("- User "+loginjson[0].email+" has been granted login and has been sent a token.")
                 res.status(200).send(token);
-                //clearTimeout(myTimeout);
+                
+                // Update the webpage and clear countdown timer
+                res2.status(200).send("Login attempt for user "+loginjson[0].email+" has been granted. The HTTP request will now be completed with a token.");
+                clearTimeout(myTimeout); 
             } else {
-                console.log("Something went wrong with key viewing!")
-                //requestTimeout();
+                // Ran out of time
+                requestTimeout();
+                res2.status(401).send("Login attempt for user "+loginjson[0].email+" has been denied. Please try again.");
             }
         });
 
-        function requestTimeout() {
+        // Timeout
+        function requestTimeout(result) {
+            // Deny user of login
+            console.log("- User "+loginjson[0].email+" was denied login.")
             res.status(401).send("Authetication failure. Please try again later.");
         }
-        
-        // still need to implement wait and request auth method server side
-        // Send token to user trying to login
-        //res.status(200).send(token);
       }
       else {res.status(401).send('Incorrect password');}
     });
 });
-
-/*
-app.get('/v3/authenticate/:token', (req2, res2) => {
-    console.log(req2.params.token);
-    
-    if (req2.params.token == "test"){
-        console.log("Give them the key!")
-        res2.status(200).send("MYKEY");
-        //clearTimeout(myTimeout);
-    } else {
-        console.log("Something went wrong with key viewing!")
-        //requestTimeout();
-    }
-});*/
-
-/*
-sendVerifyEmail("freynben@gmail.com");
-function sendVerifyEmail(email){
-    const msg = {
-      to: email, // Change to your recipient
-      from: 'classyscheduledev01@gmail.com', // Change to your verified sender
-      subject: 'Verify your ClassySchedule Email',
-      text: "Hi! We just need you to verify your Classy-Schedule email by clicking the link below, and you're all set!",
-      html: "A link goes here which presumably submits a request to update the table with some sort of verification"
-    }
-
-    sgMail
-      .send(msg)
-      .then((response) => {
-        console.log(response[0].statusCode)
-        console.log(response[0].headers)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-}*/
-
-// email mfa
+// email mfa function
 function sendVerifyEmail(emailRecipient, token) {
     // Set link that will be used in button
     let link;
     if (dev == 0) {
         link = "http://localhost:3000/v3/authenticate/"+token;
+    } else if (dev == 1) {
+        link = "https://classy-dev.ddns.net/v3/authenticate/"+token;
     } else {
         link = "https://classy-api.ddns.net/v3/authenticate/"+token;
     }
 
     // Generate html of email (button appears not to work in stthomas OutLook, us link instead)
     //let html = 'You have 30 seconds to click the autheticate button below. Your HTTP request will then return with your token.<form action="'+link+'" method="get"><button type="submit" formmethod="get">Verify Login</button></form>';
-    let html = 'You have 30 seconds to click the authetication link below. Your HTTP request will then return with your token.<a href="'+link+'">'+link+'</a>';
+    let html = 'You have 30 seconds to click the authetication link below. Your HTTP request will then return with your token.</br><a href="'+link+'">'+link+'</a>';
 
     // Create message to send to user
     const msg = {
@@ -399,15 +378,15 @@ function sendVerifyEmail(emailRecipient, token) {
       .send(msg)
       .then((response) => {
         if (response[0].statusCode == 202) {
-            console.log("Email authentification request successfully dispatched to "+emailRecipient+'\n')
+            console.log("- Email authentification request successfully dispatched to "+emailRecipient)
         } else {
-            console.log("There was an issue while sending an authentification request to "+emailRecipient+'\n')
+            console.log("- There was an issue while sending an authentification request to "+emailRecipient+'\n')
         }
-        console.log(response[0].statusCode)
-        console.log(response[0].headers)
+        //console.log(response[0].statusCode)
+        //console.log(response[0].headers)
       })
       .catch((error) => {
-        console.error(error)
+        //console.error(error)
       })
 }
 
