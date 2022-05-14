@@ -7,9 +7,12 @@
 // Authors: Joe Lambrecht, Gabbie Bolcer, Emma Torres, Jonas Bull, and Ben Frey
 // Date: 11 May 2022
 
+<<<<<<< Updated upstream
 // Say hello!
 console.log("Welcome to the Database Team's API, nice to meet you! :)\n");
 
+=======
+>>>>>>> Stashed changes
 //
 // Import packages and setup app
 //
@@ -23,7 +26,6 @@ var fs = require('fs')
 // Login, token, and MFA (email sending) packages
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken')
-var sgMail = require('@sendgrid/mail')
 
 // Developmental setting: 0 for local dev, or 1 for production (Azure deployment) 
 var dev = 0;
@@ -60,6 +62,7 @@ try {
 } catch {
     throw "Server error: security issue. Please try again later";
 }
+<<<<<<< Updated upstream
 // Read in key used for sendgrid email
 /*
 let sg_key;
@@ -72,6 +75,10 @@ try {
 } catch {
     throw "Server error: security issue. Please try again later";
 }*/
+=======
+catch {throw "Server error: security issue. Please try again later"}
+
+>>>>>>> Stashed changes
 
 ///
 // Database Connection
@@ -95,6 +102,7 @@ makeConnection((password)=> {
     // Create the connection and store in "con"
     con = new mysql.createConnection(config);
     con.connect(function(err) {
+<<<<<<< Updated upstream
         if (err) throw err;
         /*
         console.log("Connected to database with the following information:"+
@@ -105,6 +113,9 @@ makeConnection((password)=> {
                     "\nPort: "+config.port+
                     "\n");
         */
+=======
+      if (err) throw err;
+>>>>>>> Stashed changes
     });
 });
 
@@ -272,6 +283,7 @@ async function db_put(query, data){
 //update
 //delete
 
+<<<<<<< Updated upstream
 
 //***LOGIN***
 var MIN_PASSWORD_LENGTH = 8;
@@ -374,6 +386,13 @@ function sendVerifyEmail(emailRecipient, token) {
         console.error(error)
       })
 }
+=======
+//***LOGIN***/
+//view
+//add
+//update
+//delete
+>>>>>>> Stashed changes
 
 //***MEETS***
 //view
