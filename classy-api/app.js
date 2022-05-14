@@ -341,10 +341,11 @@ app.post('/v3/login', async function (req, res) {
         });
 
         // Timeout
-        function requestTimeout(result) {
+        function requestTimeout() {
             // Deny user of login
             console.log("- User "+loginjson[0].email+" was denied login.")
             res.status(401).send("Authetication failure. Please try again later.");
+            break;
         }
       }
       else {res.status(401).send('Incorrect password');}
@@ -4151,9 +4152,9 @@ function sql_error(err) {
 }
 
 // ****login****
-var MIN_PASSWORD_LENGTH = 8;
-var MAX_PASSWORD_LENGTH = 16;
-var users = {};
+MIN_PASSWORD_LENGTH = 8;
+MAX_PASSWORD_LENGTH = 16;
+users = {};
 
 //create users
 app.post('/v2/signup', async (req, res) => {
