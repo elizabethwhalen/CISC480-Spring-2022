@@ -10,7 +10,7 @@ import { RRule } from 'rrule'
 import axios from 'axios'
 import EditClassForm from './EditClassForm'
 
-const localizer = momentLocalizer(moment);
+const mlocalizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 export default function CalendarTest() {
@@ -22,7 +22,7 @@ export default function CalendarTest() {
     const [roomList, setRoomList] = React.useState([]);
     const [startTime, setStartTime] = React.useState("");
     const [endTime, setEndTime] = React.useState("");
-    const [date, setDate] = React.useState("");
+    const [eventdate, setDate] = React.useState("");
     const [selectedEvent, setSelectedEvent] = React.useState({});
     const startRepeat = sessionStorage.getItem("startRepeat");
     const endRepeat = sessionStorage.getItem("endRepeat");
@@ -32,6 +32,24 @@ export default function CalendarTest() {
     minTime.setHours(8, 0, 0);
     const maxTime = new Date();
     maxTime.setHours(21, 0, 0);
+
+
+    const {  formats } = React.useMemo(
+        () => ({
+            formats: {
+                // the day of the week header in the 'month' view
+                weekdayFormat: (date, culture, localizer) =>
+                localizer.format(date, 'dddd', culture),
+                // the day header in the 'week' and 'day' (Time Grid) views
+                dayFormat: (date, culture, localizer) =>
+                localizer.format(date, 'dddd', culture),
+                // the time in the gutter in the Time Grid views
+                timeGutterFormat: (date, culture, localizer) =>
+                localizer.format(date, 'hh:mm a', culture),
+            },
+        }),
+        []
+    )
 
     const handleGetConfig = (data) => {
         const config = {
@@ -250,7 +268,9 @@ export default function CalendarTest() {
     };
 
     const handleSelectSlot = event => {
-        const { start, end } = event;
+        const { start } = event;
+        let { end } = event;
+        end = new Date(end.getTime()+1000*60*55);
         const { modifiedStart, modifiedEnd } = handleGetTimeInterval(start, end);
         setStartTime(modifiedStart);
         setEndTime(modifiedEnd);
@@ -379,7 +399,7 @@ export default function CalendarTest() {
                     event={selectedEvent}
                     start={startTime}
                     end={endTime}
-                    date={date}
+                    date={eventdate}
                     onClose={onClose}
                     courseList={courseList}
                     instructorList={instructorList}
@@ -394,12 +414,13 @@ export default function CalendarTest() {
                 defaultView='work_week'
                 views={['work_week']}
                 events={events}
-                localizer={localizer}
+                localizer={mlocalizer}
+                formats={formats}
                 resizable
                 selectable
                 style={{ height: '100%' }}
                 step={5}
-                timeslots={12}
+                timeslots={6}
                 styles={{ overflow: 'hidden' }}
                 onEventDrop={event => handleEventDrop(event)}
                 onEventResize={event => handleEventResize(event)}
