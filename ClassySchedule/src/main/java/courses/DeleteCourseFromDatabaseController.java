@@ -208,6 +208,11 @@ public class DeleteCourseFromDatabaseController implements Initializable {
             result = false;
             MyAlert createAlert = new MyAlert("No Course Selected", "Please Select A Course To Delete", Alert.AlertType.ERROR);
             createAlert.show();
+
+            // Clear the class number drop-down
+            classNum.getItems().clear();
+            // Set department drop-down back to blank default
+            dept.getSelectionModel().clearSelection();
         }
         return result;
     }
@@ -288,6 +293,24 @@ public class DeleteCourseFromDatabaseController implements Initializable {
     public void goToAddFaculty() {
         cs.addProfessorButtonClicked(stage);
     }
+
+    /**
+     * go to edit course scene
+     */
+    @FXML
+    public void goToEditCourse() { cs.editCourseButtonClicked(stage); }
+
+    /**
+     * go to edit faculty scene
+     */
+    @FXML
+    public void goToEditFaculty() { cs.editFacultyButtonClicked(stage); }
+
+    /**
+     * go to edit classroom scene
+     */
+    @FXML
+    public void goToEditClassroom() { cs.editClassroomButtonClicked(stage); }
 
     /**
      * go to delete course scene

@@ -125,9 +125,6 @@ public class RoomController implements Initializable {
 
     }
 
-    /**
-     * go back to homepage
-     */
     @FXML
     public void goBack() {
         cs.goToHomepage(stage);
@@ -156,6 +153,24 @@ public class RoomController implements Initializable {
     public void goToAddFaculty() {
         cs.addProfessorButtonClicked(stage);
     }
+
+    /**
+     * go to edit course scene
+     */
+    @FXML
+    public void goToEditCourse() { cs.editCourseButtonClicked(stage); }
+
+    /**
+     * go to edit faculty scene
+     */
+    @FXML
+    public void goToEditFaculty() { cs.editFacultyButtonClicked(stage); }
+
+    /**
+     * go to edit classroom scene
+     */
+    @FXML
+    public void goToEditClassroom() { cs.editClassroomButtonClicked(stage); }
 
     /**
      * go to delete course scene

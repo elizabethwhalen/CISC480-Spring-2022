@@ -1,6 +1,7 @@
 package scenes;
 
 import courses.AddCourseToDatabaseController;
+import courses.EditCourseFromDatabaseController;
 import room.DeleteClassroomFromDatabaseController;
 import courses.DeleteCourseFromDatabaseController;
 import homescreen.HomescreenController;
@@ -8,10 +9,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import room.EditClassroomFromDatabaseController;
 import room.RoomController;
 import scheduler.GenerateScheduleController;
 import scheduler.SchedulerController;
 import users.DeleteFacultyFromDatabaseController;
+import users.EditFacultyFromDatabaseController;
 import users.FacultyController;
 
 import java.io.IOException;
@@ -70,6 +73,60 @@ public class ChangeScene {
             e.printStackTrace();
         }
         stage.setTitle("Add Faculty");
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    /**
+     * Changes scene to edit course page when 'Edit Course' button is clicked
+     */
+    public void editCourseButtonClicked(Stage stage) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/EditCourseFromDatabase.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+            EditCourseFromDatabaseController controller = loader.getController();
+            controller.setStage(stage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        stage.setTitle("Edit Course");
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    /**
+     * Changes scene to edit professor page when 'Edit Professor' button is clicked
+     */
+    public void editFacultyButtonClicked(Stage stage) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/EditFacultyFromDatabase.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+            EditFacultyFromDatabaseController controller = loader.getController();
+            controller.setStage(stage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        stage.setTitle("Edit Faculty");
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
+    /**
+     * Changes scene to edit classroom page when 'Edit Classroom' button is clicked
+     */
+    public void editClassroomButtonClicked(Stage stage) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/EditClassroomFromDatabase.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+            EditClassroomFromDatabaseController controller = loader.getController();
+            controller.setStage(stage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        stage.setTitle("Edit Classroom");
         stage.setScene(new Scene(root));
         stage.show();
     }

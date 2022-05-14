@@ -45,86 +45,82 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="users.FacultyController">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="users.FacultyController">
     <AnchorPane VBox.vgrow="ALWAYS">
-        <Label alignment="CENTER" layoutX="155.0" layoutY="177.0" style="&#10;" textAlignment="CENTER"
-               textFill="#9f9f9f">
+        <Label alignment="CENTER" layoutX="155.0" layoutY="177.0" style="&#10;" textAlignment="CENTER" textFill="#9f9f9f">
             <font>
-                <Font size="18.0"/>
+                <Font size="18.0" />
             </font>
         </Label>
-        <Label layoutX="58.0" layoutY="22.0" prefHeight="70.0" prefWidth="269.0" text="Add a new Professor"
-               textAlignment="CENTER">
+        <Label layoutX="58.0" layoutY="22.0" prefHeight="70.0" prefWidth="269.0" text="Add a new Professor" textAlignment="CENTER">
             <font>
-                <Font size="29.0"/>
+                <Font size="29.0" />
             </font>
         </Label>
-        <ListView layoutX="29.0" layoutY="91.0" prefHeight="215.0" prefWidth="314.0"/>
+        <ListView layoutX="29.0" layoutY="91.0" prefHeight="215.0" prefWidth="314.0" />
         <Label layoutX="41.0" layoutY="106.0" prefHeight="20.0" prefWidth="76.0" text="First Name:">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </Label>
         <Label layoutX="41.0" layoutY="177.0" prefHeight="17.0" prefWidth="76.0" text="ID_number:">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </Label>
         <Label layoutX="42.0" layoutY="253.0" prefHeight="17.0" prefWidth="52.0" text="Type:">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </Label>
-        <TextField fx:id="facultyFirst" layoutX="125.0" layoutY="102.0" prefHeight="25.0" prefWidth="200.0"/>
-        <TextField fx:id="facultyID" layoutX="125.0" layoutY="174.0" prefHeight="25.0" prefWidth="200.0"/>
-        <ChoiceBox fx:id="type" layoutX="125.0" layoutY="250.0" prefHeight="25.0" prefWidth="200.0"/>
-        <Button fx:id="submitButton" layoutX="143.0" layoutY="319.0" mnemonicParsing="false" onAction="#submitData"
-                text="Confirm" textFill="#5ce85c"/>
-        <Button fx:id="cancelButton" layoutX="212.0" layoutY="319.0" mnemonicParsing="false"
-                onAction="#cancelButtonClicked" prefHeight="25.0" prefWidth="59.0" text="Back" textFill="#c32727"/>
+        <TextField fx:id="facultyFirst" layoutX="125.0" layoutY="102.0" prefHeight="25.0" prefWidth="200.0" />
+        <TextField fx:id="facultyID" layoutX="125.0" layoutY="174.0" prefHeight="25.0" prefWidth="200.0" />
+        <ChoiceBox fx:id="type" layoutX="125.0" layoutY="250.0" prefHeight="25.0" prefWidth="200.0" />
+        <Button fx:id="submitButton" layoutX="143.0" layoutY="319.0" mnemonicParsing="false" onAction="#submitData" text="Confirm" textFill="#5ce85c" />
+        <Button fx:id="cancelButton" layoutX="212.0" layoutY="319.0" mnemonicParsing="false" onAction="#cancelButtonClicked" prefHeight="25.0" prefWidth="59.0" text="Back" textFill="#c32727" />
         <Label layoutX="42.0" layoutY="142.0" prefHeight="20.0" prefWidth="76.0" text="Last Name:">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </Label>
-        <TextField fx:id="firstName" layoutX="124.0" layoutY="102.0" prefHeight="25.0" prefWidth="200.0"/>
-        <TextField fx:id="email" layoutX="125.0" layoutY="213.0" prefHeight="25.0" prefWidth="200.0"/>
-        <TextField fx:id="lastName" layoutX="125.0" layoutY="140.0" prefHeight="25.0" prefWidth="200.0"/>
-        <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="640.0">
-            <Menu fx:id="goTohome" mnemonicParsing="false" text="Home">
-                <MenuItem fx:id="goToHome" mnemonicParsing="false" onAction="#goBack" text="Back to Home"/>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Goto">
-                <MenuItem fx:id="goToAddCourse" mnemonicParsing="false" onAction="#goToAddCourse"
-                          text="Add Course"/>
-                <MenuItem fx:id="goToAddProfessor" mnemonicParsing="false" onAction="#goToAddFaculty"
-                          text="Add Professor"/>
-                <MenuItem fx:id="goToAddClassroom" mnemonicParsing="false" onAction="#goToAddClassroom"
-                          text="Add Classroom"/>
-                <SeparatorMenuItem mnemonicParsing="false"/>
-                <MenuItem fx:id="goToEditCourse" mnemonicParsing="false" text="Edit Course"/>
-                <MenuItem fx:id="goToEditProfessor" mnemonicParsing="false" text="Edit Professor"/>
-                <MenuItem fx:id="goToEditClassroom" mnemonicParsing="false" text="Edit Classroom"/>
-                <SeparatorMenuItem mnemonicParsing="false"/>
-                <MenuItem fx:id="goToDeleteCourse" mnemonicParsing="false" onAction="#goToDeleteCourse"
-                          text="Delete Course"/>
-                <MenuItem fx:id="goToDeleteProfessor" mnemonicParsing="false" onAction="#goToDeleteFaculty"
-                          text="Delete Professor"/>
-                <MenuItem fx:id="goToDeleteClassroom" mnemonicParsing="false" onAction="#goToDeleteClassroom"
-                          text="Delete Classroom"/>
-                <SeparatorMenuItem mnemonicParsing="false"/>
-                <MenuItem fx:id="goToViewSchedule" mnemonicParsing="false" onAction="#goToViewSchedule"
-                          text="View Schedule"/>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Help">
-                <MenuItem mnemonicParsing="false" text="About MyHelloApp"/>
-            </Menu>
-        </MenuBar>
+        <TextField fx:id="firstName" layoutX="124.0" layoutY="102.0" prefHeight="25.0" prefWidth="200.0" />
+        <TextField fx:id="email" layoutX="125.0" layoutY="213.0" prefHeight="25.0" prefWidth="200.0" />
+        <TextField fx:id="lastName" layoutX="125.0" layoutY="140.0" prefHeight="25.0" prefWidth="200.0" />
         <Label layoutX="41.0" layoutY="216.0" prefHeight="17.0" prefWidth="76.0" text="Email:">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" />
             </font>
         </Label>
+      <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="640.0">
+         <menus>
+            <Menu fx:id="goTohome" mnemonicParsing="false" text="Home">
+               <items>
+                  <MenuItem fx:id="goToHome" mnemonicParsing="false" onAction="#goBack" text="Back to Home" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Goto">
+               <items>
+                  <MenuItem fx:id="goToAddCourse" mnemonicParsing="false" onAction="#goToAddCourse" text="Add Course" />
+                  <MenuItem fx:id="goToAddProfessor" mnemonicParsing="false" onAction="#goToAddFaculty" text="Add Professor" />
+                  <MenuItem fx:id="goToAddClassroom" mnemonicParsing="false" onAction="#goToAddClassroom" text="Add Classroom" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="goToEditCourse" mnemonicParsing="false" onAction="#goToEditCourse" text="Edit Course" />
+                  <MenuItem fx:id="goToEditProfessor" mnemonicParsing="false" onAction="#goToEditFaculty" text="Edit Professor" />
+                  <MenuItem fx:id="goToEditClassroom" mnemonicParsing="false" onAction="#goToEditClassroom" text="Edit Classroom" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="goToDeleteCourse" mnemonicParsing="false" onAction="#goToDeleteCourse" text="Delete Course" />
+                  <MenuItem fx:id="goToDeleteProfessor" mnemonicParsing="false" onAction="#goToDeleteFaculty" text="Delete Professor" />
+                  <MenuItem fx:id="goToDeleteClassroom" mnemonicParsing="false" onAction="#goToDeleteClassroom" text="Delete Classroom" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem fx:id="goToViewSchedule" mnemonicParsing="false" onAction="#goToViewSchedule" text="View Schedule" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
     </AnchorPane>
 </VBox>

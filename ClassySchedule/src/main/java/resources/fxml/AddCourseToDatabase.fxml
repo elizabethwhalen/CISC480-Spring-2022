@@ -2,18 +2,40 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="courses.AddCourseToDatabaseController">
     <TextField fx:id="classNum" layoutX="28.0" layoutY="93.0" promptText="Course Code" />
     <ComboBox fx:id="deptName" layoutX="27.0" layoutY="52.0" prefWidth="150.0" promptText="Dept Name" />
     <TextField fx:id="className" layoutX="28.0" layoutY="134.0" promptText="Class name" />
     <Button fx:id="submit_button" layoutX="28.0" layoutY="188.0" mnemonicParsing="false" onAction="#submitData" text="Submit" />
-    <Text fx:id="classNumWarning" layoutX="183.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a valid course code" visible="false" />
-    <Text fx:id="classNameWarning" layoutX="183.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter a class name" visible="false" wrappingWidth="134.455078125" />
-    <Text fx:id="departmentWarning" layoutX="183.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please select a department name" visible="false" />
     <Button fx:id="back_button" layoutX="103.0" layoutY="188.0" mnemonicParsing="false" onAction="#goBack" text="Back" />
-   <TextField fx:id="sectionNum" layoutX="196.0" layoutY="52.0" prefHeight="25.0" prefWidth="54.0" promptText="Sec #" />
+    <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="600.0">
+        <Menu fx:id="goTohome" mnemonicParsing="false" text="Home">
+            <MenuItem fx:id="goToHome" mnemonicParsing="false" onAction="#goBack" text="Back to Home" />
+        </Menu>
+        <Menu mnemonicParsing="false" text="Goto">
+            <MenuItem fx:id="goToAddCourse" mnemonicParsing="false" onAction="#goToAddCourse" text="Add Course" />
+            <MenuItem fx:id="goToAddProfessor" mnemonicParsing="false" onAction="#goToAddFaculty" text="Add Professor" />
+            <MenuItem fx:id="goToAddClassroom" mnemonicParsing="false" onAction="#goToAddClassroom" text="Add Classroom" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem fx:id="goToEditCourse" mnemonicParsing="false" onAction="#goToEditCourse" text="Edit Course" />
+            <MenuItem fx:id="goToEditProfessor" mnemonicParsing="false" onAction="#goToEditFaculty" text="Edit Professor" />
+            <MenuItem fx:id="goToEditClassroom" mnemonicParsing="false" onAction="#goToEditClassroom" text="Edit Classroom" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem fx:id="goToDeleteCourse" mnemonicParsing="false" onAction="#goToDeleteCourse" text="Delete Course" />
+            <MenuItem fx:id="goToDeleteProfessor" mnemonicParsing="false" onAction="#goToDeleteFaculty" text="Delete Professor" />
+            <MenuItem fx:id="goToDeleteClassroom" mnemonicParsing="false" onAction="#goToDeleteClassroom" text="Delete Classroom" />
+            <SeparatorMenuItem mnemonicParsing="false" />
+            <MenuItem fx:id="goToViewSchedule" mnemonicParsing="false" onAction="#goToViewSchedule" text="View Schedule" />
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+        </Menu>
+    </MenuBar>
 </AnchorPane>
