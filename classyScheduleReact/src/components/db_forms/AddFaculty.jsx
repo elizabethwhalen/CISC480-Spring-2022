@@ -31,11 +31,11 @@ const useStyles = makeStyles((theme) => ({
     },
     message: {
         color: '#388e3c',
-        fontWeight: 600,
+        fontWeight: '600',
     },
     unsucessfulMessage: {
         color: 'red',
-        fontWeight: 600,
+        fontWeight: '600',
     },
 }))
 
