@@ -242,7 +242,8 @@ export default function Login(props) {
                       sx={{
                         backgroundColor: '#6a1b9a',
                         '&:hover': { backgroundColor: '#B9BDBB' }
-                      }} >
+                      }}
+                    >
                       Log In
                     </Button>
                   </Grid>

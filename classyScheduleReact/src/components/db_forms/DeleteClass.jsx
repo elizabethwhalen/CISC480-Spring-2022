@@ -8,40 +8,34 @@ import {
     FormControl,
     MenuItem,
     InputLabel,
-} from '@material-ui/core'
+} from '@mui/material'
 import axios from 'axios'
 import { ValidatorForm } from 'react-material-ui-form-validator'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import DoneIcon from '@mui/icons-material/Done'
 import CloseIcon from '@mui/icons-material/Close';
 
 // This is a React hook used for organizing the styling of each element in this component
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
     root: {
         display: 'flex',
     },
     container: {
-        padding: theme.spacing(4),
+        padding: "40px",
         position: 'relative',
         flexGrow: 1,
-        height: '100%'
+        height: '100%',
     },
     title: {
         color: '#7E16A4',
-        fontWeight: '600',
-    },
-    subHeader: {
-        fontWeight: '600',
     },
     message: {
         color: '#388e3c',
-        fontWeight: '600',
     },
     unsucessfulMessage: {
         color: 'red',
-        fontWeight: '600',
     },
-}))
+})
 
 // main function component which exports the DeleteClass Form UI
 export default function DeleteClass() {
@@ -99,7 +93,7 @@ export default function DeleteClass() {
             // use function to setBuildingList from response
             setDeptList(list);
         }).catch(() => {
-            
+
         });
     }
 
@@ -125,7 +119,7 @@ export default function DeleteClass() {
             // use function to setBuildingList from response
             setCourseNumList(list);
         }).catch(() => {
-            
+
         });
     };
 
@@ -153,7 +147,7 @@ export default function DeleteClass() {
 
                 {/* TITLE */}
                 <Grid item xs={12}>
-                    <Typography variant="h6" className={classes.title} gutterBottom>
+                    <Typography variant="h6" className={classes.title} fontWeight='600'>
                         Delete an Existing Course
                     </Typography>
                 </Grid>
@@ -165,15 +159,14 @@ export default function DeleteClass() {
 
                             {/* DEPARTMENT CODE */}
                             <Grid item xs={12} md={4} >
-                                <FormControl fullWidth size="medium">
-                                    <InputLabel id="demo-select-small">Department</InputLabel>
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">Department</InputLabel>
                                     <Select
-                                        labelId="demo-select-small"
-                                        id="demo-select-small"
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
                                         value={code}
                                         label="Department"
                                         onChange={handleChangeCode}
-                                        size='large'
                                         autoWidth
                                     >
                                         <MenuItem value="">
@@ -191,15 +184,14 @@ export default function DeleteClass() {
 
                             {/* CLASS NUMBER */}
                             <Grid item xs={12} md={4} >
-                                <FormControl fullWidth size="medium">
-                                    <InputLabel id="demo-select-small">Course Number</InputLabel>
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">Course Number</InputLabel>
                                     <Select
-                                        labelId="demo-select-small"
-                                        id="demo-select-small"
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
                                         value={courseNum}
                                         label="Course Number"
                                         onChange={handleChangeCourseNum}
-                                        size='large'
                                         autoWidth
                                     >
                                         <MenuItem value="">
@@ -215,18 +207,26 @@ export default function DeleteClass() {
                                 </FormControl>
                             </Grid>
                             <Grid item xs={12} md={4} />
-                            
+
                             {/* POST-SUBMIT STATUS MESSAGES */}
                             {(deleted === 1) && (
                                 <Grid item xs={12}>
-                                    <Typography variant="body1" className={classes.message}>
+                                    <Typography
+                                        variant="body1"
+                                        className={classes.message}
+                                        fontWeight='600'
+                                    >
                                         <DoneIcon /> Course has been deleted from the database successfully!
                                     </Typography>
                                 </Grid>
                             )}
                             {(deleted === -1) && (
                                 <Grid item xs={12}>
-                                    <Typography variant="body1" className={classes.unsucessfulMessage}>
+                                    <Typography
+                                        variant="body1"
+                                        className={classes.message}
+                                        fontWeight='600'
+                                    >
                                         <CloseIcon /> Course could not be deleted from the databse.
                                         Please verify that the record being deleted exists.
                                     </Typography>
@@ -240,6 +240,10 @@ export default function DeleteClass() {
                                     size="large"
                                     type="submit"
                                     disableElevation
+                                    sx={{
+                                        backgroundColor: '#6a1b9a',
+                                        '&:hover': { backgroundColor: '#B9BDBB' }
+                                    }}
                                 >
                                     Delete
                                 </Button>

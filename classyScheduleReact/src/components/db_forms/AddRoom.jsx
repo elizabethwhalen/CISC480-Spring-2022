@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-
 import {
     Paper,
     Grid,
@@ -9,47 +8,41 @@ import {
     FormControl,
     MenuItem,
     InputLabel
-} from '@material-ui/core'
+} from '@mui/material'
 import axios from 'axios';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 
 // This is a React hook used for organizing the styling of each element in this component
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
     root: {
         display: 'flex',
     },
     container: {
-        padding: theme.spacing(4),
+        padding: "40px",
         position: 'relative',
         flexGrow: 1,
-        height: '100%'
+        height: '100%',
     },
     title: {
         color: '#7E16A4',
-        fontWeight: '600',
-    },
-    subHeader: {
-        fontWeight: '600',
     },
     message: {
         color: '#388e3c',
-        fontWeight: '600',
     },
     unsucessfulMessage: {
         color: 'red',
-        fontWeight: '600',
     },
-}))
+})
 
 // main function component which exports the AddFaculty Form UI
 export default function AddRoom() {
     const [roomNum, setRoomNum] = React.useState('');
     const [building, setBuilding] = React.useState(''); // Room number (e.g., 420, 350, etc.)
     const [buildingList, setBuildingList] = React.useState([]);
-    const [capacity, setCapacity] = React.useState(''); 
+    const [capacity, setCapacity] = React.useState('');
     const classes = useStyles();
     const token = sessionStorage.getItem('token');
     const [added, setAdded] = React.useState(0); // -1 for error, 0 for base, 1 for added successfully
@@ -124,7 +117,7 @@ export default function AddRoom() {
             // use function to setBuildingList from response
             setBuildingList(list);
         }).catch(() => {
-            
+
         });
     }
 
@@ -140,7 +133,7 @@ export default function AddRoom() {
 
                 {/* TITLE */}
                 <Grid item xs={12}>
-                    <Typography variant="h6" className={classes.title} gutterBottom>
+                    <Typography variant="h6" className={classes.title} fontWeight='600'>
                         Add a New Room
                     </Typography>
                 </Grid>
@@ -149,18 +142,17 @@ export default function AddRoom() {
                 <Grid item xs={12} >
                     <ValidatorForm onSubmit={submitForm}>
                         <Grid container spacing={2}>
-                            <Grid item xs={8}>
+                            <Grid item xs={4}>
 
                                 {/* DROPDOWN FOR BUILDING SELECTION */}
-                                <FormControl fullWidth size="medium">
-                                    <InputLabel id="demo-select-small">Building</InputLabel>
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">Building</InputLabel>
                                     <Select
-                                        labelId="demo-select-small"
-                                        id="demo-select-small"
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
                                         value={building}
                                         label="Building"
                                         onChange={handleChangeBuilding}
-                                        size='large'
                                         autoWidth
                                     >
                                         <MenuItem value="">
@@ -175,7 +167,6 @@ export default function AddRoom() {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={4}/>
 
                             {/* ROOM NUMBER */}
                             <Grid item xs={4}>
@@ -220,19 +211,26 @@ export default function AddRoom() {
                                     onChange={handleChangeCapacity}
                                 />
                             </Grid>
-                            <Grid item xs={4} />
 
                             {/* POST-SUBMIT STATUS MESSAGES */}
                             {(added === 1) && (
                                 <Grid item xs={12}>
-                                    <Typography variant="body1" className={classes.message}>
+                                    <Typography
+                                        variant="body1"
+                                        className={classes.message}
+                                        fontWeight='600'
+                                    >
                                         <DoneIcon /> Room has been added successfully!
                                     </Typography>
                                 </Grid>
                             )}
                             {(added === -1) && (
                                 <Grid item xs={12}>
-                                    <Typography variant="body1" className={classes.unsucessfulMessage}>
+                                    <Typography
+                                        variant="body1"
+                                        className={classes.message}
+                                        fontWeight='600'
+                                    >
                                         <CloseIcon /> Room could not be added to the databse.
                                         Please verify that the record being added does not already exist.
                                     </Typography>
@@ -245,6 +243,10 @@ export default function AddRoom() {
                                     size="large"
                                     type="submit"
                                     disableElevation
+                                    sx={{
+                                        backgroundColor: '#6a1b9a',
+                                        '&:hover': { backgroundColor: '#B9BDBB' }
+                                    }}
                                 >
                                     Submit
                                 </Button>

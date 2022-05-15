@@ -4,40 +4,34 @@ import {
     Grid,
     Button,
     Typography
-} from '@material-ui/core'
+} from '@mui/material'
 import axios from 'axios';
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 
 // This is a React hook used for organizing the styling of each element in this component
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
     root: {
         display: 'flex',
     },
     container: {
-        padding: theme.spacing(4),
+        padding: '40px',
         position: 'relative',
         flexGrow: 1,
-        height: '100%'
+        height: '100%',
     },
     title: {
         color: '#7E16A4',
-        fontWeight: '600',
-    },
-    subHeader: {
-        fontWeight: '600',
     },
     message: {
         color: '#388e3c',
-        fontWeight: '600',
     },
     unsucessfulMessage: {
         color: 'red',
-        fontWeight: '600',
     },
-}))
+})
 
 // main function component which exports the AddFaculty Form UI
 export default function AddFaculty() {
@@ -78,7 +72,7 @@ export default function AddFaculty() {
             // https request Promise executed with Config settings.
             axios(config).then(() => {
                 // good response
-                setAdded(1); 
+                setAdded(1);
             }).catch(() => {
                 // bad response: check that record is not a duplicate
                 setAdded(-1);
@@ -117,7 +111,7 @@ export default function AddFaculty() {
 
                 {/* TITLE */}
                 <Grid item xs={12}>
-                    <Typography variant="h6" className={classes.title} gutterBottom>
+                    <Typography variant="h6" className={classes.title} fontWeight='600'>
                         Add a New Faculty Member
                     </Typography>
                 </Grid>
@@ -220,14 +214,22 @@ export default function AddFaculty() {
                             {/* POST-SUBMIT STATUS MESSAGES */}
                             {(added === 1) && (
                                 <Grid item xs={12}>
-                                    <Typography variant="body1" className={classes.message}>
+                                    <Typography
+                                        variant="body1"
+                                        className={classes.message}
+                                        fontWeight='600'
+                                    >
                                         <DoneIcon /> Faculty has been added successfully!
                                     </Typography>
                                 </Grid>
                             )}
                             {(added === -1) && (
                                 <Grid item xs={12}>
-                                    <Typography variant="body1" className={classes.unsucessfulMessage}>
+                                    <Typography
+                                        variant="body1"
+                                        className={classes.message}
+                                        fontWeight='600'
+                                    >
                                         <CloseIcon /> Faculty could not be added to the databse.
                                         Please verify that the faculty ID being added does not already exist.
                                     </Typography>
@@ -241,6 +243,10 @@ export default function AddFaculty() {
                                     size="large"
                                     type="submit"
                                     disableElevation
+                                    sx={{
+                                        backgroundColor: '#6a1b9a',
+                                        '&:hover': { backgroundColor: '#B9BDBB' }
+                                    }}
                                 >
                                     Submit
                                 </Button>

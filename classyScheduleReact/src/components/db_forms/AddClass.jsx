@@ -8,40 +8,33 @@ import {
     FormControl,
     MenuItem,
     InputLabel
-} from '@material-ui/core'
+} from '@mui/material'
 import axios from 'axios'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import DoneIcon from '@mui/icons-material/Done'
-import CloseIcon from '@mui/icons-material/Close';
-
+import CloseIcon from '@mui/icons-material/Close'
 // This is a React hook used for organizing the styling of each element in this component
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
     root: {
         display: 'flex',
     },
     container: {
-        padding: theme.spacing(4),
+        padding: "40px",
         position: 'relative',
         flexGrow: 1,
-        height: '100%'
+        height: '100%',
     },
     title: {
         color: '#7E16A4',
-        fontWeight: '600',
-    },
-    subHeader: {
-        fontWeight: '600',
     },
     message: {
         color: '#388e3c',
-        fontWeight: '600',
     },
     unsucessfulMessage: {
         color: 'red',
-        fontWeight: '600',
     },
-}))
+})
 
 // main function component which exports the AddClass Form UI
 export default function AddClass() {
@@ -139,7 +132,7 @@ export default function AddClass() {
 
                 {/* TITLE */}
                 <Grid item xs={12}>
-                    <Typography variant="h6" className={classes.title} gutterBottom>
+                    <Typography variant="h6" className={classes.title} fontWeight='600'>
                         Add a New Course
                     </Typography>
                 </Grid>
@@ -150,16 +143,15 @@ export default function AddClass() {
                         <Grid container spacing={2}>
 
                             {/* DEPARTMENT CODE */}
-                            <Grid item xs={4} >
-                                <FormControl fullWidth size="medium">
-                                    <InputLabel id="demo-select-small">Department</InputLabel>
+                            <Grid item xs={3} >
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">Department</InputLabel>
                                     <Select
-                                        labelId="demo-select-small"
-                                        id="demo-select-small"
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
                                         value={code}
-                                        label="Building"
+                                        label="Department"
                                         onChange={handleChangeCode}
-                                        size='large'
                                         autoWidth
                                     >
                                         <MenuItem value="">
@@ -176,7 +168,7 @@ export default function AddClass() {
                             </Grid>
 
                             {/* COURSE NUMBER */}
-                            <Grid item xs={4}>
+                            <Grid item xs={3}>
                                 <TextValidator
                                     size="medium"
                                     variant="outlined"
@@ -199,10 +191,9 @@ export default function AddClass() {
                                     onChange={handleChangeCourseNum}
                                 />
                             </Grid>
-                            <Grid item xs={4} />
 
                             {/* COURSE NAME */}
-                            <Grid item xs={8} >
+                            <Grid item xs={6} >
                                 <TextValidator
                                     size="medium"
                                     variant="outlined"
@@ -223,20 +214,26 @@ export default function AddClass() {
                                     onChange={handleChangeCourseName}
                                 />
                             </Grid>
-                            <Grid item xs={4} />
-                            
 
                             {/* POST-SUBMIT STATUS MESSAGES */}
                             {(added === 1) && (
                                 <Grid item xs={12}>
-                                    <Typography variant="body1" className={classes.message}>
+                                    <Typography
+                                        variant="body1"
+                                        className={classes.message}
+                                        fontWeight='600'
+                                    >
                                         <DoneIcon /> Class has been added successfully!
                                     </Typography>
                                 </Grid>
                             )}
                             {(added === -1) && (
                                 <Grid item xs={12}>
-                                    <Typography variant="body1" className={classes.unsucessfulMessage}>
+                                    <Typography
+                                        variant="body1"
+                                        className={classes.unsucessfulMessage}
+                                        fontWeight='600'
+                                    >
                                         <CloseIcon /> Class could not be added to the databse.
                                         Please verify that the record being added does not already exist.
                                     </Typography>
@@ -250,6 +247,10 @@ export default function AddClass() {
                                     size="large"
                                     type="submit"
                                     disableElevation
+                                    sx={{
+                                        backgroundColor: '#6a1b9a',
+                                        '&:hover': { backgroundColor: '#B9BDBB' }
+                                    }}
                                 >
                                     Submit
                                 </Button>
