@@ -19,7 +19,7 @@ public class FacultyFactory {
         for (Object json : faculty) {
             Faculty prof = new Faculty();
             JSONObject professor = (JSONObject) json;
-            prof.setFacultyID(professor.getInt("faculty_id"));
+            prof.setFacultyId(professor.getInt("faculty_id"));
 
             if (professor.getString("faculty_first") != JSONObject.NULL) {
                 prof.setFacultyFirst(professor.getString("faculty_first"));
@@ -30,13 +30,13 @@ public class FacultyFactory {
             }
 
             try {
-                prof.setTitleID(professor.getInt("title_id"));
+                prof.setTitleId(professor.getInt("title_id"));
             } catch (JSONException e) {
                 //no op
             }
 
             try {
-                prof.setPrev_load(professor.getDouble("prev_course_load"));
+                prof.setPrevLoad(professor.getDouble("prev_course_load"));
             } catch (JSONException e) {
                 //no op
             }

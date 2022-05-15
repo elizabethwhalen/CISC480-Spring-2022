@@ -1,3 +1,8 @@
+/*
+    This class relies on a modified version of JFXtras
+    Agenda module. Used under the BSD license
+    https://jfxtras.org/
+ */
 package scheduler;
 
 import alert.MyAlert;
@@ -14,7 +19,6 @@ import jfxtras.scene.control.agenda.Agenda;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import scenes.ChangeScene;
-
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
@@ -28,9 +32,14 @@ import java.util.ResourceBundle;
 import static scheduler.DateTimeUtils.convertToDayOFWeek;
 import static scheduler.DateTimeUtils.convertToLocalDateTimeViaInstant;
 
-// TODO: Add comments
+/**
+ * Creates the scheduler controller and displays the schedule
+ */
 public class SchedulerController implements Initializable {
 
+    /**
+     * The delete button
+     */
     @FXML
     private Button deleteButton;
     /**
@@ -66,6 +75,11 @@ public class SchedulerController implements Initializable {
      */
     private final ChangeScene cs = new ChangeScene();
 
+    /**
+     * Initializes this scene
+     * @param location the url of the fxml
+     * @param resources the resource bundle for this scene
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.agenda = new Agenda();
@@ -158,8 +172,8 @@ public class SchedulerController implements Initializable {
                 meets.append("/").append(location[0]);
                 meets.append("/").append(location[1]);
 
-                int timeID = new TimeSlotFactory().findTimeSlot(startTime.toString() + ":00", endTime.toString() + ":00", location[2], new TimeSlotFactory().createTimeSlot());
-                meets.append("/").append(timeID);
+                int timeId = new TimeslotFactory().findTimeSlot(startTime.toString() + ":00", endTime.toString() + ":00", location[2], new TimeslotFactory().createTimeSlot());
+                meets.append("/").append(timeId);
                 boolean didDeleteMeets = DatabaseStatic.deleteData(meets.toString(), null);
                 //Delete from teaches
                 String teaches = "teaches/" + summary[0] +
@@ -181,6 +195,9 @@ public class SchedulerController implements Initializable {
         agenda.appointments().addAll(appointments);
     }
 
+    /**
+     * Goes to the homepage
+     */
     @FXML
     private void goBack() {
         cs.goToHomepage(stage);

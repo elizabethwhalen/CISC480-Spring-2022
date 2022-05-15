@@ -2,7 +2,6 @@ package room;
 
 import alert.MyAlert;
 import database.DatabaseStatic;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -10,16 +9,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import scenes.ChangeScene;
-
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import org.controlsfx.control.CheckComboBox;
+import scenes.ChangeScene;
 
 public class DeleteClassroomFromDatabaseController implements Initializable {
 
@@ -39,13 +35,7 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
      * The buildingCode drop-down to select which building we are referring to
      */
     @FXML
-    private ChoiceBox<String> buildingCode;
-
-    /**
-     * The roomNum drop-down to select the room to delete from the database
-     */
-    @FXML
-    private ChoiceBox<String> roomNum;
+    private CheckComboBox<String> rooms;
 
     /**
      * the current stage of this scene
@@ -54,31 +44,35 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
     private Stage stage;
 
     /**
+     * List of the rooms that can be deleted
+     */
+    private List<Room> roomList;
+
+    /**
      * The change scene object to change between scenes
      */
     private final ChangeScene cs = new ChangeScene();
 
-
     /**
-     * @param url
-     * @param resourceBundle
+     * @param url the url of the FXML file
+     * @param resourceBundle the resource bundle to be used (default)
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Initialize building code drop-down
-        getBuildingCode();
-        // Whenever building code is selected/changed
-        buildingCode.valueProperty().addListener((observable, oldValue, newValue) -> {
-            // Clear previous room number
-            roomNum.getItems().clear();
-            // Initialize room number
-            getRoomNumber();
-        });
+        // Initialize room dropdown
+        populateRooms();
         // Initialize back and confirmation alerts
         back(back, "Go Back To Home Screen", "Click ok to go back to home screen.", true);
         back(confirm, "Confirm Deletion", "Click 'OK' to delete the classroom, or 'Cancel' to cancel the following action.", false);
     }
 
+    private void populateRooms() {
+        rooms.getItems().clear();
+        roomList = new RoomFactory().createRooms();
+        for (Room room: roomList) {
+            rooms.getItems().add(room.toString());
+        }
+    }
     /**
      * Set the stage of the scene
      * @param stage the stage we want to use
@@ -87,35 +81,6 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
         this.stage = stage;
     }
 
-    /**
-     * Iterate through the list of "room" table from the database and insert building code
-     * into the building code drop-down
-     */
-    private void getBuildingCode() {
-        JSONArray building = DatabaseStatic.getData("room");
-        for (Object jsonObject: building) {
-            JSONObject job = (JSONObject)jsonObject;
-            if (!buildingCode.getItems().contains(job.get("building_code"))) {
-                buildingCode.getItems().add((String) job.get("building_code"));
-            }
-        }
-    }
-
-    /**
-     * Iterate through the list of "room" table from the database and insert room
-     * into the room number drop-down
-     */
-    private void getRoomNumber() {
-        String selectedBuildingCode = buildingCode.getValue();
-
-        JSONArray room = DatabaseStatic.getData("room");
-        for (Object jsonObject: room) {
-            JSONObject job = (JSONObject)jsonObject;
-            if (job.get("building_code").equals(selectedBuildingCode)) {
-                roomNum.getItems().add((String) job.get("room_num"));
-            }
-        }
-    }
 
     /**
      * confirm button to delete the selected classroom. It checks if the drop-downs
@@ -124,44 +89,21 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
      * @return true if the course is deleted and false otherwise
      */
     private boolean confirmButton() {
-        boolean result = true;
-        // If drop-downs are not empty
-        if (!(buildingCode.getSelectionModel().isEmpty()) && !(roomNum.getSelectionModel().isEmpty())) {
-            // The user selected building and room number
-            String selectedBuilding = buildingCode.getValue();
-            String selectedRoom = roomNum.getValue();
-
-            // The "room" table from the database
-            JSONArray classroom = DatabaseStatic.getData("room");
-
-            // Iterate through the "room" table and find matching JSON object to the user's request
-            for (Object jsonObject: classroom) {
-                JSONObject job = (JSONObject) jsonObject;
-                // If JSON object contain the user's selected request
-                if (job.get("building_code").equals(selectedBuilding) && job.get("room_num").equals(selectedRoom)) {
-                    job.remove("capacity");
-                    // Delete the JSON object from the "room" table from the database
-                    DatabaseStatic.deleteData("room", job);
-                    // Clear the room number drop-down
-                    roomNum.getItems().clear();
-                    // Set buildingCode drop-down back to blank default
-                    buildingCode.getSelectionModel().clearSelection();
-                    break;
-                }
+        if (rooms.getCheckModel().isEmpty()) {
+            new MyAlert("No rooms selected", "Please select at least one room to delete", Alert.AlertType.ERROR);
+            return false;
+        } else {
+            for (int r : rooms.getCheckModel().getCheckedIndices()) {
+                deleteRoom(roomList.get(r));
             }
+            populateRooms();
+            return true;
         }
-        // No room has been selected show an error alert
-        else {
-            result = false;
-            MyAlert createAlert = new MyAlert("No Room Selected", "Please select a room to delete", Alert.AlertType.ERROR);
-            createAlert.show();
+    }
 
-            // Clear the room number drop-down
-            roomNum.getItems().clear();
-            // Set buildingCode drop-down back to blank default
-            buildingCode.getSelectionModel().clearSelection();
-        }
-        return result;
+    private void deleteRoom(Room room) {
+        String deletedRoom = "room/" + room.getBuildingCode() + "/" + room.getRoomNum();
+        DatabaseStatic.deleteData(deletedRoom, null);
     }
 
     /**

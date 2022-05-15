@@ -1,8 +1,7 @@
 package courses;
+
 import alert.MyAlert;
 import database.DatabaseStatic;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -12,9 +11,6 @@ import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import scenes.ChangeScene;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -60,17 +56,17 @@ public class EditCourseFromDatabaseController implements Initializable {
     /**
      * boolean variable to check if department has been changed
      */
-    private boolean changeDeptVal;
+    private boolean changeDeptVal = false;
 
     /**
      * boolean variable to check if class number has been changed
      */
-    private boolean changeClassNumVal;
+    private boolean changeClassNumVal = false;
 
     /**
      * boolean variable to check if a course name has been changed
      */
-    private boolean changeCourseVal;
+    private boolean changeCourseVal = false;
 
     /**
      * The department drop-down to select which dept of courses to delete
@@ -107,11 +103,6 @@ public class EditCourseFromDatabaseController implements Initializable {
         // Hide changing text field at the start of stage
         changeClassNum.setVisible(false);
         changeDept.setVisible(false);
-
-        // Set boolean if anything had been changed to false to begin with
-        setChangeDeptVal(false);
-        setChangeClassNumVal(false);
-        setChangeCourseVal(false);
 
         // Initialize department drop-down
         getDept();
@@ -168,7 +159,7 @@ public class EditCourseFromDatabaseController implements Initializable {
             // If the new value is not null and does not equal the selected value,
             // then it is a new value so set its parameter to true to indicate changes
             if (newValue != null && !newValue.equals(dept.getValue())) {
-                setChangeDeptVal(true);
+                changeDeptVal = true;
             }
         });
 
@@ -177,7 +168,7 @@ public class EditCourseFromDatabaseController implements Initializable {
             // If the new value is not null and does not equal the selected value,
             // then it is a new value so set its parameter to true to indicate changes
             if (newValue != null && !newValue.equals(classNum.getValue())) {
-                setChangeClassNumVal(true);
+                changeClassNumVal = true;
             }
         });
 
@@ -186,7 +177,7 @@ public class EditCourseFromDatabaseController implements Initializable {
             // If the new value is not null and does not equal the selected value,
             // then it is a new value so set its parameter to true to indicate changes
             if (!newValue.equals(course.getText())) {
-                setChangeCourseVal(true);
+                changeCourseVal = true;
             }
         });
     }
@@ -258,25 +249,24 @@ public class EditCourseFromDatabaseController implements Initializable {
     private boolean confirmButton() {
         boolean result = true;
         // If there is a change
-        if (isChangeDeptVal() || isChangeClassNumVal() || isChangeCourseVal()) {
+        if (changeDeptVal || changeClassNumVal || changeCourseVal) {
             // The "class" table from the database
             JSONArray classes = DatabaseStatic.getData("class");
             // Iterate through the "class" table and find matching JSON object to the user's request
             for (Object jsonObject: classes) {
                 JSONObject job = (JSONObject) jsonObject;
                 if (job.get("dept_code").equals(dept.getValue()) && job.get("class_num").equals(classNum.getValue())) {
-                    try {
                         // Remove non-primary key
                         job.remove("class_name");
                         // Json object that contain the changing data
                         JSONObject data = new JSONObject();
-                        if (isChangeDeptVal()) {
+                        if (changeDeptVal) {
                             data.put("dept_code", changeDept.getText());
                         }
-                        if (isChangeClassNumVal()) {
+                        if (changeClassNumVal) {
                             data.put("class_num", Integer.parseInt(changeClassNum.getText()));
                         }
-                        if (isChangeCourseVal()) {
+                        if (changeCourseVal) {
                             data.put("class_name", changeCourse.getText());
                         }
                         // Update the database
@@ -297,9 +287,6 @@ public class EditCourseFromDatabaseController implements Initializable {
                         classNum.setVisible(true);
                         course.clear();
                         course.setVisible(true);
-                    } catch (URISyntaxException | IOException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         } else {
@@ -451,31 +438,6 @@ public class EditCourseFromDatabaseController implements Initializable {
     @FXML
     public void goToViewSchedule() {
         cs.viewScheduleClicked(stage);
-    }
-
-    public boolean isChangeDeptVal() {
-        return changeDeptVal;
-    }
-
-    public void setChangeDeptVal(boolean changeDeptVal) {
-        this.changeDeptVal = changeDeptVal;
-    }
-
-    public boolean isChangeClassNumVal() {
-        return changeClassNumVal;
-    }
-
-    public void setChangeClassNumVal(boolean changeClassNumVal) {
-        this.changeClassNumVal = changeClassNumVal;
-    }
-
-
-    public boolean isChangeCourseVal() {
-        return changeCourseVal;
-    }
-
-    public void setChangeCourseVal(boolean changeCourseVal) {
-        this.changeCourseVal = changeCourseVal;
     }
 }
 

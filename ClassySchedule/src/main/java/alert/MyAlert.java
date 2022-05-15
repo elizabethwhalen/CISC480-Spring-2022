@@ -57,9 +57,12 @@ public class MyAlert {
     }
 
 
+    /**
+     * Creates the button for the alert
+     * @return the optional button
+     */
     public Optional<ButtonType> showButton() {
         return createAlert().showAndWait();
     }
-
 
 }

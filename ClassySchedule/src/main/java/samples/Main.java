@@ -1,5 +1,6 @@
 package samples;
 
+import database.DatabaseStatic;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,8 +16,13 @@ public class Main extends Application {
         Parent root = loader.load();
         LoginController loginController = loader.getController();
         loginController.setStage(stage);
+        stage.setOnCloseRequest(event -> {
+            DatabaseStatic.getTimer().cancel();
+            DatabaseStatic.getTimer().purge();
+        });
         stage.setTitle("Classy-Schedule");
         stage.setScene(new Scene(root, 600, 450));
+        stage.setMaximized(true);
         stage.show();
     }
 

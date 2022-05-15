@@ -3,17 +3,26 @@ package scheduler;
 import database.DatabaseStatic;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimeSlotFactory {
-    public TimeSlotFactory(){
-        //This is the constructor
-    }
+/**
+ * This factory creates the time slots from the timeslots saved in the database
+ */
+public class TimeslotFactory {
+
+    /**
+     * The constructor for the timeslot factory
+     */
+    public TimeslotFactory(){}
+
+    /**
+     * Constructs the timeslots from the stored timeslots in the database
+     * Sorts them by day
+     * @return returns a list of the stored timeslots from the database
+     */
     public List<Timeslot> createTimeSlot(){
         ArrayList<Timeslot> timeSlotList = new ArrayList<>();
-        //ArrayList<Timeslot> sortedTimeSlot = new ArrayList<>();
         ArrayList<Timeslot> mon = new ArrayList<>();
         ArrayList<Timeslot> tues = new ArrayList<>();
         ArrayList<Timeslot> wed = new ArrayList<>();
@@ -26,8 +35,8 @@ public class TimeSlotFactory {
             start = job.getString("time_start");
             end = job.getString("time_end");
             days = job.getString("day_of_week");
-            int timeID = job.getInt("time_id");
-            Timeslot currentTimeSlot = new Timeslot(timeID, days, start, end);
+            int timeId = job.getInt("time_id");
+            Timeslot currentTimeSlot = new Timeslot(timeId, days, start, end);
             timeSlotList.add(currentTimeSlot);
         }
         //sorts by day
@@ -66,7 +75,7 @@ public class TimeSlotFactory {
     public int findTimeSlot(String startTime, String endTime, String daysOfWeek, List<Timeslot> times) {
         for (Timeslot current : times) {
             if (current.getEndTime().equals(endTime) && current.getStartTime().equals(startTime) && current.getDaysOfWeek().equals(daysOfWeek)) {
-                return current.getTimeID();
+                return current.getTimeId();
             }
         }
         return -1;

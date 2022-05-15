@@ -5,6 +5,7 @@ import database.DatabaseStatic;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -12,40 +13,44 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.fxml.FXML;
+import org.controlsfx.control.CheckComboBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import scenes.ChangeScene;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DeleteFacultyFromDatabaseController implements Initializable {
 
+    /**
+     * The back button
+     */
     @FXML
     private Button back;
 
+    /**
+     * The confirmation button
+     */
     @FXML
     private Button confirm;
 
+    /**
+     * The drop down faculty list
+     */
     @FXML
-    private TextField currCourseLoad;
+    private CheckComboBox<String> faculty;
 
-    @FXML
-    private ChoiceBox<String> facultyID;
+    /**
+     * The list of faculty from the database
+     */
+    List<Faculty> professors;
 
-    @FXML
-    private TextField firstName;
-
-    @FXML
-    private TextField lastName;
-
-    @FXML
-    private TextField prevCourseLoad;
-
-    @FXML
-    private TextField title;
-
+    /**
+     * The stage this scene uses
+     */
     private Stage stage;
 
     /**
@@ -55,190 +60,21 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Do not allow text-field to be edited
-        firstName.setEditable(false);
-        lastName.setEditable(false);
-        title.setEditable(false);
-        prevCourseLoad.setEditable(false);
-        currCourseLoad.setEditable(false);
-
-        // Initialize faculty id drop-down
-        getFacultyID();
-        // Whenever faculty id is selected/changed
-        facultyID.valueProperty().addListener((observable, oldValue, newValue) -> {
-            // Clear all of the previous text-fields
-            clearTextField();
-            // Initialize all of the text-fields
-            title.setText(getTitle());
-            firstName.setText(getFirstName());
-            lastName.setText(getLastName());
-            prevCourseLoad.setText(getPrevCourseLoad());
-            currCourseLoad.setText(getCurrCourseLoad());
-        });
-
+        populateProfessors();
         // Initialize back and confirmation button
         back(back, "Go Back To Home Screen", "Click ok to go back to home screen.", true);
         back(confirm, "Confirm Deletion", "Click 'OK' to delete the faculty, or 'Cancel' to cancel the following action.", false);
     }
 
     /**
-     * Set the stage of the scene
-     * @param stage the stage we want to use
+     * Populate the faculty dropdown with the professors from the database
      */
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    /**
-     * Iterate through the list of "faculty" table from the database and insert the faculty id
-     * into the faculty id drop-down
-     */
-    private void getFacultyID() {
-        JSONArray faculty = DatabaseStatic.getData("faculty");
-        for (Object jsonObject: faculty) {
-            JSONObject job = (JSONObject)jsonObject;
-            job.put("faculty_id", String.valueOf( job.get("faculty_id")));
-            facultyID.getItems().add((String) job.get("faculty_id"));
+    private void populateProfessors() {
+        faculty.getItems().clear();
+        professors = new FacultyFactory().createFaculty();
+        for (Faculty professor: professors) {
+            faculty.getItems().add(professor.toString());
         }
-    }
-
-    /**
-     * Iterate through the lists of "faculty" table from the database and find the matching selected
-     * faculty id and retrieve that faculty's title
-     * @return the title of the faculty
-     */
-    private String getTitle() {
-        String result = null;
-        // References to user selected faculty id
-        if (!(facultyID.getValue() == null)) {
-            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-            // Iterate through the faculty table
-            JSONArray faculty = DatabaseStatic.getData("faculty");
-            for (Object jsonObject: faculty) {
-                JSONObject job = (JSONObject)jsonObject;
-                job.put("title_id", String.valueOf( job.get("title_id")));
-                // If matching selected faculty id then set result equal to title and break
-                if (job.get("faculty_id").equals(selectedFaculty)) {
-                    result = (String) job.get("title_id");
-                    break;
-                }
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * Iterate through the lists of "faculty" table from the database and find the matching selected
-     * faculty id and retrieve that faculty's first name
-     * @return the first name of the faculty
-     */
-    private String getFirstName() {
-        String result = null;
-        // References to user selected faculty id
-        if (!(facultyID.getValue() == null)) {
-            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-            // Iterate through the faculty table
-            JSONArray faculty = DatabaseStatic.getData("faculty");
-            for (Object jsonObject : faculty) {
-                JSONObject job = (JSONObject) jsonObject;
-                // If matching selected faculty id then set result equal to first name and break
-                if (job.get("faculty_id").equals(selectedFaculty)) {
-                    result = (String) job.get("faculty_first");
-                    break;
-                }
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * Iterate through the lists of "faculty" table from the database and find the matching selected
-     * faculty id and retrieve that faculty's first name
-     * @return the first name of the faculty
-     */
-    private String getLastName() {
-        String result = null;
-        // References to user selected faculty id
-        if (!(facultyID.getValue() == null)) {
-            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-            // Iterate through the faculty table
-            JSONArray faculty = DatabaseStatic.getData("faculty");
-            for (Object jsonObject : faculty) {
-                JSONObject job = (JSONObject) jsonObject;
-                // If matching selected faculty id then set result equal to last name and break
-                if (job.get("faculty_id").equals(selectedFaculty)) {
-                    result = (String) job.get("faculty_last");
-                    break;
-                }
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * Iterate through the lists of "faculty" table from the database and find the matching selected
-     * faculty id and retrieve that faculty's previous course load
-     * @return the previous course load of the faculty
-     */
-    private String getPrevCourseLoad() {
-        String result = null;
-        // References to user selected faculty id
-        if (!(facultyID.getValue() == null)) {
-            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-            // Iterate through the faculty table
-            JSONArray faculty = DatabaseStatic.getData("faculty");
-            for (Object jsonObject : faculty) {
-                JSONObject job = (JSONObject) jsonObject;
-                job.put("prev_load", String.valueOf(job.get("prev_load")));
-                // If matching selected faculty id then set result equal to previous course load and break
-                if (job.get("faculty_id").equals(selectedFaculty)) {
-                    result = (String) job.get("prev_load");
-                    break;
-                }
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * Iterate through the lists of "faculty" table from the database and find the matching selected
-     * faculty id and retrieve that faculty's current course load
-     * @return the current course load of the faculty
-     */
-    private String getCurrCourseLoad() {
-        String result = null;
-        // References to user selected faculty id
-        if (!(facultyID.getValue() == null)) {
-            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
-            // Iterate through the faculty table
-            JSONArray faculty = DatabaseStatic.getData("faculty");
-            for (Object jsonObject : faculty) {
-                JSONObject job = (JSONObject) jsonObject;
-                job.put("curr_load", String.valueOf(job.get("curr_load")));
-                // If matching selected faculty id then set result equal to current course load and break
-                if (job.get("faculty_id").equals(selectedFaculty)) {
-                    result = (String) job.get("curr_load");
-                    break;
-                }
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * Clear all the text-fields from the scene
-     */
-    private void clearTextField() {
-        title.clear();
-        firstName.clear();
-        lastName.clear();
-        prevCourseLoad.clear();
-        currCourseLoad.clear();
     }
 
     /**
@@ -250,44 +86,26 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
     private boolean confirmButton() {
         boolean result = true;
         // If drop-down iss not empty
-        if (!(facultyID.getSelectionModel().isEmpty())) {
-            // The user selected faculty id
-            //Integer facultyIDValue = Integer.parseInt(facultyID.getValue());
-            String facultyIDValue = facultyID.getValue();
-            // The "faculty" table from the database
-            JSONArray faculty = DatabaseStatic.getData("faculty");
-
-            // Iterate through the "faculty" table and find matching JSON object to the user's request
-            for (Object jsonObject: faculty) {
-                JSONObject job = (JSONObject) jsonObject;
-                // If JSON object contain the user's selected request
-                if (job.get("faculty_id").equals(Integer.parseInt(facultyIDValue))) {
-                    System.out.println(job);
-                    job.remove("prev_load");
-                    job.remove("curr_load");
-                    job.remove("title_id");
-                    job.remove("faculty_last");
-                    job.remove("faculty_first");
-                    job.put("faculty_id", facultyIDValue);
-                    System.out.println(job);
-                    // Delete the JSON object from the "faculty" table from the database
-                    DatabaseStatic.deleteData("faculty", job);
-                    // Set faculty id drop-down back to blank default
-                    facultyID.getSelectionModel().clearSelection();
-                    // Clear all the text-fields
-                    clearTextField();
-                    break;
-                }
+        if (faculty.getCheckModel().isEmpty()) {
+            new MyAlert("No Faculty Selected", "Please Select A Faculty To Delete",
+                    Alert.AlertType.ERROR).show();
+            return false;
+        } else {
+            for (int prof : faculty.getCheckModel().getCheckedIndices()) {
+                deleteProfessor(professors.get(prof));
             }
+            populateProfessors();
+            return true;
         }
-        // No faculty id has been selected show an error alert
-        else {
-            result = false;
-            MyAlert createAlert = new MyAlert("No Faculty Selected", "Please Select A Faculty To Delete",
-                    Alert.AlertType.ERROR);
-            createAlert.show();
-        }
-        return result;
+    }
+
+    /**
+     * Builds the string to delete the professor from the database
+     * @param faculty the faculty to delete
+     */
+    private void deleteProfessor(Faculty faculty) {
+        String deletedProfessor = "faculty/" + faculty.getFacultyId();
+        DatabaseStatic.deleteData(deletedProfessor, null);
     }
 
     /**
@@ -337,6 +155,17 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
         }
     }
 
+    /**
+     * Set the stage of the scene
+     * @param stage the stage we want to use
+     */
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    /**
+     * Goes to the homepage
+     */
     @FXML
     public void goBack() {
         cs.goToHomepage(stage);

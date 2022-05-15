@@ -21,22 +21,22 @@ import java.util.ResourceBundle;
  */
 public class AddCourseToDatabaseController implements Initializable {
     @FXML
-    TextField classNum;
+    private TextField classNum;
 
     @FXML
-    TextField className;
+    private TextField className;
 
     @FXML
-    TextField sectionNum;
+    private TextField sectionNum;
 
     @FXML
-    ComboBox<String> deptName;
+    private ComboBox<String> deptName;
 
     @FXML
-    Button submit_button;
+    private Button submitButton;
 
     @FXML
-    Button back_button;
+    private Button backButton;
 
     private Stage stage;
 
@@ -45,7 +45,10 @@ public class AddCourseToDatabaseController implements Initializable {
      */
     private final ChangeScene cs = new ChangeScene();
 
-
+    /**
+     * The constructor for the AddCourseToDatabaseController
+     * Not used because class implements initializable
+     */
     public AddCourseToDatabaseController() {}
 
     /**
@@ -64,6 +67,10 @@ public class AddCourseToDatabaseController implements Initializable {
 
     }
 
+    /**
+     * Sets the stage for the class
+     * @param stage the stage to set
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -77,21 +84,18 @@ public class AddCourseToDatabaseController implements Initializable {
         //checking if user inputs are entered:
         if (deptName.getSelectionModel().isEmpty()) {
             warning = true;
-            MyAlert createAlert = new MyAlert("No Department Selected", "Please Select A Department",
-                    Alert.AlertType.ERROR);
-            createAlert.show();
+            new MyAlert("No Department Selected", "Please Select A Department",
+                    Alert.AlertType.ERROR).show();
         }
         if (classNum.getText().isBlank()) {
             warning = true;
-            MyAlert createAlert = new MyAlert("No Class Number", "Please Select A Class Number",
-                    Alert.AlertType.ERROR);
-            createAlert.show();
+            new MyAlert("No Class Number", "Please Select A Class Number",
+                    Alert.AlertType.ERROR).show();
         }
         if (className.getText().isBlank()) {
             warning = true;
-            MyAlert createAlert = new MyAlert("No Class Name", "Please Select A Class Name",
-                    Alert.AlertType.ERROR);
-            createAlert.show();
+            new MyAlert("No Class Name", "Please Select A Class Name",
+                    Alert.AlertType.ERROR).show();
         }
         //checking if length of course code is 3 and course code is type int:
         if (classNum.getLength() == 3) {
@@ -99,14 +103,13 @@ public class AddCourseToDatabaseController implements Initializable {
                 Integer.parseInt(classNum.getText());
             } catch (NumberFormatException e) {
                 warning = true;
-                MyAlert createAlert = new MyAlert("Invalid ClassNumber", "Please Select A Department",
-                        Alert.AlertType.ERROR);
-                createAlert.show();
+                new MyAlert("Invalid ClassNumber", "Please Select A Department",
+                        Alert.AlertType.ERROR).show();
             }
         } else {
             warning = true;
-            MyAlert createAlert = new MyAlert("Invalid Class Number", "Please Input A Valid Class Number", Alert.AlertType.ERROR);
-            createAlert.show();
+            new MyAlert("Invalid Class Number",
+                    "Please Input A Valid Class Number", Alert.AlertType.ERROR).show();
         }
 
         if (sectionNum.getLength() == 1) {
@@ -114,25 +117,25 @@ public class AddCourseToDatabaseController implements Initializable {
                 Integer.parseInt(sectionNum.getText());
             } catch (NumberFormatException e) {
                 warning = true;
-                MyAlert createAlert = new MyAlert("Invalid section number", "Section must be a number",
-                        Alert.AlertType.ERROR);
-                createAlert.show();
+                new MyAlert("Invalid section number", "Section must be a number",
+                        Alert.AlertType.ERROR).show();
             }
         } else {
             warning = true;
-            MyAlert createAlert = new MyAlert("Invalid section Number", "Section number must be 2 or less digits", Alert.AlertType.ERROR);
-            createAlert.show();
+            new MyAlert("Invalid section Number", "Section number must be 2 or less digits",
+                    Alert.AlertType.ERROR).show();
         }
         if (!warning) {
 
+            // Creates the new class
             JSONObject newClass = new JSONObject();
             newClass.put("dept_code", deptName.getValue());
             newClass.put("class_num", classNum.getText());
             newClass.put("class_name", className.getText());
-
-
+            // Sends the new class to the database
             DatabaseStatic.insertData("class", newClass);
 
+            // Creates the section
             JSONObject newSection = new JSONObject();
             newSection.put("dept_code", deptName.getValue());
             newSection.put("class_num", classNum.getText());
@@ -140,9 +143,10 @@ public class AddCourseToDatabaseController implements Initializable {
             newSection.put("semester", "Spring2022");
             newSection.put("draft", 1);
             newSection.put("capacity", 30);
-
+            // Sends the section to the database
             DatabaseStatic.insertData("section", newSection);
 
+            // Clears the values of the inputs
             deptName.setValue("Dept name");
             classNum.clear();
             className.clear();

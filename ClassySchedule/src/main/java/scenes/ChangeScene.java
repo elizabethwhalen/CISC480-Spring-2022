@@ -19,8 +19,14 @@ import users.FacultyController;
 
 import java.io.IOException;
 
+/**
+ * A class to control the changing of scenes
+ */
 public class ChangeScene {
 
+    /**
+     * Constructs a chage scene class
+     */
     public ChangeScene() {}
 
     /**
@@ -131,6 +137,10 @@ public class ChangeScene {
         stage.show();
     }
 
+    /**
+     * Changes to the scheduler fxml page
+     * @param stage the stage to use
+     */
     public void viewScheduleClicked(Stage stage) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Scheduler.fxml"));
         Parent root = null;
@@ -200,6 +210,10 @@ public class ChangeScene {
         stage.show();
     }
 
+    /**
+     * Changes the scene to the home page
+     * @param stage the stage to use
+     */
     public void goToHomepage(Stage stage) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/Homescreen.fxml"));
         Parent root = null;
@@ -216,7 +230,10 @@ public class ChangeScene {
         stage.show();
     }
 
-
+    /**
+     * Goes to the generate schedule page
+     * @param stage the stage to use for the scene
+     */
     public void goToGenerateSchedule(Stage stage) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/GenerateSchedule.fxml"));
         Parent root = null;
@@ -231,5 +248,4 @@ public class ChangeScene {
         stage.setScene(new Scene(root));
         stage.show();
     }
-
 }

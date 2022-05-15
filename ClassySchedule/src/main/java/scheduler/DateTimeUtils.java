@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+/**
+ * A class for commonly used Date/Time utilities
+ */
 public class DateTimeUtils {
 
     /**

@@ -75,7 +75,7 @@
         </Label>
 
         <TextField fx:id="roomNum" layoutX="166.0" layoutY="134.0" prefHeight="25.0" prefWidth="200.0" />
-        <ChoiceBox fx:id="campusID" layoutX="166.0" layoutY="203.0" prefHeight="25.0" prefWidth="200.0" />
+        <ChoiceBox fx:id="campusId" layoutX="166.0" layoutY="203.0" prefHeight="25.0" prefWidth="200.0" />
         <!--            <ChoiceBox fx:id="type" layoutX="166.0" layoutY="239.0" prefHeight="25.0" prefWidth="200.0" />-->
         <Button fx:id="submitButton" layoutX="144.0" layoutY="308.0" mnemonicParsing="false" onAction="#submitData" text="Confirm" textFill="#5ce85c" />
         <Button fx:id="cancelButton" layoutX="217.0" layoutY="308.0" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="59.0" text="Cancel" textFill="#c32727" />

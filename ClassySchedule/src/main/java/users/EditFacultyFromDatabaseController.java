@@ -2,23 +2,19 @@ package users;
 
 import alert.MyAlert;
 import database.DatabaseStatic;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.fxml.FXML;
+import java.net.URL;
+import java.util.Optional;
+import java.util.ResourceBundle;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import scenes.ChangeScene;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Optional;
-import java.util.ResourceBundle;
 
 public class EditFacultyFromDatabaseController implements Initializable {
 
@@ -44,7 +40,7 @@ public class EditFacultyFromDatabaseController implements Initializable {
      * The faculty id choice box
      */
     @FXML
-    private ChoiceBox<String> facultyID;
+    private ChoiceBox<String> facultyId;
 
     /**
      * The faculty first name
@@ -75,35 +71,71 @@ public class EditFacultyFromDatabaseController implements Initializable {
      */
     private Stage stage;
 
+    /**
+     * The current teach load of the professor
+     */
     @FXML
     private TextField changeCurrLoad;
 
+    /**
+     * The faculty ID
+     */
     @FXML
     private TextField changeFacultyId;
 
+    /**
+     * Faculty first name
+     */
     @FXML
     private TextField changeFirst;
 
+    /**
+     * Faculty last name
+     */
     @FXML
     private TextField changeLast;
 
+    /**
+     * Faculty teach load from the previous semester
+     */
     @FXML
     private TextField changePrevLoad;
 
+    /**
+     * Faculty title
+     */
     @FXML
     private TextField changeTitle;
 
-    private boolean changeFacultyIdVal;
+    /**
+     * Boolean used to determine if faculty ID needs to be updated
+     */
+    private boolean changeFacultyIdVal = false;
 
-    private boolean changeTitleVal;
+    /**
+     * Boolean used to determine if title needs to be updated
+     */
+    private boolean changeTitleVal = false;
 
-    private boolean changeFirstVal;
+    /**
+     * Boolean used to determine if first name needs to be updated
+     */
+    private boolean changeFirstVal = false;
 
-    private boolean changeLastVal;
+    /**
+     * Boolean used to determine if last name needs to be updated
+     */
+    private boolean changeLastVal = false;
 
-    private boolean changePrevVal;
+    /**
+     * Boolean used to determine if previous teach load needs to be updated
+     */
+    private boolean changePrevVal = false;
 
-    private boolean changeCurrVal;
+    /**
+     * Boolean used to determine if current teach load needs to be updated
+     */
+    private boolean changeCurrVal = false;
 
 
     /**
@@ -111,6 +143,12 @@ public class EditFacultyFromDatabaseController implements Initializable {
      */
     private final ChangeScene cs = new ChangeScene();
 
+    /**
+     * Initializes the scene, populates the dropdown menu
+     * and sets callbacks
+     * @param location the url of the fxml
+     * @param resources the resource bundle to be applied to this scene
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Do not allow text-field to be edited
@@ -129,7 +167,7 @@ public class EditFacultyFromDatabaseController implements Initializable {
         changeLast.setVisible(false);
 
         // Initialize faculty id drop-down
-        getFacultyID();
+        getFacultyId();
 
         listener();
 
@@ -138,9 +176,12 @@ public class EditFacultyFromDatabaseController implements Initializable {
         back(confirm, "Confirm Update", "Click 'OK' to update the faculty, or 'Cancel' to cancel the following action.", false);
     }
 
+    /**
+     * Sets up a listener to perform changes to the faculty fields
+     */
     private void listener() {
         // Whenever faculty id is selected/changed
-        facultyID.valueProperty().addListener((observable, oldValue, newValue) -> {
+        facultyId.valueProperty().addListener((observable, oldValue, newValue) -> {
             // Clear all the previous text-fields
             clearTextField();
             // Initialize all the selected text-fields
@@ -151,7 +192,7 @@ public class EditFacultyFromDatabaseController implements Initializable {
             currCourseLoad.setText(getCurrCourseLoad());
 
             // Hide selected variables
-            facultyID.setVisible(false);
+            facultyId.setVisible(false);
             title.setVisible(false);
             firstName.setVisible(false);
             lastName.setVisible(false);
@@ -159,7 +200,7 @@ public class EditFacultyFromDatabaseController implements Initializable {
             currCourseLoad.setVisible(false);
 
             // Initialize user input changes text-fields and show them
-            changeFacultyId.setText(facultyID.getValue());
+            changeFacultyId.setText(facultyId.getValue());
             changeFacultyId.setVisible(true);
             changeTitle.setText(title.getText());
             changeTitle.setVisible(true);
@@ -176,8 +217,8 @@ public class EditFacultyFromDatabaseController implements Initializable {
         changeFacultyId.textProperty().addListener((observable, oldValue, newValue) -> {
             // If the new value is not null and does not equal the selected value,
             // then it is a new value so set its parameter to true to indicate changes
-            if (newValue != null && !newValue.equals(facultyID.getValue())) {
-                setChangeFacultyIdVal(true);
+            if (newValue != null && !newValue.equals(facultyId.getValue())) {
+                changeFacultyIdVal = true;
             }
         });
 
@@ -185,7 +226,7 @@ public class EditFacultyFromDatabaseController implements Initializable {
             // If the new value is not null and does not equal the selected value,
             // then it is a new value so set its parameter to true to indicate changes
             if (newValue != null && !newValue.equals(title.getText())) {
-                setChangeTitleVal(true);
+                changeTitleVal = true;
             }
         });
 
@@ -193,7 +234,7 @@ public class EditFacultyFromDatabaseController implements Initializable {
             // If the new value is not null and does not equal the selected value,
             // then it is a new value so set its parameter to true to indicate changes
             if (newValue != null && !newValue.equals(firstName.getText())) {
-                setChangeFirstVal(true);
+                changeFirstVal = true;
             }
         });
 
@@ -201,7 +242,7 @@ public class EditFacultyFromDatabaseController implements Initializable {
             // If the new value is not null and does not equal the selected value,
             // then it is a new value so set its parameter to true to indicate changes
             if (newValue != null && !newValue.equals(lastName.getText())) {
-                setChangeLastVal(true);
+                changeLastVal = true;
             }
         });
 
@@ -209,7 +250,7 @@ public class EditFacultyFromDatabaseController implements Initializable {
             // If the new value is not null and does not equal the selected value,
             // then it is a new value so set its parameter to true to indicate changes
             if (newValue != null && !newValue.equals(prevCourseLoad.getText())) {
-                setChangePrevVal(true);
+                changePrevVal = true;
             }
         });
 
@@ -217,7 +258,7 @@ public class EditFacultyFromDatabaseController implements Initializable {
             // If the new value is not null and does not equal the selected value,
             // then it is a new value so set its parameter to true to indicate changes
             if (newValue != null && !newValue.equals(currCourseLoad.getText())) {
-                setChangeCurrVal(true);
+                changeCurrVal = true;
             }
         });
     }
@@ -234,12 +275,12 @@ public class EditFacultyFromDatabaseController implements Initializable {
      * Iterate through the list of "faculty" table from the database and insert the faculty id
      * into the faculty id drop-down
      */
-    private void getFacultyID() {
+    private void getFacultyId() {
         JSONArray faculty = DatabaseStatic.getData("faculty");
         for (Object jsonObject: faculty) {
             JSONObject job = (JSONObject)jsonObject;
             job.put("faculty_id", String.valueOf( job.get("faculty_id")));
-            facultyID.getItems().add((String) job.get("faculty_id"));
+            facultyId.getItems().add((String) job.get("faculty_id"));
         }
     }
 
@@ -251,8 +292,8 @@ public class EditFacultyFromDatabaseController implements Initializable {
     private String getTitle() {
         String result = null;
         // References to user selected faculty id
-        if (!(facultyID.getValue() == null)) {
-            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
+        if (!(facultyId.getValue() == null)) {
+            Integer selectedFaculty = Integer.parseInt(facultyId.getValue());
             // Iterate through the faculty table
             JSONArray faculty = DatabaseStatic.getData("faculty");
             for (Object jsonObject: faculty) {
@@ -277,8 +318,8 @@ public class EditFacultyFromDatabaseController implements Initializable {
     private String getFirstName() {
         String result = null;
         // References to user selected faculty id
-        if (!(facultyID.getValue() == null)) {
-            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
+        if (!(facultyId.getValue() == null)) {
+            Integer selectedFaculty = Integer.parseInt(facultyId.getValue());
             // Iterate through the faculty table
             JSONArray faculty = DatabaseStatic.getData("faculty");
             for (Object jsonObject : faculty) {
@@ -302,8 +343,8 @@ public class EditFacultyFromDatabaseController implements Initializable {
     private String getLastName() {
         String result = null;
         // References to user selected faculty id
-        if (!(facultyID.getValue() == null)) {
-            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
+        if (!(facultyId.getValue() == null)) {
+            Integer selectedFaculty = Integer.parseInt(facultyId.getValue());
             // Iterate through the faculty table
             JSONArray faculty = DatabaseStatic.getData("faculty");
             for (Object jsonObject : faculty) {
@@ -327,8 +368,8 @@ public class EditFacultyFromDatabaseController implements Initializable {
     private String getPrevCourseLoad() {
         String result = null;
         // References to user selected faculty id
-        if (!(facultyID.getValue() == null)) {
-            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
+        if (!(facultyId.getValue() == null)) {
+            Integer selectedFaculty = Integer.parseInt(facultyId.getValue());
             // Iterate through the faculty table
             JSONArray faculty = DatabaseStatic.getData("faculty");
             for (Object jsonObject : faculty) {
@@ -353,8 +394,8 @@ public class EditFacultyFromDatabaseController implements Initializable {
     private String getCurrCourseLoad() {
         String result = null;
         // References to user selected faculty id
-        if (!(facultyID.getValue() == null)) {
-            Integer selectedFaculty = Integer.parseInt(facultyID.getValue());
+        if (!(facultyId.getValue() == null)) {
+            Integer selectedFaculty = Integer.parseInt(facultyId.getValue());
             // Iterate through the faculty table
             JSONArray faculty = DatabaseStatic.getData("faculty");
             for (Object jsonObject : faculty) {
@@ -390,39 +431,35 @@ public class EditFacultyFromDatabaseController implements Initializable {
      */
     private boolean confirmButton() {
         boolean result = true;
-        if (isChangeFacultyIdVal() || isChangeTitleVal() || isChangeFirstVal() || isChangeLastVal() || isChangePrevVal() || isChangeCurrVal()) {
+        if (changeFacultyIdVal || changeTitleVal || changeFirstVal || changeLastVal|| changePrevVal || changeCurrVal) {
             JSONArray faculty = DatabaseStatic.getData("faculty");
-            String facultyIDValue = facultyID.getValue();
+            String facultyIdValue = facultyId.getValue();
 
             // Iterate through the "faculty" table and find matching JSON object to the user's request
             for (Object jsonObject : faculty) {
                 JSONObject job = (JSONObject) jsonObject;
-                if (job.get("faculty_id").equals(Integer.parseInt(facultyIDValue))) {
-                    try {
+                if (job.get("faculty_id").equals(Integer.parseInt(facultyIdValue))) {
                         JSONObject data = new JSONObject();
-                        if (isChangeFacultyIdVal()) {
+                        if (changeFacultyIdVal) {
                             data.put("faculty_id", changeFacultyId.getText());
                         }
-                        if (isChangeTitleVal()) {
+                        if (changeTitleVal) {
                             data.put("title_id", changeTitle.getText());
                         }
-                        if (isChangeFirstVal()) {
+                        if (changeFirstVal) {
                             data.put("faculty_first", changeFirst.getText());
                         }
-                        if (isChangeLastVal()) {
+                        if (changeLastVal) {
                             data.put("faculty_last", changeLast.getText());
                         }
-                        if (isChangePrevVal()) {
+                        if (changePrevVal) {
                             data.put("prev_load", changePrevLoad.getText());
                         }
-                        if (isChangeCurrVal()) {
+                        if (changeCurrVal) {
                             data.put("curr_load", changeCurrLoad.getText());
                         }
                         System.out.println(data);
                         DatabaseStatic.updateData("faculty", job, data);
-                    } catch (URISyntaxException | IOException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         } else {
@@ -555,53 +592,5 @@ public class EditFacultyFromDatabaseController implements Initializable {
     @FXML
     public void goToViewSchedule() {
         cs.viewScheduleClicked(stage);
-    }
-
-    public boolean isChangeFacultyIdVal() {
-        return changeFacultyIdVal;
-    }
-
-    public void setChangeFacultyIdVal(boolean changeFacultyIdVal) {
-        this.changeFacultyIdVal = changeFacultyIdVal;
-    }
-
-    public boolean isChangeTitleVal() {
-        return changeTitleVal;
-    }
-
-    public void setChangeTitleVal(boolean changeTitleVal) {
-        this.changeTitleVal = changeTitleVal;
-    }
-
-    public boolean isChangeFirstVal() {
-        return changeFirstVal;
-    }
-
-    public void setChangeFirstVal(boolean changeFirstVal) {
-        this.changeFirstVal = changeFirstVal;
-    }
-
-    public boolean isChangeLastVal() {
-        return changeLastVal;
-    }
-
-    public void setChangeLastVal(boolean changeLastVal) {
-        this.changeLastVal = changeLastVal;
-    }
-
-    public boolean isChangePrevVal() {
-        return changePrevVal;
-    }
-
-    public void setChangePrevVal(boolean changePrevVal) {
-        this.changePrevVal = changePrevVal;
-    }
-
-    public boolean isChangeCurrVal() {
-        return changeCurrVal;
-    }
-
-    public void setChangeCurrVal(boolean changeCurrVal) {
-        this.changeCurrVal = changeCurrVal;
     }
 }
