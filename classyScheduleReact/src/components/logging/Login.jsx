@@ -218,7 +218,8 @@ export default function Login(props) {
                   {/* Forgot Password link to reset password */}
                   <Grid item xs={6}>
                     <Typography variant='h8'>
-                      <Link to='/ForgotPassword' className={classes.forgotPass}>
+                      {/* Link naviagtes to login/does not change view - Forgot Password Functionality not supported */}
+                      <Link to='/' className={classes.forgotPass}>
                         Forgot password?
                       </Link>
                     </Typography>
@@ -255,7 +256,3 @@ export default function Login(props) {
     </Paper>
   )
 }
-
-// Login.propTypes = {
-//   setToken: PropTypes.func.isRequired
-// };
