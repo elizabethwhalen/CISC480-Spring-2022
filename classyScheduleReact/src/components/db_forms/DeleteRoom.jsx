@@ -53,30 +53,6 @@ export default function DeleteRoom() {
     const token = sessionStorage.getItem('token');
     const classes = useStyles(); // call the useStyle hook
 
-    // This function will create a Axios request to DELETE a room when the form is submitted
-    const submitForm = (event) => {
-        event.preventDefault();
-        if (roomNum !== '' && building !== '') {
-            // Config data for DELETE https request
-            const config = {
-                method: 'delete',
-                url: `https://classy-api.ddns.net/v2/room/${building}/${roomNum}`,
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-            };
-            // https request Promise executed with Config settings.
-            axios(config).then(() => {
-                // good response. room was removed from the database
-                setDeleted(1);
-            }).catch(() => {
-                // bad response: verify that room exists
-                setDeleted(-1);
-            });
-        }
-    };
-
     // This function populates the building list used in the dropdown
     const getBuildingList = () => {
         // list will hold building codes during axios response
@@ -143,6 +119,31 @@ export default function DeleteRoom() {
     useEffect(() => {
         getBuildingList();
     }, [])
+
+    // This function will create a Axios request to DELETE a room when the form is submitted
+    const submitForm = (event) => {
+        event.preventDefault();
+        if (roomNum !== '' && building !== '') {
+            // Config data for DELETE https request
+            const config = {
+                method: 'delete',
+                url: `https://classy-api.ddns.net/v2/room/${building}/${roomNum}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            };
+            // https request Promise executed with Config settings.
+            axios(config).then(() => {
+                // good response. room was removed from the database
+                setDeleted(1);
+                getRoomNumList(building);
+            }).catch(() => {
+                // bad response: verify that room exists
+                setDeleted(-1);
+            });
+        }
+    };
 
     // Return the UI of the component
     return (

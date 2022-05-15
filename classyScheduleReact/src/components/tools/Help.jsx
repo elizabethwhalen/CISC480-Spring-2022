@@ -18,11 +18,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-// new Component 'Help'
+// Main function to render the UI for the Help page
 export default function Help() {
     const classes = useStyles();
-
-    
+    // Return the UI
     return (
         <Paper elevation={0} className={classes.container} >
             <Grid container spacing={3}>
