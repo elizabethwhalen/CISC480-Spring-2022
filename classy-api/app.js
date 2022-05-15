@@ -2,7 +2,7 @@
 // serve all submitted HTTP requests. Some key features of this file include:
 // 1. We read in a hidden seed (for bcrypt) and a hidden password (for DB connection)
 // 2. Allow users to login to the API, hash their password, and compare against hashed db in table
-// 3. Handle any other HTTP request...
+// 3. Allow users to update or query the Database through the use of HTTP Requests
 //
 // Authors: Joe Lambrecht, Gabbie Bolcer, Emma Torres, Jonas Bull, and Ben Frey
 // Date: 11 May 2022
@@ -15,22 +15,22 @@
 //
 
 // Base packages
-var express = require('express');
-var path = require('path');
-var mysql = require('mysql');
-var fs = require('fs')
+const express = require('express');
+const path = require('path');
+const mysql = require('mysql');
+const fs = require('fs')
 
 // Login, token, and MFA (email sending) packages
-var bcrypt = require('bcrypt');
-var jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 const sgMail = require('@sendgrid/mail');
 //require('dotenv').config(); // This might be an issue moving forward on deployment
 
 // Developmental setting: 0 for local dev, or 1 for production (Azure deployment) 
-var dev = 1;
+const dev = 1;
 
 // Setup RESTful app
-var app = express();
+const app = express();
 
 // Response in JSON
 app.use(express.json());
@@ -80,7 +80,7 @@ makeConnection((password)=> {
     let schema = "cs_dev" // "db_dev" use for development Database Team
 
     // Connect to the Azure database
-    var config =
+    const config =
     {
         host: 'classy-schedule-database.mysql.database.azure.com',
         user: 'db_test',
@@ -332,7 +332,6 @@ function check_str_type(value, res, str_size = null){
 //***LOGIN***
 var MIN_PASSWORD_LENGTH = 8;
 var MAX_PASSWORD_LENGTH = 16;
-var users = {};
 
 //login
 app.post('/v3/login', async function (req, res) {
@@ -520,7 +519,7 @@ app.get('/v2/building', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -584,7 +583,7 @@ app.post('/v2/building', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -628,7 +627,7 @@ app.put('/v2/building/:building_code_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -668,7 +667,7 @@ app.delete('/v2/building/:building_code_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -707,7 +706,7 @@ app.get('/v2/class', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -784,7 +783,7 @@ app.post('/v2/class', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -828,7 +827,7 @@ app.put('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -870,7 +869,7 @@ app.delete('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -911,7 +910,7 @@ app.get('/v2/class_feature', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -988,7 +987,7 @@ app.post('/v2/class_feature', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1032,7 +1031,7 @@ app.put('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req, re
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1072,7 +1071,7 @@ app.delete('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req,
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1113,7 +1112,7 @@ app.get('/v2/dept', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1177,7 +1176,7 @@ app.post('/v2/dept', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1220,7 +1219,7 @@ app.put('/v2/dept/:dept_code_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1260,7 +1259,7 @@ app.delete('/v2/dept/:dept_code_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1299,7 +1298,7 @@ app.get('/v2/faculty', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1415,7 +1414,7 @@ app.post('/v2/faculty', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1462,7 +1461,7 @@ app.put('/v2/faculty/:faculty_id_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1507,7 +1506,7 @@ app.delete('/v2/faculty/:faculty_id_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1545,7 +1544,7 @@ app.get('/v2/faculty_class', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1639,7 +1638,7 @@ app.post('/v2/faculty_class', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1682,7 +1681,7 @@ app.put('/v2/faculty_class/:faculty_id_id/:dept_code_id/:class_num_id', (req, re
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1723,7 +1722,7 @@ app.delete('/v2/faculty_class/:faculty_id_id/:dept_code_id/:class_num_id', (req,
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1762,7 +1761,7 @@ app.get('/v2/faculty_feature', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1838,7 +1837,7 @@ app.post('/v2/faculty_feature', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1880,7 +1879,7 @@ app.put('/v2/faculty_feature/:faculty_id_id/:feature_id_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1919,7 +1918,7 @@ app.delete('/v2/faculty_feature/:faculty_id_id/:feature_id_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -1957,7 +1956,7 @@ app.get('/v2/faculty_other_request', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2020,7 +2019,7 @@ app.post('/v2/faculty_other_request', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2061,7 +2060,7 @@ app.put('/v2/faculty_other_request/:faculty_id_id/:request_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2098,7 +2097,7 @@ app.delete('/v2/faculty_other_request/:faculty_id_id/:request_id', (req, res) =>
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2135,7 +2134,7 @@ app.get('/v2/faculty_timeslot', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2211,7 +2210,7 @@ app.post('/v2/faculty_timeslot', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2253,7 +2252,7 @@ app.put('/v2/faculty_timeslot/:faculty_id_id/:time_id_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2291,7 +2290,7 @@ app.delete('/v2/faculty_timeslot/:faculty_id_id/:time_id_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2328,7 +2327,7 @@ app.get('/v2/feature', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2392,7 +2391,7 @@ app.post('/v2/feature', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2435,7 +2434,7 @@ app.put('/v2/feature/:feature_id_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2474,7 +2473,7 @@ app.delete('/v2/feature/:feature_id_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2513,7 +2512,7 @@ app.get('/v2/login', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2608,7 +2607,7 @@ app.put('/v2/login/:email_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2659,7 +2658,7 @@ app.put('/v2/login/:email_id/change_password', async (req, res) => {
         return res.status(500).send("Error encrypting data, please try again")
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2706,7 +2705,7 @@ app.delete('/v2/login/:email_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2747,7 +2746,7 @@ app.get('/v2/meets', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2888,7 +2887,7 @@ app.post('/v2/meets', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2938,7 +2937,7 @@ app.put('/v2/meets/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:dra
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -2984,7 +2983,7 @@ app.delete('/v2/meets/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -3029,7 +3028,7 @@ app.get('/v2/room', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -3105,7 +3104,7 @@ app.post('/v2/room', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -3149,7 +3148,7 @@ app.put('/v2/room/:building_code_id/:room_num_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -3189,7 +3188,7 @@ app.delete('/v2/room/:building_code_id/:room_num_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -3229,7 +3228,7 @@ app.get('/v2/room_feature', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -3305,7 +3304,7 @@ app.post('/v2/room_feature', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -3349,7 +3348,7 @@ app.put('/v2/room_feature/:building_code_id/:room_num_id/:feature_id_id', (req, 
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -3389,7 +3388,7 @@ app.delete('/v2/room_feature/:building_code_id/:room_num_id/:feature_id_id', (re
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -3429,7 +3428,7 @@ app.get('/v2/section', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -3544,7 +3543,7 @@ app.post('/v2/section', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -3591,7 +3590,7 @@ app.put('/v2/section/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:d
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -3634,7 +3633,7 @@ app.delete('/v2/section/:dept_code_id/:class_num_id/:section_num_id/:semester_id
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -3677,7 +3676,7 @@ app.get('/v2/teaches', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -3792,7 +3791,7 @@ app.post('/v2/teaches', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -3839,7 +3838,7 @@ app.put('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:d
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -3882,7 +3881,7 @@ app.delete('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -3925,7 +3924,7 @@ app.get('/v2/timeslot', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -4014,7 +4013,7 @@ app.post('/v2/timeslot', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -4057,7 +4056,7 @@ app.put('/v2/timeslot/:time_id_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -4097,7 +4096,7 @@ app.delete('/v2/timeslot/:time_id_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -4136,7 +4135,7 @@ app.get('/v2/title', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -4212,7 +4211,7 @@ app.post('/v2/title', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -4256,7 +4255,7 @@ app.put('/v2/title/:title_id_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -4297,7 +4296,7 @@ app.delete('/v2/title/:title_id_id', (req, res) => {
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
@@ -4559,7 +4558,6 @@ function verify(token){
 	if (!token) {
 		return [401,"Unauthorized no token"]
 	}
-
 	var payload
 	try {
 		// Parse the JWT string and store the result in `payload`.
@@ -4598,12 +4596,12 @@ app.get('/v3/meets/ext', (req, res) =>{
         token = req.body.token
     }
 
-    var verifyOutput = verify(token)
+    const verifyOutput = verify(token)
     const status=verifyOutput[0]
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
-        var query = `SELECT DISTINCT
+        const query = `SELECT DISTINCT
                                 m.dept_code,
                                 m.class_num,
                                 m.section_num,
