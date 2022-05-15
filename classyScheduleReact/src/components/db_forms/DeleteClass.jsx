@@ -214,7 +214,7 @@ export default function DeleteClass() {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={0} md={4} />
+                            <Grid item xs={12} md={4} />
                             
                             {/* POST-SUBMIT STATUS MESSAGES */}
                             {(deleted === 1) && (
