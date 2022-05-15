@@ -24,7 +24,7 @@ const fs = require('fs')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const sgMail = require('@sendgrid/mail');
-//require('dotenv').config(); // This might be an issue moving forward on deployment
+require('dotenv').config();
 
 // Developmental setting: 0 for local dev, or 1 for production (Azure deployment) 
 const dev = 1;
@@ -47,24 +47,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 // so that the database connection not make too early
 let db_password;
 function makeConnection(callback) {
-    fs.readFile('./hidden/db_password.txt', (err, data) => {
-        if (err) throw err;
-        db_password = data.toString();
-        callback(db_password);
-    });
+    db_password = process.env.DB_DEV_PASSWORD;
 }
 // Read in seed used for jwt. We don't need callback function because hashing
 // doe not occur right when server is initiated.
 let secretkey;
 try {
-    secretkey = fs.readFileSync('./hidden/jwt_seed.txt').toString();
+    secretkey = process.env.JWT_SEED;
 } catch {
     throw "Server error: security issue. Please try again later";
 }
 // Read in API key used for sendgrid email
 let sg_key;
 try {
-    sg_key = fs.readFileSync('./hidden/sg_key.txt').toString();
+    sg_key = process.env.SENDGRID_API_KEY;
     sgMail.setApiKey(sg_key);
 } catch {
     throw "Server error: security issue. Please try again later";
