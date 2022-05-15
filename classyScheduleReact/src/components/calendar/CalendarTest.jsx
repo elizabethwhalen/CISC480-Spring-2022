@@ -5,17 +5,15 @@ import moment from "moment"
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop"
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css"
 import "react-big-calendar/lib/css/react-big-calendar.css"
-import constraints from 'constraint-solver'
 import { RRule } from 'rrule'
 import axios from 'axios'
 import EditClassForm from './EditClassForm'
-import { listItemTextClasses } from "@mui/material"
 
 const localizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 export default function CalendarTest() {
-    const [events, setEvents] = React.useState([]);//getDatafromAPI
+    const [events, setEvents] = React.useState([]);
     const [isEdit, setEdit] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [courseList, setCourseList] = React.useState([]);
@@ -320,7 +318,7 @@ export default function CalendarTest() {
     const getDatafromAPI = () => {
         // list will hold new event data during axios response
         const list = [];
-        
+
         // Config data for https request.
         const config = {
             method: 'get',
@@ -333,7 +331,7 @@ export default function CalendarTest() {
         // https request Promise executed with Config settings.
         axios(config).then((response) => {
             console.log(response);
-            
+
             // pasrse JSON for DATA we need
             response.data.map((e) => {
                 // Things we need:
@@ -355,18 +353,18 @@ export default function CalendarTest() {
                 list.push(e.time_start);
                 list.push(e.time_end);
                 list.push(e.day_of_week);
-                
-                for (let i = 0; i < e.day_of_week; i++) {
+
+                for (let i = 0; i < e.day_of_week.length; i += 1) {
                     console.log(e.day_of_week.charAt(i));
                 }
-                
-                
+
+
                 return list;
             })
             // use function to setBuildingList from response
-            console.log("here is our list " + list);
-            //handleEventUpdate(list);
-            
+            // console.log("here is our list " + list);
+            // handleEventUpdate(list);
+
         }).catch((error) => {
             console.log(error);
         });
