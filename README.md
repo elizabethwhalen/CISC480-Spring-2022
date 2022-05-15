@@ -6,4 +6,4 @@ Production API access: https://classy-api.ddns.net (please see [docs/versioning.
 Developmental API access: https://classy-dev.ddns.net (only for Database Team development)
 
 ## Network Structure
-![Alt text](docs/network-layout.png?raw=true "Network Layout")
+![Alt text](docs/figures/network-layout.png?raw=true "Network Layout")
