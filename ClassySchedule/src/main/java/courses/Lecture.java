@@ -72,6 +72,6 @@ public class Lecture implements Course {
     }
 
     public String toString() {
-        return getDeptCode() + " " + getClassNum() + " " + getClassName();
+        return getDeptCode() + " " + getClassNum() + "-" + getSectionNum() + " " + getClassName();
     }
 }

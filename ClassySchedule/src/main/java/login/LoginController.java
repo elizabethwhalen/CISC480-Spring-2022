@@ -23,7 +23,6 @@ import java.util.ResourceBundle;
  * Controller for the login page, which is the fist page a user sees. If the login is successful, users will be taken to
  * the homepage.
  */
-
 public class LoginController implements Initializable {
 
     /**

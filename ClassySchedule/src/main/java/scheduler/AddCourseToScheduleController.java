@@ -25,13 +25,14 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Date;
 import java.text.SimpleDateFormat;
-
 import java.net.URL;
 import java.text.ParseException;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+
+
+import static scheduler.DateTimeUtils.convertToDayOFWeek;
+import static scheduler.DateTimeUtils.convertToLocalDateTimeViaInstant;
 
 /**
  * The controller for adding the course to the scheduler
@@ -169,14 +170,13 @@ public class AddCourseToScheduleController implements Initializable {
         Faculty prof = faculty.get(professor.getSelectionModel().getSelectedIndex());
         Room rm = rooms.get(room.getSelectionModel().getSelectedIndex());
 
-        JSONArray test = DatabaseStatic.meetsQuery();
         JSONObject meets = new JSONObject();
         //dept_code , class_num, section_num, semester, draft, building_code, room_num, time_id
         meets.put("dept_code", crs.getDeptCode());
         meets.put("class_num", crs.getClassNum());
-        meets.put("section_num", 1);
-        meets.put("semester", "Spring2022");
-        meets.put("draft", 1);
+        meets.put("section_num", crs.getSectionNum());
+        meets.put("semester", crs.getSemester());
+        meets.put("draft", crs.getDraft());
         meets.put("building_code", rm.getBuildingCode());
         meets.put("room_num", rm.getRoomNum());
         meets.put("time_id", timeslot.getTimeID());
@@ -185,9 +185,9 @@ public class AddCourseToScheduleController implements Initializable {
         // dept_code, class_num, section_num, semester, draft, faculty_id
         teaches.put("dept_code", crs.getDeptCode());
         teaches.put("class_num", crs.getClassNum());
-        teaches.put("section_num", 1);
-        teaches.put("semester", "Spring2022");
-        teaches.put("draft", 1);
+        teaches.put("section_num", crs.getSectionNum());
+        teaches.put("semester", crs.getSemester());
+        teaches.put("draft", crs.getDraft());
         teaches.put("faculty_id", prof.getFacultyID());
         DatabaseStatic.insertData("teaches", teaches);
     }
@@ -213,35 +213,6 @@ public class AddCourseToScheduleController implements Initializable {
 
         return appointmentFactory.createAppointments();
     }
-
-    /**
-     * Converts a character to a dayOfTheWeek object
-     * @param day the character to convert
-     * @return the day of the week corresponding with the day
-     */
-    public DayOfTheWeek convertToDayOFWeek(String day) {
-        return switch (day.toUpperCase()) {
-            case "M" -> DayOfTheWeek.MONDAY;
-            case "T" -> DayOfTheWeek.TUESDAY;
-            case "W" -> DayOfTheWeek.WEDNESDAY;
-            case "R" -> DayOfTheWeek.THURSDAY;
-            case "F" -> DayOfTheWeek.FRIDAY;
-            default -> null;
-        };
-
-    }
-
-    /**
-     * Converts a date to local date time
-     * @param dateToConvert the date to be converted
-     * @return a date in local date time format
-     */
-    public LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
-        return dateToConvert.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
-    }
-
 
     /**
      * This method validates that each data field necessary has the required and correct data type

@@ -18,11 +18,12 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static scheduler.DateTimeUtils.convertToDayOFWeek;
+import static scheduler.DateTimeUtils.convertToLocalDateTimeViaInstant;
 
 // TODO: Add comments
 public class SchedulerController implements Initializable {
@@ -131,34 +132,6 @@ public class SchedulerController implements Initializable {
 
             addCourse(appointmentFactory.createAppointments());
         }
-    }
-    /**
-     * Converts a character to a dayOfTheWeek object
-     * @param day the character to convert
-     * @return the day of the week corresponding with the day
-     */
-    public DayOfTheWeek convertToDayOFWeek(String day) {
-        return switch (day.toUpperCase()) {
-            case "M" -> DayOfTheWeek.MONDAY;
-            case "T" -> DayOfTheWeek.TUESDAY;
-            case "W" -> DayOfTheWeek.WEDNESDAY;
-            case "R" -> DayOfTheWeek.THURSDAY;
-            case "F" -> DayOfTheWeek.FRIDAY;
-            default -> null;
-        };
-    }
-
-
-    /**
-     * Converts a date to local date time
-     *
-     * @param dateToConvert the date to be converted
-     * @return a date in local date time format
-     */
-    public LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
-        return dateToConvert.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
     }
 
     /**

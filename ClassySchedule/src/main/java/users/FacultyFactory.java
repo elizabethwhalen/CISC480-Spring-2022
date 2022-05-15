@@ -10,8 +10,7 @@ import java.util.List;
 
 public class FacultyFactory {
 
-    public FacultyFactory() {
-    }
+    public FacultyFactory() {}
 
     public List<Faculty> createFaculty() {
         JSONArray faculty = DatabaseStatic.getData("faculty");
@@ -32,7 +31,6 @@ public class FacultyFactory {
 
             try {
                 prof.setTitleID(professor.getInt("title_id"));
-
             } catch (JSONException e) {
                 //no op
             }
@@ -45,7 +43,6 @@ public class FacultyFactory {
 
             try {
                 prof.setCurrLoad(professor.getDouble("current_course_load"));
-
             } catch (JSONException e) {
                 //no op
             }

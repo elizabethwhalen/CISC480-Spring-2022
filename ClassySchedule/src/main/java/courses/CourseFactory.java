@@ -2,6 +2,7 @@ package courses;
 
 import database.DatabaseStatic;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -9,12 +10,10 @@ import java.util.List;
 
 public class CourseFactory {
 
-    public CourseFactory() {
-
-    }
+    public CourseFactory() {}
 
     public List<Course> createCourses() {
-        JSONArray classes = DatabaseStatic.getData("class");
+        JSONArray classes = DatabaseStatic.sectionQuery();
         List<Course> courses = new ArrayList<>();
 
         for (Object json : classes) {
@@ -28,7 +27,15 @@ public class CourseFactory {
             } else {
                 lec.setClassNum("TBD");
             }
-            //TODO: get section data?
+            lec.setSectionNum(course.getInt("section_num"));
+            lec.setSemester(course.getString("semester"));
+            lec.setDraft(course.getInt("draft"));
+
+            try {
+                lec.setCapacity(course.getInt("capactiy"));
+            } catch (JSONException e) {
+                //no-op
+            }
             courses.add(lec);
         }
 

@@ -5,12 +5,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TimeSlotFactory {
     public TimeSlotFactory(){
         //This is the constructor
     }
-    public ArrayList<Timeslot> createTimeSlot(){
+    public List<Timeslot> createTimeSlot(){
         ArrayList<Timeslot> timeSlotList = new ArrayList<>();
         //ArrayList<Timeslot> sortedTimeSlot = new ArrayList<>();
         ArrayList<Timeslot> mon = new ArrayList<>();
@@ -52,5 +53,23 @@ public class TimeSlotFactory {
         timeSlotList.addAll(thur);
         timeSlotList.addAll(fri);
         return timeSlotList;
+    }
+
+    /**
+     * Takes in a timeslot and finds the corresponding time ID
+     * @param startTime the start time of the timeslot
+     * @param endTime the end time of the timeslot
+     * @param daysOfWeek the days of week of the timeslot
+     * @param times the list of timeslots to check
+     * @return the time ID of the timeslot or -1 if not found.
+     */
+    public int findTimeSlot(String startTime, String endTime, String daysOfWeek, List<Timeslot> times) {
+        for (int i = 0; i < times.size(); i++) {
+            Timeslot current = times.get(i);
+            if (current.getEndTime().equals(endTime) && current.getStartTime().equals(startTime) && current.getDaysOfWeek().equals(daysOfWeek)) {
+                return current.getTimeID();
+            }
+        }
+        return -1;
     }
 }

@@ -1,10 +1,10 @@
 package scheduler;
 
 public class Timeslot {
-    String startTime;
-    String endTime;
-    String daysOfWeek;
-    int timeId;
+    private String startTime;
+    private String endTime;
+    private String daysOfWeek;
+    private int timeId;
 
     public Timeslot(int timeId, String daysOfWeek, String startTime, String endTime) {
         this.startTime = startTime;
@@ -12,26 +12,29 @@ public class Timeslot {
         this.daysOfWeek = daysOfWeek;
         this.timeId = timeId;
     }
-    public void setStartTime(String startTime){
-        this.startTime = startTime;
-    }
-    public void setEndTime(String endTime){
-        this.endTime = endTime;
-    }
-    public void setDaysOfWeek(String daysOfWeek){
-        this.daysOfWeek = daysOfWeek;
-    }
 
     public String getStartTime() {
         return startTime;
+    }
+
+    public void setStartTime(String startTime){
+        this.startTime = startTime;
     }
 
     public String getEndTime() {
         return endTime;
     }
 
+    public void setEndTime(String endTime){
+        this.endTime = endTime;
+    }
+
     public String getDaysOfWeek() {
         return daysOfWeek;
+    }
+
+    public void setDaysOfWeek(String daysOfWeek){
+        this.daysOfWeek = daysOfWeek;
     }
 
     public int getTimeID(){

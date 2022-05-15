@@ -7,5 +7,6 @@ open module ClassySchedule.main {
     requires org.json;
     requires org.apache.httpcomponents.core5.httpcore5;
     requires org.apache.httpcomponents.client5.httpclient5;
-    requires sat.test;
+    requires scheduler.algorithm;
+    requires org.controlsfx.controls;
 }

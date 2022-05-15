@@ -59,6 +59,6 @@ public class Faculty {
     }
 
     public String toString() {
-        return getFacultyFirst() + " " + getFacultyLast();
+        return getFacultyFirst() + " " + getFacultyLast() + " " + getFacultyID();
     }
 }

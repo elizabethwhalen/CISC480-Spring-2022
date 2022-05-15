@@ -215,4 +215,10 @@ public final class DatabaseStatic {
         HttpGet httpGet = new HttpGet(ur + "v3/meets/ext");
         return executeGet(httpGet);
     }
+
+    public static JSONArray sectionQuery() {
+        String ur = "https://classy-api.ddns.net/";
+        HttpGet httpGet = new HttpGet(ur + "v3/section/ext");
+        return executeGet(httpGet);
+    }
 }
