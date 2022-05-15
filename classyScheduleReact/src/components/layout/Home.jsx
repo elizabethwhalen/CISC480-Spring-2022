@@ -16,7 +16,6 @@ const useStyles = makeStyles(() => ({
     },
     title: {
         color: '#7E16A4',
-        fontWeight: '600',
     },
     link: {
         textDecoration: 'none',
