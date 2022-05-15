@@ -8,44 +8,38 @@ import {
     FormControl,
     MenuItem,
     InputLabel,
-} from '@material-ui/core'
+} from '@mui/material'
 import axios from 'axios'
 import { ValidatorForm } from 'react-material-ui-form-validator'
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import DoneIcon from '@mui/icons-material/Done'
 import CloseIcon from '@mui/icons-material/Close';
 
 // This is a React hook used for organizing the styling of each element in this component
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
     root: {
         display: 'flex',
     },
     container: {
-        padding: theme.spacing(4),
+        padding: '40px',
         position: 'relative',
         flexGrow: 1,
-        height: '100%'
+        height: '100%',
     },
     title: {
         color: '#7E16A4',
-        fontWeight: '600',
-    },
-    subHeader: {
-        fontWeight: '600',
     },
     message: {
         color: '#388e3c',
-        fontWeight: '600',
     },
     unsucessfulMessage: {
         color: 'red',
-        fontWeight: '600',
     },
-}))
+})
 
 // main function component which exports the DeleteFaculty Form UI
 export default function DeleteFaculty() {
-    const [facultyID, setFacultyID] = React.useState('');
+    const [facultyID, setFacultyID] = React.useState([]);
     const [facultyIDList, setFacultyIDList] = React.useState([]);
     const [deleted, setDeleted] = React.useState(0); // -1 for error, 0 for base, 1 for deleted successfully
     const token = sessionStorage.getItem('token');
@@ -97,7 +91,7 @@ export default function DeleteFaculty() {
             // use function to set fac id list and lastname list from response
             setFacultyIDList(idList);
         }).catch(() => {
-            
+
         });
     }
 
@@ -118,7 +112,7 @@ export default function DeleteFaculty() {
 
                 {/* TITLE */}
                 <Grid item xs={12}>
-                    <Typography variant="h6" className={classes.title} gutterBottom>
+                    <Typography variant="h6" className={classes.title} fontWeight='600'>
                         Delete an Existing Faculty Member
                     </Typography>
                 </Grid>
@@ -154,18 +148,26 @@ export default function DeleteFaculty() {
                                 </FormControl>
                             </Grid>
                             <Grid item xs={12} md={8} />
-                            
+
                             {/* POST-SUBMIT STATUS MESSAGES */}
                             {(deleted === 1) && (
                                 <Grid item xs={12}>
-                                    <Typography variant="body1" className={classes.message}>
+                                    <Typography
+                                        variant="body1"
+                                        className={classes.message}
+                                        fontWeight='600'
+                                    >
                                         <DoneIcon /> Faculty Member has been deleted from the database successfully!
                                     </Typography>
                                 </Grid>
                             )}
                             {(deleted === -1) && (
                                 <Grid item xs={12}>
-                                    <Typography variant="body1" className={classes.unsucessfulMessage}>
+                                    <Typography
+                                        variant="body1"
+                                        className={classes.message}
+                                        fontWeight='600'
+                                    >
                                         <CloseIcon /> Faculty Member could not be deleted from the databse.
                                         Please verify that the record being deleted exists.
                                     </Typography>
@@ -179,6 +181,10 @@ export default function DeleteFaculty() {
                                     size="large"
                                     type="submit"
                                     disableElevation
+                                    sx={{
+                                        backgroundColor: '#6a1b9a',
+                                        '&:hover': { backgroundColor: '#B9BDBB' }
+                                    }}
                                 >
                                     Delete
                                 </Button>

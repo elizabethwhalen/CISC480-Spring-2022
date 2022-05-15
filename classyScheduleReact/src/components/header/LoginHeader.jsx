@@ -1,23 +1,13 @@
 /* eslint-disable react/prop-types */
 import React from 'react'
-import { Box, Button } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Box, Button } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 import { Link } from 'react-router-dom'
 
 // This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles({
   container: {
     textAlign: 'right',
-  },
-  avatar: {
-    color: '#b71c1c',
-    backgroundColor: 'white',
-  },
-  button: {
-    color: 'white',
-    '&:hover': {
-      fontWeight: '600',
-    },
   },
   link: {
     textDecoration: 'none',
@@ -46,7 +36,13 @@ export default function LoginHeader(props) {
 
       {loggedIn || currentToken ? (
         <Link to='/' className={classes.link}>
-          <Button className={classes.button} onClick={handleLogoutClick}>
+          <Button
+            onClick={handleLogoutClick}
+            sx={{
+              color: 'white',
+              fontWeight: '600',
+            }}
+          >
             Logout
           </Button>
         </Link>

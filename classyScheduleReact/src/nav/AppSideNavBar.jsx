@@ -251,7 +251,7 @@ export default function AppSideNavBar(props) {
                   <CancelPresentationIcon />
                 </ListItemIcon>
                 <ListItemText className={classes.text}>
-                  Delete Course 
+                  Delete Course
                 </ListItemText>
               </ListItem>
             </Link>
@@ -263,7 +263,7 @@ export default function AppSideNavBar(props) {
                   <PersonRemoveIcon />
                 </ListItemIcon>
                 <ListItemText className={classes.text}>
-                  Delete Faculty 
+                  Delete Faculty
                 </ListItemText>
               </ListItem>
             </Link>
@@ -275,7 +275,7 @@ export default function AppSideNavBar(props) {
                   <PlaylistRemoveIcon />
                 </ListItemIcon>
                 <ListItemText className={classes.text}>
-                  Delete Room 
+                  Delete Room
                 </ListItemText>
               </ListItem>
             </Link>

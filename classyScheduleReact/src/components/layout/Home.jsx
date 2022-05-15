@@ -9,7 +9,7 @@ const useStyles = makeStyles(() => ({
         display: 'flex',
     },
     container: {
-        padding: "30px",
+        padding: "40px",
         position: 'relative',
         flexGrow: 1,
         height: '100%',
@@ -33,7 +33,7 @@ function Home() {
         <Paper className={classes.container} elevation={0}>
             <Grid container spacing={3} >
                 <Grid item xs={12}>
-                    <Typography variant="h4">
+                    <Typography variant="h4" fontWeight='600'>
                         Welcome to Classy Schedule!
                     </Typography>
 
@@ -116,8 +116,59 @@ function Home() {
                             </Link>
                         </Grid>
 
+                        <Grid item md={3} sm={6} xs={12}>
+                            <Link to='/DeleteClass' className={classes.link}>
+                                <Button
+                                    size="large"
+                                    variant="outlined"
+                                    fullWidth
+                                    sx={{
+                                        backgroundColor: "#7E16A4",
+                                        '&:hover': { color: '#7E16A4', borderColor: "#7E16A4" },
+                                        color: "white"
+                                    }}
+                                >
+                                    Delete Class
+                                </Button>
+                            </Link>
+                        </Grid>
+
+                        <Grid item md={3} sm={6} xs={12}>
+                            <Link to='/DeleteFaculty' className={classes.link}>
+                                <Button
+                                    size="large"
+                                    variant="outlined"
+                                    fullWidth
+                                    sx={{
+                                        backgroundColor: "#7E16A4",
+                                        '&:hover': { color: '#7E16A4', borderColor: "#7E16A4" },
+                                        color: "white"
+                                    }}
+                                >
+                                    Delete Faculty
+                                </Button>
+                            </Link>
+                        </Grid>
+
+                        <Grid item md={3} sm={6} xs={12}>
+                            <Link to='/DeleteRoom' className={classes.link}>
+                                <Button
+                                    size="large"
+                                    variant="outlined"
+                                    fullWidth
+                                    sx={{
+                                        backgroundColor: "#7E16A4",
+                                        '&:hover': { color: '#7E16A4', borderColor: "#7E16A4" },
+                                        color: "white"
+                                    }}
+                                >
+                                    Delete Room
+                                </Button>
+                            </Link>
+                        </Grid>
+
                         {/* This button will take you to the Questions tab */}
-                        <Grid item xs={12}>
+                        <Grid item md={3} sm={6} xs={12}>
                             <Link to='/Help' className={classes.link}>
                                 <Button
                                     size="large"
