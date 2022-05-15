@@ -27,7 +27,7 @@ const sgMail = require('@sendgrid/mail');
 //require('dotenv').config(); // This might be an issue moving forward on deployment
 
 // Developmental setting: 0 for local dev, or 1 for production (Azure deployment) 
-var dev = 0;
+var dev = 1;
 
 // Setup RESTful app
 var app = express();
@@ -380,7 +380,7 @@ app.post('/v3/login', async function (req, res) {
         // Send email and wait up to 30 seconds for user to confirm their identity by clicking link that was emailed to them
         console.log("- User "+loginjson[0].email+" is requesting login and has been sent an email to verify their identity.")
         sendVerifyEmail(loginjson[0].email, token);
-        let myTimeout = setTimeout(requestTimeout, 10000);
+        let myTimeout = setTimeout(requestTimeout, 30000);
 
         // This HTTP request is made when the user clicks the link in their inbox (or possibly junk folder)
         app.get('/v3/authenticate/:token', (req2, res2) => {            
