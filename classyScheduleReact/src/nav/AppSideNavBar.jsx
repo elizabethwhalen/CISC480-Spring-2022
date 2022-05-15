@@ -255,6 +255,31 @@ export default function AppSideNavBar(props) {
                 </ListItemText>
               </ListItem>
             </Link>
+
+            {/* Delete Faculty */}
+            <Link to='/DeleteFaculty' className={classes.link} >
+              <ListItem button className={classes.collapseLink}>
+                <ListItemIcon>
+                  <PersonRemoveIcon />
+                </ListItemIcon>
+                <ListItemText className={classes.text}>
+                  Delete Faculty 
+                </ListItemText>
+              </ListItem>
+            </Link>
+
+            {/* Delete Room */}
+            <Link to='/DeleteRoom' className={classes.link} >
+              <ListItem button className={classes.collapseLink}>
+                <ListItemIcon>
+                  <PlaylistRemoveIcon />
+                </ListItemIcon>
+                <ListItemText className={classes.text}>
+                  Delete Room 
+                </ListItemText>
+              </ListItem>
+            </Link>
+
           </List>
         </Collapse>
 

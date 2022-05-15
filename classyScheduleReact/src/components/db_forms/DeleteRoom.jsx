@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 // main function component which exports the AddClass Form UI
-export default function DeleteClass() {
+export default function DeleteRoom() {
     const [code, setCode] = React.useState(''); // Department code (e.g., CISC, STAT, etc.)
     const [courseNum, setCourseNum] = React.useState(''); // Course number (e.g., 420, 350, etc.)
     const [deleted, setDeleted] = React.useState(0); // -1 for error, 0 for base, 1 for added successfully

@@ -44,23 +44,21 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 // main function component which exports the AddClass Form UI
-export default function DeleteClass() {
-    const [code, setCode] = React.useState(''); // Department code (e.g., CISC, STAT, etc.)
-    const [courseNum, setCourseNum] = React.useState(''); // Course number (e.g., 420, 350, etc.)
-    const [deleted, setDeleted] = React.useState(0); // -1 for error, 0 for base, 1 for added successfully
-    const [deptList, setDeptList] = React.useState([]);
-    const [courseNumList, setCourseNumList] = React.useState([]);
+export default function DeleteFaculty() {
+    const [facultyID, setFacultyID] = React.useState('');
+    const [facultyIDList, setFacultyIDList] = React.useState([]);
+    const [deleted, setDeleted] = React.useState(0); // -1 for error, 0 for base, 1 for deleted successfully
     const token = sessionStorage.getItem('token');
     const classes = useStyles(); // call the useStyle hook
 
-    // This function will create a Axios request to DELETE a course when the form is submitted
+    // This function will create a Axios request to DELETE a faculty member when the form is submitted
     const submitForm = (event) => {
         event.preventDefault();
-        if (code !== '' && courseNum !== '' && courseNum !== '') {
+        if (facultyID !== '') {
             // Config data for DELETE https request
             const config = {
                 method: 'delete',
-                url: `https://classy-api.ddns.net/v2/class/${code}/${courseNum}`,
+                url: `https://classy-api.ddns.net/v2/faculty/${facultyID}`,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
@@ -68,23 +66,23 @@ export default function DeleteClass() {
             };
             // https request Promise executed with Config settings.
             axios(config).then(() => {
-                // good response. course was removed from the database
+                // good response. faculty member was removed from the database
                 setDeleted(1);
             }).catch(() => {
-                // bad response: verify that course exists
+                // bad response: verify that faculty id exists
                 setDeleted(-1);
             });
         }
     };
 
     // This function will get the list of existing Dept codes
-    const getDeptList = () => {
-        // list will hold dept codes during axios response
-        const list = [];
+    const getFacultyList = () => {
+        // idList will hold faculty id during axios response
+        const idList = [];
         // Config data for https request.
         const config = {
             method: 'get',
-            url: 'https://classy-api.ddns.net/v2/dept',
+            url: 'https://classy-api.ddns.net/v2/faculty',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
@@ -93,57 +91,24 @@ export default function DeleteClass() {
         // https request Promise executed with Config settings.
         axios(config).then((response) => {
             response.data.map((e) => {
-                list.push(e.dept_code);
-                return list;
+                idList.push(e.faculty_id);
+                return idList;
             })
-            // use function to setBuildingList from response
-            setDeptList(list);
+            // use function to set fac id list and lastname list from response
+            setFacultyIDList(idList);
         }).catch(() => {
             
         });
     }
 
-    // This function will get the list of existing course numbers from the database
-    const getCourseNumList = (dept) => {
-        // list will hold dept codes during axios response
-        const list = [];
-        // Config data for https request.
-        const config = {
-            method: 'get',
-            url: `https://classy-api.ddns.net/v2/class?dept_code=${dept}`,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-        };
-        // https request Promise executed with Config settings.
-        axios(config).then((response) => {
-            response.data.map((e) => {
-                list.push(e.class_num);
-                return list;
-            })
-            // use function to setBuildingList from response
-            setCourseNumList(list);
-        }).catch(() => {
-            
-        });
+    // This function will retrieve the value selected in the faculty id field whenever it changes
+    const handleFacultyIDChange = (event) => {
+        setFacultyID(event.target.value);
     };
-
-    // This function will retrieve the value selected in the dept. code field whenever it changes
-    const handleChangeCode = (event) => {
-        setCode(event.target.value);
-        getCourseNumList(event.target.value);
-    };
-
-    // This function will retrieve the value entered in the course number field whenever it changes
-    const handleChangeCourseNum = (event) => {
-        setCourseNum(event.target.value);
-    }
 
     // call the hook useEffect to populate dept list from the GET request
     useEffect(() => {
-        getDeptList(code);
-        getCourseNumList();
+        getFacultyList();
     }, [])
 
     // Return the UI of the component
@@ -154,7 +119,7 @@ export default function DeleteClass() {
                 {/* TITLE */}
                 <Grid item xs={12}>
                     <Typography variant="h6" className={classes.title} gutterBottom>
-                        Delete an Existing Course
+                        Delete an Existing Faculty Member
                     </Typography>
                 </Grid>
 
@@ -163,24 +128,24 @@ export default function DeleteClass() {
                     <ValidatorForm onSubmit={submitForm}>
                         <Grid container spacing={2}>
 
-                            {/* DEPARTMENT CODE */}
+                            {/* FACULTY ID */}
                             <Grid item xs={12} md={4} >
                                 <FormControl fullWidth size="medium">
-                                    <InputLabel id="demo-select-small">Department</InputLabel>
+                                    <InputLabel id="demo-select-small">Faculty ID</InputLabel>
                                     <Select
                                         labelId="demo-select-small"
                                         id="demo-select-small"
-                                        value={code}
-                                        label="Department"
-                                        onChange={handleChangeCode}
+                                        value={facultyID}
+                                        label="Faculty ID"
+                                        onChange={handleFacultyIDChange}
                                         size='large'
                                         autoWidth
                                     >
                                         <MenuItem value="">
                                             <em>None</em>
                                         </MenuItem>
-                                        {/* DYNAMIC MAP OF EXISTING DEPTS TO MENU ITEMS */}
-                                        {deptList.map(e =>
+                                        {/* DYNAMIC MAP OF EXISTING FACULTY IDS TO MENU ITEMS */}
+                                        {facultyIDList.map(e =>
                                             <MenuItem key={e} value={e}>
                                                 {e}
                                             </MenuItem>
@@ -188,46 +153,20 @@ export default function DeleteClass() {
                                     </Select>
                                 </FormControl>
                             </Grid>
-
-                            {/* CLASS NUMBER */}
-                            <Grid item xs={12} md={4} >
-                                <FormControl fullWidth size="medium">
-                                    <InputLabel id="demo-select-small">Course Number</InputLabel>
-                                    <Select
-                                        labelId="demo-select-small"
-                                        id="demo-select-small"
-                                        value={courseNum}
-                                        label="Course Number"
-                                        onChange={handleChangeCourseNum}
-                                        size='large'
-                                        autoWidth
-                                    >
-                                        <MenuItem value="">
-                                            <em>None</em>
-                                        </MenuItem>
-                                        {/* DYNAMIC MAP OF EXISTING COURSE NUMS TO MENU ITEMS */}
-                                        {courseNumList.map(e =>
-                                            <MenuItem key={e} value={e}>
-                                                {e}
-                                            </MenuItem>
-                                        )}
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={0} md={4} />
+                            <Grid item xs={12} md={8} />
                             
                             {/* POST-SUBMIT STATUS MESSAGES */}
                             {(deleted === 1) && (
                                 <Grid item xs={12}>
                                     <Typography variant="body1" className={classes.message}>
-                                        <DoneIcon /> Course has been deleted from the database successfully!
+                                        <DoneIcon /> Faculty Member has been deleted from the database successfully!
                                     </Typography>
                                 </Grid>
                             )}
                             {(deleted === -1) && (
                                 <Grid item xs={12}>
                                     <Typography variant="body1" className={classes.unsucessfulMessage}>
-                                        <CloseIcon /> Course could not be deleted from the databse.
+                                        <CloseIcon /> Faculty Member could not be deleted from the databse.
                                         Please verify that the record being deleted exists.
                                     </Typography>
                                 </Grid>

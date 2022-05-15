@@ -54,7 +54,7 @@ export default function AddFaculty() {
     // This function will create a Axios request to send all information when the form is submitted
     const submitForm = (event) => {
         event.preventDefault();
-        if (firstName !== '' && lastName !== '' && teachLoad !== 0.0 && teachLoad !== '') {
+        if (firstName !== '' && lastName !== '' && teachLoad !== 0.0 && facultyID !== '') {
             // Data fields for POST request.
             const data = JSON.stringify({
                 faculty_id: facultyID,
@@ -93,12 +93,12 @@ export default function AddFaculty() {
     // This function will retrieve the value selected in the first name field whenever it changes
     const handleFirstNameChange = (event) => {
         setFirstName(event.target.value);
-    }
+    };
 
     // This function will retrieve the value selected in the last name field whenever it changes
     const handleLastNameChange = (event) => {
         setLastName(event.target.value);
-    }
+    };
 
     // This function will retrieve the value selected in the teach load field whenever it changes
     const handleTeachLoadChange = (event) => {
