@@ -2,7 +2,6 @@
 import React from 'react'
 import { Box, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { Avatar } from '@mui/material'
 import { Link } from 'react-router-dom'
 
 // This is a React hook used for organizing the styling of each element in this component
@@ -46,18 +45,11 @@ export default function LoginHeader(props) {
       */}
 
       {loggedIn || currentToken ? (
-        <>
-          <Avatar sx={{ bgcolor: 'white', color: '#7E16A4' }}>
-            KN
-          </Avatar>
-
-          <Link to='/' className={classes.link}>
-            <Button className={classes.button} onClick={handleLogoutClick}>
-              Logout
-            </Button>
-          </Link>
-
-        </>
+        <Link to='/' className={classes.link}>
+          <Button className={classes.button} onClick={handleLogoutClick}>
+            Logout
+          </Button>
+        </Link>
       ) : (
         <Button className={classes.button}>
           Login
