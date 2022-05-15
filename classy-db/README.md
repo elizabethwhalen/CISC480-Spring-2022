@@ -24,16 +24,31 @@ Note: We have also used the schema "db_dev" for testing, but the other teams use
 ## Database Archives
 What snapshots do we have of DB?
 
+## Database Creation
+The first step in creating the database was creating a schema for all of the tables to be in. This was created by running this SQL query
+```
+CREATE SCHEMA schemaname;
+```
+After the schema is set up, tables can be added to the schema. When creating a table the name of the table, column names, and column types should be present. 
+Here's an example of a query to create a table.
+
+```
+CREATE TABLE building (
+    building_name   VARCHAR(5),
+    building_code   VARCHAR(5)
+)
+
+```
+
 ## Local Development
-For local development, ...
-</br>
-How do Joe's SQL scripts work?
-</br>
-Gabbie, I forgot how we developed locally. Any ideas?
+Local development and testing can be done by making changes to classy-api/app.js and running `npm start` from the terminal to test your changes. Node will continue to run the application locally until you manually stop the `npm start` command. Once the application is running, open another terminal and run you CURL requests from there. To test the changes you have made on your local machine, change `https://classy-api.ddns.net` in the URL to `http://localhost:3000`. Keep in mind any changes to the database you make using POST, PUT, or DELETE will be done on the production database. 
+
 
 ## Deployment
-In addition to hosting a MySQL server locally, ...
+Deployment of the API to Azure can be completed using the Azure extension in [VS Code](https://docs.microsoft.com/en-us/azure/app-service/tutorial-nodejs-mongodb-app?tabs=azure-portal%2Cterminal-bash%2Cvscode-deploy%2Cdeploy-instructions-azportal%2Cdeploy-zip-linux-mac%2Cdeploy-instructions--zip-azcli#4---deploy-application-code-to-azure). 
+
+LINK JOE'S DATABASE BUILD HERE
+
 </br>
-Gabbie, how was the MySQL database setup in azure?
 </br>
 After we tear this project down, and we wanted to setup the database exactly how it was, what process do we need to pursue?
