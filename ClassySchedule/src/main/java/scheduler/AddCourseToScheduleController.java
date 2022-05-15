@@ -241,7 +241,6 @@ public class AddCourseToScheduleController implements Initializable {
     /**
      * This function validate that at least 1 of the day of the week is selected. If not
      * then it will prompt the user to click on at least 1 or more day/days of the week.
-     *
      * @return false is nothing is selected, else return true
      */
     private boolean validateDates() {
