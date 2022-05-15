@@ -5,7 +5,6 @@ import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.classic.methods.HttpPut;
 import org.apache.hc.client5.http.config.RequestConfig;
-import org.apache.hc.client5.http.entity.EntityBuilder;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
@@ -30,7 +29,7 @@ public final class DatabaseStatic {
      * Verifies the given credentials. Populates the token object to be used
      * for future database requests
      *
-     * @param email the email to be checked
+     * @param email    the email to be checked
      * @param password the password to be checked
      * @return true if the user is valid, false otherwise
      */
@@ -185,29 +184,34 @@ public final class DatabaseStatic {
      *
      * @return
      */
-    public static boolean deleteData(String table, JSONObject json) throws URISyntaxException, IOException {
+    public static boolean deleteData(String table, JSONObject json) {
         RequestConfig requestConfig = RequestConfig.custom().setCircularRedirectsAllowed(true).build();
         CloseableHttpClient test = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
-
-        URIBuilder builder = new URIBuilder(url + table);
-        
-        if (table.equals("room")) {
-            builder.appendPath((String) json.get("building_code"));
-            builder.appendPath((String) json.get("room_num"));
-        } else {
-            for (String key : json.keySet()) {
-                builder.appendPath((String) json.get(key));
+        try {
+            URIBuilder builder = new URIBuilder(url + table);
+            if (json != null) {
+                if (table.equals("room")) {
+                    builder.appendPath((String) json.get("building_code"));
+                    builder.appendPath((String) json.get("room_num"));
+                } else {
+                    for (String key : json.keySet()) {
+                        builder.appendPath((String) json.get(key));
+                    }
+                }
             }
+
+            HttpDelete httpDelete = new HttpDelete(builder.build());
+
+            httpDelete.setEntity(new StringEntity(tokenObject.toString()));
+            httpDelete.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + tokenObject.get("token"));
+
+            CloseableHttpResponse response = test.execute(httpDelete);
+            test.close();
+            return response.getCode() == 200;
+
+        } catch (IOException | URISyntaxException e) {
+            return false;
         }
-
-        HttpDelete httpDelete = new HttpDelete(builder.build());
-
-        httpDelete.setEntity(new StringEntity(tokenObject.toString()));
-        httpDelete.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + tokenObject.get("token"));
-
-        CloseableHttpResponse response = test.execute(httpDelete);
-        test.close();
-        return response.getCode() == 200;
     }
 
     public static JSONArray meetsQuery() {

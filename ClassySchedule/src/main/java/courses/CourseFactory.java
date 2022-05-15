@@ -32,7 +32,7 @@ public class CourseFactory {
             lec.setDraft(course.getInt("draft"));
 
             try {
-                lec.setCapacity(course.getInt("capactiy"));
+                lec.setCapacity(course.getInt("capacity"));
             } catch (JSONException e) {
                 //no-op
             }

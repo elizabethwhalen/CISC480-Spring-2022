@@ -140,105 +140,84 @@ public class EditFacultyFromDatabaseController implements Initializable {
 
     private void listener() {
         // Whenever faculty id is selected/changed
-        facultyID.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // Clear all the previous text-fields
-                clearTextField();
-                // Initialize all the selected text-fields
-                title.setText(getTitle());
-                firstName.setText(getFirstName());
-                lastName.setText(getLastName());
-                prevCourseLoad.setText(getPrevCourseLoad());
-                currCourseLoad.setText(getCurrCourseLoad());
+        facultyID.valueProperty().addListener((observable, oldValue, newValue) -> {
+            // Clear all the previous text-fields
+            clearTextField();
+            // Initialize all the selected text-fields
+            title.setText(getTitle());
+            firstName.setText(getFirstName());
+            lastName.setText(getLastName());
+            prevCourseLoad.setText(getPrevCourseLoad());
+            currCourseLoad.setText(getCurrCourseLoad());
 
-                // Hide selected variables
-                facultyID.setVisible(false);
-                title.setVisible(false);
-                firstName.setVisible(false);
-                lastName.setVisible(false);
-                prevCourseLoad.setVisible(false);
-                currCourseLoad.setVisible(false);
+            // Hide selected variables
+            facultyID.setVisible(false);
+            title.setVisible(false);
+            firstName.setVisible(false);
+            lastName.setVisible(false);
+            prevCourseLoad.setVisible(false);
+            currCourseLoad.setVisible(false);
 
-                // Initialize user input changes text-fields and show them
-                changeFacultyId.setText(facultyID.getValue());
-                changeFacultyId.setVisible(true);
-                changeTitle.setText(title.getText());
-                changeTitle.setVisible(true);
-                changeFirst.setText(firstName.getText());
-                changeFirst.setVisible(true);
-                changeLast.setText(lastName.getText());
-                changeLast.setVisible(true);
-                changePrevLoad.setText(prevCourseLoad.getText());
-                changePrevLoad.setVisible(true);
-                changeCurrLoad.setText(currCourseLoad.getText());
-                changeCurrLoad.setVisible(true);
+            // Initialize user input changes text-fields and show them
+            changeFacultyId.setText(facultyID.getValue());
+            changeFacultyId.setVisible(true);
+            changeTitle.setText(title.getText());
+            changeTitle.setVisible(true);
+            changeFirst.setText(firstName.getText());
+            changeFirst.setVisible(true);
+            changeLast.setText(lastName.getText());
+            changeLast.setVisible(true);
+            changePrevLoad.setText(prevCourseLoad.getText());
+            changePrevLoad.setVisible(true);
+            changeCurrLoad.setText(currCourseLoad.getText());
+            changeCurrLoad.setVisible(true);
+        });
+
+        changeFacultyId.textProperty().addListener((observable, oldValue, newValue) -> {
+            // If the new value is not null and does not equal the selected value,
+            // then it is a new value so set its parameter to true to indicate changes
+            if (newValue != null && !newValue.equals(facultyID.getValue())) {
+                setChangeFacultyIdVal(true);
             }
         });
 
-        changeFacultyId.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // If the new value is not null and does not equal the selected value,
-                // then it is a new value so set its parameter to true to indicate changes
-                if (newValue != null && !newValue.equals(facultyID.getValue())) {
-                    setChangeFacultyIdVal(true);
-                }
+        changeTitle.textProperty().addListener((observable, oldValue, newValue) -> {
+            // If the new value is not null and does not equal the selected value,
+            // then it is a new value so set its parameter to true to indicate changes
+            if (newValue != null && !newValue.equals(title.getText())) {
+                setChangeTitleVal(true);
             }
         });
 
-        changeTitle.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // If the new value is not null and does not equal the selected value,
-                // then it is a new value so set its parameter to true to indicate changes
-                if (newValue != null && !newValue.equals(title.getText())) {
-                    setChangeTitleVal(true);
-                }
+        changeFirst.textProperty().addListener((observable, oldValue, newValue) -> {
+            // If the new value is not null and does not equal the selected value,
+            // then it is a new value so set its parameter to true to indicate changes
+            if (newValue != null && !newValue.equals(firstName.getText())) {
+                setChangeFirstVal(true);
             }
         });
 
-        changeFirst.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // If the new value is not null and does not equal the selected value,
-                // then it is a new value so set its parameter to true to indicate changes
-                if (newValue != null && !newValue.equals(firstName.getText())) {
-                    setChangeFirstVal(true);
-                }
+        changeLast.textProperty().addListener((observable, oldValue, newValue) -> {
+            // If the new value is not null and does not equal the selected value,
+            // then it is a new value so set its parameter to true to indicate changes
+            if (newValue != null && !newValue.equals(lastName.getText())) {
+                setChangeLastVal(true);
             }
         });
 
-        changeLast.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // If the new value is not null and does not equal the selected value,
-                // then it is a new value so set its parameter to true to indicate changes
-                if (newValue != null && !newValue.equals(lastName.getText())) {
-                    setChangeLastVal(true);
-                }
+        changePrevLoad.textProperty().addListener((observable, oldValue, newValue) -> {
+            // If the new value is not null and does not equal the selected value,
+            // then it is a new value so set its parameter to true to indicate changes
+            if (newValue != null && !newValue.equals(prevCourseLoad.getText())) {
+                setChangePrevVal(true);
             }
         });
 
-        changePrevLoad.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // If the new value is not null and does not equal the selected value,
-                // then it is a new value so set its parameter to true to indicate changes
-                if (newValue != null && !newValue.equals(prevCourseLoad.getText())) {
-                    setChangePrevVal(true);
-                }
-            }
-        });
-
-        changeCurrLoad.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // If the new value is not null and does not equal the selected value,
-                // then it is a new value so set its parameter to true to indicate changes
-                if (newValue != null && !newValue.equals(currCourseLoad.getText())) {
-                    setChangeCurrVal(true);
-                }
+        changeCurrLoad.textProperty().addListener((observable, oldValue, newValue) -> {
+            // If the new value is not null and does not equal the selected value,
+            // then it is a new value so set its parameter to true to indicate changes
+            if (newValue != null && !newValue.equals(currCourseLoad.getText())) {
+                setChangeCurrVal(true);
             }
         });
     }
@@ -441,9 +420,7 @@ public class EditFacultyFromDatabaseController implements Initializable {
                         }
                         System.out.println(data);
                         DatabaseStatic.updateData("faculty", job, data);
-                    } catch (URISyntaxException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
+                    } catch (URISyntaxException | IOException e) {
                         e.printStackTrace();
                     }
                 }
@@ -468,16 +445,13 @@ public class EditFacultyFromDatabaseController implements Initializable {
         // First scenario to go back to home screen
         if (goBackToPrevPage) {
             // Confirmation to go back to the home screen
-            EventHandler<ActionEvent> confirmBack = new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    // The Ok button from the alert
-                    Optional<ButtonType> Ok = createAlert.showButton();
-                    // If user pressed "OK"
-                    if (Ok.get().getText().equals("OK")) {
-                        // Go back to home screen
-                        goBack();
-                    }
+            EventHandler<ActionEvent> confirmBack = event -> {
+                // The Ok button from the alert
+                Optional<ButtonType> Ok = createAlert.showButton();
+                // If user pressed "OK"
+                if (Ok.get().getText().equals("OK")) {
+                    // Go back to home screen
+                    goBack();
                 }
             };
             // Set the button to have to go back to home screen functionality
@@ -486,19 +460,16 @@ public class EditFacultyFromDatabaseController implements Initializable {
         // 2nd scenario, confirm deletion
         else {
             // Confirmation to delete from the database
-            EventHandler<ActionEvent> confirmDelete = new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    // The Ok button from the alert
-                    Optional<ButtonType> ok = createAlert.showButton();
-                    // If user pressed "OK"
-                    if (ok.get().getText().equals("OK")) {
-                        // If delete was successful
-                        if (confirmButton()) {
-                            // Successful deletion alert
-                            MyAlert createAlert = new MyAlert("Deleted", "The Selected Faculty Has Been Deleted", Alert.AlertType.INFORMATION);
-                            createAlert.show();
-                        }
+            EventHandler<ActionEvent> confirmDelete = event -> {
+                // The Ok button from the alert
+                Optional<ButtonType> ok = createAlert.showButton();
+                // If user pressed "OK"
+                if (ok.get().getText().equals("OK")) {
+                    // If delete was successful
+                    if (confirmButton()) {
+                        // Successful deletion alert
+                        MyAlert createAlert1 = new MyAlert("Deleted", "The Selected Faculty Has Been Deleted", Alert.AlertType.INFORMATION);
+                        createAlert1.show();
                     }
                 }
             };

@@ -17,8 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import scenes.ChangeScene;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -141,17 +139,13 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
                 JSONObject job = (JSONObject) jsonObject;
                 // If JSON object contain the user's selected request
                 if (job.get("building_code").equals(selectedBuilding) && job.get("room_num").equals(selectedRoom)) {
-                    try {
-                        job.remove("capacity");
-                        // Delete the JSON object from the "room" table from the database
-                        DatabaseStatic.deleteData("room", job);
-                        // Clear the room number drop-down
-                        roomNum.getItems().clear();
-                        // Set buildingCode drop-down back to blank default
-                        buildingCode.getSelectionModel().clearSelection();
-                    } catch (URISyntaxException | IOException e) {
-                        e.printStackTrace();
-                    }
+                    job.remove("capacity");
+                    // Delete the JSON object from the "room" table from the database
+                    DatabaseStatic.deleteData("room", job);
+                    // Clear the room number drop-down
+                    roomNum.getItems().clear();
+                    // Set buildingCode drop-down back to blank default
+                    buildingCode.getSelectionModel().clearSelection();
                     break;
                 }
             }

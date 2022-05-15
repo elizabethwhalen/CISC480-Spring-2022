@@ -166,7 +166,7 @@ public class GenerateScheduleController implements Initializable {
         return validateChoices(roomBox);
     }
 
-    private boolean validateChoices(CheckComboBox menu) {
+    private boolean validateChoices(CheckComboBox<String> menu) {
         return !menu.getCheckModel().isEmpty();
     }
 

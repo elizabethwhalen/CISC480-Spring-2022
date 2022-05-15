@@ -19,46 +19,41 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import scenes.ChangeScene;
 
-import java.io.IOException;
-
-import java.net.URISyntaxException;
 import java.net.URL;
-
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DeleteCourseFromDatabaseController implements Initializable {
 
     /**
+     * The change scene object to change between scenes
+     */
+    private final ChangeScene cs = new ChangeScene();
+    /**
      * The back button to go back to home screen
      */
     @FXML
     private Button back;
-
     /**
      * The confirm button to confirm deletion
      */
     @FXML
     private Button confirm;
-
     /**
      * The text field that consist of the selected course name
      */
     @FXML
     private TextField course;
-
     /**
      * The department drop-down to select which dept of courses to delete
      */
     @FXML
     private ChoiceBox<String> dept;
-
     /**
      * The class number drop-down to select the unique class to delete
      */
     @FXML
     private ChoiceBox<String> classNum;
-
     /**
      * the current stage of this scene
      */
@@ -66,13 +61,8 @@ public class DeleteCourseFromDatabaseController implements Initializable {
     private Stage stage;
 
     /**
-     * The change scene object to change between scenes
-     */
-    private final ChangeScene cs = new ChangeScene();
-
-    /**
-     * @param url
-     * @param resourceBundle
+     * @param url            the url of the resource
+     * @param resourceBundle the resource bundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -101,7 +91,6 @@ public class DeleteCourseFromDatabaseController implements Initializable {
         back(confirm, "Confirm Deletion", "Click 'OK' to delete the class, or 'Cancel' to cancel the following action.", false);
 
     }
-
 
     /**
      * Set the stage of the scene
@@ -155,14 +144,13 @@ public class DeleteCourseFromDatabaseController implements Initializable {
             JSONObject job = (JSONObject) jsonObject;
             // If matching selected class number then set result to that JSON object class name
             if (job.get("class_num").equals(selectedClassNumber)) {
-                if (!(job.get("class_name").equals(null))) {
+                if (!(job.get("class_name") == JSONObject.NULL)) {
                     result = (String) job.get("class_name");
                 }
             }
         }
         return result;
     }
-
 
     /**
      * confirm button to delete the selected course. It checks if the drop-downs
@@ -187,24 +175,20 @@ public class DeleteCourseFromDatabaseController implements Initializable {
                 JSONObject job = (JSONObject) jsonObject;
                 // If JSON object contain the user's selected request
                 if (job.get("class_num").equals(selectedClassNum) && job.get("dept_code").equals(selectedDept)) {
-                    try {
-                        job.remove("class_name");
-                        // Delete the JSON object from the "class" table from the database
-                        DatabaseStatic.deleteData("class", job);
-                        //System.out.println(DatabaseStatic.deleteData("class", job));
-                        // Clear the class number drop-down
-                        classNum.getItems().clear();
-                        // Set department drop-down back to blank default
-                        dept.getSelectionModel().clearSelection();
-                    } catch (URISyntaxException | IOException e) {
-                        e.printStackTrace();
-                    }
+                    job.remove("class_name");
+                    // Delete the JSON object from the "class" table from the database
+                    DatabaseStatic.deleteData("class", job);
+                    //System.out.println(DatabaseStatic.deleteData("class", job));
+                    // Clear the class number drop-down
+                    classNum.getItems().clear();
+                    // Set department drop-down back to blank default
+                    dept.getSelectionModel().clearSelection();
                     break;
+
                 }
             }
-        }
-        // No course has been selected show an error alert
-        else {
+            // No course has been selected show an error alert
+        } else {
             result = false;
             MyAlert createAlert = new MyAlert("No Course Selected", "Please Select A Course To Delete", Alert.AlertType.ERROR);
             createAlert.show();
@@ -298,19 +282,25 @@ public class DeleteCourseFromDatabaseController implements Initializable {
      * go to edit course scene
      */
     @FXML
-    public void goToEditCourse() { cs.editCourseButtonClicked(stage); }
+    public void goToEditCourse() {
+        cs.editCourseButtonClicked(stage);
+    }
 
     /**
      * go to edit faculty scene
      */
     @FXML
-    public void goToEditFaculty() { cs.editFacultyButtonClicked(stage); }
+    public void goToEditFaculty() {
+        cs.editFacultyButtonClicked(stage);
+    }
 
     /**
      * go to edit classroom scene
      */
     @FXML
-    public void goToEditClassroom() { cs.editClassroomButtonClicked(stage); }
+    public void goToEditClassroom() {
+        cs.editClassroomButtonClicked(stage);
+    }
 
     /**
      * go to delete course scene

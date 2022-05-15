@@ -203,7 +203,7 @@ public class AddCourseToScheduleController implements Initializable {
         String[] days = timeslot.getDaysOfWeek().split("");
         List<LocalDateTime> startDaysAndTimes = new ArrayList<>();
         List<LocalDateTime> endDaysAndTimes = new ArrayList<>();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (String day : days) {
             startDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(convertToDayOFWeek(day).label + " " + timeslot.getStartTime())));
             endDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(convertToDayOFWeek(day).label + " " + timeslot.getEndTime())));

@@ -64,8 +64,7 @@ public class TimeSlotFactory {
      * @return the time ID of the timeslot or -1 if not found.
      */
     public int findTimeSlot(String startTime, String endTime, String daysOfWeek, List<Timeslot> times) {
-        for (int i = 0; i < times.size(); i++) {
-            Timeslot current = times.get(i);
+        for (Timeslot current : times) {
             if (current.getEndTime().equals(endTime) && current.getStartTime().equals(startTime) && current.getDaysOfWeek().equals(daysOfWeek)) {
                 return current.getTimeID();
             }

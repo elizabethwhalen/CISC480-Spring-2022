@@ -8,7 +8,6 @@ public class Lecture implements Course {
     private String semester;
     private int draft;
     private int capacity;
-    private final float teachLoad = 1;
 
     public Lecture() {}
     public String getDeptCode() {
@@ -68,6 +67,7 @@ public class Lecture implements Course {
     }
 
     public float teachLoad() {
+        float teachLoad = 1;
         return teachLoad;
     }
 
