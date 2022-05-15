@@ -26,13 +26,16 @@ const useStyles = makeStyles((theme) => ({
         color: '#7E16A4',
         fontWeight: '600',
     },
+    subHeader: {
+        fontWeight: '600',
+    },
     message: {
         color: '#388e3c',
-        fontWeight: 600,
+        fontWeight: '600',
     },
     unsucessfulMessage: {
         color: 'red',
-        fontWeight: 600,
+        fontWeight: '600',
     },
 }))
 

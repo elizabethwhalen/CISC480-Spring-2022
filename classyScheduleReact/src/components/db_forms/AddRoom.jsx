@@ -8,7 +8,7 @@ import {
     FormControl,
     MenuItem,
     InputLabel
-} from '@mui/material'
+} from '@mui/material-ui/core'
 import axios from 'axios';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import { makeStyles } from '@mui/styles'
@@ -16,24 +16,30 @@ import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 
 // This is a React hook used for organizing the styling of each element in this component
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
     },
     container: {
-        padding: "40px",
+        padding: theme.spacing(4),
+        position: 'relative',
+        flexGrow: 1,
+        height: '100%'
     },
     title: {
-        fontWeight: 600,
         color: '#7E16A4',
+        fontWeight: '600',
+    },
+    subHeader: {
+        fontWeight: '600',
     },
     message: {
         color: '#388e3c',
-        fontWeight: 600,
+        fontWeight: '600',
     },
     unsucessfulMessage: {
         color: 'red',
-        fontWeight: 600,
+        fontWeight: '600',
     },
 }))
 
@@ -53,7 +59,7 @@ export default function AddRoom() {
             const data = JSON.stringify({
                 building_code: building,
                 room_num: roomNum,
-                capacity: 20
+                capacity: 20,
             });
             const config = {
                 method: 'post',
@@ -63,7 +69,7 @@ export default function AddRoom() {
                     'Authorization': `Bearer ${token}`,                
                 },
                 // using property shorthand
-                data
+                data,
             };
             axios(config).then(() => { 
                 // good response
@@ -134,6 +140,7 @@ export default function AddRoom() {
                     <ValidatorForm onSubmit={submitForm}>
                         <Grid container spacing={2}>
                             <Grid item xs={4}>
+
                                 {/* DROPDOWN FOR BUILDING SELECTION */}
                                 <FormControl fullWidth size="large">
                                     <InputLabel id="demo-select-small">Building</InputLabel>
@@ -208,12 +215,9 @@ export default function AddRoom() {
                                 </Button>
                             </Grid>
                         </Grid>
-
-
                     </ValidatorForm>
                 </Grid>
             </Grid>
-
         </Paper>
     )
 }
