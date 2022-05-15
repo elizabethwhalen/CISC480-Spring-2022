@@ -9,18 +9,15 @@ import {
   Typography,
   IconButton,
 } from '@material-ui/core'
-import LoginHeader from './LoginHeader'
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import logo from '../../images/Updated_Logo.gif'
+import LoginHeader from './LoginHeader'
 
-// Width of the drawer (so that the header can move to exact position as the drawer expands)
 const drawerWidth = 300
 
 // This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles((theme) => ({
-  // root: {
-  //   display: 'flex',
-  // },
   appBar: {
     backgroundColor: '#7E16A4',
     zIndex: theme.zIndex.drawer + 1,
@@ -96,12 +93,20 @@ export default function AppHeader(props) {
 
   const classes = useStyles() // call the hook
 
+  const {
+    loggedIn,
+    handleDrawerOpen,
+    handleLogOut,
+    open,
+    setLoggedIn
+  } = props;
+
   // Return the main component
   return (
     <AppBar
       position="fixed"
       className={clsx(classes.appBar, {
-        [classes.appBarShift]: props.open,
+        [classes.appBarShift]: open,
       })}
     >
       <Toolbar>
@@ -110,10 +115,10 @@ export default function AppHeader(props) {
         <IconButton
           color="inherit"
           aria-label="open drawer"
-          onClick={props.handleDrawerOpen}
+          onClick={handleDrawerOpen}
           edge="start"
           className={clsx(classes.menuButton, {
-            [classes.hide]: props.open,
+            [classes.hide]: open,
           })}
         >
           <MenuIcon fontSize="large" />
@@ -136,12 +141,20 @@ export default function AppHeader(props) {
 
         {/* USER'S LOGIN INFO */}
         <LoginHeader
-          handleLogOut={props.handleLogOut}
-          setLoggedIn={props.setLoggedIn}
-          loggedIn={props.loggedIn}
-        ></LoginHeader>
+          handleLogOut={handleLogOut}
+          setLoggedIn={setLoggedIn}
+          loggedIn={loggedIn}
+        />
 
       </Toolbar>
     </AppBar>
   )
+}
+
+AppHeader.propTypes = {
+  handleDrawerOpen: PropTypes.func.isRequired,
+  handleLogOut: PropTypes.func.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
+  open: PropTypes.bool.isRequired,
+  setLoggedIn: PropTypes.func.isRequired
 }

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import { Box, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
@@ -5,7 +6,7 @@ import { Avatar } from '@mui/material'
 import { Link } from 'react-router-dom'
 
 // This is a React hook used for organizing the styling of each element in this component
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   container: {
     textAlign: 'right',
   },
@@ -22,22 +23,19 @@ const useStyles = makeStyles((theme) => ({
   link: {
     textDecoration: 'none',
   },
-}))
+})
 
-// Main components with parameters passed as props
-const LoginHeader = (props) => {
-
-  const classes = useStyles() // call the hook
-  const loggedIn = props.loggedIn;
+export default function LoginHeader(props) {
+  const { loggedIn, setLoggedIn, handleLogOut } = props;
+  const classes = useStyles()
   const currentToken = sessionStorage.getItem('token');
 
   const handleLogoutClick = () => {
-    props.setLoggedIn(false);
-    props.handleLogOut();
+    setLoggedIn(false);
+    handleLogOut();
     window.location.href = "/";
   }
 
-  // return the component
   return (
     <Box display="flex" className={classes.container}>
 
@@ -68,4 +66,3 @@ const LoginHeader = (props) => {
     </Box>
   )
 }
-export default LoginHeader

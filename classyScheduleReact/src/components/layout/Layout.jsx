@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { CssBaseline } from '@material-ui/core'
@@ -28,9 +29,15 @@ const useStyles = makeStyles((theme) => ({
 // This function will return the overall layout of the app
 export default function Layout(props) {
 
+  const {
+    handleLogOut,
+    loggedIn,
+    setLoggedIn,
+    setToken
+  } = props;
+
   const classes = useStyles() // call the hook
   const [open, setOpen] = React.useState(false) // variable that determines expanding motion of the drawer
-  const loggedIn = props.loggedIn;
   const currentToken = sessionStorage.getItem('token');
 
   // This function will set the drawer to open
@@ -44,16 +51,16 @@ export default function Layout(props) {
   }
 
   return (
-    <>
+    <div>
       {loggedIn || currentToken ?
         <div className={classes.root}>
           <CssBaseline />
           <AppHeader
             open={open}
-            loggedIn={props.loggedIn}
-            handleLogOut={props.handleLogOut}
+            loggedIn={loggedIn}
+            handleLogOut={handleLogOut}
             handleDrawerOpen={handleDrawerOpen}
-            setLoggedIn={props.setLoggedIn}
+            setLoggedIn={setLoggedIn}
           />
 
           <AppSideNavBar
@@ -64,12 +71,13 @@ export default function Layout(props) {
 
           <main className={classes.content}>
             <div className={classes.toolbar} />
-            <AppRouter></AppRouter>
+            <AppRouter />
           </main>
         </div> :
-        <LogRouter setLoggedIn={props.setLoggedIn} setToken={props.setToken}></LogRouter>
+        <LogRouter setLoggedIn={setLoggedIn} setToken={setToken} />
       }
-    </>
+    </div>
 
   )
 }
+
