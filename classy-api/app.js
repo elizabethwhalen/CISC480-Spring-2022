@@ -24,9 +24,8 @@ const fs = require('fs')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const sgMail = require('@sendgrid/mail');
-require('dotenv').config();
 
-// Developmental setting: 0 for local dev, or 1 for production (Azure deployment) 
+// Developmental setting: 0 for local dev, or 1 for dev API deployment (classy-schedule-dev Web App), and 2 for production API deployment (classy-schedule-api Web App) 
 const dev = 1;
 
 // Setup RESTful app
@@ -39,28 +38,33 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //
 // Read in "hidden" files. The "hidden" directory should be in .gitignore but deployed to the server.
-// public users should not be able to view this directory. We have left it in our github to not
-// deter the progress of other teams.
+// public users should not be able to view this directory. We must drop the "hidden" folder into each of our own
+// local developments. While it would have been more appropriate to use NPM "dotenv" with environment variables
+// some of our passwords/key/seeds have hash signs in them so we decided to stick to generic file reading.
 //
 
 // Read in Azure database password for our access account. Need callback 
 // so that the database connection not make too early
 let db_password;
 function makeConnection(callback) {
-    db_password = process.env.DB_DEV_PASSWORD;
+    fs.readFile('./hidden/db_password.txt', (err, data) => {
+        if (err) throw err;
+        db_password = data.toString();
+        callback(db_password);
+    });
 }
 // Read in seed used for jwt. We don't need callback function because hashing
 // doe not occur right when server is initiated.
 let secretkey;
 try {
-    secretkey = process.env.JWT_SEED;
+    secretkey = fs.readFileSync('./hidden/jwt_seed.txt').toString();
 } catch {
     throw "Server error: security issue. Please try again later";
 }
 // Read in API key used for sendgrid email
 let sg_key;
 try {
-    sg_key = process.env.SENDGRID_API_KEY;
+    sg_key = fs.readFileSync('./hidden/sg_key.txt').toString();
     sgMail.setApiKey(sg_key);
 } catch {
     throw "Server error: security issue. Please try again later";
