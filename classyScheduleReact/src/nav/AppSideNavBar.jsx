@@ -24,6 +24,9 @@ import ExpandMore from '@mui/icons-material/ExpandMore'
 import PermIdentityIcon from '@material-ui/icons/PermIdentity'
 import ClassIcon from '@material-ui/icons/Class'
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom'
+import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 
 const drawerWidth = 300 // width of the drawer
 
@@ -186,7 +189,7 @@ export default function AppSideNavBar(props) {
           </ListItem>
         </Link>
 
-        {/* FUNCTIONS */}
+        {/* DATABASE FUNCTIONS */}
         <ListItem
           button
           selected={selectedIndex === 2}
@@ -196,7 +199,7 @@ export default function AppSideNavBar(props) {
             <AddIcon />
           </ListItemIcon>
           <ListItemText className={classes.text}>
-            Functions
+            Database Functions
           </ListItemText>
           {openNestedList ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
@@ -237,6 +240,18 @@ export default function AppSideNavBar(props) {
                 </ListItemIcon>
                 <ListItemText className={classes.text}>
                   Add Room
+                </ListItemText>
+              </ListItem>
+            </Link>
+
+            {/* Delete Class */}
+            <Link to='/DeleteClass' className={classes.link} >
+              <ListItem button className={classes.collapseLink}>
+                <ListItemIcon>
+                  <CancelPresentationIcon />
+                </ListItemIcon>
+                <ListItemText className={classes.text}>
+                  Delete Course 
                 </ListItemText>
               </ListItem>
             </Link>

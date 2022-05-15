@@ -2,6 +2,7 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import AddClass from '../components/db_forms/AddClass'
+import DeleteClass from '../components/db_forms/DeleteClass'
 import CalendarTest from '../components/calendar/CalendarTest'
 import Home from '../components/layout/Home'
 import AddFaculty from '../components/db_forms/AddFaculty'
@@ -18,6 +19,7 @@ export default function AppRouter() {
       <Route exact path="/AddFaculty" element={<AddFaculty />} />
       <Route exact path="/Help" element={<Help />} />
       <Route exact path='/AddRoom' element={<AddRoom />} />
+      <Route exact path="/DeleteClass" element={<DeleteClass />} />
       <Route exact path='/Signup' element={<Signup />} />
     </Routes>
   )

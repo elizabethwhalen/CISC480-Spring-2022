@@ -10,7 +10,7 @@ import {
     InputLabel
 } from '@material-ui/core'
 import axios from 'axios'
-import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
+import { ValidatorForm } from 'react-material-ui-form-validator'
 import { makeStyles } from '@material-ui/core/styles'
 import DoneIcon from '@mui/icons-material/Done'
 import CloseIcon from '@mui/icons-material/Close';
@@ -44,46 +44,37 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 // main function component which exports the AddClass Form UI
-export default function AddClass() {
+export default function DeleteClass() {
     const [code, setCode] = React.useState(''); // Department code (e.g., CISC, STAT, etc.)
     const [courseNum, setCourseNum] = React.useState(''); // Course number (e.g., 420, 350, etc.)
-    const [courseName, setCourseName] = React.useState(''); // Course name (e.g., Info Sec, Computer Graphics, etc.)
-    const [added, setAdded] = React.useState(0); // -1 for error, 0 for base, 1 for added successfully
+    
+    const [deleted, setDeleted] = React.useState(0); // -1 for error, 0 for base, 1 for added successfully
     const [deptList, setDeptList] = React.useState([]);
+    const [courseNumList, setCourseNumList] = React.useState([]);
     const token = sessionStorage.getItem('token');
     const classes = useStyles(); // call the useStyle hook
 
-    // This function will create a Axios request to send all information when the form is submitted
+    // This function will create a Axios request to DELETE a course when the form is submitted
     const submitForm = (event) => {
         event.preventDefault();
-        if (code !== '' && courseNum !== '' && courseName !== '') {
-            // Data fields for POST request.
-            const data = JSON.stringify({
-                dept_code: code,
-                class_num: courseNum,
-                class_name: courseName
-            });
-            // Config data for https request.
+        if (code !== '' && courseNum !== '' && courseNum !== '') {
+            // Config data for DELETE https request
             const config = {
-                method: 'post',
-                url: 'https://classy-api.ddns.net/v2/class',
+                method: 'delete',
+                url: `https://classy-api.ddns.net/v2/class/${code}/${courseNum}`,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
-                data,
             };
             // https request Promise executed with Config settings.
             axios(config).then(() => {
                 // good response
-                setAdded(1);
+                setDeleted(1);
             }).catch(() => {
-                // bad response: verify that course number is not a duplicate
-                setAdded(-1);
+                // bad response: verify that course exists
+                setDeleted(-1);
             });
-            setCode('')
-            setCourseNum('')
-            setCourseName('')
         }
     };
 
@@ -97,11 +88,7 @@ export default function AddClass() {
         setCourseNum(event.target.value);
     }
 
-    // This function will retrieve the value entered in the course name field whenever it changes
-    const handleChangeCourseName = (event) => {
-        setCourseName(event.target.value);
-    }
-
+    // This function will get the list of existing Dept codes
     const getDeptList = () => {
         // list will hold dept codes during axios response
         const list = [];
@@ -123,13 +110,40 @@ export default function AddClass() {
             // use function to setBuildingList from response
             setDeptList(list);
         }).catch(() => {
+            
+        });
+    }
 
+    // This function will get the list of existing course numbers from the database
+    const getCourseNumList = () => {
+        // list will hold dept codes during axios response
+        const list = [];
+        // Config data for https request.
+        const config = {
+            method: 'get',
+            url: 'https://classy-api.ddns.net/v2/class',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        };
+        // https request Promise executed with Config settings.
+        axios(config).then((response) => {
+            response.data.map((e) => {
+                list.push(e.class_num);
+                return list;
+            })
+            // use function to setBuildingList from response
+            setCourseNumList(list);
+        }).catch(() => {
+            
         });
     }
 
     // call the hook useEffect to populate dept list from the GET request
     useEffect(() => {
         getDeptList();
+        getCourseNumList();
     }, [])
 
     // Return the UI of the component
@@ -140,7 +154,7 @@ export default function AddClass() {
                 {/* TITLE */}
                 <Grid item xs={12}>
                     <Typography variant="h6" className={classes.title} gutterBottom>
-                        Add a New Course
+                        Delete an Existing Course
                     </Typography>
                 </Grid>
 
@@ -157,7 +171,7 @@ export default function AddClass() {
                                         labelId="demo-select-small"
                                         id="demo-select-small"
                                         value={code}
-                                        label="Building"
+                                        label="Department"
                                         onChange={handleChangeCode}
                                         size='large'
                                         autoWidth
@@ -175,75 +189,50 @@ export default function AddClass() {
                                 </FormControl>
                             </Grid>
 
-                            {/* COURSE NUMBER */}
-                            <Grid item xs={4}>
-                                <TextValidator
-                                    size="medium"
-                                    variant="outlined"
-                                    label="Course Number"
-                                    fullWidth
-                                    name="coursenum"
-                                    type="text"
-                                    value={courseNum}
-                                    onInput={(e) => {
-                                        e.target.value = e.target.value.slice(0, 4)
-                                    }}
-                                    validators={[
-                                        'matchRegexp:^[0-9]{1,4}$',
-                                        'required'
-                                    ]}
-                                    errorMessages={[
-                                        'Invalid - It should be a 3-digit number',
-                                        'this field is required',
-                                    ]}
-                                    onChange={handleChangeCourseNum}
-                                />
+                            {/* CLASS NUMBER */}
+                            <Grid item xs={4} >
+                                <FormControl fullWidth size="medium">
+                                    <InputLabel id="demo-select-small">Course Number</InputLabel>
+                                    <Select
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={courseNum}
+                                        label="Course Number"
+                                        onChange={handleChangeCourseNum}
+                                        size='large'
+                                        autoWidth
+                                    >
+                                        <MenuItem value="">
+                                            <em>None</em>
+                                        </MenuItem>
+                                        {/* DYNAMIC MAP OF EXISTING COURSE NUMS TO MENU ITEMS */}
+                                        {courseNumList.map(e =>
+                                            <MenuItem key={e} value={e}>
+                                                {e}
+                                            </MenuItem>
+                                        )}
+                                    </Select>
+                                </FormControl>
                             </Grid>
-                            <Grid item xs={4} />
-
-                            {/* COURSE NAME */}
-                            <Grid item xs={8} >
-                                <TextValidator
-                                    size="medium"
-                                    variant="outlined"
-                                    label="Course Name"
-                                    fullWidth
-                                    name="coursename"
-                                    type="text"
-                                    value={courseName}
-                                    validators={['matchRegexp:^[a-zA-Z ]{1,100}$', 'required']}
-                                    onInput={(e) => {
-                                        e.target.value = e.target.value.slice(0, 100)
-                                    }}
-                                    errorMessages={[
-                                        'Invalid - It should be a-z, A-Z, and space',
-                                        'this field is required'
-                                    ]}
-                                    className={classes.textBox}
-                                    onChange={handleChangeCourseName}
-                                />
-                            </Grid>
-                            <Grid item xs={4} />
                             
-
                             {/* POST-SUBMIT STATUS MESSAGES */}
-                            {(added === 1) && (
+                            {(deleted === 1) && (
                                 <Grid item xs={12}>
                                     <Typography variant="body1" className={classes.message}>
-                                        <DoneIcon /> Class has been added successfully!
+                                        <DoneIcon /> Class has been deleted form the database successfully!
                                     </Typography>
                                 </Grid>
                             )}
-                            {(added === -1) && (
+                            {(deleted === -1) && (
                                 <Grid item xs={12}>
                                     <Typography variant="body1" className={classes.unsucessfulMessage}>
-                                        <CloseIcon /> Class could not be added to the databse.
-                                        Please verify that the record being added does not already exist.
+                                        <CloseIcon /> Class could not be deleted from the databse.
+                                        Please verify that the record being deleted exists.
                                     </Typography>
                                 </Grid>
                             )}
 
-                            {/* SUBMIT BUTTON */}
+                            {/* SUBMIT/DELETE BUTTON */}
                             <Grid item xs={4}>
                                 <Button
                                     variant="contained"
@@ -251,7 +240,7 @@ export default function AddClass() {
                                     type="submit"
                                     disableElevation
                                 >
-                                    Submit
+                                    Delete
                                 </Button>
                             </Grid>
                         </Grid>

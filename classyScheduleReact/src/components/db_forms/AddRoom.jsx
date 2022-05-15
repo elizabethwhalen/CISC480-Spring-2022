@@ -151,7 +151,7 @@ export default function AddRoom() {
                             <Grid item xs={8}>
 
                                 {/* DROPDOWN FOR BUILDING SELECTION */}
-                                <FormControl fullWidth size="large">
+                                <FormControl fullWidth size="medium">
                                     <InputLabel id="demo-select-small">Building</InputLabel>
                                     <Select
                                         labelId="demo-select-small"
