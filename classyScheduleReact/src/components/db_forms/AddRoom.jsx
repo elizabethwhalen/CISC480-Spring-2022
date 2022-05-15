@@ -69,14 +69,14 @@ export default function AddRoom() {
                 url: 'https://classy-api.ddns.net/v2/room',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,                
+                    'Authorization': `Bearer ${token}`,
                 },
                 // using property shorthand
                 data,
             };
-            axios(config).then(() => { 
+            axios(config).then(() => {
                 // good response
-                setAdded(1); 
+                setAdded(1);
             }).catch(() => {
                 // bad response: check that record is not a duplicate
                 setAdded(-1);
@@ -238,7 +238,7 @@ export default function AddRoom() {
                                 </Grid>
                             )}
 
-                            {/* SUBMIT BUTTON */} 
+                            {/* SUBMIT BUTTON */}
                             <Grid item xs={12}>
                                 <Button variant="contained"
                                     size="large"

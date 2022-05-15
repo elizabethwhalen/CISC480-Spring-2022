@@ -5,18 +5,16 @@ import moment from "moment"
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop"
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css"
 import "react-big-calendar/lib/css/react-big-calendar.css"
-import constraints from 'constraint-solver'
 import { RRule } from 'rrule'
 import axios from 'axios'
 import EditClassForm from './EditClassForm'
-import { listItemTextClasses } from "@mui/material"
 import Toolbar from "./Toolbar"
 
 const mlocalizer = momentLocalizer(moment);
 const DnDCalendar = withDragAndDrop(Calendar);
 
 export default function CalendarTest() {
-    const [events, setEvents] = React.useState([]);//getDatafromAPI
+    const [events, setEvents] = React.useState([]);
     const [isEdit, setEdit] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [courseList, setCourseList] = React.useState([]);
@@ -36,18 +34,18 @@ export default function CalendarTest() {
     maxTime.setHours(21, 0, 0);
 
 
-    const {  formats } = React.useMemo(
+    const { formats } = React.useMemo(
         () => ({
             formats: {
                 // the day of the week header in the 'month' view
                 weekdayFormat: (date, culture, localizer) =>
-                localizer.format(date, 'dddd', culture),
+                    localizer.format(date, 'dddd', culture),
                 // the day header in the 'week' and 'day' (Time Grid) views
                 dayFormat: (date, culture, localizer) =>
-                localizer.format(date, 'dddd', culture),
+                    localizer.format(date, 'dddd', culture),
                 // the time in the gutter in the Time Grid views
                 timeGutterFormat: (date, culture, localizer) =>
-                localizer.format(date, 'hh:mm a', culture),
+                    localizer.format(date, 'hh:mm a', culture),
             },
         }),
         []
@@ -272,7 +270,7 @@ export default function CalendarTest() {
     const handleSelectSlot = event => {
         const { start } = event;
         let { end } = event;
-        end = new Date(end.getTime()+1000*60*55);
+        end = new Date(end.getTime() + 1000 * 60 * 55);
         const { modifiedStart, modifiedEnd } = handleGetTimeInterval(start, end);
         setStartTime(modifiedStart);
         setEndTime(modifiedEnd);
@@ -328,7 +326,6 @@ export default function CalendarTest() {
                 room: data.room,
                 id: data.id,
                 subId: i,
-                repeat: data.repeat,
                 days: data.days,
             }
             newData.push(newEvent);
@@ -341,7 +338,7 @@ export default function CalendarTest() {
     const getDatafromAPI = () => {
         // list will hold new event data during axios response
         const list = [];
-        
+
         // Config data for https request.
         const config = {
             method: 'get',
@@ -354,7 +351,7 @@ export default function CalendarTest() {
         // https request Promise executed with Config settings.
         axios(config).then((response) => {
             console.log(response);
-            
+
             // pasrse JSON for DATA we need
             response.data.map((e) => {
                 // Things we need:
@@ -376,18 +373,18 @@ export default function CalendarTest() {
                 list.push(e.time_start);
                 list.push(e.time_end);
                 list.push(e.day_of_week);
-                
-                for (let i = 0; i < e.day_of_week; i++) {
+
+                for (let i = 0; i < e.day_of_week; i += 1) {
                     console.log(e.day_of_week.charAt(i));
                 }
-                
-                
+
+
                 return list;
             })
             // use function to setBuildingList from response
-            console.log("here is our list " + list);
-            //handleEventUpdate(list);
-            
+            // console.log("here is our list " + list);
+            // handleEventUpdate(list);
+
         }).catch((error) => {
             console.log(error);
         });
@@ -451,9 +448,7 @@ export default function CalendarTest() {
                 onEventResize={event => handleEventResize(event)}
                 onSelectEvent={event => handleSelectEvent(event)}
                 onSelectSlot={(slotInfo) => handleSelectSlot(slotInfo)}
-                components={
-                    {toolbar: Toolbar}
-                }
+                components={{ toolbar: Toolbar }}
             />
             <div>
                 <Button

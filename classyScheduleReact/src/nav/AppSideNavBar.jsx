@@ -114,8 +114,7 @@ export default function AppSideNavBar(props) {
 
   // This function will set the item selected as "selected"
   // If selected, the list item will change its background color
-  const handleListItemClick = (event, index) => {
-    event.preventDefault()
+  const handleListItemClick = (index) => {
     setSelectedIndex(index)
 
     /*

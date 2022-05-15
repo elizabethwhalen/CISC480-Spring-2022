@@ -119,7 +119,7 @@ export default function Login(props) {
           setToken(token);
           setLoggedIn(true);
           sessionStorage.setItem("startRepeat", "2022-01-31");
-          sessionStorage.setItem("endRepeat", "2022-05-20");
+          sessionStorage.setItem("endRepeat", "2022-05-22");
         } else {
           setLoggedIn(false);
         }
