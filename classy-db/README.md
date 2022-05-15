@@ -36,8 +36,7 @@ Here's an example of a query to create a table.
 CREATE TABLE building (
     building_name   VARCHAR(5),
     building_code   VARCHAR(5)
-)
-
+);
 ```
 
 ## Local Development
