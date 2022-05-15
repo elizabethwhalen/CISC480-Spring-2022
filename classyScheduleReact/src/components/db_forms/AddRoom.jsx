@@ -102,6 +102,7 @@ export default function AddRoom() {
         setCapacity(event.target.value);
     }
 
+    // This function populates the building list used in the dropdown
     const getBuildingList = () => {
         // list will hold building codes during axios response
         const list = [];

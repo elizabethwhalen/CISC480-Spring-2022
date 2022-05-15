@@ -7,7 +7,7 @@ import {
     Select,
     FormControl,
     MenuItem,
-    InputLabel
+    InputLabel,
 } from '@material-ui/core'
 import axios from 'axios'
 import { ValidatorForm } from 'react-material-ui-form-validator'
@@ -43,24 +43,24 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-// main function component which exports the AddClass Form UI
+// main function component which exports the DeleteRoom Form UI
 export default function DeleteRoom() {
-    const [code, setCode] = React.useState(''); // Department code (e.g., CISC, STAT, etc.)
-    const [courseNum, setCourseNum] = React.useState(''); // Course number (e.g., 420, 350, etc.)
     const [deleted, setDeleted] = React.useState(0); // -1 for error, 0 for base, 1 for added successfully
-    const [deptList, setDeptList] = React.useState([]);
-    const [courseNumList, setCourseNumList] = React.useState([]);
+    const [roomNum, setRoomNum] = React.useState('');
+    const [building, setBuilding] = React.useState('');
+    const [buildingList, setBuildingList] = React.useState([]);
+    const [roomNumList, setRoomNumList] = React.useState([]);
     const token = sessionStorage.getItem('token');
     const classes = useStyles(); // call the useStyle hook
 
-    // This function will create a Axios request to DELETE a course when the form is submitted
+    // This function will create a Axios request to DELETE a room when the form is submitted
     const submitForm = (event) => {
         event.preventDefault();
-        if (code !== '' && courseNum !== '' && courseNum !== '') {
+        if (roomNum !== '' && building !== '') {
             // Config data for DELETE https request
             const config = {
                 method: 'delete',
-                url: `https://classy-api.ddns.net/v2/class/${code}/${courseNum}`,
+                url: `https://classy-api.ddns.net/v2/room/${building}/${roomNum}`,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
@@ -68,23 +68,23 @@ export default function DeleteRoom() {
             };
             // https request Promise executed with Config settings.
             axios(config).then(() => {
-                // good response. course was removed from the database
+                // good response. room was removed from the database
                 setDeleted(1);
             }).catch(() => {
-                // bad response: verify that course exists
+                // bad response: verify that room exists
                 setDeleted(-1);
             });
         }
     };
 
-    // This function will get the list of existing Dept codes
-    const getDeptList = () => {
-        // list will hold dept codes during axios response
+    // This function populates the building list used in the dropdown
+    const getBuildingList = () => {
+        // list will hold building codes during axios response
         const list = [];
         // Config data for https request.
         const config = {
             method: 'get',
-            url: 'https://classy-api.ddns.net/v2/dept',
+            url: 'https://classy-api.ddns.net/v2/building',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
@@ -93,24 +93,23 @@ export default function DeleteRoom() {
         // https request Promise executed with Config settings.
         axios(config).then((response) => {
             response.data.map((e) => {
-                list.push(e.dept_code);
+                list.push(e.building_code);
                 return list;
             })
             // use function to setBuildingList from response
-            setDeptList(list);
+            setBuildingList(list);
         }).catch(() => {
             
         });
     }
-
-    // This function will get the list of existing course numbers from the database
-    const getCourseNumList = (dept) => {
-        // list will hold dept codes during axios response
+    // This function will get the list of existing room numbers from the database for a specific building code
+    const getRoomNumList = (buildingCode) => {
+        // list will hold room numbers during axios response
         const list = [];
         // Config data for https request.
         const config = {
             method: 'get',
-            url: `https://classy-api.ddns.net/v2/class?dept_code=${dept}`,
+            url: `https://classy-api.ddns.net/v2/room?building_code=${buildingCode}`,
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
@@ -119,31 +118,30 @@ export default function DeleteRoom() {
         // https request Promise executed with Config settings.
         axios(config).then((response) => {
             response.data.map((e) => {
-                list.push(e.class_num);
+                list.push(e.room_num);
                 return list;
             })
             // use function to setBuildingList from response
-            setCourseNumList(list);
+            setRoomNumList(list);
         }).catch(() => {
             
         });
     };
 
-    // This function will retrieve the value selected in the dept. code field whenever it changes
-    const handleChangeCode = (event) => {
-        setCode(event.target.value);
-        getCourseNumList(event.target.value);
-    };
+    // This function will retrieve the value entered in the Room number field whenever it changes
+    const handleChangeRoomNum = (event) => {
+        setRoomNum(event.target.value);
+    }
 
-    // This function will retrieve the value entered in the course number field whenever it changes
-    const handleChangeCourseNum = (event) => {
-        setCourseNum(event.target.value);
+    // This function will retrieve the value entered in the building field whenever it changes
+    const handleChangeBuilding = (event) => {
+        setBuilding(event.target.value);
+        getRoomNumList(event.target.value);
     }
 
     // call the hook useEffect to populate dept list from the GET request
     useEffect(() => {
-        getDeptList(code);
-        getCourseNumList();
+        getBuildingList();
     }, [])
 
     // Return the UI of the component
@@ -154,7 +152,7 @@ export default function DeleteRoom() {
                 {/* TITLE */}
                 <Grid item xs={12}>
                     <Typography variant="h6" className={classes.title} gutterBottom>
-                        Delete an Existing Course
+                        Delete an Existing Room
                     </Typography>
                 </Grid>
 
@@ -163,24 +161,24 @@ export default function DeleteRoom() {
                     <ValidatorForm onSubmit={submitForm}>
                         <Grid container spacing={2}>
 
-                            {/* DEPARTMENT CODE */}
-                            <Grid item xs={12} md={4} >
+                            {/* DROPDOWN FOR BUILDING SELECTION */}
+                            <Grid item xs={12} md={4}>
                                 <FormControl fullWidth size="medium">
-                                    <InputLabel id="demo-select-small">Department</InputLabel>
+                                    <InputLabel id="demo-select-small">Building</InputLabel>
                                     <Select
                                         labelId="demo-select-small"
                                         id="demo-select-small"
-                                        value={code}
-                                        label="Department"
-                                        onChange={handleChangeCode}
+                                        value={building}
+                                        label="Building"
+                                        onChange={handleChangeBuilding}
                                         size='large'
                                         autoWidth
                                     >
                                         <MenuItem value="">
                                             <em>None</em>
                                         </MenuItem>
-                                        {/* DYNAMIC MAP OF EXISTING DEPTS TO MENU ITEMS */}
-                                        {deptList.map(e =>
+                                        {/* DYNAMIC MAP OF EXISTING BUILDINGS TO MENU ITEMS */}
+                                        {buildingList.map(e =>
                                             <MenuItem key={e} value={e}>
                                                 {e}
                                             </MenuItem>
@@ -189,24 +187,24 @@ export default function DeleteRoom() {
                                 </FormControl>
                             </Grid>
 
-                            {/* CLASS NUMBER */}
-                            <Grid item xs={12} md={4} >
+                            {/* DROPDOWN FOR ROOM NUMBER SELECTION */}
+                            <Grid item xs={12} md={4}>
                                 <FormControl fullWidth size="medium">
-                                    <InputLabel id="demo-select-small">Course Number</InputLabel>
+                                    <InputLabel id="demo-select-small">Room Number</InputLabel>
                                     <Select
                                         labelId="demo-select-small"
                                         id="demo-select-small"
-                                        value={courseNum}
-                                        label="Course Number"
-                                        onChange={handleChangeCourseNum}
+                                        value={roomNum}
+                                        label="Room Number"
+                                        onChange={handleChangeRoomNum}
                                         size='large'
                                         autoWidth
                                     >
                                         <MenuItem value="">
                                             <em>None</em>
                                         </MenuItem>
-                                        {/* DYNAMIC MAP OF EXISTING COURSE NUMS TO MENU ITEMS */}
-                                        {courseNumList.map(e =>
+                                        {/* DYNAMIC MAP OF EXISTING BUILDINGS TO MENU ITEMS */}
+                                        {roomNumList.map(e =>
                                             <MenuItem key={e} value={e}>
                                                 {e}
                                             </MenuItem>
@@ -214,20 +212,20 @@ export default function DeleteRoom() {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={0} md={4} />
+                            <Grid item xs={12} md={4} />
                             
                             {/* POST-SUBMIT STATUS MESSAGES */}
                             {(deleted === 1) && (
                                 <Grid item xs={12}>
                                     <Typography variant="body1" className={classes.message}>
-                                        <DoneIcon /> Course has been deleted from the database successfully!
+                                        <DoneIcon /> Room has been deleted from the database successfully!
                                     </Typography>
                                 </Grid>
                             )}
                             {(deleted === -1) && (
                                 <Grid item xs={12}>
                                     <Typography variant="body1" className={classes.unsucessfulMessage}>
-                                        <CloseIcon /> Course could not be deleted from the databse.
+                                        <CloseIcon /> Room could not be deleted from the databse.
                                         Please verify that the record being deleted exists.
                                     </Typography>
                                 </Grid>

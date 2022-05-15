@@ -7,7 +7,7 @@ import {
     Select,
     FormControl,
     MenuItem,
-    InputLabel
+    InputLabel,
 } from '@material-ui/core'
 import axios from 'axios'
 import { ValidatorForm } from 'react-material-ui-form-validator'
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-// main function component which exports the AddClass Form UI
+// main function component which exports the DeleteFaculty Form UI
 export default function DeleteFaculty() {
     const [facultyID, setFacultyID] = React.useState('');
     const [facultyIDList, setFacultyIDList] = React.useState([]);

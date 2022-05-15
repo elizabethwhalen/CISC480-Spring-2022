@@ -45,20 +45,31 @@ export default function Help() {
 
                         <Grid item xs={12}>
                             <Typography variant='h5' gutterBottom className={classes.header}>
-                                Functions Tab
+                                Database Functions Tab
                             </Typography>
                             <Typography variant='h6'>
-                                The <em>Functions Tab</em> has two main components which are the <em>Add New Class </em>
-                                feature and the <em>Add Faculty.</em>
+                                <em>Add New Course</em> allows you to add a new course to the database
+                                by choosing a Department Code, Course Number and a Course Name.
                             </Typography>
                             <Typography variant='h6'>
-                                <em>Add New Class</em> allows you to add a brand new course into the pool
-                                of classes by choosing a Department Code, a Course Number and a Course Name.
+                                <em>Add Faculty</em> allows you to add a new Faculty member to the database
+                                by inputing their First and Last name, Faculty ID, and Teach Load.
                             </Typography>
                             <Typography variant='h6'>
-                                <em>Add Faculty</em> allows you to add a new Faculty member to the database directly
-                                by inputing their Title, First and Last name. You also have the option to add Teach Load
-                                and their preferred classes.
+                                <em>Add Room</em> allows you to add a new Room to the database directly
+                                by inputing the Building Code, Room Number, and Capacity.
+                            </Typography>
+                            <Typography variant='h6'>
+                                <em>Delete Course</em> allows you to delete an existing Course from the database
+                                by selecting Department code and Course Number.
+                            </Typography>
+                            <Typography variant='h6'>
+                                <em>Delete Faculty</em> allows you to delete an existing Faculty Member from the database
+                                by selecting their Faculty ID. Under current version, deletion by Faculty Name is not supported.
+                            </Typography>
+                            <Typography variant='h6'>
+                                <em>Delete Room</em> allows you to delete an existing Room from the database
+                                by selecting the Building Code and Room number.
                             </Typography>
                         </Grid>
 
@@ -78,6 +89,7 @@ export default function Help() {
                             </Typography>
                             <Typography variant='h6'>
                                 <em>Help</em> is the main tab where any features and their usage are documented.
+                                Versioning status and FAQ are also found on this page.
                             </Typography>
                         </Grid>
                     </Grid>
