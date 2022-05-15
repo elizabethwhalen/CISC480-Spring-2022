@@ -73,6 +73,7 @@ export default function Help() {
                             <Typography variant='h6'>
                                 <em><strong>Delete Faculty</strong></em> allows you to delete an existing Faculty Member from the database
                                 by selecting their Faculty ID. Under current version, deletion by Faculty Name is not supported.
+                                User may verify Faculty Name fields before deletion.
                             </Typography>
                             <Typography variant='h6'>
                                 <em><strong>Delete Room</strong></em> allows you to delete an existing Room from the database
