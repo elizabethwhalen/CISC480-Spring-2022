@@ -12,6 +12,7 @@ import {
 import axios from 'axios'
 import { ValidatorForm } from 'react-material-ui-form-validator'
 import { makeStyles } from '@material-ui/core/styles'
+import TextField from '@mui/material/TextField';
 import DoneIcon from '@mui/icons-material/Done'
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -46,6 +47,8 @@ const useStyles = makeStyles((theme) => ({
 // main function component which exports the DeleteFaculty Form UI
 export default function DeleteFaculty() {
     const [facultyID, setFacultyID] = React.useState('');
+    const [facultyLastname, setFacultyLastname] = React.useState('');
+    const [facultyFirstname, setFacultyFirstname] = React.useState('');
     const [facultyIDList, setFacultyIDList] = React.useState([]);
     const [deleted, setDeleted] = React.useState(0); // -1 for error, 0 for base, 1 for deleted successfully
     const token = sessionStorage.getItem('token');
@@ -75,7 +78,7 @@ export default function DeleteFaculty() {
         }
     };
 
-    // This function will get the list of existing Dept codes
+    // This function will get the list of existing faculty id codes
     const getFacultyList = () => {
         // idList will hold faculty id during axios response
         const idList = [];
@@ -100,10 +103,32 @@ export default function DeleteFaculty() {
             
         });
     }
+    // This function will get the faculty name for a specified facutly ID
+    const getFacultyName = (id) => {
+        // Config data for https request.
+        const config = {
+            method: 'get',
+            url: `https://classy-api.ddns.net/v2/faculty?faculty_id=${id}`,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        };
+        // https request Promise executed with Config settings.
+        axios(config).then((response) => {
+            console.log(response.data[0].faculty_last);
+            // use function to set fac id list and lastname list from response
+            setFacultyLastname(response.data[0].faculty_last);
+            setFacultyFirstname(response.data[0].faculty_first);
+        }).catch(() => {
+            console.log("faculty not found")
+        });
+    }
 
     // This function will retrieve the value selected in the faculty id field whenever it changes
     const handleFacultyIDChange = (event) => {
         setFacultyID(event.target.value);
+        getFacultyName(event.target.value);
     };
 
     // call the hook useEffect to populate dept list from the GET request
@@ -127,7 +152,6 @@ export default function DeleteFaculty() {
                 <Grid item xs={12}>
                     <ValidatorForm onSubmit={submitForm}>
                         <Grid container spacing={2}>
-
                             {/* FACULTY ID */}
                             <Grid item xs={12} md={4} >
                                 <FormControl fullWidth size="medium">
@@ -154,6 +178,40 @@ export default function DeleteFaculty() {
                                 </FormControl>
                             </Grid>
                             <Grid item xs={12} md={8} />
+
+                            {/* VERIFICATION READ ONLY MESSAGE */}
+                            <Grid item xs={12}>
+                                <Typography variant="h7" className={classes.title} gutterBottom>
+                                    Please Verify Faculty Name Before Deletion
+                                </Typography>
+                            </Grid>
+
+                            {/* FACULTY FIRST NAME */}
+                            <Grid item xs={12} md={4} >
+                                <TextField
+                                    id="outlined-read-only-input"
+                                    label="Faculty First Name"
+                                    defaultValue=""
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    value={facultyFirstname}
+                                />
+                            </Grid>
+
+                            {/* FACULTY LAST NAME */}
+                            <Grid item xs={12} md={4} >
+                                <TextField
+                                    id="outlined-read-only-input"
+                                    label="Faculty Last Name"
+                                    defaultValue=""
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
+                                    value={facultyLastname}
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={4} />
                             
                             {/* POST-SUBMIT STATUS MESSAGES */}
                             {(deleted === 1) && (
