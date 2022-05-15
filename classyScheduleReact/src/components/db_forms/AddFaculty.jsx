@@ -44,19 +44,20 @@ export default function AddFaculty() {
     const [firstName, setFirstName] = React.useState('');
     const [lastName, setLastName] = React.useState('');
     const [teachLoad, setTeachLoad] = React.useState('');
+    const [facultyID, setFacultyID] = React.useState('');
     const classes = useStyles() // call the useStyle hook
     const token = sessionStorage.getItem('token');
     // unique ID value must generated, for flexibility with database changing, random allows for greater flexibility than an incremental approach
-    const unique = Math.floor(Math.random() * 999999999); 
+    // const unique = Math.floor(Math.random() * 999999999); 
     const [added, setAdded] = React.useState(0); // -1 for error, 0 for base, 1 for added successfully
 
     // This function will create a Axios request to send all information when the form is submitted
     const submitForm = (event) => {
         event.preventDefault();
-        if (firstName !== '' && lastName !== '' && teachLoad !== 0.0) {
+        if (firstName !== '' && lastName !== '' && teachLoad !== 0.0 && teachLoad !== '') {
             // Data fields for POST request.
             const data = JSON.stringify({
-                faculty_id: unique,
+                faculty_id: facultyID,
                 faculty_first: firstName,
                 faculty_last: lastName,
                 title_id: 2, // title ID level 2 is default for created faculty
@@ -85,6 +86,7 @@ export default function AddFaculty() {
             setFirstName('');
             setLastName('');
             setTeachLoad('');
+            setFacultyID('');
         }
     };
 
@@ -103,6 +105,11 @@ export default function AddFaculty() {
         setTeachLoad(event.target.value);
     };
 
+    // This function will retrieve the value selected in the faculty id field whenever it changes
+    const handleFacultyIDChange = (event) => {
+        setFacultyID(event.target.value);
+    };
+
     // Return the UI of the component
     return (
         <Paper className={classes.container} elevation={0} >
@@ -111,7 +118,7 @@ export default function AddFaculty() {
                 {/* TITLE */}
                 <Grid item xs={12}>
                     <Typography variant="h6" className={classes.title} gutterBottom>
-                        Add New Faculty Member
+                        Add a New Faculty Member
                     </Typography>
                 </Grid>
 
@@ -121,7 +128,7 @@ export default function AddFaculty() {
                         <Grid container spacing={2}>
 
                             {/* FIRST NAME */}
-                            <Grid item xs={4}>
+                            <Grid item xs={12} md={6}>
                                 <TextValidator
                                     size="medium"
                                     variant="outlined"
@@ -136,7 +143,7 @@ export default function AddFaculty() {
                                         'required'
                                     ]}
                                     errorMessages={[
-                                        'Invalid input',
+                                        'Invalid input: please check that length of 50 non-numeric characters is not exceeded',
                                         'this field is required',
                                     ]}
                                     onChange={handleFirstNameChange}
@@ -145,7 +152,7 @@ export default function AddFaculty() {
                             </Grid>
 
                             {/* LAST NAME */}
-                            <Grid item xs={4}>
+                            <Grid item xs={12} md={6}>
                                 <TextValidator
                                     size="medium"
                                     variant="outlined"
@@ -160,7 +167,7 @@ export default function AddFaculty() {
                                         'required'
                                     ]}
                                     errorMessages={[
-                                        'Invalid input',
+                                        'Invalid input: please check that length of 50 non-numeric characters is not exceeded',
                                         'this field is required',
                                     ]}
                                     onChange={handleLastNameChange}
@@ -168,7 +175,7 @@ export default function AddFaculty() {
                             </Grid>
 
                             {/* TEACH LOAD */}
-                            <Grid item xs={4}>
+                            <Grid item xs={12} md={6}>
                                 <TextValidator
                                     size="medium"
                                     variant="outlined"
@@ -182,10 +189,31 @@ export default function AddFaculty() {
                                         'required'
                                     ]}
                                     errorMessages={[
-                                        'Invalid input',
+                                        'Invalid input: please input a number greater than 0',
                                         'this field is required',
                                     ]}
                                     onChange={handleTeachLoadChange}
+                                />
+                            </Grid>
+
+                            {/* FACULTY ID */}
+                            <Grid item xs={12} md={6}>
+                                <TextValidator
+                                    size="medium"
+                                    variant="outlined"
+                                    label="Faculty ID"
+                                    fullWidth
+                                    name="facultyID"
+                                    value={facultyID}
+                                    validators={[
+                                        'matchRegexp:^[0-9.]{9}$',
+                                        'required'
+                                    ]}
+                                    errorMessages={[
+                                        'Invalid input: please input a 9-digit numerical ID',
+                                        'this field is required',
+                                    ]}
+                                    onChange={handleFacultyIDChange}
                                 />
                             </Grid>
 
@@ -201,7 +229,7 @@ export default function AddFaculty() {
                                 <Grid item xs={12}>
                                     <Typography variant="body1" className={classes.unsucessfulMessage}>
                                         <CloseIcon /> Faculty could not be added to the databse.
-                                        Please verify that the record being added does not already exist.
+                                        Please verify that the faculty ID being added does not already exist.
                                     </Typography>
                                 </Grid>
                             )}

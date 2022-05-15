@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+
 import {
     Paper,
     Grid,
@@ -8,10 +9,10 @@ import {
     FormControl,
     MenuItem,
     InputLabel
-} from '@mui/material-ui/core'
+} from '@material-ui/core'
 import axios from 'axios';
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
-import { makeStyles } from '@mui/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import DoneIcon from '@mui/icons-material/Done';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -48,6 +49,7 @@ export default function AddRoom() {
     const [roomNum, setRoomNum] = React.useState('');
     const [building, setBuilding] = React.useState(''); // Room number (e.g., 420, 350, etc.)
     const [buildingList, setBuildingList] = React.useState([]);
+    const [capacity, setCapacity] = React.useState(''); 
     const classes = useStyles();
     const token = sessionStorage.getItem('token');
     const [added, setAdded] = React.useState(0); // -1 for error, 0 for base, 1 for added successfully
@@ -55,11 +57,12 @@ export default function AddRoom() {
     // This function will create a Axios request to send all information when the form is submitted
     const submitForm = (event) => {
         event.preventDefault();
-        if (roomNum !== '' && building !== '') {
+        if (roomNum !== '' && building !== '' && capacity !== '') {
             const data = JSON.stringify({
                 building_code: building,
                 room_num: roomNum,
-                capacity: 20,
+                // Using property shorthand
+                capacity,
             });
             const config = {
                 method: 'post',
@@ -80,6 +83,7 @@ export default function AddRoom() {
             });
             setRoomNum('');
             setBuilding('');
+            setCapacity('')
         }
     }
 
@@ -91,6 +95,11 @@ export default function AddRoom() {
     // This function will retrieve the value entered in the building field whenever it changes
     const handleChangeBuilding = (event) => {
         setBuilding(event.target.value);
+    }
+
+    // This function will retrieve the value entered in the capacity field whenever it changes
+    const handleChangeCapacity = (event) => {
+        setCapacity(event.target.value);
     }
 
     const getBuildingList = () => {
@@ -113,8 +122,8 @@ export default function AddRoom() {
             })
             // use function to setBuildingList from response
             setBuildingList(list);
-        }).catch((error) => {
-            console.log(error);
+        }).catch(() => {
+            
         });
     }
 
@@ -131,7 +140,7 @@ export default function AddRoom() {
                 {/* TITLE */}
                 <Grid item xs={12}>
                     <Typography variant="h6" className={classes.title} gutterBottom>
-                        Add New Room
+                        Add a New Room
                     </Typography>
                 </Grid>
 
@@ -139,7 +148,7 @@ export default function AddRoom() {
                 <Grid item xs={12} >
                     <ValidatorForm onSubmit={submitForm}>
                         <Grid container spacing={2}>
-                            <Grid item xs={4}>
+                            <Grid item xs={8}>
 
                                 {/* DROPDOWN FOR BUILDING SELECTION */}
                                 <FormControl fullWidth size="large">
@@ -165,6 +174,8 @@ export default function AddRoom() {
                                     </Select>
                                 </FormControl>
                             </Grid>
+                            <Grid item xs={4}/>
+
                             {/* ROOM NUMBER */}
                             <Grid item xs={4}>
                                 <TextValidator
@@ -180,12 +191,35 @@ export default function AddRoom() {
                                         e.target.value = e.target.value.slice(0, 4)
                                     }}
                                     errorMessages={[
-                                        'Invalid - It should be a 3-digit number',
+                                        'Invalid: Please enter a 3-digit number',
                                         'this field is required',
                                     ]}
                                     onChange={handleChangeRoomNum}
                                 />
                             </Grid>
+
+                            {/* CAPACITY */}
+                            <Grid item xs={4}>
+                                <TextValidator
+                                    size="medium"
+                                    variant="outlined"
+                                    label="Capacity"
+                                    fullWidth
+                                    name="Capacity"
+                                    type="text"
+                                    value={capacity}
+                                    validators={['matchRegexp:^[0-9]{1,3}$', 'required']}
+                                    onInput={(e) => {
+                                        e.target.value = e.target.value.slice(0, 4)
+                                    }}
+                                    errorMessages={[
+                                        'Invalid: Please enter a number between 1 and 999',
+                                        'this field is required',
+                                    ]}
+                                    onChange={handleChangeCapacity}
+                                />
+                            </Grid>
+                            <Grid item xs={4} />
 
                             {/* POST-SUBMIT STATUS MESSAGES */}
                             {(added === 1) && (

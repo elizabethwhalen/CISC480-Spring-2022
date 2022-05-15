@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
     Paper,
     Grid,
     Button,
-    Typography
+    Typography,
+    Select,
+    FormControl,
+    MenuItem,
+    InputLabel
 } from '@material-ui/core'
 import axios from 'axios'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
@@ -45,6 +49,7 @@ export default function AddClass() {
     const [courseNum, setCourseNum] = React.useState(''); // Course number (e.g., 420, 350, etc.)
     const [courseName, setCourseName] = React.useState(''); // Course name (e.g., Info Sec, Computer Graphics, etc.)
     const [added, setAdded] = React.useState(0); // -1 for error, 0 for base, 1 for added successfully
+    const [deptList, setDeptList] = React.useState([]);
     const token = sessionStorage.getItem('token');
     const classes = useStyles() // call the useStyle hook
 
@@ -97,6 +102,36 @@ export default function AddClass() {
         setCourseName(event.target.value);
     }
 
+    const getDeptList = () => {
+        // list will hold dept codes during axios response
+        const list = [];
+        // Config data for https request.
+        const config = {
+            method: 'get',
+            url: 'https://classy-api.ddns.net/v2/dept',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        };
+        // https request Promise executed with Config settings.
+        axios(config).then((response) => {
+            response.data.map((e) => {
+                list.push(e.dept_code);
+                return list;
+            })
+            // use function to setBuildingList from response
+            setDeptList(list);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
+    // call the hook useEffect to populate dept list from the GET request
+    useEffect(() => {
+        getDeptList();
+    }, [])
+
     // Return the UI of the component
     return (
         <Paper className={classes.container} elevation={0} >
@@ -105,7 +140,7 @@ export default function AddClass() {
                 {/* TITLE */}
                 <Grid item xs={12}>
                     <Typography variant="h6" className={classes.title} gutterBottom>
-                        Add New Class
+                        Add a New Course
                     </Typography>
                 </Grid>
 
@@ -115,32 +150,33 @@ export default function AddClass() {
                         <Grid container spacing={2}>
 
                             {/* DEPARTMENT CODE */}
-                            <Grid item xs={3} >
-                                <TextValidator
-                                    size="medium"
-                                    variant="outlined"
-                                    label="Department Code"
-                                    fullWidth
-                                    name="code"
-                                    type="text"
-                                    value={code}
-                                    onInput={(e) => {
-                                        e.target.value = e.target.value.slice(0, 4)
-                                    }}
-                                    validators={[
-                                        'matchRegexp:^[a-zA-Z]{1,4}$',
-                                        'required'
-                                    ]}
-                                    errorMessages={[
-                                        'Invalid - It should have 4 characters',
-                                        'this field is required',
-                                    ]}
-                                    onChange={handleChangeCode}
-                                />
+                            <Grid item xs={4} >
+                                <FormControl fullWidth size="large">
+                                    <InputLabel id="demo-select-small">Department</InputLabel>
+                                    <Select
+                                        labelId="demo-select-small"
+                                        id="demo-select-small"
+                                        value={code}
+                                        label="Building"
+                                        onChange={handleChangeCode}
+                                        size='large'
+                                        autoWidth
+                                    >
+                                        <MenuItem value="">
+                                            <em>None</em>
+                                        </MenuItem>
+                                        {/* DYNAMIC MAP OF EXISTING DEPTS TO MENU ITEMS */}
+                                        {deptList.map(e =>
+                                            <MenuItem key={e} value={e}>
+                                                {e}
+                                            </MenuItem>
+                                        )}
+                                    </Select>
+                                </FormControl>
                             </Grid>
 
                             {/* COURSE NUMBER */}
-                            <Grid item xs={3}>
+                            <Grid item xs={4}>
                                 <TextValidator
                                     size="medium"
                                     variant="outlined"
@@ -163,9 +199,10 @@ export default function AddClass() {
                                     onChange={handleChangeCourseNum}
                                 />
                             </Grid>
+                            <Grid item xs={4} />
 
                             {/* COURSE NAME */}
-                            <Grid item xs={6} >
+                            <Grid item xs={8} >
                                 <TextValidator
                                     size="medium"
                                     variant="outlined"
@@ -186,6 +223,8 @@ export default function AddClass() {
                                     onChange={handleChangeCourseName}
                                 />
                             </Grid>
+                            <Grid item xs={4} />
+                            
 
                             {/* POST-SUBMIT STATUS MESSAGES */}
                             {(added === 1) && (
