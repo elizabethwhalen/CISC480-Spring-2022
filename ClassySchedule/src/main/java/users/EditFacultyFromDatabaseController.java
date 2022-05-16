@@ -280,7 +280,7 @@ public class EditFacultyFromDatabaseController implements Initializable {
         for (Object jsonObject: faculty) {
             JSONObject job = (JSONObject)jsonObject;
             job.put("faculty_id", String.valueOf( job.get("faculty_id")));
-            facultyId.getItems().add((String) job.get("faculty_id"));
+            facultyId.getItems().add(String.valueOf(job.getInt("faculty_id")));
         }
     }
 
