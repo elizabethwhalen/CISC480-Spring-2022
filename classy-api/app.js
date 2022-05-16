@@ -222,17 +222,14 @@ function check_int_type(value, res, int_size = null){
     @returns        Returns nothing if no errors encountered.
 */
     console.log(value);
-    if(value === undefined){
-        return;
-    }
-    if(isNaN(value)){
+    if(value !== undefined && isNaN(value)){
             throw res.status(400).send(`${value} is not the correct data type for the column`);
         };
-        if(int_size){
-            if(parseInt(value) > int_size){
-                throw res.status(400).send(`${value} is not the correct size for the column`);
-            }
+    if(value !== undefined && int_size){
+        if(parseInt(value) > int_size){
+            throw res.status(400).send(`${value} is not the correct size for the column`);
         }
+    }
 
     }
 function check_str_type(value, res, str_size = null){
