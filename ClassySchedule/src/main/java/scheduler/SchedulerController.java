@@ -1,10 +1,17 @@
+/*
+    This class relies on a modified version of JFXtras
+    Agenda module. Used under the BSD license
+    https://jfxtras.org/
+ */
 package scheduler;
 
+import alert.MyAlert;
 import database.DatabaseStatic;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -12,60 +19,67 @@ import jfxtras.scene.control.agenda.Agenda;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import scenes.ChangeScene;
-
 import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
-// TODO: Add comments
+import static scheduler.DateTimeUtils.convertToDayOFWeek;
+import static scheduler.DateTimeUtils.convertToLocalDateTimeViaInstant;
+
+/**
+ * Creates the scheduler controller and displays the schedule
+ */
 public class SchedulerController implements Initializable {
 
+    /**
+     * The delete button
+     */
+    @FXML
+    private Button deleteButton;
     /**
      * The border pane
      */
     @FXML
-    BorderPane borderPane;
+    private BorderPane borderPane;
 
     /**
      * The button to add the course
      */
     @FXML
-    Button addCourseButton;
+    private Button addCourseButton;
 
     /**
      * The home button
      */
     @FXML
-    Button homeButton;
-
-    /**
-     * Another button for possible future functionality
-     */
-    @FXML
-    Button anotherButton;
+    private Button homeButton;
 
     /**
      * The stage
      */
-    Stage stage;
+    private Stage stage;
 
     /**
      * The agenda to manipulate
      */
-    Agenda agenda;
+    private Agenda agenda;
 
     /**
      * The change scene object to change between scenes
      */
     private final ChangeScene cs = new ChangeScene();
 
+    /**
+     * Initializes this scene
+     * @param location the url of the fxml
+     * @param resources the resource bundle for this scene
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.agenda = new Agenda();
@@ -124,43 +138,55 @@ public class SchedulerController implements Initializable {
                 }
             }
 
-            String crs = course.getString("dept_code") + " " + course.getString("class_num") + " " + course.get("class_name");
-            String room = course.getString("building_code") + " " + course.getString("room_num");
-            String professor = course.getString("faculty_first") + " " + course.getString("faculty_last");
+            String crs = course.getString("dept_code") + " " + course.getString("class_num") + "-" + course.getInt("section_num") +" " + course.get("class_name");
+            String room = course.getString("building_code") + " " + course.getString("room_num") + " " + course.getString("day_of_week");
+            String professor = course.getString("faculty_first") + " " + course.getString("faculty_last") + " " + course.getInt("faculty_id");
             AppointmentFactory appointmentFactory = new AppointmentFactory(startDaysAndTimes, endDaysAndTimes, crs, room, professor);
 
             addCourse(appointmentFactory.createAppointments());
         }
     }
-    /**
-     * Converts a character to a dayOfTheWeek object
-     * @param day the character to convert
-     * @return the day of the week corresponding with the day
-     */
-    public DayOfTheWeek convertToDayOFWeek(String day) {
-        return switch (day.toUpperCase()) {
-            case "M" -> DayOfTheWeek.MONDAY;
-            case "T" -> DayOfTheWeek.TUESDAY;
-            case "W" -> DayOfTheWeek.WEDNESDAY;
-            case "R" -> DayOfTheWeek.THURSDAY;
-            case "F" -> DayOfTheWeek.FRIDAY;
-            default -> null;
-        };
-    }
-
 
     /**
-     * Converts a date to local date time
-     *
-     * @param dateToConvert the date to be converted
-     * @return a date in local date time format
+     * This method deletes the selected appointment from the calendar
+     * and from the stored appointments in the database
      */
-    public LocalDateTime convertToLocalDateTimeViaInstant(Date dateToConvert) {
-        return dateToConvert.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
-    }
+    @FXML
+    private void deleteCourse() {
+        if (agenda.selectedAppointments().isEmpty()) {
+            new MyAlert("Delete Appointment Warning", "Please select the appointment you wish to delete", Alert.AlertType.WARNING).show();
+        } else {
+            for (Agenda.Appointment appointment : agenda.selectedAppointments()) {
+                LocalTime startTime = appointment.getStartLocalDateTime().toLocalTime();
+                LocalTime endTime = appointment.getEndLocalDateTime().toLocalTime();
+                String[] summary = appointment.getSummary().split(" ");
+                String[] location = appointment.getLocation().split(" ");
 
+                String[] classNum = summary[1].split("-");
+                // Delete from meets
+                StringBuilder meets = new StringBuilder();
+                meets.append("meets/").append(summary[0]);
+                meets.append("/").append(classNum[0]);
+                meets.append("/").append(classNum[1]);
+                meets.append("/Spring2022/1");
+                meets.append("/").append(location[0]);
+                meets.append("/").append(location[1]);
+
+                int timeId = new TimeslotFactory().findTimeSlot(startTime.toString() + ":00", endTime.toString() + ":00", location[2], new TimeslotFactory().createTimeSlot());
+                meets.append("/").append(timeId);
+                boolean didDeleteMeets = DatabaseStatic.deleteData(meets.toString(), null);
+                //Delete from teaches
+                String teaches = "teaches/" + summary[0] +
+                        "/" + classNum[0] +
+                        "/" + classNum[1] +
+                        "/Spring2022/1" +
+                        "/" + summary[5];
+                boolean didDeleteteaches = DatabaseStatic.deleteData(teaches, null);
+
+                System.out.println("deleted meets = " + didDeleteMeets + " deleeted teaches = " + didDeleteteaches);
+            }
+        }
+    }
     /**
      * This method receive the data from the user and insert into the calendar
      * @param appointments the created appoints to add to the scheduler
@@ -169,8 +195,11 @@ public class SchedulerController implements Initializable {
         agenda.appointments().addAll(appointments);
     }
 
+    /**
+     * Goes to the homepage
+     */
     @FXML
-    public void goBack() {
+    private void goBack() {
         cs.goToHomepage(stage);
     }
 
@@ -178,7 +207,7 @@ public class SchedulerController implements Initializable {
      * go to add course scene
      */
     @FXML
-    public void goToAddCourse() {
+    private void goToAddCourse() {
         cs.addCourseButtonClicked(stage);
     }
 
@@ -186,7 +215,7 @@ public class SchedulerController implements Initializable {
      * go to add classroom scene
      */
     @FXML
-    public void goToAddClassroom() {
+    private void goToAddClassroom() {
         cs.addClassroomButtonClicked(stage);
     }
 
@@ -194,7 +223,7 @@ public class SchedulerController implements Initializable {
      * go to add faculty scene
      */
     @FXML
-    public void goToAddFaculty() {
+    private void goToAddFaculty() {
         cs.addProfessorButtonClicked(stage);
     }
 
@@ -202,25 +231,25 @@ public class SchedulerController implements Initializable {
      * go to edit course scene
      */
     @FXML
-    public void goToEditCourse() { cs.editCourseButtonClicked(stage); }
+    private void goToEditCourse() { cs.editCourseButtonClicked(stage); }
 
     /**
      * go to edit faculty scene
      */
     @FXML
-    public void goToEditFaculty() { cs.editFacultyButtonClicked(stage); }
+    private void goToEditFaculty() { cs.editFacultyButtonClicked(stage); }
 
     /**
      * go to edit classroom scene
      */
     @FXML
-    public void goToEditClassroom() { cs.editClassroomButtonClicked(stage); }
+    private void goToEditClassroom() { cs.editClassroomButtonClicked(stage); }
 
     /**
      * go to delete course scene
      */
     @FXML
-    public void goToDeleteCourse() {
+    private void goToDeleteCourse() {
         cs.deleteCourseButtonClicked(stage);
     }
 
@@ -228,7 +257,7 @@ public class SchedulerController implements Initializable {
      * go to delete classroom scene
      */
     @FXML
-    public void goToDeleteClassroom() {
+    private void goToDeleteClassroom() {
         cs.deleteClassroomButtonClicked(stage);
     }
 
@@ -236,7 +265,7 @@ public class SchedulerController implements Initializable {
      * go to delete faculty scene
      */
     @FXML
-    public void goToDeleteFaculty() {
+    private void goToDeleteFaculty() {
         cs.deleteFacultyButtonClicked(stage);
     }
 
@@ -244,7 +273,7 @@ public class SchedulerController implements Initializable {
      * go to view schedule scene
      */
     @FXML
-    public void goToViewSchedule() {
+    private void goToViewSchedule() {
         cs.viewScheduleClicked(stage);
     }
 

@@ -1,8 +1,7 @@
 package courses;
+
 import alert.MyAlert;
 import database.DatabaseStatic;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -12,9 +11,6 @@ import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import scenes.ChangeScene;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -60,17 +56,17 @@ public class EditCourseFromDatabaseController implements Initializable {
     /**
      * boolean variable to check if department has been changed
      */
-    private boolean changeDeptVal;
+    private boolean changeDeptVal = false;
 
     /**
      * boolean variable to check if class number has been changed
      */
-    private boolean changeClassNumVal;
+    private boolean changeClassNumVal = false;
 
     /**
      * boolean variable to check if a course name has been changed
      */
-    private boolean changeCourseVal;
+    private boolean changeCourseVal = false;
 
     /**
      * The department drop-down to select which dept of courses to delete
@@ -108,11 +104,6 @@ public class EditCourseFromDatabaseController implements Initializable {
         changeClassNum.setVisible(false);
         changeDept.setVisible(false);
 
-        // Set boolean if anything had been changed to false to begin with
-        setChangeDeptVal(false);
-        setChangeClassNumVal(false);
-        setChangeCourseVal(false);
-
         // Initialize department drop-down
         getDept();
 
@@ -131,77 +122,62 @@ public class EditCourseFromDatabaseController implements Initializable {
      */
     private void listener() {
         // Whenever department is selected/changed
-        dept.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // Clear previous class number
-                classNum.getItems().clear();
-                // Initialize class number
-                getClassNumber();
-            }
+        dept.valueProperty().addListener((observable, oldValue, newValue) -> {
+            // Clear previous class number
+            classNum.getItems().clear();
+            // Initialize class number
+            getClassNumber();
         });
 
         // Whenever class number is selected/change
-        classNum.valueProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (newValue != null) {
-                    // Clear previous course text-field
-                    course.clear();
-                    // Set selected course name
-                    course.setText(getCourse());
+        classNum.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                // Clear previous course text-field
+                course.clear();
+                // Set selected course name
+                course.setText(getCourse());
 
-                    // Hide drop-down boxes and course text field to display user inputted change
-                    dept.setVisible(false);
-                    classNum.setVisible(false);
-                    course.setVisible(false);
+                // Hide drop-down boxes and course text field to display user inputted change
+                dept.setVisible(false);
+                classNum.setVisible(false);
+                course.setVisible(false);
 
-                    // Set change text fields to selected drop-down values and to begin with and
-                    // make them visible
-                    changeDept.setText(dept.getValue());
-                    changeDept.setVisible(true);
-                    changeClassNum.setText(classNum.getValue());
-                    changeClassNum.setVisible(true);
-                    changeCourse.setText(course.getText());
-                    changeCourse.setVisible(true);
-                    changeCourse.setEditable(true);
-                }
+                // Set change text fields to selected drop-down values and to begin with and
+                // make them visible
+                changeDept.setText(dept.getValue());
+                changeDept.setVisible(true);
+                changeClassNum.setText(classNum.getValue());
+                changeClassNum.setVisible(true);
+                changeCourse.setText(course.getText());
+                changeCourse.setVisible(true);
+                changeCourse.setEditable(true);
             }
         });
 
         // Whenever the change department text field is changed or modify
-        changeDept.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // If the new value is not null and does not equal the selected value,
-                // then it is a new value so set its parameter to true to indicate changes
-                if (newValue != null && !newValue.equals(dept.getValue())) {
-                    setChangeDeptVal(true);
-                }
+        changeDept.textProperty().addListener((observable, oldValue, newValue) -> {
+            // If the new value is not null and does not equal the selected value,
+            // then it is a new value so set its parameter to true to indicate changes
+            if (newValue != null && !newValue.equals(dept.getValue())) {
+                changeDeptVal = true;
             }
         });
 
         // Whenever the change class number text field is changed or modify
-        changeClassNum.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // If the new value is not null and does not equal the selected value,
-                // then it is a new value so set its parameter to true to indicate changes
-                if (newValue != null && !newValue.equals(classNum.getValue())) {
-                    setChangeClassNumVal(true);
-                }
+        changeClassNum.textProperty().addListener((observable, oldValue, newValue) -> {
+            // If the new value is not null and does not equal the selected value,
+            // then it is a new value so set its parameter to true to indicate changes
+            if (newValue != null && !newValue.equals(classNum.getValue())) {
+                changeClassNumVal = true;
             }
         });
 
         // Whenever the change course text field is changed or modify
-        changeCourse.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // If the new value is not null and does not equal the selected value,
-                // then it is a new value so set its parameter to true to indicate changes
-                if (!newValue.equals(course.getText())) {
-                    setChangeCourseVal(true);
-                }
+        changeCourse.textProperty().addListener((observable, oldValue, newValue) -> {
+            // If the new value is not null and does not equal the selected value,
+            // then it is a new value so set its parameter to true to indicate changes
+            if (!newValue.equals(course.getText())) {
+                changeCourseVal = true;
             }
         });
     }
@@ -256,7 +232,7 @@ public class EditCourseFromDatabaseController implements Initializable {
             JSONObject job = (JSONObject) jsonObject;
             // If matching selected class number then set result to that JSON object class name
             if (job.get("class_num").equals(selectedClassNumber)) {
-                if (!(job.get("class_name").equals(null))) {
+                if (!(job.get("class_name") == JSONObject.NULL)) {
                     result = (String) job.get("class_name");
                 }
             }
@@ -273,25 +249,24 @@ public class EditCourseFromDatabaseController implements Initializable {
     private boolean confirmButton() {
         boolean result = true;
         // If there is a change
-        if (isChangeDeptVal() || isChangeClassNumVal() || isChangeCourseVal()) {
+        if (changeDeptVal || changeClassNumVal || changeCourseVal) {
             // The "class" table from the database
             JSONArray classes = DatabaseStatic.getData("class");
             // Iterate through the "class" table and find matching JSON object to the user's request
             for (Object jsonObject: classes) {
                 JSONObject job = (JSONObject) jsonObject;
                 if (job.get("dept_code").equals(dept.getValue()) && job.get("class_num").equals(classNum.getValue())) {
-                    try {
                         // Remove non-primary key
                         job.remove("class_name");
                         // Json object that contain the changing data
                         JSONObject data = new JSONObject();
-                        if (isChangeDeptVal()) {
+                        if (changeDeptVal) {
                             data.put("dept_code", changeDept.getText());
                         }
-                        if (isChangeClassNumVal()) {
+                        if (changeClassNumVal) {
                             data.put("class_num", Integer.parseInt(changeClassNum.getText()));
                         }
-                        if (isChangeCourseVal()) {
+                        if (changeCourseVal) {
                             data.put("class_name", changeCourse.getText());
                         }
                         // Update the database
@@ -312,11 +287,6 @@ public class EditCourseFromDatabaseController implements Initializable {
                         classNum.setVisible(true);
                         course.clear();
                         course.setVisible(true);
-                    } catch (URISyntaxException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                 }
             }
         } else {
@@ -358,16 +328,13 @@ public class EditCourseFromDatabaseController implements Initializable {
         // First scenario to go back to home screen
         if (goBackToPrevPage) {
             // Confirmation to go back to the home screen
-            EventHandler<ActionEvent> confirmBack = new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    // The Ok button from the alert
-                    Optional<ButtonType> Ok = createAlert.showButton();
-                    // If user pressed "OK"
-                    if (Ok.get().getText().equals("OK")) {
-                        // Go back to home screen
-                        goBack();
-                    }
+            EventHandler<ActionEvent> confirmBack = event -> {
+                // The Ok button from the alert
+                Optional<ButtonType> Ok = createAlert.showButton();
+                // If user pressed "OK"
+                if (Ok.get().getText().equals("OK")) {
+                    // Go back to home screen
+                    goBack();
                 }
             };
             // Set the button to have to go back to home screen functionality
@@ -376,19 +343,16 @@ public class EditCourseFromDatabaseController implements Initializable {
         // 2nd scenario, confirm deletion
         else {
             // Confirmation to delete from the database
-            EventHandler<ActionEvent> confirmDelete = new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    // The Ok button from the alert
-                    Optional<ButtonType> ok = createAlert.showButton();
-                    // If user pressed "OK"
-                    if (ok.get().getText().equals("OK")) {
-                        // If delete was successful
-                        if (confirmButton()) {
-                            // Successful deletion alert
-                            MyAlert createAlert = new MyAlert("Updated", "The selected course has been updated", Alert.AlertType.INFORMATION);
-                            createAlert.show();
-                        }
+            EventHandler<ActionEvent> confirmDelete = event -> {
+                // The Ok button from the alert
+                Optional<ButtonType> ok = createAlert.showButton();
+                // If user pressed "OK"
+                if (ok.get().getText().equals("OK")) {
+                    // If delete was successful
+                    if (confirmButton()) {
+                        // Successful deletion alert
+                        MyAlert createAlert1 = new MyAlert("Updated", "The selected course has been updated", Alert.AlertType.INFORMATION);
+                        createAlert1.show();
                     }
                 }
             };
@@ -474,31 +438,6 @@ public class EditCourseFromDatabaseController implements Initializable {
     @FXML
     public void goToViewSchedule() {
         cs.viewScheduleClicked(stage);
-    }
-
-    public boolean isChangeDeptVal() {
-        return changeDeptVal;
-    }
-
-    public void setChangeDeptVal(boolean changeDeptVal) {
-        this.changeDeptVal = changeDeptVal;
-    }
-
-    public boolean isChangeClassNumVal() {
-        return changeClassNumVal;
-    }
-
-    public void setChangeClassNumVal(boolean changeClassNumVal) {
-        this.changeClassNumVal = changeClassNumVal;
-    }
-
-
-    public boolean isChangeCourseVal() {
-        return changeCourseVal;
-    }
-
-    public void setChangeCourseVal(boolean changeCourseVal) {
-        this.changeCourseVal = changeCourseVal;
     }
 }
 

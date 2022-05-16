@@ -1,16 +1,59 @@
 package courses;
 
-public class Lecture implements Course {
-    private String deptCode;
-    private String classNum;
-    private String className;
-    private int sectionNum;
-    private String semester;
-    private int draft;
-    private int capacity;
-    private final float teachLoad = 1;
+/**
+ * Holds a lecture object and values
+ */
+public class Lecture {
 
+    /**
+     * The dept code for the lecture
+     * Ex. CISC
+     */
+    private String deptCode;
+
+    /**
+     * The class num for the lecture
+     * Ex. 131
+     */
+    private String classNum;
+
+    /**
+     * The class name for the lecture
+     * Ex. Intro to Programming
+     */
+    private String className;
+
+    /**
+     * Section number for the lecture
+     */
+    private int sectionNum;
+
+    /**
+     * The semester for the lecture
+     * Currently not implemented we use dummy values to satisfy the database
+     */
+    private String semester;
+
+    /**
+     * The draft of the schedule
+     * Current not used, dummy data is used to satisfy the database
+     */
+    private int draft;
+
+    /**
+     * The capacity for the lecture
+     */
+    private int capacity;
+
+    /**
+     * The constructor for the lecture
+     */
     public Lecture() {}
+
+    /**
+     * The following are all self-explanatory methods that do not require comments to make sense
+     * Allowed under Google style guide Section 7.3.1
+     */
     public String getDeptCode() {
         return deptCode;
     }
@@ -68,10 +111,15 @@ public class Lecture implements Course {
     }
 
     public float teachLoad() {
+        float teachLoad = 1;
         return teachLoad;
     }
 
+    /**
+     * Builds up the important info from the class
+     * @return returns the string with the dept code, class num, and class name
+     */
     public String toString() {
-        return getDeptCode() + " " + getClassNum() + " " + getClassName();
+        return getDeptCode() + " " + getClassNum() + "-" + getSectionNum() + " " + getClassName();
     }
 }

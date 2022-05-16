@@ -13,8 +13,6 @@ import scenes.ChangeScene;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -23,22 +21,39 @@ import java.util.ResourceBundle;
  */
 public class RoomController implements Initializable {
 
+    /**
+     * The room number
+     */
     @FXML
-    TextField roomNum;
+    private TextField roomNum;
 
+    /**
+     * The building code
+     */
     @FXML
-    TextField buildingCode;
+    private TextField buildingCode;
 
+    /**
+     * The capacity
+     */
     @FXML
-    TextField capacity;
+    private TextField capacity;
 
+    /**
+     * The submit button
+     */
     @FXML
-    Button submitButton;
+    private Button submitButton;
 
+    /**
+     * The cancel button
+     */
     @FXML
-    Button cancelButton;
+    private Button cancelButton;
 
-
+    /**
+     * The stage for this scene
+     */
     private Stage stage;
 
     /**
@@ -46,15 +61,27 @@ public class RoomController implements Initializable {
      */
     private final ChangeScene cs = new ChangeScene();
 
-
+    /**
+     * The constructor for this class
+     * Because this class implements initializable the
+     * constructor is left empty
+     */
     public RoomController() {}
 
-    //May use in the future to reach into database for room options
+    /**
+     * Initializes the room controller
+     * @param url the url of the fxml
+     * @param resourceBundle the resource bundle for this scene
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
 
+    /**
+     * Sets the stage for this scene
+     * @param stage the stage to be used
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -113,6 +140,9 @@ public class RoomController implements Initializable {
 
     }
 
+    /**
+     * Goes back to the homepage
+     */
     @FXML
     public void goBack() {
         cs.goToHomepage(stage);

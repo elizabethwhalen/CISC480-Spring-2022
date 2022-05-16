@@ -1,21 +1,56 @@
 package users;
 
+/**
+ * Represents a faculty member
+ */
 public class Faculty {
-    private int facultyID;
+    /**
+     * The faculty ID
+     */
+    private int facultyId;
+
+    /**
+     * The first name of the faculty
+     */
     private String facultyFirst;
+
+    /**
+     * The last name of the faculty
+     */
     private String facultyLast;
-    private int titleID;
-    private double prev_load;
+
+    /**
+     * The title of the faculty
+     */
+    private int titleId;
+
+    /**
+     * The previous teach load of the faculty
+     */
+    private double prevLoad;
+
+    /**
+     * The current teach load of the professor
+     */
     private double currLoad;
 
+    /**
+     * The constructor for a faculty member
+     */
     public Faculty() {}
 
-    public int getFacultyID() {
-        return facultyID;
+    /**
+     * All the following methods are standard getters/setters
+     * As such they do not have comments explaining their use.
+     * This is in line with the Google Java Style Guide Section 7.3.1
+     */
+
+    public int getFacultyId() {
+        return facultyId;
     }
 
-    public void setFacultyID(int facultyID) {
-        this.facultyID = facultyID;
+    public void setFacultyId(int facultyId) {
+        this.facultyId = facultyId;
     }
 
     public String getFacultyFirst() {
@@ -34,20 +69,20 @@ public class Faculty {
         this.facultyLast = facultyLast;
     }
 
-    public int getTitleID() {
-        return titleID;
+    public int getTitleId() {
+        return titleId;
     }
 
-    public void setTitleID(int titleID) {
-        this.titleID = titleID;
+    public void setTitleId(int titleId) {
+        this.titleId = titleId;
     }
 
-    public double getPrev_load() {
-        return prev_load;
+    public double getPrevLoad() {
+        return prevLoad;
     }
 
-    public void setPrev_load(double prev_load) {
-        this.prev_load = prev_load;
+    public void setPrevLoad(double prevLoad) {
+        this.prevLoad = prevLoad;
     }
 
     public double getCurrLoad() {
@@ -58,7 +93,11 @@ public class Faculty {
         this.currLoad = currLoad;
     }
 
+    /**
+     * Builds a string representation of the faculty
+     * @return the string with the faculty first and last name and the faculty ID
+     */
     public String toString() {
-        return getFacultyFirst() + " " + getFacultyLast();
+        return getFacultyFirst() + " " + getFacultyLast() + " " + getFacultyId();
     }
 }

@@ -10,35 +10,58 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import java.net.URL;
+import java.util.ResourceBundle;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import scenes.ChangeScene;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
+/**
+ * The controller for adding faculty to the database
+ */
 public class FacultyController implements Initializable {
+    /**
+     * The first name of the faculty
+     */
     @FXML
     TextField firstName;
 
+    /**
+     * The last name of the faculty
+     */
     @FXML
     TextField lastName;
 
+    /**
+     * The faculty ID
+     */
     @FXML
-    TextField facultyID;
+    TextField facultyId;
 
+    /**
+     * The faculty type
+     */
     @FXML
     TextField type;
 
     @FXML
     TextField email;
 
+    /**
+     * The submit button
+     */
     @FXML
     Button submitButton;
 
+    /**
+     * The cancel button
+     */
     @FXML
     Button cancelButton;
 
+    /**
+     * The stage for this scene
+     */
     private Stage stage;
 
     /**
@@ -46,17 +69,33 @@ public class FacultyController implements Initializable {
      */
     private final ChangeScene cs = new ChangeScene();
 
+    /**
+     * The constructor for this controller. Since this class implements
+     * initializable, the constructor is empty.
+     */
     public FacultyController() {}
 
+    /**
+     * This method initializes the scene and the required elements
+     * @param url the url of the fxml file
+     * @param resourceBundle the resource bundle to be used in this scene
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
 
+    /**
+     * Sets the stage of this scene
+     * @param stage the stage to use for this scene
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
+    /**
+     * Submits the request faculty to the database
+     */
     @FXML
     public void submitData() {
         if (firstName.getText().isBlank()) {
@@ -69,7 +108,7 @@ public class FacultyController implements Initializable {
             createAlert.show();
             return;
         }
-        if (facultyID.getText().isBlank()) {
+        if (facultyId.getText().isBlank()) {
             MyAlert createAlert = new MyAlert("Invalid Faculty ID", "Please Input In The Faculty ID", Alert.AlertType.ERROR);
             createAlert.show();
             return;
@@ -82,7 +121,7 @@ public class FacultyController implements Initializable {
 
         // ID number validation
         try {
-            Integer.parseInt(facultyID.getText());
+            Integer.parseInt(facultyId.getText());
         } catch (NumberFormatException e) {
             MyAlert createAlert = new MyAlert("Invalid Faculty ID Number", "Please Input In A Valid Faculty ID", Alert.AlertType.ERROR);
             createAlert.show();
@@ -90,7 +129,7 @@ public class FacultyController implements Initializable {
         }
 
         JSONObject newFaculty = new JSONObject();
-        newFaculty.put("faculty_id", facultyID.getText());
+        newFaculty.put("faculty_id", facultyId.getText());
         newFaculty.put("faculty_first", firstName.getText());
         newFaculty.put("faculty_last", lastName.getText());
 
@@ -102,12 +141,14 @@ public class FacultyController implements Initializable {
 
         firstName.clear();
         lastName.clear();
-        facultyID.clear();
+        facultyId.clear();
         email.clear();
         type.clear();
     }
 
-
+    /**
+     * Goes to the homepage
+     */
     @FXML
     public void goBack() {
         cs.goToHomepage(stage);
@@ -187,6 +228,9 @@ public class FacultyController implements Initializable {
         cs.viewScheduleClicked(stage);
     }
 
+    /**
+     * Goes to the homepage
+     */
     @FXML
     public void cancelButtonClicked() {
         goBack();

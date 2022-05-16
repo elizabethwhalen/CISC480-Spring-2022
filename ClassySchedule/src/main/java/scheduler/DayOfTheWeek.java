@@ -2,6 +2,8 @@ package scheduler;
 
 /**
  * An enum for each day of the week
+ * The calendar relies on each day being one
+ * specific week to display the correct appointments
  */
 public enum DayOfTheWeek {
 

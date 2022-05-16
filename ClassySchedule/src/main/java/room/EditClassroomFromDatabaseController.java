@@ -177,7 +177,6 @@ public class EditClassroomFromDatabaseController implements Initializable {
                 JSONObject job = (JSONObject) jsonObject;
                 // If JSON object contain the user's selected request
                 if (job.get("building_code").equals(buildingCode.getValue()) && job.get("room_num").equals(roomNum.getValue())) {
-                    try {
                         // remove non-primary key
                         job.remove("capacity");
                         // Json object that contain the changing data
@@ -203,9 +202,6 @@ public class EditClassroomFromDatabaseController implements Initializable {
                         changeRoomNum.clear();
                         changeRoomNum.setVisible(false);
 
-                    } catch (URISyntaxException | IOException e) {
-                        e.printStackTrace();
-                    }
                     break;
                 }
             }

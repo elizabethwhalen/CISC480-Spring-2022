@@ -20,13 +20,22 @@ public class HomescreenController implements Initializable {
      */
     private final ChangeScene cs = new ChangeScene();
 
-
+    /**
+     * The constructor, since it implements initializable, the constructor is unused
+     */
     public HomescreenController() {}
 
+    /**
+     * Initializes the scene
+     * @param location the url of the fxml file
+     * @param resources the resource bundle of the fxml file
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {}
 
-
+    /**
+     * Goes back to the homescreen
+     */
     @FXML
     public void goBack() {
         cs.goToHomepage(stage);
@@ -106,6 +115,9 @@ public class HomescreenController implements Initializable {
         cs.viewScheduleClicked(stage);
     }
 
+    /**
+     * Goes to the generate schedule page
+     */
     @FXML
     public void goToGenerateSchedule() { cs.goToGenerateSchedule(stage);}
 

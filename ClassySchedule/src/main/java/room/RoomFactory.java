@@ -4,16 +4,23 @@ import database.DatabaseStatic;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Builds room objects from the rooms stored in the database
+ */
 public class RoomFactory {
 
-    public RoomFactory() {
+    /**
+     * Constructs a room factory
+     */
+    public RoomFactory() {}
 
-    }
-
+    /**
+     * Creates the list of the room objects
+     * @return returns a list of rooms that are stored in the database
+     */
     public List<Room> createRooms() {
         List<Room> rooms = new ArrayList<>();
 
@@ -29,7 +36,7 @@ public class RoomFactory {
             try {
                room1.setCapacity(room.getInt("capacity"));
             } catch (JSONException e) {
-                //noop
+                // Capacity is not present in JSON, no need to do anything
             }
 
             rooms.add(room1);

@@ -90,36 +90,37 @@
         <ChoiceBox layoutX="124.0" layoutY="239.0" prefHeight="25.0" prefWidth="200.0" />
         <Button layoutX="144.0" layoutY="308.0" mnemonicParsing="false" text="Confirm" textFill="#5ce85c" />
         <Button layoutX="217.0" layoutY="308.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="59.0" text="Cancel" textFill="#c32727" />
-      <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="640.0">
-         <menus>
+        <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="640.0">
             <Menu fx:id="goTohome" mnemonicParsing="false" text="Home">
-               <items>
-                  <MenuItem fx:id="goToHome" mnemonicParsing="false" onAction="#goBack" text="Back to Home" />
-               </items>
+                <MenuItem fx:id="goToHome" mnemonicParsing="false" onAction="#goBack" text="Back to Home"/>
             </Menu>
             <Menu mnemonicParsing="false" text="Goto">
-               <items>
-                  <MenuItem fx:id="goToAddCourse" mnemonicParsing="false" onAction="#goToAddCourse" text="Add Course" />
-                  <MenuItem fx:id="goToAddProfessor" mnemonicParsing="false" onAction="#goToAddFaculty" text="Add Professor" />
-                  <MenuItem fx:id="goToAddClassroom" mnemonicParsing="false" onAction="#goToAddClassroom" text="Add Classroom" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="goToEditCourse" mnemonicParsing="false" onAction="#goToEditCourse" text="Edit Course" />
-                  <MenuItem fx:id="goToEditProfessor" mnemonicParsing="false" onAction="#goToEditFaculty" text="Edit Professor" />
-                  <MenuItem fx:id="goToEditClassroom" mnemonicParsing="false" onAction="#goToEditClassroom" text="Edit Classroom" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="goToDeleteCourse" mnemonicParsing="false" onAction="#goToDeleteCourse" text="Delete Course" />
-                  <MenuItem fx:id="goToDeleteProfessor" mnemonicParsing="false" onAction="#goToDeleteFaculty" text="Delete Professor" />
-                  <MenuItem fx:id="goToDeleteClassroom" mnemonicParsing="false" onAction="#goToDeleteClassroom" text="Delete Classroom" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="goToViewSchedule" mnemonicParsing="false" onAction="#goToViewSchedule" text="View Schedule" />
-               </items>
+                <MenuItem fx:id="goToAddCourse" mnemonicParsing="false" onAction="#goToAddCourse" text="Add Course"/>
+                <MenuItem fx:id="goToAddProfessor" mnemonicParsing="false" onAction="#goToAddFaculty"
+                          text="Add Professor"/>
+                <MenuItem fx:id="goToAddClassroom" mnemonicParsing="false" onAction="#goToAddClassroom"
+                          text="Add Classroom"/>
+                <SeparatorMenuItem mnemonicParsing="false"/>
+                <MenuItem fx:id="goToEditCourse" mnemonicParsing="false" onAction="#goToEditCourse"
+                          text="Edit Course"/>
+                <MenuItem fx:id="goToEditProfessor" mnemonicParsing="false" onAction="#goToEditFaculty"
+                          text="Edit Professor"/>
+                <MenuItem fx:id="goToEditClassroom" mnemonicParsing="false" onAction="#goToEditClassroom"
+                          text="Edit Classroom"/>
+                <SeparatorMenuItem mnemonicParsing="false"/>
+                <MenuItem fx:id="goToDeleteCourse" mnemonicParsing="false" onAction="#goToDeleteCourse"
+                          text="Delete Course"/>
+                <MenuItem fx:id="goToDeleteProfessor" mnemonicParsing="false" onAction="#goToDeleteFaculty"
+                          text="Delete Professor"/>
+                <MenuItem fx:id="goToDeleteClassroom" mnemonicParsing="false" onAction="#goToDeleteClassroom"
+                          text="Delete Classroom"/>
+                <SeparatorMenuItem mnemonicParsing="false"/>
+                <MenuItem fx:id="goToViewSchedule" mnemonicParsing="false" onAction="#goToViewSchedule"
+                          text="View Schedule"/>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">
-               <items>
-                  <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
-               </items>
+                <MenuItem mnemonicParsing="false" text="About MyHelloApp"/>
             </Menu>
-         </menus>
-      </MenuBar>
+        </MenuBar>
     </AnchorPane>
 </VBox>

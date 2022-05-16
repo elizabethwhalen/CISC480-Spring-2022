@@ -2,20 +2,30 @@ package courses;
 
 import database.DatabaseStatic;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This creates the course objects using the info from the database
+ */
 public class CourseFactory {
 
-    public CourseFactory() {
+    /**
+     * Constructs a course factory
+     */
+    public CourseFactory() {}
 
-    }
-
-    public List<Course> createCourses() {
-        JSONArray classes = DatabaseStatic.getData("class");
-        List<Course> courses = new ArrayList<>();
+    /**
+     * Creates the lecture objects
+     * Calls the database and then parse the data to create the lecture objects
+     * @return returns a list of lecture objects
+     */
+    public List<Lecture> createCourses() {
+        JSONArray classes = DatabaseStatic.sectionQuery();
+        List<Lecture> courses = new ArrayList<>();
 
         for (Object json : classes) {
             Lecture lec = new Lecture();
@@ -28,7 +38,15 @@ public class CourseFactory {
             } else {
                 lec.setClassNum("TBD");
             }
-            //TODO: get section data?
+            lec.setSectionNum(course.getInt("section_num"));
+            lec.setSemester(course.getString("semester"));
+            lec.setDraft(course.getInt("draft"));
+
+            try {
+                lec.setCapacity(course.getInt("capacity"));
+            } catch (JSONException e) {
+                // capacity is not present, do not update the lecture object
+            }
             courses.add(lec);
         }
 

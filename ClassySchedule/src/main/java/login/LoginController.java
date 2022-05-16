@@ -4,26 +4,22 @@ import alert.MyAlert;
 import database.DatabaseStatic;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-
 import javafx.fxml.Initializable;
-
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-
-import scenes.ChangeScene;
-
 import java.net.URL;
 import java.util.ResourceBundle;
+import scenes.ChangeScene;
+
 
 /**
  * Controller for the login page, which is the fist page a user sees. If the login is successful, users will be taken to
  * the homepage.
  */
-
 public class LoginController implements Initializable {
 
     /**
@@ -80,7 +76,11 @@ public class LoginController implements Initializable {
          }
     }
 
-
+    /**
+     * The submit button action on key press
+     * Verifies key is the enter key and if it is, performs the login event
+     * @param keyEvent the key event to check
+     */
     @FXML
     public void submitButton(KeyEvent keyEvent) {
         if (keyEvent.getCode() == KeyCode.ENTER) {
@@ -92,6 +92,9 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Shows the incorrect password error
+     */
     private void showIncorrectPasswordError() {
         MyAlert createAlert = new MyAlert("Invalid Password", "INVALID USERNAME OR PASSWORD \n Please re-enter username and password", Alert.AlertType.ERROR);
         createAlert.show();
