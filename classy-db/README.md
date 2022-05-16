@@ -37,7 +37,7 @@ CREATE TABLE building (
 );
 ```
 <br />
-As part of our project replicability initiative, we created an stored procedure SQL script that can populate a MySQL schema according to the ERD above. Please see this script at [/classy-db/schema_population.sql](/classy-db/schema_population.sql)
+As part of our project replicability initiative, we created an stored procedure SQL script that can populate a MySQL schema according to the ERD above. Please see this script at [/classy-db/table_creation.sql](/classy-db/table_creation.sql)
 
 Next
 ## Local Development
