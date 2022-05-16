@@ -26,7 +26,7 @@ const jwt = require('jsonwebtoken')
 const sgMail = require('@sendgrid/mail');
 
 // Developmental setting: 0 for local dev, or 1 for dev API deployment (classy-schedule-dev Web App), and 2 for production API deployment (classy-schedule-api Web App) 
-const dev = 1;
+const dev = 0;
 
 // Setup RESTful app
 const app = express();
@@ -334,6 +334,7 @@ var MIN_PASSWORD_LENGTH = 8;
 var MAX_PASSWORD_LENGTH = 16;
 
 //login
+let validLogin = false;
 app.post('/v3/login', async function (req, res) {
     /*Query the login table to see if user should be granted access. As part of our initiative to implement 
     multi-factor authentication, this v3 method also requires the user to verify their login attempt by
@@ -379,28 +380,35 @@ app.post('/v3/login', async function (req, res) {
         // Send email and wait up to 30 seconds for user to confirm their identity by clicking link that was emailed to them
         console.log("- User "+loginjson[0].email+" is requesting login and has been sent an email to verify their identity.")
         sendVerifyEmail(loginjson[0].email, token);
-        let myTimeout = setTimeout(requestTimeout, 30000);
+        let myTimeout = setTimeout(requestTimeout, 10000);
 
         // This HTTP request is made when the user clicks the link in their inbox (or possibly junk folder)
         app.get('/v3/authenticate/:token', (req2, res2) => {            
-            if (req2.params.token == token){
-                // Send the user their token
-                console.log("- User "+loginjson[0].email+" has been granted login and has been sent a token.")
-                res.status(200).send(token);
-                
-                // Update the webpage and clear countdown timer
-                res2.status(200).send("Login attempt for user "+loginjson[0].email+" has been granted. The HTTP request will now be completed with a token.");
-                clearTimeout(myTimeout); 
+            //console.log(validLogin);
+            if (validLogin == true) {
+                if (req2.params.token == token){
+                    // Send the user their token
+                    console.log("- User "+loginjson[0].email+" has been granted login and has been sent a token.")
+                    res.status(200).send(token);
+                    
+                    // Update the webpage and clear countdown timer
+                    res2.status(200).send("Login attempt for user "+loginjson[0].email+" has been granted. The HTTP request will now be completed with a token.");
+                    clearTimeout(myTimeout); 
+                } else {
+                    // Ran out of time
+                    requestTimeout();
+                    res2.status(401).send("Login attempt for user "+loginjson[0].email+" has been denied. Please try again.");
+                }
             } else {
-                // Ran out of time
-                requestTimeout();
-                res2.status(401).send("Login attempt for user "+loginjson[0].email+" has been denied. Please try again.");
+                //Do nothing, we can't update header so just time out.
+                res2.status(401).send("Link expired");
             }
         });
 
         // Timeout
         function requestTimeout() {
             // Deny user of login
+            validLogin = false; // Close time window
             console.log("- User "+loginjson[0].email+" was denied login.")
             res.status(401).send("Authetication failure. Please try again later.");
         }
@@ -410,6 +418,9 @@ app.post('/v3/login', async function (req, res) {
 });
 // email mfa function
 function sendVerifyEmail(emailRecipient, token) {
+    // Let login route know that user is trying to login within valid time window.
+    validLogin = true; 
+
     // Set link that will be used in button
     let link;
     if (dev == 0) {
