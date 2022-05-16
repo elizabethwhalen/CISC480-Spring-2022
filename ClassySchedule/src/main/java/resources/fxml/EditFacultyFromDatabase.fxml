@@ -119,7 +119,7 @@
                 </AnchorPane>
             </children>
         </VBox>
-      <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="615.0">
+      <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="615.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <menus>
             <Menu fx:id="goTohome" mnemonicParsing="false" text="Home">
                <items>
