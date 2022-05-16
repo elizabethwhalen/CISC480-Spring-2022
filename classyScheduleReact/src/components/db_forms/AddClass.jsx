@@ -16,15 +16,6 @@ import DoneIcon from '@mui/icons-material/Done'
 import CloseIcon from '@mui/icons-material/Close'
 // This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles({
-    root: {
-        display: 'flex',
-    },
-    container: {
-        padding: "40px",
-        position: 'relative',
-        flexGrow: 1,
-        height: '100%',
-    },
     title: {
         color: '#7E16A4',
     },

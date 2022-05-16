@@ -270,7 +270,9 @@ export default function CalendarTest() {
     const handleSelectSlot = event => {
         const { start } = event;
         let { end } = event;
-        end = new Date(end.getTime() + 1000 * 60 * 55);
+        if(end.getTime() <= start.getTime + 1000 * 60 * 15) {
+            end = start.getTime() + 1000*60*60;
+        }
         const { modifiedStart, modifiedEnd } = handleGetTimeInterval(start, end);
         setStartTime(modifiedStart);
         setEndTime(modifiedEnd);
@@ -373,9 +375,10 @@ export default function CalendarTest() {
                 list.push(e.time_start);
                 list.push(e.time_end);
                 list.push(e.day_of_week);
+                dayList=e.day_of_week.split('');
 
-                for (let i = 0; i < e.day_of_week; i += 1) {
-                    console.log(e.day_of_week.charAt(i));
+                for (let i = 0; i < dayList.length; i += 1) {
+                    console.log(dayList[i]);
                 }
 
 

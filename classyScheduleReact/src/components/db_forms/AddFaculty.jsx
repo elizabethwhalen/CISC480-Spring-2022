@@ -13,9 +13,6 @@ import CloseIcon from '@mui/icons-material/Close';
 
 // This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles({
-    root: {
-        display: 'flex',
-    },
     title: {
         color: '#7E16A4',
     },

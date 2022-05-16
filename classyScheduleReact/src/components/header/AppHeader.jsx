@@ -130,7 +130,6 @@ export default function AppHeader(props) {
             variant="h4"
             className={classes.text}
             noWrap
-            align='center'
           >
             <img src={logo} alt='logo' className={classes.logo} />
             <Link to='/' className={classes.link}>
