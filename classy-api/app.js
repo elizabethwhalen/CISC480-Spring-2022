@@ -222,17 +222,12 @@ function check_int_type(value, res, int_size = null){
 
     @returns        Returns nothing if no errors encountered.
 */
-    try{
-    } catch (e)
-    {
-        value = value;
-    }
     console.log(value);
     if(isNaN(value)){
         throw res.status(400).send(`${value} is not the correct data type for the column`);
     };
     if(int_size){
-        if(value.length > int_size){
+        if(parseInt(value) > int_size){
             throw res.status(400).send(`${value} is not the correct size for the column`);
         }
     }
@@ -997,7 +992,7 @@ app.post('/v2/class_feature', (req, res) => {
         let query = "INSERT INTO class_feature (dept_code,class_num,feature_id) VALUES ?";
         check_str_type(req.body.dept_code, res, 5);
         check_str_type(req.body.class_num, res, 5);
-        check_int_type(req.body.feature_id, res, 11);
+        check_int_type(req.body.feature_id, res, 255);
         data = [
             [req.body.dept_code,req.body.class_num,req.body.feature_id]
         ]
@@ -1041,7 +1036,7 @@ app.put('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req, re
         let query = 'UPDATE class_feature SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), feature_id = COALESCE(?,feature_id) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
         check_str_type(req.body.dept_code, res, 5);
         check_str_type(req.body.class_num, res, 5);
-        check_int_type(req.body.feature_id, res, 11);
+        check_int_type(req.body.feature_id, res, 255);
         data = [
             req.body.dept_code,req.body.class_num,req.body.feature_id
         ]
@@ -1080,7 +1075,7 @@ app.delete('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req,
     else{
         check_str_type(req.body.dept_code, res, 5);
         check_str_type(req.body.class_num, res, 5);
-        check_int_type(req.body.feature_id, res, 11);
+        check_int_type(req.body.feature_id, res, 255);
         
         let query = 'DELETE FROM class_feature WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
 
@@ -1367,7 +1362,7 @@ app.get('/v2/faculty', (req, res) => {
     if (prev_load){
         prev_load_array = prev_load.split(",");
         for(let i = 0; i < prev_load_array.length; i++){
-            check_int_type(prev_load_array[i], res); // TODO add double check type?
+            check_int_type(prev_load_array[i], res);
             if(i > 0){
                 query = query + " OR"
             }
@@ -1422,12 +1417,12 @@ app.post('/v2/faculty', (req, res) => {
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = "INSERT INTO faculty (faculty_id,faculty_first,faculty_last,title_id,prev_load,curr_load) VALUES ?";
-        check_int_type(req.body.faculty_id, res, 11);
+        check_int_type(req.body.faculty_id, res, 2147483647);
         check_str_type(req.body.faculty_first, res, 50);
         check_str_type(req.body.faculty_last, res, 50);
-        check_int_type(req.body.title_id, res, 11);
-        check_int_type(req.body.prev_load, res, 15);
-        check_int_type(req.body.curr_load, res, 15);
+        check_int_type(req.body.title_id, res, 255);
+        check_int_type(req.body.prev_load, res, 99.9);
+        check_int_type(req.body.curr_load, res, 99.9);
         data = [
             [req.body.faculty_id,req.body.faculty_first,req.body.faculty_last,req.body.title_id,req.body.prev_load,req.body.curr_load]
         ]
@@ -1470,12 +1465,12 @@ app.put('/v2/faculty/:faculty_id_id', (req, res) => {
     else{
         let query = 'UPDATE faculty SET faculty_id = COALESCE(?,faculty_id), faculty_first = COALESCE(?,faculty_first), faculty_last = COALESCE(?,faculty_last), title_id = COALESCE(?,title_id), prev_load = COALESCE(?,prev_load), curr_load = COALESCE(?,curr_load) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+'';
         
-        check_int_type(req.body.faculty_id, res, 11);
+        check_int_type(req.body.faculty_id, res, 2147483647);
         check_str_type(req.body.faculty_first, res, 50);
         check_str_type(req.body.faculty_last, res, 50);
-        check_int_type(req.body.title_id, res, 11);
-        check_int_type(req.body.prev_load, res);
-        check_int_type(req.body.curr_load, res);
+        check_int_type(req.body.title_id, res, 	255);
+        check_int_type(req.body.prev_load, res, 99.9);
+        check_int_type(req.body.curr_load, res, 99.9);
 
         data = [
             req.body.faculty_id,req.body.faculty_first,req.body.faculty_last,req.body.title_id,req.body.prev_load,req.body.curr_load
@@ -1604,7 +1599,7 @@ app.get('/v2/faculty_class', (req, res) => {
     if (pref_level){
         pref_level_array = pref_level.split(",");
         for(let i = 0; i < pref_level_array.length; i++){
-            check_int_type(pref_level_array[i], res, 11);
+            check_int_type(pref_level_array[i], res);
             if(i > 0){
                 query = query + " OR"
             }
@@ -1644,10 +1639,10 @@ app.post('/v2/faculty_class', (req, res) => {
     if (status != 200){res.status(status).send(payload)}
     else{
         let query = "INSERT INTO faculty_class (faculty_id,dept_code,class_num,pref_level) VALUES ?";
-        check_int_type(req.body.faculty_id, res, 11);
+        check_int_type(req.body.faculty_id, res, 2147483647);
         check_str_type(req.body.dept_code, res, 5);
         check_str_type(req.body.class_num, res, 5);
-        check_int_type(req.body.pref_level, res, 11);
+        check_int_type(req.body.pref_level, res, 255);
         data = [
             [req.body.faculty_id,req.body.dept_code,req.body.class_num,req.body.pref_level]
         ]
@@ -1688,10 +1683,10 @@ app.put('/v2/faculty_class/:faculty_id_id/:dept_code_id/:class_num_id', (req, re
     else{
         let query = 'UPDATE faculty_class SET faculty_id = COALESCE(?,faculty_id), dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), pref_level = COALESCE(?,pref_level) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
         
-        check_int_type(req.body.faculty_id, res, 11);
+        check_int_type(req.body.faculty_id, res, 2147483647);
         check_str_type(req.body.dept_code, res, 5);
         check_str_type(req.body.class_num, res, 5);
-        check_int_type(req.body.pref_level, res, 11);
+        check_int_type(req.body.pref_level, res, 255);
 
         data = [
             req.body.faculty_id,req.body.dept_code,req.body.class_num,req.body.pref_level
@@ -1843,9 +1838,9 @@ app.post('/v2/faculty_feature', (req, res) => {
     if (status != 200){res.status(status).send(payload)}
     else{
         let query = "INSERT INTO faculty_feature (faculty_id,feature_id,pref_level) VALUES ?";
-        check_int_type(req.body.faculty_id, res, 11);
-        check_int_type(req.body.feature_id, res, 11);
-        check_int_type(req.body.pref_level, res, 11);
+        check_int_type(req.body.faculty_id, res, 2147483647);
+        check_int_type(req.body.feature_id, res, 255);
+        check_int_type(req.body.pref_level, res, 255);
         data = [
             [req.body.faculty_id,req.body.feature_id,req.body.pref_level]
         ]
@@ -1885,9 +1880,9 @@ app.put('/v2/faculty_feature/:faculty_id_id/:feature_id_id', (req, res) => {
     if (status != 200){res.status(status).send(payload)}
     else{
         let query = 'UPDATE faculty_feature SET faculty_id = COALESCE(?,faculty_id), feature_id = COALESCE(?,feature_id), pref_level = COALESCE(?,pref_level) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
-        check_int_type(req.body.faculty_id, res, 11);
-        check_int_type(req.body.feature_id, res, 11);
-        check_int_type(req.body.pref_level, res, 11);
+        check_int_type(req.body.faculty_id, res, 2147483647);
+        check_int_type(req.body.feature_id, res, 255);
+        check_int_type(req.body.pref_level, res, 255);
 
         data = [
             req.body.faculty_id,req.body.feature_id,req.body.pref_level
@@ -2025,7 +2020,7 @@ app.post('/v2/faculty_other_request', (req, res) => {
     if (status != 200){res.status(status).send(payload)}
     else{
         let query = "INSERT INTO faculty_other_request (faculty_id,request) VALUES ?";
-        check_int_type(req.body.faculty_id, res, 11);
+        check_int_type(req.body.faculty_id, res);
         check_str_type(req.body.request, res, 130);
         data = [
             [req.body.faculty_id,req.body.request]
@@ -2066,7 +2061,7 @@ app.put('/v2/faculty_other_request/:faculty_id_id/:request_id', (req, res) => {
     if (status != 200){res.status(status).send(payload)}
     else{
         let query = 'UPDATE faculty_other_request SET faculty_id = COALESCE(?,faculty_id), request = COALESCE(?,request) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND request= '+con.escape(req.params.request_id)+'';
-        check_int_type(req.body.faculty_id, res, 11);
+        check_int_type(req.body.faculty_id, res, 2147483647);
         check_str_type(req.body.request, res, 130);
         data = [
             req.body.faculty_id,req.body.request
@@ -2150,7 +2145,7 @@ app.get('/v2/faculty_timeslot', (req, res) => {
     if (faculty_id){
         faculty_id_array = faculty_id.split(",");
         for(let i = 0; i < faculty_id_array.length; i++){
-            check_int_type(faculty_id_array[i], res, 11);
+            check_int_type(faculty_id_array[i], res);
             if(i > 0){
                 query = query + " OR"
             }
@@ -2216,9 +2211,9 @@ app.post('/v2/faculty_timeslot', (req, res) => {
     if (status != 200){res.status(status).send(payload)}
     else{
         let query = "INSERT INTO faculty_timeslot (faculty_id,time_id,pref_level) VALUES ?";
-        check_int_type(req.body.faculty_id, res, 11);
-        check_int_type(req.body.time_id, res, 11);
-        check_int_type(req.body.pref_level, res, 11);
+        check_int_type(req.body.faculty_id, res, 2147483647);
+        check_int_type(req.body.time_id, res, 255);
+        check_int_type(req.body.pref_level, res, 255);
         data = [
             [req.body.faculty_id,req.body.time_id,req.body.pref_level]
         ]
@@ -2258,9 +2253,9 @@ app.put('/v2/faculty_timeslot/:faculty_id_id/:time_id_id', (req, res) => {
     if (status != 200){res.status(status).send(payload)}
     else{
         let query = 'UPDATE faculty_timeslot SET faculty_id = COALESCE(?,faculty_id), time_id = COALESCE(?,time_id), pref_level = COALESCE(?,pref_level) WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND time_id= '+con.escape(req.params.time_id_id)+'';
-        check_int_type(req.body.faculty_id, res, 11);
-        check_int_type(req.body.time_id, res, 11);
-        check_int_type(req.body.pref_level, res, 11);
+        check_int_type(req.body.faculty_id, res, 2147483647);
+        check_int_type(req.body.time_id, res, 255);
+        check_int_type(req.body.pref_level, res, 255);
         data = [
             req.body.faculty_id,req.body.time_id,req.body.pref_level
         ]
@@ -2399,7 +2394,7 @@ app.post('/v2/feature', (req, res) => {
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = "INSERT INTO feature (feature_id,feature_name) VALUES ?";
-        check_int_type(feature_id, res, 11);
+        check_int_type(feature_id, res, 255);
         check_str_type(feature_name, res, 100);
         data = [
             [req.body.feature_id,req.body.feature_name]
@@ -2442,7 +2437,7 @@ app.put('/v2/feature/:feature_id_id', (req, res) => {
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
         let query = 'UPDATE feature SET feature_id = COALESCE(?,feature_id), feature_name = COALESCE(?,feature_name) WHERE feature_id= '+con.escape(req.params.feature_id_id)+'';
-        check_int_type(req.body.feature_id, res, 11);
+        check_int_type(req.body.feature_id, res, 255);
         check_str_type(req.body.feature_name, res, 100);
         data = [
             req.body.feature_id,req.body.feature_name
@@ -2480,7 +2475,7 @@ app.delete('/v2/feature/:feature_id_id', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_int_type(req.body.feature_id, res, 11);
+        check_int_type(req.body.feature_id, res, 255);
         check_str_type(req.body.feature_name, res, 100);
         let query = 'DELETE FROM feature WHERE feature_id= '+con.escape(req.params.feature_id_id)+'';
 
@@ -2618,9 +2613,9 @@ app.put('/v2/login/:email_id', (req, res) => {
         console.log(req.body)
         let query = "INSERT INTO login (user_id,pass,faculty_id,access_level) VALUES ?";
         check_str_type(req.body.user_id, res, 100);
-        check_str_type(req.body.faculty_id, res, 100);
-        check_int_type(req.body.faculty_id, res, 11);
-        check_int_type(req.body.faculty_id, res, 11);
+        check_str_type(req.body.pass, res, 100);
+        check_int_type(req.body.faculty_id, res, 2147483647);
+        check_int_type(req.body.access_level, res, 255);
         data = [
             req.body.email,req.body.faculty_id,req.body.access_level
         ]
@@ -2666,9 +2661,9 @@ app.put('/v2/login/:email_id/change_password', async (req, res) => {
     else{
         let query = 'UPDATE login SET user_id = COALESCE(?,user_id), pass = COALESCE(?,pass), faculty_id = COALESCE(?,faculty_id), access_level = COALESCE(?,access_level) WHERE user_id= '+con.escape(req.params.user_id_id)+'';
         check_str_type(req.body.user_id, res, 100);
-        check_str_type(req.body.faculty_id, res, 100);
-        check_int_type(req.body.faculty_id, res, 11);
-        check_int_type(req.body.faculty_id, res, 11);
+        check_str_type(req.body.pass, res, 100);
+        check_int_type(req.body.faculty_id, res, 2147483647);
+        check_int_type(req.body.access_level, res, 255);
         bcrypt.compare(req.body.password,payload.user.pass)
         .then(correct => {
             if(correct){ 
@@ -2712,10 +2707,7 @@ app.delete('/v2/login/:email_id', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_str_type(req.body.user_id, res)
-        check_str_type(req.body.faculty_id, res);
-        check_int_type(req.body.faculty_id, res);
-        check_int_type(req.body.faculty_id, res);
+        check_str_type(req.body.user_id, res);
         let query = 'DELETE FROM login WHERE user_id= '+con.escape(req.params.user_id_id)+'';
 
         query_db_delete(query, res)
@@ -2897,12 +2889,12 @@ app.post('/v2/meets', (req, res) => {
         console.log(req.body)
         check_str_type(req.body.dept_code, res, 5);
         check_str_type(req.body.class_num, res, 5);
-        check_int_type(req.body.section_num, res, 11);
+        check_int_type(req.body.section_num, res, 255);
         check_str_type(req.body.semester, res, 15);
-        check_int_type(req.body.draft, res, 11);
+        check_int_type(req.body.draft, res, 255);
         check_str_type(req.body.building_code, res, 5);
         check_str_type(req.body.room_num, res, 5);
-        check_int_type(req.body.time_id, res, 11);
+        check_int_type(req.body.time_id, res, 255);
         let query = "INSERT INTO meets (dept_code,class_num,section_num,semester,draft,building_code,room_num,time_id) VALUES ?";
         data = [
             [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.building_code,req.body.room_num,req.body.time_id]
@@ -2946,12 +2938,12 @@ app.put('/v2/meets/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:dra
     else{
         check_str_type(req.body.dept_code, res, 5);
         check_str_type(req.body.class_num, res, 5);
-        check_int_type(req.body.section_num, res, 11);
+        check_int_type(req.body.section_num, res, 255);
         check_str_type(req.body.semester, res, 15);
-        check_int_type(req.body.draft, res, 11);
+        check_int_type(req.body.draft, res, 255);
         check_str_type(req.body.building_code, res, 5);
         check_str_type(req.body.room_num, res, 5);
-        check_int_type(req.body.time_id, res, 11);
+        check_int_type(req.body.time_id, res, 255);
         let query = 'UPDATE meets SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), section_num = COALESCE(?,section_num), semester = COALESCE(?,semester), draft = COALESCE(?,draft), building_code = COALESCE(?,building_code), room_num = COALESCE(?,room_num), time_id = COALESCE(?,time_id) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+' AND building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+' AND time_id= '+con.escape(req.params.time_id_id)+'';
 
         data = [
@@ -3114,7 +3106,7 @@ app.post('/v2/room', (req, res) => {
         let query = "INSERT INTO room (building_code,room_num,capacity) VALUES ?";
         check_str_type(req.body.building_code, res, 5);
         check_str_type(req.body.room_num, res, 5);
-        check_int_type(req.body.capacity, res, 11);
+        check_int_type(req.body.capacity, res, 255);
         data = [
             [req.body.building_code,req.body.room_num,req.body.capacity]
         ]
@@ -3158,7 +3150,7 @@ app.put('/v2/room/:building_code_id/:room_num_id', (req, res) => {
         let query = 'UPDATE room SET building_code = COALESCE(?,building_code), room_num = COALESCE(?,room_num), capacity = COALESCE(?,capacity) WHERE building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+'';
         check_str_type(req.body.building_code, res, 5);
         check_str_type(req.body.room_num, res, 5);
-        check_int_type(req.body.capacity, res, 11);
+        check_int_type(req.body.capacity, res, 255);
         data = [
             req.body.building_code,req.body.room_num,req.body.capacity
         ]
@@ -3197,7 +3189,7 @@ app.delete('/v2/room/:building_code_id/:room_num_id', (req, res) => {
     else{
         check_str_type(req.body.building_code, res, 5);
         check_str_type(req.body.room_num, res, 5);
-        check_int_type(req.body.capacity, res, 11);
+        check_int_type(req.body.capacity, res, 255);
         let query = 'DELETE FROM room WHERE building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+'';
 
         query_db_delete(query, res)
@@ -3270,7 +3262,7 @@ app.get('/v2/room_feature', (req, res) => {
     if (feature_id){
         feature_id_array = feature_id.split(",");
         for(let i = 0; i < feature_id_array.length; i++){
-            check_int_type(feature_id_array[i], res, 11);
+            check_int_type(feature_id_array[i], res);
             if(i > 0){
                 query = query + " OR"
             }
@@ -3313,7 +3305,7 @@ app.post('/v2/room_feature', (req, res) => {
     else{
         check_str_type(req.body.building_code, res, 5);
         check_str_type(req.body.room_num, res, 5);
-        check_int_type(req.body.feature_id, res, 11);
+        check_int_type(req.body.feature_id, res, 255);
         let query = "INSERT INTO room_feature (building_code,room_num,feature_id) VALUES ?";
         data = [
             [req.body.building_code,req.body.room_num,req.body.feature_id]
@@ -3358,7 +3350,7 @@ app.put('/v2/room_feature/:building_code_id/:room_num_id/:feature_id_id', (req, 
         let query = 'UPDATE room_feature SET building_code = COALESCE(?,building_code), room_num = COALESCE(?,room_num), feature_id = COALESCE(?,feature_id) WHERE building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
         check_str_type(req.body.building_code, res, 5);
         check_str_type(req.body.room_num, res, 5);
-        check_int_type(req.body.feature_id, res, 11);
+        check_int_type(req.body.feature_id, res, 255);
         data = [
             req.body.building_code,req.body.room_num,req.body.feature_id
         ]
@@ -3553,10 +3545,10 @@ app.post('/v2/section', (req, res) => {
         let query = "INSERT INTO section (dept_code,class_num,section_num,semester,draft,capacity) VALUES ?";
         check_str_type(req.body.dept_code, res, 5);
         check_str_type(req.body.class_num, res, 5);
-        check_int_type(req.body.seciton_num, res, 11);
+        check_int_type(req.body.seciton_num, res, 255);
         check_str_type(req.body.semester, res, 15);
-        check_int_type(req.body.draft, res, 11);
-        check_int_type(req.body.capacity, res, 11);
+        check_int_type(req.body.draft, res, 255);
+        check_int_type(req.body.capacity, res, 255);
         data = [
             [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.capacity]
         ]
@@ -3600,10 +3592,10 @@ app.put('/v2/section/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:d
         let query = 'UPDATE section SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), section_num = COALESCE(?,section_num), semester = COALESCE(?,semester), draft = COALESCE(?,draft), capacity = COALESCE(?,capacity) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+'';
         check_str_type(req.body.dept_code, res, 5);
         check_str_type(req.body.class_num, res, 5);
-        check_int_type(req.body.seciton_num, res, 11);
+        check_int_type(req.body.seciton_num, res, 255);
         check_str_type(req.body.semester, res, 15);
-        check_int_type(req.body.draft, res, 11);
-        check_int_type(req.body.capacity, res, 11);
+        check_int_type(req.body.draft, res, 255);
+        check_int_type(req.body.capacity, res, 255);
         data = [
             req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.capacity
         ]
@@ -3801,10 +3793,10 @@ app.post('/v2/teaches', (req, res) => {
         let query = "INSERT INTO teaches (dept_code,class_num,section_num,semester,draft,faculty_id) VALUES ?";
         check_str_type(req.body.dept_code, res, 5);
         check_str_type(req.body.class_num, res, 5);
-        check_int_type(req.body.section_num, res, 11);
+        check_int_type(req.body.section_num, res, 255);
         check_str_type(req.body.semester, res, 15);
-        check_int_type(req.body.draft, res, 11);
-        check_int_type(req.body.facutly_id, res, 11);
+        check_int_type(req.body.draft, res, 255);
+        check_int_type(req.body.faculty_id, res, 2147483647);
         data = [
             [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.faculty_id]
         ]
@@ -3848,10 +3840,10 @@ app.put('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:d
         let query = 'UPDATE teaches SET dept_code = COALESCE(?,dept_code), class_num = COALESCE(?,class_num), section_num = COALESCE(?,section_num), semester = COALESCE(?,semester), draft = COALESCE(?,draft), faculty_id = COALESCE(?,faculty_id) WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+' AND faculty_id= '+con.escape(req.params.faculty_id_id)+'';
         check_str_type(req.body.dept_code, res, 5);
         check_str_type(req.body.class_num, res, 5);
-        check_int_type(req.body.section_num, res, 11);
+        check_int_type(req.body.section_num, res, 255);
         check_str_type(req.body.semester, res, 15);
-        check_int_type(req.body.draft, res, 11);
-        check_int_type(req.body.facutly_id, res, 11);
+        check_int_type(req.body.draft, res, 255);
+        check_int_type(req.body.faculty_id, res, 2147483647);
         data = [
             req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.faculty_id
         ]
@@ -3893,7 +3885,7 @@ app.delete('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id
         check_int_type(req.body.section_num, res);
         check_str_type(req.body.semester, res);
         check_int_type(req.body.draft, res);
-        check_int_type(req.body.facutly_id, res);
+        check_int_type(req.body.faculty_id, res);
         let query = 'DELETE FROM teaches WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+' AND faculty_id= '+con.escape(req.params.faculty_id_id)+'';
 
         query_db_delete(query, res)
@@ -4020,8 +4012,8 @@ app.post('/v2/timeslot', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_int_type(req.body.time_id, res, 11);
-        check_int_type(req.body.day_of_week, res, 11);
+        check_int_type(req.body.time_id, res, 255);
+        check_int_type(req.body.day_of_week, res, 255);
         let query = "INSERT INTO timeslot (time_id,day_of_week,time_start,time_end) VALUES ?";
         data = [
             [req.body.time_id,req.body.day_of_week,req.body.time_start,req.body.time_end]
@@ -4063,8 +4055,8 @@ app.put('/v2/timeslot/:time_id_id', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_int_type(req.body.time_id, res, 11);
-        check_int_type(req.body.day_of_week, res, 11);
+        check_int_type(req.body.time_id, res, 255);
+        check_int_type(req.body.day_of_week, res, 255);
         let query = 'UPDATE timeslot SET time_id = COALESCE(?,time_id), day_of_week = COALESCE(?,day_of_week), time_start = COALESCE(?,time_start), time_end = COALESCE(?,time_end) WHERE time_id= '+con.escape(req.params.time_id_id)+'';
 
         data = [
@@ -4218,7 +4210,7 @@ app.post('/v2/title', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_int_type(req.body.title_id, res, 11);
+        check_int_type(req.body.title_id, res, 255);
         check_str_type(req.body.title_name, res, 30);
         check_int_type(req.body.max_load, res, 15);
         let query = "INSERT INTO title (title_id,title_name,max_load) VALUES ?";
@@ -4262,7 +4254,7 @@ app.put('/v2/title/:title_id_id', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_int_type(req.body.title_id, res, 11);
+        check_int_type(req.body.title_id, res, 255);
         check_str_type(req.body.title_name, res, 30);
         check_int_type(req.body.max_load, res, 15);
         let query = 'UPDATE title SET title_id = COALESCE(?,title_id), title_name = COALESCE(?,title_name), max_load = COALESCE(?,max_load) WHERE title_id= '+con.escape(req.params.title_id_id)+'';
