@@ -231,7 +231,7 @@ function check_int_type(value, res, int_size = null){
         }
     }
 
-    }
+}
 function check_str_type(value, res, str_size = null){
 /*
     Checks if a value is a STR and if the size fits within the column. 
