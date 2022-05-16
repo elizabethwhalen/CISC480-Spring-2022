@@ -1,69 +1,617 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="4" />
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="014d7ba0-0c42-4fb5-92d3-e64c572dbb0b" name="Default Changelist" comment="" />
+    <list default="true" id="45512b85-8fe0-4df8-a585-d8e8e6819aec" name="Default Changelist" comment="Add section field&#10;Send course to database&#10;Update schedule with saved courses">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/lib.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/6.7/executionHistory/executionHistory.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/6.7/executionHistory/executionHistory.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/6.7/fileChanges/last-build.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/6.7/fileHashes/fileHashes.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/6.7/fileHashes/fileHashes.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/6.7/fileHashes/resourceHashesCache.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/6.7/gc.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/6.7/javaCompile/classAnalysis.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/6.7/javaCompile/javaCompile.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/6.7/javaCompile/taskHistory.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/buildOutputCleanup/cache.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/checksums/checksums.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/checksums/md5-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/checksums/sha1-checksums.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/configuration-cache/gc.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/vcs-1/gc.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/workspace-id.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.gradle/workspace-id.txt.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.idea/ClassySchedule.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.idea/dictionaries/dtbie.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.idea/git_toolbox_prj.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.idea/gradle.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.idea/libraries/lib.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.idea/modules/ClassySchedule.test.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.idea/runConfigurations/Main.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/alert/MyAlert.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/alert/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/alert/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/courses/AddCourseToDatabaseController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/courses/CourseFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/courses/DeleteCourseFromDatabaseController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/courses/EditCourseFromDatabaseController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/courses/Lecture.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/courses/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/courses/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/database/DatabaseStatic.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/database/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/database/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/homescreen/HomescreenController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/homescreen/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/homescreen/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/login/LoginController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/login/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/login/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/module-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/room/DeleteClassroomFromDatabaseController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/room/EditClassroomFromDatabaseController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/room/Room.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/room/RoomController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/room/RoomFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/room/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/room/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/samples/Main.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/samples/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/samples/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/scenes/ChangeScene.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/scenes/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/scenes/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/scheduler/AddCourseToScheduleController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/scheduler/AppointmentFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/scheduler/AppointmentGroups.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/scheduler/DateTimeUtils.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/scheduler/DayOfTheWeek.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/scheduler/GenerateScheduleController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/scheduler/SchedulerController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/scheduler/Timeslot.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/scheduler/TimeslotFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/scheduler/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/scheduler/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/users/DeleteFacultyFromDatabaseController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/users/EditFacultyFromDatabaseController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/users/Faculty.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/users/FacultyController.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/users/FacultyFactory.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/users/Title.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/users/package-summary.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/ClassySchedule.main/users/package-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/allclasses-index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/allpackages-index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/constant-values.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/deprecated-list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/element-list" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/help-doc.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index-files/index-1.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index-files/index-10.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index-files/index-11.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index-files/index-12.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index-files/index-13.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index-files/index-14.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index-files/index-15.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index-files/index-16.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index-files/index-17.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index-files/index-18.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index-files/index-2.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index-files/index-3.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index-files/index-4.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index-files/index-5.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index-files/index-6.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index-files/index-7.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index-files/index-8.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index-files/index-9.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/member-search-index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/member-search-index.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/module-search-index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/module-search-index.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/overview-tree.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/package-search-index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/package-search-index.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/resources/glass.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/resources/x.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/external/jquery/jquery.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/images/ui-bg_glass_55_fbf9ee_1x400.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/images/ui-bg_glass_65_dadada_1x400.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/images/ui-bg_glass_75_dadada_1x400.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/images/ui-bg_glass_75_e6e6e6_1x400.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/images/ui-bg_glass_95_fef1ec_1x400.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/images/ui-bg_highlight-soft_75_cccccc_1x100.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/images/ui-icons_222222_256x240.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/images/ui-icons_2e83ff_256x240.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/images/ui-icons_454545_256x240.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/images/ui-icons_888888_256x240.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/images/ui-icons_cd0a0a_256x240.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/jquery-3.4.1.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/jquery-ui.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/jquery-ui.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/jquery-ui.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/jquery-ui.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/jquery-ui.structure.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/jquery-ui.structure.min.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/jszip-utils/dist/jszip-utils-ie.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/jszip-utils/dist/jszip-utils-ie.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/jszip-utils/dist/jszip-utils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/jszip-utils/dist/jszip-utils.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/jszip/dist/jszip.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script-dir/jszip/dist/jszip.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/script.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/search.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/stylesheet.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/system-properties.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/type-search-index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/javadocs/type-search-index.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/lib/jfxtras-agenda-22.4.4.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/lib/scheduler_algorithm-1.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/alert/MyAlert.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/courses/AddCourseToDatabaseController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/courses/CourseFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/courses/DeleteCourseFromDatabaseController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/courses/EditCourseFromDatabaseController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/courses/Lecture.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/database/DatabaseStatic.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/homescreen/HomescreenController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/login/LoginController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/module-info.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/resources/fxml/AddCourseToDatabase.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/resources/fxml/AddCourseToSchedule.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/resources/fxml/AddNewClassroom.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/resources/fxml/AddNewProfessor.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/resources/fxml/Agenda.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/resources/fxml/DeleteClassroomFromDatabase.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/resources/fxml/DeleteCourseFromDatabase.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/resources/fxml/DeleteFacultyFromDatabase.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/resources/fxml/EditClassroomFromDatabase.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/resources/fxml/EditCourseFromDatabase.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/resources/fxml/EditFacultyFromDatabase.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/resources/fxml/GenerateSchedule.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/resources/fxml/Homescreen.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/resources/fxml/LoginPage.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/resources/fxml/Scheduler.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/room/DeleteClassroomFromDatabaseController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/room/EditClassroomFromDatabaseController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/room/Room.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/room/RoomController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/room/RoomFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/samples/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/scenes/ChangeScene.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/scheduler/AddCourseToScheduleController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/scheduler/AppointmentFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/scheduler/AppointmentGroups.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/scheduler/DateTimeUtils.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/scheduler/DayOfTheWeek.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/scheduler/GenerateScheduleController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/scheduler/SchedulerController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/scheduler/Timeslot.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/scheduler/TimeslotFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/users/DeleteFacultyFromDatabaseController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/users/EditFacultyFromDatabaseController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/users/Faculty.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/users/FacultyController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/users/FacultyFactory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/java/users/Title.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/resources/fxml/AddCourseToDatabase.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/resources/fxml/AddCourseToSchedule.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/resources/fxml/Agenda.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/resources/fxml/ClassroomNew.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/resources/fxml/Course.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/resources/fxml/CourseNew.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/resources/fxml/Homescreen.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/resources/fxml/LoginPage.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/resources/fxml/Professor.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/resources/fxml/Sample.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ClassySchedule/src/main/resources/fxml/Scheduler.fxml" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="ClassySchedule" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="FxmlFile" />
+        <option value="Class" />
+        <option value="CSS File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$/.." value="App-Dev-Branch" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitToolBoxStore">
-    <option name="projectConfigVersion" value="2" />
-    <option name="recentBranches">
-      <RecentBranches>
-        <option name="branchesForRepo">
-          <list>
-            <RecentBranchesForRepo>
-              <option name="branches">
-                <list>
-                  <RecentBranch>
-                    <option name="branchName" value="App-Dev-Branch" />
-                    <option name="lastUsedInstant" value="1646872263" />
-                  </RecentBranch>
-                  <RecentBranch>
-                    <option name="branchName" value="main" />
-                    <option name="lastUsedInstant" value="1646872262" />
-                  </RecentBranch>
-                </list>
-              </option>
-              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
-            </RecentBranchesForRepo>
-          </list>
-        </option>
-      </RecentBranches>
-    </option>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
-  <component name="ProjectId" id="26AU9lmJ13v9Z3QPllLlTiXamgI" />
+  <component name="ProjectId" id="27z6pw0DgHG7zZwRCNhR2sHLnd7" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/ClassySchedule" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.38275862" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.Java" />
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\dtbie\OneDrive - University of St. Thomas\CISC 480\CISC480-Spring-2022\ClassySchedule\build\libs" />
+      <recent name="C:\Users\dtbie\OneDrive - University of St. Thomas\CISC 480\CISC480-Spring-2022\ClassySchedule\src\main\java\resources\fxml" />
+      <recent name="C:\Users\dtbie\OneDrive - University of St. Thomas\CISC 480\CISC480-Spring-2022\ClassySchedule\build\classes\java\main" />
+      <recent name="C:\Users\dtbie\OneDrive - University of St. Thomas\CISC 480\CISC480-Spring-2022\ClassySchedule\src\main\resources\fxml" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\dtbie\OneDrive - University of St. Thomas\CISC 480\CISC480-Spring-2022\ClassySchedule\lib" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.Main">
+    <configuration name="AlgorithmImplementation" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="algorithm.AlgorithmImplementation" />
+      <module name="ClassySchedule.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="algorithm.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.AlgorithmImplementation" />
+        <item itemvalue="Application.AlgorithmImplementation" />
+        <item itemvalue="Application.AlgorithmImplementation" />
+        <item itemvalue="Application.AlgorithmImplementation" />
+        <item itemvalue="Application.AlgorithmImplementation" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="014d7ba0-0c42-4fb5-92d3-e64c572dbb0b" name="Default Changelist" comment="" />
-      <created>1646865734906</created>
+      <changelist id="45512b85-8fe0-4df8-a585-d8e8e6819aec" name="Default Changelist" comment="" />
+      <created>1650310755446</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1646865734906</updated>
-      <workItem from="1646865736172" duration="125000" />
-      <workItem from="1646865982010" duration="723000" />
+      <updated>1650310755446</updated>
+      <workItem from="1650310758679" duration="60000" />
+      <workItem from="1650310843273" duration="9000" />
+      <workItem from="1650310870191" duration="26000" />
+      <workItem from="1650310958767" duration="262000" />
+      <workItem from="1650311231844" duration="57000" />
+      <workItem from="1650311302517" duration="13000" />
+      <workItem from="1650311342494" duration="19000" />
+      <workItem from="1650311375118" duration="98000" />
+      <workItem from="1650311492206" duration="533000" />
+      <workItem from="1650312050529" duration="3558000" />
+      <workItem from="1650381227100" duration="1006000" />
+      <workItem from="1650475094958" duration="10122000" />
+      <workItem from="1650900078750" duration="5809000" />
+      <workItem from="1650912077237" duration="15584000" />
+      <workItem from="1651098782972" duration="3703000" />
+      <workItem from="1651256858663" duration="352000" />
+      <workItem from="1651350403949" duration="613000" />
+      <workItem from="1651436164929" duration="595000" />
+      <workItem from="1651530490483" duration="5747000" />
+      <workItem from="1651608051393" duration="1136000" />
+      <workItem from="1651609232953" duration="5772000" />
+      <workItem from="1651690275936" duration="4456000" />
+      <workItem from="1652068239816" duration="3326000" />
+      <workItem from="1652294096802" duration="61000" />
+      <workItem from="1652300233605" duration="17352000" />
+      <workItem from="1652332885965" duration="1335000" />
+      <workItem from="1652334254804" duration="102000" />
+      <workItem from="1652388011121" duration="20021000" />
+      <workItem from="1652556975669" duration="9723000" />
+      <workItem from="1652567388676" duration="583000" />
+      <workItem from="1652568029994" duration="363000" />
+      <workItem from="1652568422519" duration="16363000" />
+      <workItem from="1652635976211" duration="20561000" />
+      <workItem from="1652662862127" duration="175000" />
+      <workItem from="1652663057777" duration="12038000" />
+      <workItem from="1652678772298" duration="6000" />
     </task>
+    <task id="LOCAL-00001" summary="-add login functionality&#10;-update database to use tokens">
+      <created>1650905436906</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1650905436906</updated>
+    </task>
+    <task id="LOCAL-00002" summary="fixed spacing">
+      <created>1650913738954</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1650913738954</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fixed the database null checks">
+      <created>1650928111422</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1650928111422</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fixed things">
+      <created>1650931827304</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1650931827304</updated>
+    </task>
+    <task id="LOCAL-00005" summary="updated the add course to scheduler to pull from the database">
+      <created>1650935194901</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1650935194901</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Added login on enter&#10;Added alert for when username/password is incorrect">
+      <created>1650937352080</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1650937352080</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Populate schedule with stuff from database">
+      <created>1651030382103</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1651030382103</updated>
+    </task>
+    <task id="LOCAL-00008" summary="fix delete method">
+      <created>1651103355470</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1651103355471</updated>
+    </task>
+    <task id="LOCAL-00009" summary="changes">
+      <created>1651535938477</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1651535938477</updated>
+    </task>
+    <task id="LOCAL-00010" summary="add stuff I really don't even know at this point.">
+      <created>1652308239672</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1652308239673</updated>
+    </task>
+    <task id="LOCAL-00011" summary="add stuff I really don't even know at this point.">
+      <created>1652309084670</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1652309084670</updated>
+    </task>
+    <task id="LOCAL-00012" summary="update timeslots">
+      <created>1652312510204</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1652312510204</updated>
+    </task>
+    <task id="LOCAL-00013" summary="update timeslots">
+      <created>1652312941058</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1652312941058</updated>
+    </task>
+    <task id="LOCAL-00014" summary="update timeslots">
+      <created>1652313616004</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1652313616004</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Fixed merge errors with add course, add professor, add room">
+      <created>1652327481207</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1652327481207</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Preliminary code cleanup">
+      <created>1652328619338</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1652328619338</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Updated names">
+      <created>1652328714437</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1652328714437</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Remove wildcard inputs&#10;Update AddCourseToScheduleController">
+      <created>1652394050056</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1652394050056</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Update stuff">
+      <created>1652402251047</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1652402251047</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Add section field&#10;Send course to database&#10;Update schedule with saved courses">
+      <created>1652458557066</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1652458557066</updated>
+    </task>
+    <task id="LOCAL-00021" summary="populate schedule&#10;save scheduled course">
+      <created>1652558139709</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1652558139710</updated>
+    </task>
+    <task id="LOCAL-00022" summary="implement algorithm. Mostly working">
+      <created>1652576869476</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1652576869476</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Update algorithm jar">
+      <created>1652577096696</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1652577096696</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Code cleanup&#10;Delete course from calendar">
+      <created>1652588690159</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1652588690159</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Update comments">
+      <created>1652658338223</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1652658338223</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Update comments">
+      <created>1652661669911</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1652661669911</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Fix fxmls&#10;Delete unneeded fxmls&#10;Add new department and new building when it does not exist in the database">
+      <created>1652662976199</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1652662976199</updated>
+    </task>
+    <task id="LOCAL-00028" summary="fix algorithm&#10;fix delete courses">
+      <created>1652666992672</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1652666992672</updated>
+    </task>
+    <task id="LOCAL-00029" summary="fix algorithm&#10;fix delete courses&#10;fixed add professor">
+      <created>1652676665375</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1652676665375</updated>
+    </task>
+    <task id="LOCAL-00030" summary="add javadocs&#10;update README.md">
+      <created>1652678048573</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1652678048573</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -74,10 +622,136 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/App-Dev-Branch" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fixed spacing" />
+    <MESSAGE value="fixed the database null checks" />
+    <MESSAGE value="fixed things" />
+    <MESSAGE value="updated the add course to scheduler to pull from the database" />
+    <MESSAGE value="Added login on enter&#10;Added alert for when username/password is incorrect" />
+    <MESSAGE value="Populate schedule with stuff from database" />
+    <MESSAGE value="fix delete method" />
+    <MESSAGE value="changes" />
+    <MESSAGE value="add stuff I really don't even know at this point." />
+    <MESSAGE value="update timeslots" />
+    <MESSAGE value="Fixed merge errors with add course, add professor, add room" />
+    <MESSAGE value="Preliminary code cleanup" />
+    <MESSAGE value="Updated names" />
+    <MESSAGE value="Remove wildcard inputs&#10;Update AddCourseToScheduleController" />
+    <MESSAGE value="Update stuff" />
+    <MESSAGE value="Add section field&#10;Send course to database&#10;Update schedule with saved courses" />
+    <MESSAGE value="populate schedule&#10;save scheduled course" />
+    <MESSAGE value="implement algorithm. Mostly working" />
+    <MESSAGE value="Update algorithm jar" />
+    <MESSAGE value="Code cleanup&#10;Delete course from calendar" />
+    <MESSAGE value="Update comments" />
+    <MESSAGE value="Fix fxmls&#10;Delete unneeded fxmls&#10;Add new department and new building when it does not exist in the database" />
+    <MESSAGE value="fix algorithm&#10;fix delete courses" />
+    <MESSAGE value="fix algorithm&#10;fix delete courses&#10;fixed add professor" />
+    <MESSAGE value="add javadocs&#10;update README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="add javadocs&#10;update README.md" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$USER_HOME$/.jdks/adopt-openjdk-14.0.2/lib/src.zip!/java.base/java/lang/Class.java</url>
+          <line>2804</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/algorithm/AlgorithmImplementation.java</url>
+          <line>21</line>
+          <option name="timeStamp" value="68" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/lib/ortools-java-9.3.10497.jar!/com/google/ortools/Loader.class</url>
+          <line>84</line>
+          <option name="timeStamp" value="69" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://$PROJECT_DIR$/lib/scheduler_algorithm-1.0.jar!/algorithm/Algorithm.class</url>
+          <option name="timeStamp" value="101" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/scheduler/SchedulerController.java</url>
+          <line>153</line>
+          <option name="timeStamp" value="110" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/users/EditFacultyFromDatabaseController.java</url>
+          <line>282</line>
+          <option name="timeStamp" value="116" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/scheduler/GenerateScheduleController.java</url>
+          <line>169</line>
+          <option name="timeStamp" value="120" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/scheduler/GenerateScheduleController.java</url>
+          <line>170</line>
+          <option name="timeStamp" value="121" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/courses/DeleteCourseFromDatabaseController.java</url>
+          <line>117</line>
+          <option name="timeStamp" value="124" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/database/DatabaseStatic.java</url>
+          <line>268</line>
+          <option name="timeStamp" value="126" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/database/DatabaseStatic.java</url>
+          <line>181</line>
+          <option name="timeStamp" value="128" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/database/DatabaseStatic.java</url>
+          <line>185</line>
+          <option name="timeStamp" value="129" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/database/DatabaseStatic.java</url>
+          <line>187</line>
+          <option name="timeStamp" value="130" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="javafx.scene.control.DialogPane" memberName="graphicContainer" />
+      </pinned-members>
+    </pin-to-top-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ClassySchedule$Main.ic" NAME="Main Coverage Results" MODIFIED="1652665083339" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>controllers.*</FILTER>
+      <FILTER>*</FILTER>
+    </SUITE>
   </component>
 </project>
