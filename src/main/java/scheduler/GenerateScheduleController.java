@@ -16,11 +16,10 @@ import database.DatabaseStatic;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Dialog;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
 import org.json.JSONObject;
@@ -137,17 +136,26 @@ public class GenerateScheduleController implements Initializable {
         professors = new FacultyFactory().createFaculty();
         timeslots = new TimeslotFactory().createTimeSlot();
 
-        for (Lecture course : courses) {
-            courseBox.getItems().add(course.toString());
+        if (courses != null) {
+            for (Lecture course : courses) {
+                courseBox.getItems().add(course.toString());
+            }
         }
-        for (Room room : rooms) {
-            roomBox.getItems().add(room.toString());
+
+        if (rooms != null) {
+            for (Room room : rooms) {
+                roomBox.getItems().add(room.toString());
+            }
         }
-        for (Faculty professor : professors) {
-            professorBox.getItems().add(professor.toString());
+        if (professors != null) {
+            for (Faculty professor : professors) {
+                professorBox.getItems().add(professor.toString());
+            }
         }
-        for (Timeslot timeslot : timeslots) {
-            timeslotBox.getItems().add(timeslot.toString());
+        if (timeslots != null) {
+            for (Timeslot timeslot : timeslots) {
+                timeslotBox.getItems().add(timeslot.toString());
+            }
         }
     }
 
@@ -162,15 +170,16 @@ public class GenerateScheduleController implements Initializable {
         if (!(validateRooms() && validateCourses() && validateProfessors() && validateTimeslots())) {
             new MyAlert("Invalid Selection", "Please select at least one room, professor, course, and timeslot", AlertType.WARNING).show();
         } else {
-            Dialog<Boolean> dialog = new Dialog<>();
-            Text text = new Text("Generating schedule, please wait...");
-            dialog.getDialogPane().setContent(text);
-            dialog.show();
+
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Generating Schedule Alert");
+            alert.setContentText("Generating the schedule, please wait...");
+            alert.show();
             Algorithm test = new Algorithm();
             List<String[]> schedule = test.algorithm(professorBox.getCheckModel().getCheckedItems(), courseBox.getCheckModel().getCheckedItems(), roomBox.getCheckModel().getCheckedItems(), timeslotBox.getCheckModel().getCheckedItems());
             createSchedule(schedule);
-            dialog.setResult(Boolean.TRUE);
-            dialog.close();
+
+            alert.hide();
         }
     }
 

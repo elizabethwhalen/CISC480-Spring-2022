@@ -115,7 +115,7 @@ public class FacultyController implements Initializable {
         newFaculty.put("faculty_id", Integer.parseInt(facultyId.getText()));
         newFaculty.put("faculty_first", firstName.getText());
         newFaculty.put("faculty_last", lastName.getText());
-        newFaculty.put("title_id", 1);
+        newFaculty.put("title_id", 2);
         DatabaseStatic.insertData("faculty", newFaculty);
 
 

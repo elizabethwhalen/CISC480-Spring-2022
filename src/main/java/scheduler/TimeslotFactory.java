@@ -28,13 +28,16 @@ public class TimeslotFactory {
         ArrayList<Timeslot> wed = new ArrayList<>();
         ArrayList<Timeslot> thur = new ArrayList<>();
         ArrayList<Timeslot> fri = new ArrayList<>();
-        String start, end, days;
+
         JSONArray currentTimeChunkJSON = DatabaseStatic.getData("timeslot");
+        if (currentTimeChunkJSON == null) {
+            return null;
+        }
         for (Object jsonObject: currentTimeChunkJSON) {
             JSONObject job = (JSONObject)jsonObject;
-            start = job.getString("time_start");
-            end = job.getString("time_end");
-            days = job.getString("day_of_week");
+            String start = job.getString("time_start");
+            String end = job.getString("time_end");
+            String days = job.getString("day_of_week");
             int timeId = job.getInt("time_id");
             Timeslot currentTimeSlot = new Timeslot(timeId, days, start, end);
             timeSlotList.add(currentTimeSlot);

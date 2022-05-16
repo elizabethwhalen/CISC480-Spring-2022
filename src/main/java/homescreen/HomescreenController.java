@@ -133,7 +133,7 @@ public class HomescreenController implements Initializable {
     public ImageView imageView;
     public void setStage(Stage stage) {
         this.stage = stage;
-        Image logo = new Image("main/java/images/ClassyScheduler.png");
+        Image logo = new Image("/resources/images/ClassyScheduler.png");
         imageView.setImage(logo);
     }
 

@@ -73,8 +73,12 @@ public class DeleteCourseFromDatabaseController implements Initializable {
     public void populateCourses() {
         course.getItems().clear();
         classes = new CourseFactory().createCourses();
-        for (Lecture lecture : classes) {
-            course.getItems().add(lecture.toString());
+        if (classes == null) {
+            new MyAlert("No Courses Alert", "There are no courses to delete", Alert.AlertType.INFORMATION);
+        } else {
+            for (Lecture lecture : classes) {
+                course.getItems().add(lecture.toString());
+            }
         }
     }
 

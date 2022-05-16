@@ -72,8 +72,10 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
     private void populateProfessors() {
         faculty.getItems().clear();
         professors = new FacultyFactory().createFaculty();
-        for (Faculty professor: professors) {
-            faculty.getItems().add(professor.toString());
+        if (professors != null) {
+            for (Faculty professor: professors) {
+                faculty.getItems().add(professor.toString());
+            }
         }
     }
 

@@ -26,6 +26,9 @@ public class RoomFactory {
 
         JSONArray classRooms = DatabaseStatic.getData("room");
 
+        if (classRooms == null) {
+            return null;
+        }
         for (Object json : classRooms) {
             JSONObject room = (JSONObject) json;
 

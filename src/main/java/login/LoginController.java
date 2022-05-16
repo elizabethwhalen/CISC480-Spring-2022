@@ -62,7 +62,7 @@ public class LoginController implements Initializable {
      */
     public void setStage(Stage stage) {
         this.loginStage = stage;
-        Image logo = new Image("main/java/images/ClassyScheduler.png");
+        Image logo = new Image("/resources/images/ClassyScheduler.png");
         stage.getIcons().add(logo);
     }
 

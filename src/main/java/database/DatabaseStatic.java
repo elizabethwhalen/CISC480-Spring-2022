@@ -200,16 +200,16 @@ public final class DatabaseStatic {
         CloseableHttpClient client = HttpClients.createDefault();
         try {
             URIBuilder builder = new URIBuilder(url + table);
-
-            if (table.equals("room")) {
-                builder.appendPath((String) json.get("building_code"));
-                builder.appendPath((String) json.get("room_num"));
-            } else {
-                for (String key : json.keySet()) {
-                    builder.appendPath((String) json.get(key));
+            if (json != null) {
+                if (table.equals("room")) {
+                    builder.appendPath((String) json.get("building_code"));
+                    builder.appendPath((String) json.get("room_num"));
+                } else {
+                    for (String key : json.keySet()) {
+                        builder.appendPath((String) json.get(key));
+                    }
                 }
             }
-
             StringEntity entity = new StringEntity(change.toString());
             HttpPut httpPut = new HttpPut(builder.build());
             httpPut.setEntity(entity);

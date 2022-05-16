@@ -15,7 +15,9 @@ public class FacultyFactory {
     public List<Faculty> createFaculty() {
         JSONArray faculty = DatabaseStatic.getData("faculty");
         List<Faculty> professors = new ArrayList<>();
-
+        if (faculty == null) {
+            return null;
+        }
         for (Object json : faculty) {
             Faculty prof = new Faculty();
             JSONObject professor = (JSONObject) json;
