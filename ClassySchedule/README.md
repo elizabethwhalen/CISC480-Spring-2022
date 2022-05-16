@@ -20,4 +20,7 @@ Sources used:
 •	JavaScript www.javascript.com
 •	Apache HTTP Components (connecting to API) https://hc.apache.org/
 •	Org.Json http://www.JSON.org/
+•	ControlsFX https://controlsfx.github.io/
+•	Google OR-Tools https://developers.google.com/optimization
 •	JFXtras https://jfxtras.org/
+
