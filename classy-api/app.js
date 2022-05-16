@@ -45,36 +45,36 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Read in Azure database password for our access account. Need callback 
 // so that the database connection not make too early
-let db_password;
+let db_password = 'fA!6#_&eaU9-EaeJ';
 function makeConnection(callback) {
-    fs.readFile('./hidden/db_password.txt', (err, data) => {
-        if (err) throw err;
-        db_password = data.toString();
-        callback(db_password);
-    });
+    // fs.readFile('./hidden/db_password.txt', (err, data) => {
+    //     if (err) throw err;
+    //     db_password = data.toString();
+    //     callback(db_password);
+    // });
 }
-// Read in seed used for jwt. We don't need callback function because hashing
+// // Read in seed used for jwt. We don't need callback function because hashing
 // doe not occur right when server is initiated.
 let secretkey;
 try {
-    secretkey = fs.readFileSync('./hidden/jwt_seed.txt').toString();
+    secretkey = 'secretkey'
+    // secretkey = fs.readFileSync('./hidden/jwt_seed.txt').toString();
 } catch {
     throw "Server error: security issue. Please try again later";
 }
 // Read in API key used for sendgrid email
-let sg_key;
+// let sg_key;
 try {
     sg_key = fs.readFileSync('./hidden/sg_key.txt').toString();
     sgMail.setApiKey(sg_key);
 } catch {
-    throw "Server error: security issue. Please try again later";
+    sg_key = 'fA!6#_&eaU9-EaeJ'
+    // throw "Server error: security issue. Please try again later";
 }
 
 ///
 // Database Connection
 //
-
-let con;
 makeConnection((password)=> {
     // Determine which schema we are modifying
     let schema = "cs_dev" // "db_dev" use for development Database Team
@@ -88,7 +88,7 @@ makeConnection((password)=> {
         database: schema,
         port: 3306,
     };
-
+    var con;
     // Create the connection and store in "con"
     con = new mysql.createConnection(config);
     con.connect(function(err) {
@@ -4519,7 +4519,7 @@ app.post('/v2/login', async function (req, res) {
       return res.status(400).send('Missing email or password');
     }
 
-    let loginjson = await db_get("SELECT * from login where email="+con.escape(req.body.email));
+    let loginjson = await db_get("SELECT * from login where email=" + con.escape(req.body.email));
     if (loginjson.length === 0) { return res.status(404).send("Account with that email does not exist"); } 
     passHashed = loginjson[0].pass
     bcrypt.compare(req.body.password,passHashed)
