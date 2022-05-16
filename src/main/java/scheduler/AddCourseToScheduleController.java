@@ -1,6 +1,7 @@
 package scheduler;
 
 import alert.MyAlert;
+import com.sun.jna.win32.DLLCallback;
 import courses.CourseFactory;
 import courses.Lecture;
 import database.DatabaseStatic;
@@ -20,6 +21,7 @@ import room.RoomFactory;
 import users.Faculty;
 import users.FacultyFactory;
 
+import java.time.LocalTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.List;
@@ -162,17 +164,85 @@ public class AddCourseToScheduleController implements Initializable {
     public void submitData() throws ParseException {
         // Validate needed data is present
         if (validateData()) {
-            // Create appointment from fields
-            List<Agenda.Appointment> appointmentList = createAppointment();
+            if (noConflicts()) {
+                // Create appointment from fields
+                List<Agenda.Appointment> appointmentList = createAppointment();
 
-            parentController.addCourse(appointmentList);
+                parentController.addCourse(appointmentList);
 
-            sendDataToDatabase();
+                sendDataToDatabase();
 
-            // return to Scheduler
-            course.getScene().getWindow().hide();
+                // return to Scheduler
+                course.getScene().getWindow().hide();
+            }
+        }
+    }
+
+    private boolean noConflicts() {
+        Timeslot timeslot = listOfTimes.get(classTimes.getSelectionModel().getSelectedIndex());
+        Lecture crs = courses.get(course.getSelectionModel().getSelectedIndex());
+        Faculty prof = faculty.get(professor.getSelectionModel().getSelectedIndex());
+        Room rm = rooms.get(room.getSelectionModel().getSelectedIndex());
+
+        // Check that class is not scheduled
+        for (Agenda.Appointment appointment : parentController.getAgenda().appointments()) {
+            String[] summary = appointment.getSummary().split(" ");
+            if (summary[0].equals(crs.getDeptCode()) && summary[1].equals(crs.getClassNum() + "-" + crs.getSectionNum())) {
+                new MyAlert("Invalid Class Alert", "Class already scheduled, please select a different class",
+                        Alert.AlertType.WARNING).show();
+                return false;
+            }
+
         }
 
+        // Check for time conflicts
+        for (Agenda.Appointment appointment : parentController.getAgenda().appointments()) {
+            String room = appointment.getLocation().split(" ")[0] + " " + appointment.getLocation().split(" ")[1];
+            if (room.equals(rm.toString())) {
+                // Same room selected, check if times overlap
+
+                if (compareTimes(appointment.getStartLocalDateTime(), appointment.getEndLocalDateTime(), timeslot)) {
+                    new MyAlert("Invalid Time Alert", "Time and room selected overlap with a previously " +
+                            "scheduled class, please select a different room or timeslot", Alert.AlertType.ERROR).show();
+                    return false;
+                }
+            }
+        }
+
+
+        for (Agenda.Appointment appointment : parentController.getAgenda().appointments()) {
+            String facultyId = appointment.getSummary().split(" ")[5];
+            if (prof.getFacultyId() == Integer.parseInt(facultyId)) {
+                // professor is equal, check for overlap
+                if (compareTimes(appointment.getStartLocalDateTime(), appointment.getEndLocalDateTime(), timeslot)) {
+                    new MyAlert("Invalid Time Alert", "Time and professor selected overlap with a previously " +
+                            "scheduled class, please select a different professor or timeslot", Alert.AlertType.ERROR).show();
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Compares two start dates and end dates to check for overlap
+     * @param startDateTime the start date
+     * @param endDateTime the end date
+     * @param timeslot the timeslot of the desired course
+     * @return true if there is any overlap in times.
+     */
+    private boolean compareTimes(LocalDateTime startDateTime, LocalDateTime endDateTime, Timeslot timeslot) {
+        List<List<LocalDateTime>> dateTimes = DateTimeUtils.createDateTimes(timeslot);
+
+        for (List<LocalDateTime> date: dateTimes) {
+            if (startDateTime.isEqual(date.get(0))) {
+                return true;
+            }
+            if ((startDateTime.isAfter(date.get(0)) && startDateTime.isBefore(date.get(1))) || (endDateTime.isBefore(date.get(1)) && endDateTime.isAfter(date.get(0)))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

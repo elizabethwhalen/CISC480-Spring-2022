@@ -183,11 +183,17 @@ public class SchedulerController implements Initializable {
                         "/Spring2022/1" +
                         "/" + summary[5];
                 boolean didDeleteteaches = DatabaseStatic.deleteData(teaches, null);
-
-                System.out.println("deleted meets = " + didDeleteMeets + " deleted teaches = " + didDeleteteaches);
             }
             cs.viewScheduleClicked(stage);
         }
+    }
+
+    /**
+     * Gets the Agenda
+     * @return returns the agenda
+     */
+    public Agenda getAgenda() {
+        return this.agenda;
     }
 
     /**
