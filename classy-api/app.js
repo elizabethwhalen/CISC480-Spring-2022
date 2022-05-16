@@ -25,8 +25,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const sgMail = require('@sendgrid/mail');
 
-var con;
-
 // Developmental setting: 0 for local dev, or 1 for dev API deployment (classy-schedule-dev Web App), and 2 for production API deployment (classy-schedule-api Web App) 
 const dev = 2;
 
@@ -76,6 +74,7 @@ try {
 ///
 // Database Connection
 //
+var con;
 makeConnection((password)=> {
     // Determine which schema we are modifying
     let schema = "cs_dev" // "db_dev" use for development Database Team
@@ -89,7 +88,6 @@ makeConnection((password)=> {
         database: schema,
         port: 3306,
     };
-    var con;
     // Create the connection and store in "con"
     con = new mysql.createConnection(config);
     con.connect(function(err) {
@@ -376,7 +374,7 @@ app.post('/v3/login', async function (req, res) {
         // Send email and wait up to 30 seconds for user to confirm their identity by clicking link that was emailed to them
         console.log("- User "+loginjson[0].email+" is requesting login and has been sent an email to verify their identity.")
         sendVerifyEmail(loginjson[0].email, token);
-        let myTimeout = setTimeout(requestTimeout, 10000);
+        let myTimeout = setTimeout(requestTimeout, 30000);
 
         // This HTTP request is made when the user clicks the link in their inbox (or possibly junk folder)
         app.get('/v3/authenticate/:token', (req2, res2) => {            
