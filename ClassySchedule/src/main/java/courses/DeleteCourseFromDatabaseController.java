@@ -112,8 +112,8 @@ public class DeleteCourseFromDatabaseController implements Initializable {
 
     private void deleteCourse(Lecture lecture) {
         String deleteLec = ("" +
-                "section/" + lecture.getDeptCode() + "/" + lecture.getClassNum() + "/" +
-                lecture.getSectionNum() + "/" + lecture.getSemester() + "/" + lecture.getDraft());
+                "section/" + lecture.getDeptCode().replace(" ", "%20") + "/" + lecture.getClassNum().replace(" ", "%20") + "/" +
+                lecture.getSectionNum() + "/" + lecture.getSemester().replace(" ", "%20") + "/" + lecture.getDraft());
 
         DatabaseStatic.deleteData(deleteLec, null);
     }

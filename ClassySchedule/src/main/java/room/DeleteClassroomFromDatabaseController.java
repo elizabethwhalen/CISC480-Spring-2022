@@ -102,7 +102,7 @@ public class DeleteClassroomFromDatabaseController implements Initializable {
     }
 
     private void deleteRoom(Room room) {
-        String deletedRoom = "room/" + room.getBuildingCode() + "/" + room.getRoomNum();
+        String deletedRoom = "room/" + room.getBuildingCode().replace(" ", "%20") + "/" + room.getRoomNum().replace(" ", "%20");
         DatabaseStatic.deleteData(deletedRoom, null);
     }
 

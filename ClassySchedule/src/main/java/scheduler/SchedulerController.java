@@ -134,7 +134,7 @@ public class SchedulerController implements Initializable {
                     endDaysAndTimes.add(convertToLocalDateTimeViaInstant(df.parse(convertToDayOFWeek(day).label + " " + course.getString("time_end"))));
 
                 } catch (ParseException e) {
-                    // no op
+                    // should never happen unless something goes horribly wrong
                 }
             }
 
@@ -183,7 +183,7 @@ public class SchedulerController implements Initializable {
                         "/" + summary[5];
                 boolean didDeleteteaches = DatabaseStatic.deleteData(teaches, null);
 
-                System.out.println("deleted meets = " + didDeleteMeets + " deleeted teaches = " + didDeleteteaches);
+                System.out.println("deleted meets = " + didDeleteMeets + " deleted teaches = " + didDeleteteaches);
             }
         }
     }
