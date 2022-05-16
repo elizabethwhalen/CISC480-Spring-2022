@@ -1,10 +1,12 @@
+
 #departments
 #EX: "CISC","Computer Science"
 CREATE TABLE dept (
     dept_code VARCHAR(5) NOT NULL,
     dept_name VARCHAR(40),
-    PRIMARY KEY (dept_code)
+    PRIMARY KEY (dept_code)    
 );
+
 #classes- each one needs to be in a deptartment
 #EX: "CISC","480","Capstone"
 CREATE TABLE class (
@@ -14,13 +16,15 @@ CREATE TABLE class (
     PRIMARY KEY (dept_code , class_num),
     FOREIGN KEY (dept_code)
         REFERENCES dept (dept_code)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 #faculty titles
 #EX: 1,"Chair",6
 CREATE TABLE title (
-    title_id INT NOT NULL AUTO_INCREMENT,
+    title_id TINYINT NOT NULL AUTO_INCREMENT,
     title_name varchar(30),
-    max_load DOUBLE,
+    max_load DECIMAL(3,1),
     PRIMARY KEY (title_id)
 );
 #faculty
@@ -29,17 +33,19 @@ CREATE TABLE faculty (
     faculty_id INT NOT NULL,
     faculty_first VARCHAR(50),
     faculty_last VARCHAR(50),
-    title_id INT NOT NULL,
-    prev_load DOUBLE,
-    curr_load DOUBLE,
+    title_id TINYINT NOT NULL,
+    prev_load DECIMAL(3,1),
+    curr_load DECIMAL(3,1),
     PRIMARY KEY (faculty_id),
     FOREIGN KEY (title_id)
         REFERENCES title (title_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 #features of rooms that can be preferred by faculty or required for a course
 #EX: 1,"whiteboard"
 CREATE TABLE feature (
-    feature_id INT NOT NULL AUTO_INCREMENT,
+    feature_id TINYINT NOT NULL AUTO_INCREMENT,
     feature_name VARCHAR(100),
     PRIMARY KEY (feature_id)
 );
@@ -47,8 +53,8 @@ CREATE TABLE feature (
 #day_of_week: sunday=0, monday=1 .. saturday=6
 #EX: 7,1,"5:30 PM","7:15 PM"
 CREATE TABLE timeslot (
-    time_id INT NOT NULL AUTO_INCREMENT,
-    day_of_week INT,
+    time_id TINYINT NOT NULL AUTO_INCREMENT,
+    day_of_week VARCHAR(7),
     time_start TIME,
     time_end TIME,
     PRIMARY KEY (time_id)
@@ -58,7 +64,6 @@ CREATE TABLE timeslot (
 CREATE TABLE building (
     building_code VARCHAR(5) NOT NULL,
     building_name VARCHAR(100),
-    campus_id VARCHAR(50),
     PRIMARY KEY (building_code)
 );
 #rooms that a class could be held in
@@ -66,10 +71,12 @@ CREATE TABLE building (
 CREATE TABLE room (
     building_code VARCHAR(5) NOT NULL,
     room_num VARCHAR(5) NOT NULL,
-    capacity INT,
+    capacity SMALLINT,
     PRIMARY KEY (building_code , room_num),
     FOREIGN KEY (building_code)
         REFERENCES building (building_code)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 #relationship between room and feature
 #the features that exist in a room
@@ -77,22 +84,12 @@ CREATE TABLE room (
 CREATE TABLE room_feature (
     building_code VARCHAR(5) NOT NULL,
     room_num VARCHAR(5) NOT NULL,
-    feature_id INT NOT NULL,
+    feature_id TINYINT NOT NULL,
     PRIMARY KEY (building_code , room_num , feature_id),
     FOREIGN KEY (building_code , room_num)
         REFERENCES room (building_code , room_num)
-);
-#login table used to validate usernames and passwords for access
-#access_level: 1=faculty, 2=schedule maker
-#EX: "jasonsawin123","Th@tsP3rsonal",98010986,2
-CREATE TABLE login (
-    user_id VARCHAR(30) NOT NULL,
-    pass VARCHAR(30) NOT NULL,
-    email VARCHAR(130),
-    faculty_id INT,
-    access_level INT NOT NULL,
-    tmp INT,
-    PRIMARY KEY (user_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 #relationship between class and feature tables
 #the features required by a class
@@ -100,12 +97,14 @@ CREATE TABLE login (
 CREATE TABLE class_feature (
     dept_code VARCHAR(5) NOT NULL,
     class_num VARCHAR(5) NOT NULL,
-    feature_id INT NOT NULL,
+    feature_id TINYINT NOT NULL,
     PRIMARY KEY (dept_code , class_num , feature_id),
     FOREIGN KEY (dept_code , class_num)
         REFERENCES class (dept_code , class_num),
     FOREIGN KEY (feature_id)
         REFERENCES feature (feature_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 #relationship between faculty and feature tables
 #the features a faculty member desires
@@ -113,13 +112,17 @@ CREATE TABLE class_feature (
 #EX: 98010986,1,1
 CREATE TABLE faculty_feature (
     faculty_id INT NOT NULL,
-    feature_id INT NOT NULL,
-    pref_level INT,
+    feature_id TINYINT NOT NULL,
+    pref_level TINYINT,
     PRIMARY KEY (faculty_id , feature_id),
     FOREIGN KEY (faculty_id)
-        REFERENCES faculty (faculty_id),
+        REFERENCES faculty (faculty_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
     FOREIGN KEY (feature_id)
         REFERENCES feature (feature_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 #relationship between faculty and timeslot tables
 #the timeslots a faculty member prefers
@@ -127,13 +130,17 @@ CREATE TABLE faculty_feature (
 #EX: 98010986,7,2
 CREATE TABLE faculty_timeslot (
     faculty_id INT NOT NULL,
-    time_id INT NOT NULL,
-    pref_level INT,
+    time_id TINYINT NOT NULL,
+    pref_level TINYINT,
     PRIMARY KEY (faculty_id , time_id),
     FOREIGN KEY (faculty_id)
-        REFERENCES faculty (faculty_id),
+        REFERENCES faculty (faculty_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
     FOREIGN KEY (time_id)
         REFERENCES timeslot (time_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 #general catch-all for unusual faculty requests
 #are not used in automatically building a schedule
@@ -144,19 +151,23 @@ CREATE TABLE faculty_other_request (
     PRIMARY KEY (faculty_id , request),
     FOREIGN KEY (faculty_id)
         REFERENCES faculty (faculty_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 #sections of a class
 #EX: "CISC","480",2,"SPRING 2022",1,25
 CREATE TABLE section (
     dept_code VARCHAR(5) NOT NULL,
     class_num VARCHAR(5) NOT NULL,
-    section_num INT NOT NULL,
+    section_num TINYINT NOT NULL,
     semester VARCHAR(15) NOT NULL,
-    draft INT NOT NULL,
-    capacity INT,
+    draft TINYINT NOT NULL,
+    capacity SMALLINT,
     PRIMARY KEY (dept_code , class_num , section_num , semester , draft),
     FOREIGN KEY (dept_code , class_num)
         REFERENCES class (dept_code , class_num)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 #relationship beetween faculty and section tables
 #the sections taught by each faculty member
@@ -164,15 +175,19 @@ CREATE TABLE section (
 CREATE TABLE teaches (
     dept_code VARCHAR(5) NOT NULL,
     class_num VARCHAR(5) NOT NULL,
-    section_num INT NOT NULL,
+    section_num TINYINT NOT NULL,
     semester VARCHAR(15) NOT NULL,
-    draft INT NOT NULL,
+    draft TINYINT NOT NULL,
     faculty_id INT NOT NULL,
     PRIMARY KEY (dept_code , class_num , section_num , semester , draft , faculty_id),
     FOREIGN KEY (dept_code , class_num , section_num , semester , draft)
-        REFERENCES section (dept_code , class_num , section_num , semester , draft),
+        REFERENCES section (dept_code , class_num , section_num , semester , draft)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
     FOREIGN KEY (faculty_id)
         REFERENCES faculty (faculty_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 #relationship between faculty and class tables
 #the classes a faculty member is qualified to teach
@@ -182,12 +197,16 @@ CREATE TABLE faculty_class (
     faculty_id INT NOT NULL,
     dept_code VARCHAR(5) NOT NULL,
     class_num VARCHAR(5) NOT NULL,
-    pref_level int,
+    pref_level TINYINT,
     PRIMARY KEY (faculty_id , dept_code , class_num),
     FOREIGN KEY (faculty_id)
-        REFERENCES faculty (faculty_id),
+        REFERENCES faculty (faculty_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
     FOREIGN KEY (dept_code , class_num)
         REFERENCES class (dept_code , class_num)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 #ternary relationship between section, room, and timeslot tables
 #the time and place of each class section
@@ -195,17 +214,34 @@ CREATE TABLE faculty_class (
 CREATE TABLE meets (
     dept_code VARCHAR(5) NOT NULL,
     class_num VARCHAR(5) NOT NULL,
-    section_num INT NOT NULL,
+    section_num TINYINT NOT NULL,
     semester VARCHAR(15) NOT NULL,
-    draft INT NOT NULL,
+    draft TINYINT NOT NULL,
     building_code VARCHAR(5) NOT NULL,
     room_num VARCHAR(5) NOT NULL,
-    time_id INT NOT NULL,
-    PRIMARY KEY (dept_code , class_num , section_num , semester , draft , building_code , room_num , time_id),
+    time_id TINYINT NOT NULL,
+    PRIMARY KEY (building_code , room_num , time_id),
     FOREIGN KEY (dept_code , class_num , section_num , semester , draft)
-        REFERENCES section (dept_code , class_num , section_num , semester , draft),
+        REFERENCES section (dept_code , class_num , section_num , semester , draft)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
     FOREIGN KEY (building_code , room_num)
-        REFERENCES room (building_code , room_num),
+        REFERENCES room (building_code , room_num)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
     FOREIGN KEY (time_id)
         REFERENCES timeslot (time_id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+#login table used to validate usernames and passwords for access
+#access_level: 1=faculty, 2=schedule maker
+#EX: "jasonsawin123","Th@tsP3rsonal",98010986,2
+CREATE TABLE login (
+    email VARCHAR(130) NOT NULL,
+    pass VARCHAR(100) NOT NULL,
+    faculty_id INT,
+    access_level TINYINT NOT NULL,
+    tmp SMALLINT,
+    PRIMARY KEY (email)
 );
