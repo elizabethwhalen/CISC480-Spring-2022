@@ -26,7 +26,7 @@ const jwt = require('jsonwebtoken')
 const sgMail = require('@sendgrid/mail');
 
 // Developmental setting: 0 for local dev, or 1 for dev API deployment (classy-schedule-dev Web App), and 2 for production API deployment (classy-schedule-api Web App) 
-const dev = 0;
+const dev = 2;
 
 // Setup RESTful app
 const app = express();
