@@ -18,11 +18,11 @@ Most commonly, the database is accessed through our API Server. Please see our [
 | Username | db_test |
 | Password | [HIDDEN](/classy-api/hidden/db_password.txt) |
 | Default Schema | cs_dev |
-</br>
+<br />
 Note: We have also used the schema "db_dev" for testing, but the other teams use "cs_dev". Before the final presentation, we may populate an example schema at "db_final".
 
 ## Database Archives
-What snapshots do we have of DB?
+Gabbie
 
 ## Database Creation
 The first step in creating the database was creating a schema for all of the tables to be in. This was created by running this SQL query
@@ -36,9 +36,10 @@ CREATE TABLE building (
     building_code   VARCHAR(5)
 );
 ```
-</br>
+<br />
 As part of our project replicability initiative, we created an stored procedure SQL script that can populate a MySQL schema according to the ERD above. Please see this script at [/classy-db/schema_population.sql](/classy-db/schema_population.sql)
 
+Next
 ## Local Development
 Local development and testing can be done by installing MySQL Server as well as [MySQL Workbench](https://www.mysql.com/products/workbench/). We followed the guide ["Getting Started with MySQL"](https://dev.mysql.com/doc/mysql-getting-started/en/) by [MySQL.com](https://mysql.com).
 
