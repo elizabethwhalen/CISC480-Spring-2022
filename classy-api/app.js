@@ -679,8 +679,7 @@ app.delete('/v2/building/:building_code_id', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_str_type(req.body.building_code, res);
-        check_str_type(req.body.building_name, res);
+        // check_str_type(req.body.building_code, res);
         let query = 'DELETE FROM building WHERE building_code= '+con.escape(req.params.building_code_id)+'';
 
         query_db_delete(query, res)
