@@ -128,8 +128,15 @@ public class AddCourseToDatabaseController implements Initializable {
             newClass.put("class_num", classNum.getText());
             newClass.put("class_name", className.getText());
             // Sends the new class to the database
-            DatabaseStatic.insertData("class", newClass);
+            boolean createdNewCourse = DatabaseStatic.insertData("class", newClass);
 
+            if (!createdNewCourse) {
+                // assume dept does not exist, create a new one
+                JSONObject newDept = new JSONObject();
+                newDept.put("dept_code", deptName.getText());
+                DatabaseStatic.insertData("dept", newDept);
+                DatabaseStatic.insertData("class", newClass);
+            }
             // Creates the section
             JSONObject newSection = new JSONObject();
             newSection.put("dept_code", deptName.getText());

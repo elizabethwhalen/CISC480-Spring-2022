@@ -6,11 +6,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import scenes.ChangeScene;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URL;
@@ -129,8 +127,15 @@ public class RoomController implements Initializable {
         newRoom.put("building_code", buildingCode.getText());
         newRoom.put("capacity", capacity.getText());
 
-        DatabaseStatic.insertData("room", newRoom);
+        boolean inserted = DatabaseStatic.insertData("room", newRoom);
 
+        if (!inserted) {
+            //assume there is no building associated with the specified
+            JSONObject newBuilding = new JSONObject();
+            newBuilding.put("building_code", buildingCode.getText());
+            DatabaseStatic.insertData("building", newBuilding);
+            DatabaseStatic.insertData("room", newRoom);
+        }
 
         MyAlert createAlert = new MyAlert("Insertion Completed", "The classroom has been added", Alert.AlertType.INFORMATION);
         createAlert.show();

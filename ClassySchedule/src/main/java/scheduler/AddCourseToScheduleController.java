@@ -14,7 +14,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 
 import jfxtras.scene.control.agenda.Agenda;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import room.Room;
 import room.RoomFactory;
@@ -130,7 +129,6 @@ public class AddCourseToScheduleController implements Initializable {
         };
 
         closeButton.setOnAction(confirmBack);
-
         courses = new CourseFactory().createCourses();
         faculty = new FacultyFactory().createFaculty();
         rooms = new RoomFactory().createRooms();

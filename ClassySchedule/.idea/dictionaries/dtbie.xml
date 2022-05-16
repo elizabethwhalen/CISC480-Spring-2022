@@ -2,6 +2,7 @@
   <dictionary name="dtbie">
     <words>
       <w>depts</w>
+      <w>initializable</w>
     </words>
   </dictionary>
 </component>
