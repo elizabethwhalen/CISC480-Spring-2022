@@ -1,75 +1,179 @@
 import React from "react"
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@mui/styles'
 import { Grid, Paper, Button, Typography } from "@mui/material"
 import { Link } from 'react-router-dom'
 
-const useStyles = makeStyles((theme) => ({
+
+const useStyles = makeStyles(() => ({
     root: {
         display: 'flex',
     },
-    container: {
-        padding: theme.spacing(4),
-        position: 'relative',
-        flexGrow: 1,
-        height: '90vh'
-    },
     title: {
         color: '#7E16A4',
-        fontWeight: '600',
     },
     link: {
         textDecoration: 'none',
+    },
+    button: {
+        color: "black",
     }
 }))
 
-const Home = () => {
-    const classes = useStyles()
+function Home() {
+    const classes = useStyles();
 
     return (
-        <Paper className={classes.container} elevation={0}>
+        <Paper sx={{ padding: '20px', height: "100%" }} elevation={0} >
             <Grid container spacing={3} >
-                <Grid item xs={12} fullWidth>
-                    <Typography variant="h4">
-                        Welcome to Classy Scheduler
+                <Grid item xs={12}>
+                    <Typography variant="h4" fontWeight='600'>
+                        Welcome to Classy Schedule!
                     </Typography>
+
                     <Typography variant="h6">
                         The place for all of your scheduling needs
                     </Typography>
                 </Grid>
-                <Grid item xs={12} fullWidth>
+
+                <Grid item xs={12}>
                     <Grid container spacing={2}>
-                        {/*This button will take you to the add new class tab*/}
-                        <Grid item xs={12} fullWidth>
+                        {/* This button will take you to the add new class tab */}
+                        <Grid item md={3} sm={6} xs={12}>
                             <Link to='/AddClass' className={classes.link}>
-                                <Button size="large">Add New Class</Button>
+                                <Button
+                                    size="large"
+                                    variant="outlined"
+                                    fullWidth
+                                    sx={{
+                                        backgroundColor: "#7E16A4",
+                                        '&:hover': { color: '#7E16A4', borderColor: "#7E16A4" },
+                                        color: "white"
+                                    }}
+                                >
+                                    Add New Class
+                                </Button>
                             </Link>
                         </Grid>
 
-                        {/*This button will take you to the add New Faculty tab*/}
-                        <Grid item xs={12} fullWidth>
+                        {/* This button will take you to the add New Faculty tab */}
+                        <Grid item md={3} sm={6} xs={12}>
                             <Link to='/AddFaculty' className={classes.link}>
-                                <Button size="large">Add New Faculty Member</Button>
+                                <Button
+                                    size="large"
+                                    variant="outlined"
+                                    fullWidth
+                                    sx={{
+                                        backgroundColor: "#7E16A4",
+                                        '&:hover': { color: '#7E16A4', borderColor: "#7E16A4" },
+                                        color: "white"
+                                    }}
+                                >
+                                    Add New Faculty
+                                </Button>
                             </Link>
                         </Grid>
 
-                        {/*This button will take you to the add New Room tab*/}
-                        <Grid item xs={12} fullWidth>
+                        {/* This button will take you to the add New Room tab */}
+                        <Grid item md={3} sm={6} xs={12}>
                             <Link to='/AddRoom' className={classes.link}>
-                                <Button size="large">Add New Room</Button>
+                                <Button
+                                    size="large"
+                                    variant="outlined"
+                                    fullWidth
+                                    sx={{
+                                        backgroundColor: "#7E16A4",
+                                        '&:hover': { color: '#7E16A4', borderColor: "#7E16A4" },
+                                        color: "white"
+                                    }}
+                                >
+                                    Add New Room
+                                </Button>
                             </Link>
                         </Grid>
 
-                        {/*This button will take you to the Calendar */}
-                        <Grid item xs={12} fullWidth>
+                        {/* This button will take you to the Calendar */}
+                        <Grid item md={3} sm={6} xs={12}>
                             <Link to='/Calendar' className={classes.link}>
-                                <Button size="large">View Schedule</Button>
+                                <Button
+                                    size="large"
+                                    variant="outlined"
+                                    fullWidth
+                                    sx={{
+                                        backgroundColor: "#7E16A4",
+                                        '&:hover': { color: '#7E16A4', borderColor: "#7E16A4" },
+                                        color: "white"
+                                    }}
+                                >
+                                    View Schedule
+                                </Button>
                             </Link>
                         </Grid>
 
-                        {/*This button will take you to the Questions tab*/}
-                        <Grid item xs={12} fullWidth>
+                        <Grid item md={3} sm={6} xs={12}>
+                            <Link to='/DeleteClass' className={classes.link}>
+                                <Button
+                                    size="large"
+                                    variant="outlined"
+                                    fullWidth
+                                    sx={{
+                                        backgroundColor: "#7E16A4",
+                                        '&:hover': { color: '#7E16A4', borderColor: "#7E16A4" },
+                                        color: "white"
+                                    }}
+                                >
+                                    Delete Class
+                                </Button>
+                            </Link>
+                        </Grid>
+
+                        <Grid item md={3} sm={6} xs={12}>
+                            <Link to='/DeleteFaculty' className={classes.link}>
+                                <Button
+                                    size="large"
+                                    variant="outlined"
+                                    fullWidth
+                                    sx={{
+                                        backgroundColor: "#7E16A4",
+                                        '&:hover': { color: '#7E16A4', borderColor: "#7E16A4" },
+                                        color: "white"
+                                    }}
+                                >
+                                    Delete Faculty
+                                </Button>
+                            </Link>
+                        </Grid>
+
+                        <Grid item md={3} sm={6} xs={12}>
+                            <Link to='/DeleteRoom' className={classes.link}>
+                                <Button
+                                    size="large"
+                                    variant="outlined"
+                                    fullWidth
+                                    sx={{
+                                        backgroundColor: "#7E16A4",
+                                        '&:hover': { color: '#7E16A4', borderColor: "#7E16A4" },
+                                        color: "white"
+                                    }}
+                                >
+                                    Delete Room
+                                </Button>
+                            </Link>
+                        </Grid>
+
+                        {/* This button will take you to the Questions tab */}
+                        <Grid item md={3} sm={6} xs={12}>
                             <Link to='/Help' className={classes.link}>
-                                <Button size="large">Questions?</Button>
+                                <Button
+                                    size="large"
+                                    variant="outlined"
+                                    fullWidth
+                                    sx={{
+                                        backgroundColor: "#7E16A4",
+                                        '&:hover': { color: '#7E16A4', borderColor: "#7E16A4" },
+                                        color: "white"
+                                    }}
+                                >
+                                    Help and FAQ Page</Button>
                             </Link>
                         </Grid>
                     </Grid>
@@ -79,7 +183,7 @@ const Home = () => {
 
             </Grid>
 
-            {/* Add a footer that talks about classy scheduler*/}
+            {/* Add a footer that talks about classy scheduler */}
         </Paper>
 
     )

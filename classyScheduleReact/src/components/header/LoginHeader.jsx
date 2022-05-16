@@ -1,30 +1,30 @@
-import { Box, Button } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { Avatar } from '@mui/material'
+/* eslint-disable react/prop-types */
+import React from 'react'
+import { Box, Button } from '@mui/material'
+import { makeStyles } from '@mui/styles'
+import { Link } from 'react-router-dom'
 
 // This is a React hook used for organizing the styling of each element in this component
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   container: {
     textAlign: 'right',
   },
-  avatar: {
-    color: '#b71c1c',
-    backgroundColor: 'white',
+  link: {
+    textDecoration: 'none',
   },
-  button: {
-    color: 'white',
-    '&:hover': {
-      fontWeight: '600'
-    },
-  },
-}))
+})
 
-// Main components with parameters passed as props
-const LoginHeader = (props) => {
+export default function LoginHeader(props) {
+  const { loggedIn, setLoggedIn, handleLogOut } = props;
+  const classes = useStyles()
+  const currentToken = sessionStorage.getItem('token');
 
-  const classes = useStyles() // call the hook
- 
-  // return the component
+  const handleLogoutClick = () => {
+    setLoggedIn(false);
+    handleLogOut();
+    window.location.href = "/";
+  }
+
   return (
     <Box display="flex" className={classes.container}>
 
@@ -34,16 +34,18 @@ const LoginHeader = (props) => {
         Otherwise, display login button
       */}
 
-      {props.login ? (
-        <>
-          <Avatar sx={{ bgcolor: 'white', color: '#7E16A4' }}>
-              KN
-          </Avatar>
-          
-          <Button  className={classes.button} onClick={props.handleLogOut}>
+      {loggedIn || currentToken ? (
+        <Link to='/' className={classes.link}>
+          <Button
+            onClick={handleLogoutClick}
+            sx={{
+              color: 'white',
+              fontWeight: '600',
+            }}
+          >
             Logout
           </Button>
-        </>
+        </Link>
       ) : (
         <Button className={classes.button}>
           Login
@@ -52,4 +54,3 @@ const LoginHeader = (props) => {
     </Box>
   )
 }
-export default LoginHeader

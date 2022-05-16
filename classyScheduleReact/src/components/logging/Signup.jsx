@@ -1,6 +1,5 @@
-/* eslint-disable react/prop-types */
 import React from 'react'
-import { Button, Grid, Paper, Typography, } from '@mui/material'
+import { Button, Grid, Paper, Typography } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
 import { Link } from 'react-router-dom'
@@ -40,6 +39,12 @@ const useStyles = makeStyles({
     margin: '0px',
     width: '500px'
   },
+  loginContainer: {
+    display: 'flex',
+    width: '100%',
+    padding: '0px 150px 0px 50px',
+    margin: '0 auto -55px auto'
+  },
   loginTitleContainer: {
     padding: '200px 100px 50px 50px',
   },
@@ -49,19 +54,13 @@ const useStyles = makeStyles({
     fontWeight: 600,
     fontSize: '26pt'
   },
-  loginContainer: {
-    display: 'flex',
-    width: '100%',
-    padding: '0px 150px 0px 50px',
-    margin: '0 auto -55px auto'
-  },
   logoGrid: {
     paddingBottom: '10px',
   },
   logo: {
     width: '220px',
     height: '220px',
-    paddingLeft: '40px',
+    padding: '0px 0px 0px 40px',
   },
   text: {
     paddingBottom: '30px'
@@ -86,58 +85,61 @@ const useStyles = makeStyles({
   button: {
     backgroundColor: '#0063cc',
   },
+  error: {
+    color: 'red',
+  }
 });
 
 // Login page component with parameter passed under props
-export default function Login(props) {
+export default function Signup() {
+
   const classes = useStyles(); // use the useStyles
   const [email, setEmail] = React.useState(''); // email
   const [password, setPassword] = React.useState(''); // password
-  const { setToken, setLoggedIn } = props;
+  const [confirmPass, setConfirmPass] = React.useState('');
+  const [passMatch, setPassMatch] = React.useState(true);
 
-  const handleLogin = (event) => {
+  const handleSignup = (event) => {
     event.preventDefault();
 
     // If either email or password is empty, then don't log user in
-    if (email !== '' && password !== '') {
-      // Data for POST to accept request.
-      const data = JSON.stringify({
-        email,
-        password
-      });
-      // Config for axios specific https request.
-      const config = {
-        method: 'post',
-        url: "https://classy-api.ddns.net/v2/login",
-        headers: { 'Content-Type': 'application/json' },
-        data,
-      };
-      // Axios promise is being executed with config data and token is being saved into browser local storage.
-      axios(config).then((response) => {
-        if (response.data !== '') {
-          const token = response.data;
-          setToken(token);
-          setLoggedIn(true);
-          sessionStorage.setItem("startRepeat", "2022-01-31");
-          sessionStorage.setItem("endRepeat", "2022-05-22");
-        } else {
-          setLoggedIn(false);
-        }
-      }).catch((error) => {
-        console.log(error);
-      });
-
+    if (email !== '' && password !== '' && confirmPass !== '') {
+      if (password === confirmPass) {
+        const data = JSON.stringify({
+          email,
+          password
+        });
+        const config = {
+          method: 'post',
+          url: 'https://classy-api.ddns.net/v2/signup',
+          headers: { 'Content-Type': 'application/json' },
+          data
+        };
+        axios(config).then().catch((error) => {
+          console.log(error);
+        });
+      } else {
+        setPassMatch(false);
+      }
     }
   }
 
   // This function will assign input value to email variable
   const handleChangeEmail = (event) => {
+    setPassMatch(true);
     setEmail(event.target.value);
   }
 
   // This function will assign input value to password variable
   const handleChangePassword = (event) => {
+    setPassMatch(true);
     setPassword(event.target.value);
+  }
+
+  // This function will assign input value to confirm password value
+  const handleChangeConfirmPassword = (event) => {
+    setPassMatch(true);
+    setConfirmPass(event.target.value);
   }
 
   return (
@@ -148,13 +150,8 @@ export default function Login(props) {
         <Grid item
           alignItems="flex-start"
           justify="flex-start"
-          className={classes.gridItem1} >
-          {/* <Grid container className={classes.loginTitleContainer}>
-              <Grid item xs={12} className={classes.loginTitle}>
-                CLASSY SCHEDULE
-              </Grid>
-            </Grid> */}
-        </Grid>
+          className={classes.gridItem1}
+        />
 
         <Grid item
           alignItems="flex-end"
@@ -175,12 +172,12 @@ export default function Login(props) {
 
             {/* INSTRUCTION TEXT */}
             <Grid item xs={12} className={classes.text}>
-              Log in with your Classy Schedule Account
+              Create a New Classy Schedule Account
             </Grid>
 
             {/* Form */}
             <Grid item xs={12}>
-              <ValidatorForm onSubmit={(event) => handleLogin(event)}>
+              <ValidatorForm onSubmit={handleSignup}>
                 <Grid container spacing={1}>
 
                   {/* Email */}
@@ -192,7 +189,7 @@ export default function Login(props) {
                       fullWidth
                       name="email"
                       value={email}
-                      onChange={(event) => handleChangeEmail(event)}
+                      onChange={handleChangeEmail}
                       validators={['required', 'isEmail']}
                       errorMessages={['this field is required', 'email is not valid']}
                     />
@@ -208,30 +205,34 @@ export default function Login(props) {
                       name="password"
                       type="password"
                       value={password}
-                      onChange={(event) => handleChangePassword(event)}
+                      onChange={handleChangePassword}
                       validators={['required']}
                       errorMessages={['this field is required']}
                       className={classes.textBox}
                     />
                   </Grid>
 
-                  {/* Forgot Password link to reset password */}
-                  <Grid item xs={6}>
-                    <Typography variant='h8'>
-                      {/* Link naviagtes to login/does not change view - Forgot Password Functionality not supported */}
-                      <Link to='/' className={classes.forgotPass}>
-                        Forgot password?
-                      </Link>
-                    </Typography>
+                  {/* Re-enter Password */}
+                  <Grid item xs={12} >
+                    <TextValidator
+                      size="small"
+                      variant="outlined"
+                      label="Re-enter Password"
+                      fullWidth
+                      name="password"
+                      type="password"
+                      value={confirmPass}
+                      onChange={handleChangeConfirmPassword}
+                      validators={['required']}
+                      errorMessages={['this field is required']}
+                      className={classes.textBox}
+                    />
                   </Grid>
-
-                  <Grid item xs={6}>
-                    <Typography variant='h8'>
-                      <Link to='/Signup' className={classes.forgotPass}>
-                        Sign up
-                      </Link>
+                  {!passMatch && <Grid item xs={12}>
+                    <Typography className={classes.error}>
+                      Passwords do not match. Please retype.
                     </Typography>
-                  </Grid>
+                  </Grid>}
 
                   {/* Submit button */}
                   <Grid item xs={12} sx={{ marginTop: '20px' }}>
@@ -239,14 +240,27 @@ export default function Login(props) {
                       variant="contained"
                       disableElevation
                       type='submit'
-                      sx={{
-                        backgroundColor: '#6a1b9a',
-                        '&:hover': { backgroundColor: '#B9BDBB' }
-                      }}
+                      sx={{ backgroundColor: '#6a1b9a', '&:hover': { backgroundColor: '#4a148c' } }}
                     >
-                      Log In
+                      Sign up
                     </Button>
+
+                    <Link to='/' style={{ 'textDecoration': 'none' }} >
+                      <Button
+                        variant="contained"
+                        disableElevation
+                        type='submit'
+                        sx={{
+                          backgroundColor: '#6a1b9a',
+                          '&:hover': { backgroundColor: '#4a148c' },
+                          marginLeft: '15px',
+                        }}
+                      >
+                        Back
+                      </Button>
+                    </Link>
                   </Grid>
+
                 </Grid>
               </ValidatorForm>
             </Grid>

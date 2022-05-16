@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { CssBaseline } from '@material-ui/core'
 import AppRouter from '../../router/AppRouter'
 import AppSideNavBar from '../../nav/AppSideNavBar'
 import AppHeader from '../header/AppHeader'
-import Login from '../logging/Login'
+import LogRouter from '../../router/LogRouter'
 
 // This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles((theme) => ({
@@ -21,66 +22,62 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(1),
+    padding: theme.spacing(0),
   },
 }))
 
 // This function will return the overall layout of the app
-export default function Layout() {
+export default function Layout(props) {
+
+  const {
+    handleLogOut,
+    loggedIn,
+    setLoggedIn,
+    setToken
+  } = props;
 
   const classes = useStyles() // call the hook
   const [open, setOpen] = React.useState(false) // variable that determines expanding motion of the drawer
-  const [login, setLogin] = React.useState(false) // variable that determines whether the user is logged in
+  const currentToken = sessionStorage.getItem('token');
 
   // This function will set the drawer to open
   const handleDrawerOpen = () => {
     setOpen(true)
   }
 
-   // This function will set the drawer to close
+  // This function will set the drawer to close
   const handleDrawerClose = () => {
     setOpen(false)
   }
 
-  // This function will set the login variable to be true
-  // A.K.A. log user in
-  const handleLogin = () =>  {
-    setLogin(true) 
-  }
-
-  // This function will set the login variable to be false
-  // A.K.A. log user out
-  const handleLogOut = () => {
-    setLogin(false)
-  }
-
   return (
-    <>
-    {/* 
-        When the login variable is false, the display the Login page
-        Otherwise, open the main page (Home)
-    */}
-      {login ?
+    <div>
+      {loggedIn || currentToken ?
         <div className={classes.root}>
           <CssBaseline />
-          <AppHeader 
-            open={open} 
-            login={login} 
-            handleDrawerOpen={handleDrawerOpen} 
+          <AppHeader
+            open={open}
+            loggedIn={loggedIn}
             handleLogOut={handleLogOut}
+            handleDrawerOpen={handleDrawerOpen}
+            setLoggedIn={setLoggedIn}
           />
 
-          <AppSideNavBar handleDrawerClose={handleDrawerClose} open={open} />
+          <AppSideNavBar
+            handleDrawerClose={handleDrawerClose}
+            handleDrawerOpen={handleDrawerOpen}
+            open={open}
+          />
 
           <main className={classes.content}>
             <div className={classes.toolbar} />
-            <AppRouter></AppRouter>
+            <AppRouter />
           </main>
-        </div>
-        :
-        <Login handleLogin={handleLogin} />
+        </div> :
+        <LogRouter setLoggedIn={setLoggedIn} setToken={setToken} />
       }
-    </>
+    </div>
 
   )
 }
+

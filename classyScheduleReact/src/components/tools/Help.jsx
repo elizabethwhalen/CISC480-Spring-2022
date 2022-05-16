@@ -1,81 +1,104 @@
 import React from 'react'
-import { Typography, Grid, Paper } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { Typography, Grid, Paper } from '@mui/material'
+import { makeStyles } from '@mui/styles'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
     root: {
         display: 'flex',
     },
-    container: {
-        padding: theme.spacing(4),
-        position: 'relative',
-        flexGrow: 1,
-        height: '100%'
-    },
     header: {
         color: '#7E16A4',
-        fontWeight: '600',
     },
-}))
+})
 
-// new Component 'Help'
-const Help = () => {
+// Main function to render the UI for the Help page
+export default function Help() {
     const classes = useStyles();
+    // Return the UI
     return (
-        <Paper elevation={0} className={classes.container} >
+        <Paper sx={{ padding: '20px', height: "100%" }} elevation={0} >
             <Grid container spacing={3}>
-                <Grid item xs={12} fullWidth>
-                    <Typography variant='h4'>
+                <Grid item xs={12}>
+                    <Typography variant='h4' fontWeight='600'>
                         Getting Started
                     </Typography>
                 </Grid>
 
-                <Grid item xs={12} fullWidth>
+                <Grid item xs={12}>
                     <Grid container spacing={1}>
-                        <Grid item xs={12} fullWidth>
-                            <Typography variant='h5' gutterBottom className={classes.header}>
+                        <Grid item xs={12}>
+                            <Typography
+                                variant='h5'
+                                className={classes.header}
+                                fontWeight='600'
+                            >
                                 Home Page
                             </Typography>
                             <Typography variant='h6'>
-                                <em>Home Page</em> is where we currently showcase all our main features at once.
+                                <em><strong>Home Page</strong></em> is where we currently showcase all our main features at once.
                             </Typography>
                         </Grid>
 
-                        <Grid item xs={12} fullWidth>
-                            <Typography variant='h5' gutterBottom className={classes.header}>
-                                Functions Tab
+                        <Grid item xs={12}>
+                            <Typography
+                                variant='h5'
+                                className={classes.header}
+                                fontWeight='600'
+                            >
+                                Database Functions Tab
                             </Typography>
                             <Typography variant='h6'>
-                                The <em>Functions Tab</em> has two main components which are the <em>Add New Class </em>
-                                feature and the <em>Add Faculty.</em>
+                                <em><strong>Add Course</strong></em> allows you to add a new course to the database
+                                by choosing a Department Code, Course Number and a Course Name.
                             </Typography>
                             <Typography variant='h6'>
-                                <em>Add New Class</em> allows you to add a brand new course into the pool
-                                of classes by choosing a Department Code, a Course Number and a Course Name.
+                                <em><strong>Add Faculty</strong></em> allows you to add a new Faculty member to the database
+                                by inputing their First and Last name, Faculty ID, and Teach Load.
                             </Typography>
                             <Typography variant='h6'>
-                                <em>Add Faculty</em> allows you to add a new Faculty member to the database directly
-                                by inputing their Title, First and Last name. You also have the option to add Teach Load
-                                and their preferred classes.
+                                <em><strong>Add Room</strong></em> allows you to add a new Room to the database directly
+                                by inputing the Building Code, Room Number, and Capacity.
+                            </Typography>
+                            <Typography variant='h6'>
+                                <em><strong>Delete Course</strong></em> allows you to delete an existing Course from the database
+                                by selecting Department code and Course Number.
+                            </Typography>
+                            <Typography variant='h6'>
+                                <em><strong>Delete Faculty</strong></em> allows you to delete an existing Faculty Member from the database
+                                by selecting their Faculty ID. Under current version, deletion by Faculty Name is not supported.
+                                User may verify Faculty Name fields before deletion.
+                            </Typography>
+                            <Typography variant='h6'>
+                                <em><strong>Delete Room</strong></em> allows you to delete an existing Room from the database
+                                by selecting the Building Code and Room number.
                             </Typography>
                         </Grid>
 
-                        <Grid item xs={12} fullWidth>
-                            <Typography variant='h5' gutterBottom className={classes.header}>
+                        <Grid item xs={12}>
+                            <Typography
+                                variant='h5'
+                                className={classes.header}
+                                fontWeight='600'
+                            >
                                 Calendar Overview
                             </Typography>
                             <Typography variant='h6'>
-                                The <em>Calendar Overview</em> tab allows you to view the entire Calendar
+                                The <em><strong>Calendar Overview</strong></em> tab allows you to view the entire Calendar
                                 with the information that is currently in the database.
                             </Typography>
                         </Grid>
 
-                        <Grid item xs={12} fullWidth>
-                            <Typography variant='h5' gutterBottom className={classes.header}>
+                        <Grid item xs={12}>
+                            <Typography
+                                variant='h5'
+                                className={classes.header}
+                                fontWeight='600'
+                            >
                                 Help
                             </Typography>
                             <Typography variant='h6'>
-                                <em>Help</em> is the main tab where any features and their usage are documented.
+                                <em><strong>Help</strong></em> is the main tab where any features and their usage are documented.
+                                Versioning status and FAQ are also found on this page.
                             </Typography>
                         </Grid>
                     </Grid>
@@ -84,4 +107,3 @@ const Help = () => {
         </Paper>
     )
 }
-export default Help

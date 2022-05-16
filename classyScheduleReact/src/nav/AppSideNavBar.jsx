@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import clsx from 'clsx'
 import { makeStyles, useTheme } from '@material-ui/core/styles'
@@ -23,6 +24,9 @@ import ExpandMore from '@mui/icons-material/ExpandMore'
 import PermIdentityIcon from '@material-ui/icons/PermIdentity'
 import ClassIcon from '@material-ui/icons/Class'
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom'
+import PlaylistRemoveIcon from '@mui/icons-material/PlaylistRemove';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 
 const drawerWidth = 300 // width of the drawer
 
@@ -100,8 +104,12 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 // MAIN COMPONENT CONTAINING THE SIDE NAV BAR
-const AppSideNavBar = (props) => {
-
+export default function AppSideNavBar(props) {
+  const {
+    open,
+    handleDrawerClose,
+    handleDrawerOpen,
+  } = props;
   const classes = useStyles() // call the useStyle hook
   const theme = useTheme() // call the useTheme
   const [openNestedList, setOpenNestedList] = React.useState(false); // variable used to indicate if the nested list is expanded
@@ -109,7 +117,7 @@ const AppSideNavBar = (props) => {
 
   // This function will set the item selected as "selected"
   // If selected, the list item will change its background color
-  const handleListItemClick = (event, index) => {
+  const handleListItemClick = (index) => {
     setSelectedIndex(index)
 
     /*
@@ -118,19 +126,24 @@ const AppSideNavBar = (props) => {
       Otherwise, disable its expandable function
     */
     if (index === 2) {
-      if (props.open) {
+      if (open) {
         setOpenNestedList(!openNestedList)
       } else {
         setOpenNestedList(false)
       }
-      
     }
   }
 
   // This function will collapse the nested list when the side nav bar is closed
-  const handleDrawerClose = () => {
-    props.handleDrawerClose();
+  const handleClose = () => {
+    handleDrawerClose();
     setOpenNestedList(false)
+  }
+
+  const handleFunctionClick = (event) => {
+    handleListItemClick(event, 2);
+    handleDrawerOpen();
+    setOpenNestedList(true);
   }
 
   // Return the Side Nav Bar component
@@ -138,18 +151,18 @@ const AppSideNavBar = (props) => {
     <Drawer
       variant="permanent"
       className={clsx(classes.drawer, {
-        [classes.drawerOpen]: props.open,
-        [classes.drawerClose]: !props.open,
+        [classes.drawerOpen]: open,
+        [classes.drawerClose]: !open,
       })}
       classes={{
         paper: clsx({
-          [classes.drawerOpen]: props.open,
-          [classes.drawerClose]: !props.open,
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
         }),
       }}
     >
       <div className={classes.toolbar}>
-        <IconButton onClick={handleDrawerClose}>
+        <IconButton onClick={handleClose}>
           {theme.direction === 'rtl' ? (
             <ChevronRightIcon />
           ) : (
@@ -162,8 +175,8 @@ const AppSideNavBar = (props) => {
 
       <List>
 
-         {/* HOME */}
-        <Link exact to="/" className={classes.link} >
+        {/* HOME */}
+        <Link to="/" className={classes.link} >
           <ListItem
             button
             selected={selectedIndex === 0}
@@ -176,17 +189,17 @@ const AppSideNavBar = (props) => {
           </ListItem>
         </Link>
 
-        {/* FUNCTIONS */}
+        {/* DATABASE FUNCTIONS */}
         <ListItem
           button
           selected={selectedIndex === 2}
-          onClick={(event) => handleListItemClick(event, 2)}
+          onClick={(event) => handleFunctionClick(event)}
         >
           <ListItemIcon>
             <AddIcon />
           </ListItemIcon>
           <ListItemText className={classes.text}>
-            Functions
+            Database Functions
           </ListItemText>
           {openNestedList ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
@@ -196,7 +209,7 @@ const AppSideNavBar = (props) => {
 
           {/* Add course */}
           <List disablePadding>
-            <Link exact to='/AddClass' className={classes.link} >
+            <Link to='/AddClass' className={classes.link} >
               <ListItem button className={classes.collapseLink}>
                 <ListItemIcon>
                   <ClassIcon />
@@ -208,7 +221,7 @@ const AppSideNavBar = (props) => {
             </Link>
 
             {/* Add Faculty */}
-            <Link exact to='/AddFaculty' className={classes.link} >
+            <Link to='/AddFaculty' className={classes.link} >
               <ListItem button className={classes.collapseLink}>
                 <ListItemIcon>
                   <PermIdentityIcon />
@@ -218,8 +231,9 @@ const AppSideNavBar = (props) => {
                 </ListItemText>
               </ListItem>
             </Link>
-            {/* Add Room*/}
-            <Link exact to='/AddRoom' className={classes.link} >
+
+            {/* Add Room */}
+            <Link to='/AddRoom' className={classes.link} >
               <ListItem button className={classes.collapseLink}>
                 <ListItemIcon>
                   <MeetingRoomIcon />
@@ -229,11 +243,48 @@ const AppSideNavBar = (props) => {
                 </ListItemText>
               </ListItem>
             </Link>
+
+            {/* Delete Class */}
+            <Link to='/DeleteClass' className={classes.link} >
+              <ListItem button className={classes.collapseLink}>
+                <ListItemIcon>
+                  <CancelPresentationIcon />
+                </ListItemIcon>
+                <ListItemText className={classes.text}>
+                  Delete Course
+                </ListItemText>
+              </ListItem>
+            </Link>
+
+            {/* Delete Faculty */}
+            <Link to='/DeleteFaculty' className={classes.link} >
+              <ListItem button className={classes.collapseLink}>
+                <ListItemIcon>
+                  <PersonRemoveIcon />
+                </ListItemIcon>
+                <ListItemText className={classes.text}>
+                  Delete Faculty
+                </ListItemText>
+              </ListItem>
+            </Link>
+
+            {/* Delete Room */}
+            <Link to='/DeleteRoom' className={classes.link} >
+              <ListItem button className={classes.collapseLink}>
+                <ListItemIcon>
+                  <PlaylistRemoveIcon />
+                </ListItemIcon>
+                <ListItemText className={classes.text}>
+                  Delete Room
+                </ListItemText>
+              </ListItem>
+            </Link>
+
           </List>
         </Collapse>
 
-        {/* CALENDAR */} 
-        <Link exact to="/Calendar" className={classes.link} >
+        {/* CALENDAR */}
+        <Link to="/Calendar" className={classes.link} >
           <ListItem
             button
             selected={selectedIndex === 3}
@@ -249,7 +300,7 @@ const AppSideNavBar = (props) => {
         </Link>
 
         {/* HELP */}
-        <Link exact to="/Help" className={classes.link} >
+        <Link to="/Help" className={classes.link} >
           <ListItem
             button
             selected={selectedIndex === 4}
@@ -267,6 +318,3 @@ const AppSideNavBar = (props) => {
     </Drawer>
   )
 }
-
-// Export the component as default
-export default AppSideNavBar
