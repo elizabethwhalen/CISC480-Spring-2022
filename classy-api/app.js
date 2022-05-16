@@ -4575,4 +4575,46 @@ app.get('/v3/meets/ext', (req, res) =>{
     }
 });
 
+// extended section view
+app.get('/v3/section/ext', (req, res) =>{
+    /*  Query returns information about a section as well as class_name from class for the sections
+    
+        since  v3
+    
+        @param{Object}      req     The request info. Needs to contain a header with a token
+                                    and can optionally contain column names with values to 
+                                    filter values in the query.
+    
+        @return             nothing.
+    */
+        // verify auth
+        try{
+            token = req.headers.authorization.split(" ")[1]
+        } catch(e){
+            token = req.body.token
+        }
+    
+        const verifyOutput = verify(token)
+        const status=verifyOutput[0]
+        const payload=verifyOutput[1]
+        if (status != 200){res.status(status).send(payload)}
+        else{
+            const query = `SELECT DISTINCT
+                                    s.dept_code,
+                                    s.class_num,
+                                    s.section_num,
+                                    s.semester,
+                                    s.draft,
+                                    s.capacity,
+                                    c.class_name
+                                FROM
+                                    section s
+                                INNER JOIN 
+                                    class c ON s.class_num = c.class_num
+                                    AND s.dept_code = c.dept_code
+            `
+            query_db_get(query, res);
+        }
+    });
+
 module.exports = app;
