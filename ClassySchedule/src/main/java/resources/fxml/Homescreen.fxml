@@ -38,7 +38,6 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -67,7 +66,7 @@
         <Button fx:id="deleteClassroom" mnemonicParsing="false" onAction="#goToDeleteClassroom" prefHeight="26.0" text="Delete Classroom" />
       </buttons>
     </ButtonBar>
-      <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="700.0">
+      <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="700.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
           <Menu fx:id="goTohome" mnemonicParsing="false" text="Home" />
           <Menu mnemonicParsing="false" text="Goto">
               <MenuItem fx:id="goToAddCourse" mnemonicParsing="false" onAction="#goToAddCourse" text="Add Course" />
@@ -88,6 +87,5 @@
               <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
           </Menu>
       </MenuBar>
-      <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="200.0" layoutX="250.0" layoutY="227.0" pickOnBounds="true" preserveRatio="true" />
   </AnchorPane>
 </VBox>
