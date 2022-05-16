@@ -17,9 +17,6 @@ import CloseIcon from '@mui/icons-material/Close';
 
 // This is a React hook used for organizing the styling of each element in this component
 const useStyles = makeStyles({
-    root: {
-        display: 'flex',
-    },
     title: {
         color: '#7E16A4',
     },
@@ -219,7 +216,7 @@ export default function DeleteRoom() {
                                 <Grid item xs={12}>
                                     <Typography
                                         variant="body1"
-                                        className={classes.message}
+                                        className={classes.unsucessfulMessage}
                                         fontWeight='600'
                                     >
                                         <CloseIcon /> Room could not be deleted from the databse.
