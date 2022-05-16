@@ -13,6 +13,7 @@
     <CheckComboBox fx:id="timeslotBox" layoutX="456.0" layoutY="140.0" maxHeight="50.0" minHeight="25.0" prefHeight="25.0" prefWidth="130.0" title="Timeslots" />
     <Button fx:id="backButton" layoutX="314.0" layoutY="232.0" mnemonicParsing="false" onAction="#goBack" text="Back" />
     <Button fx:id="generateButton" layoutX="235.0" layoutY="232.0" mnemonicParsing="false" onAction="#generateSchedule" text="Generate" />
+    <Button fx:id="viewSchedule" layoutX="120.0" layoutY="232.0" mnemonicParsing="false" onAction="#viewSchedule" text="View Schedule" />
     <CheckBox fx:id="selectAllCourses" layoutX="23.0" layoutY="99.0" text="Select all courses" onAction="#selectAllCourses"/>
     <CheckBox fx:id="selectAllRooms" layoutX="170.0" layoutY="99.0" text="Select all rooms" onAction="#selectAllRooms"/>
     <CheckBox fx:id="selectAllProfessors" layoutX="314.0" layoutY="99.0" text="Select all professors" onAction="#selectAllProfessors"/>

@@ -6,13 +6,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import scenes.ChangeScene;
 
@@ -37,15 +34,6 @@ public class FacultyController implements Initializable {
      */
     @FXML
     TextField facultyId;
-
-    /**
-     * The faculty type
-     */
-    @FXML
-    TextField type;
-
-    @FXML
-    TextField email;
 
     /**
      * The submit button
@@ -113,11 +101,6 @@ public class FacultyController implements Initializable {
             createAlert.show();
             return;
         }
-        if (type.getText().isBlank()) {
-            MyAlert createAlert = new MyAlert("Invalid Faculty Type", "Please Input In The Faculty Type", Alert.AlertType.ERROR);
-            createAlert.show();
-            return;
-        }
 
         // ID number validation
         try {
@@ -129,10 +112,10 @@ public class FacultyController implements Initializable {
         }
 
         JSONObject newFaculty = new JSONObject();
-        newFaculty.put("faculty_id", facultyId.getText());
+        newFaculty.put("faculty_id", Integer.parseInt(facultyId.getText()));
         newFaculty.put("faculty_first", firstName.getText());
         newFaculty.put("faculty_last", lastName.getText());
-
+        newFaculty.put("title_id", 1);
         DatabaseStatic.insertData("faculty", newFaculty);
 
 
@@ -142,8 +125,7 @@ public class FacultyController implements Initializable {
         firstName.clear();
         lastName.clear();
         facultyId.clear();
-        email.clear();
-        type.clear();
+
     }
 
     /**

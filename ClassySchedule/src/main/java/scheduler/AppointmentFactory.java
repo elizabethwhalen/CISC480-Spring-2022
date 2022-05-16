@@ -50,6 +50,7 @@ public class AppointmentFactory {
                     .withEndLocalDateTime(endTimes.get(i))
                     .withSummary(departmentCode + " " + classNumber + " " + className + " " + professor)
                     .withLocation(room);
+            appointment.setDraggable(false);
             appointments.add(appointment);
         }
         return appointments;

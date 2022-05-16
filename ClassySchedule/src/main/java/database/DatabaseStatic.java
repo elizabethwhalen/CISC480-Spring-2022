@@ -149,8 +149,8 @@ public final class DatabaseStatic {
             jsonArray = new JSONArray(EntityUtils.toString(entity));
             client.close();
         } catch (UnknownHostException e) {
-            new MyAlert("No internet connection", "Database connection error, please ensure" +
-                    " you are connected to the internet to view information", Alert.AlertType.WARNING);
+            new MyAlert("No Internet Alert", "Could not connect to the database, please check your" +
+                    " connection or try again later.", Alert.AlertType.ERROR).show();
             return null;
         } catch (Exception e) {
             return null;
@@ -181,8 +181,8 @@ public final class DatabaseStatic {
             client.close();
             return response.getCode() == 200;
         } catch (UnknownHostException e) {
-            // TODO: write to file
-            System.out.println("INternet disconected");
+            new MyAlert("No Internet Alert", "Could not connect to the database, please check your" +
+                    " connection or try again later.", Alert.AlertType.ERROR).show();
             return false;
         } catch (URISyntaxException | IOException e) {
             return false;
@@ -220,7 +220,8 @@ public final class DatabaseStatic {
             client.close();
             return response.getCode() == 200;
         } catch (UnknownHostException e) {
-            //TODO: write to file
+            new MyAlert("No Internet Alert", "Could not connect to the database, please check your" +
+                    " connection or try again later.", Alert.AlertType.ERROR).show();
             return false;
         } catch (URISyntaxException | IOException e) {
             // An exception occurred, therefore operation was not successful so return false.
@@ -258,12 +259,21 @@ public final class DatabaseStatic {
             test.close();
             return response.getCode() == 200;
 
+        } catch (UnknownHostException e) {
+            // no internet connection, save command for later
+            new MyAlert("No Internet Alert", "Could not connect to the database, please check your" +
+                    " connection or try again later.", Alert.AlertType.ERROR).show();
+            return false;
         } catch (IOException | URISyntaxException e) {
             // An exception occurred, therefore operation was not successful so return false.
             return false;
         }
     }
 
+    /**
+     * Returns the timer, used during shutdown to disable token recreating
+     * @return returns the time set in the login page
+     */
     public static Timer getTimer() {
         return timer;
     }

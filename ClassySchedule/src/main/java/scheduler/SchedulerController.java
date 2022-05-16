@@ -7,6 +7,7 @@ package scheduler;
 
 import alert.MyAlert;
 import database.DatabaseStatic;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -185,8 +186,10 @@ public class SchedulerController implements Initializable {
 
                 System.out.println("deleted meets = " + didDeleteMeets + " deleted teaches = " + didDeleteteaches);
             }
+            cs.viewScheduleClicked(stage);
         }
     }
+
     /**
      * This method receive the data from the user and insert into the calendar
      * @param appointments the created appoints to add to the scheduler
@@ -277,4 +280,12 @@ public class SchedulerController implements Initializable {
         cs.viewScheduleClicked(stage);
     }
 
+    /**
+     * Goes to the generate schedule page
+     * @param actionEvent the event trigger
+     */
+    @FXML
+    public void generateSchedule(ActionEvent actionEvent) {
+        cs.goToGenerateSchedule(stage);
+    }
 }

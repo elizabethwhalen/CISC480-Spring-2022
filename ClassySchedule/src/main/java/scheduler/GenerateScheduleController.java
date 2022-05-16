@@ -19,6 +19,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Dialog;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
 import org.json.JSONObject;
@@ -160,10 +162,15 @@ public class GenerateScheduleController implements Initializable {
         if (!(validateRooms() && validateCourses() && validateProfessors() && validateTimeslots())) {
             new MyAlert("Invalid Selection", "Please select at least one room, professor, course, and timeslot", AlertType.WARNING).show();
         } else {
+            Dialog<Boolean> dialog = new Dialog<>();
+            Text text = new Text("Generating schedule, please wait...");
+            dialog.getDialogPane().setContent(text);
+            dialog.show();
             Algorithm test = new Algorithm();
             List<String[]> schedule = test.algorithm(professorBox.getCheckModel().getCheckedItems(), courseBox.getCheckModel().getCheckedItems(), roomBox.getCheckModel().getCheckedItems(), timeslotBox.getCheckModel().getCheckedItems());
-            // TODO: check if infeasible
             createSchedule(schedule);
+            dialog.setResult(Boolean.TRUE);
+            dialog.close();
         }
     }
 
@@ -320,5 +327,13 @@ public class GenerateScheduleController implements Initializable {
      */
     public void setStage(Stage stage) {
         this.stage = stage;
+    }
+
+    /**
+     * Goes to view the scheduler
+     * @param actionEvent the action event trigger
+     */
+    public void viewSchedule(ActionEvent actionEvent) {
+        new ChangeScene().viewScheduleClicked(stage);
     }
 }
