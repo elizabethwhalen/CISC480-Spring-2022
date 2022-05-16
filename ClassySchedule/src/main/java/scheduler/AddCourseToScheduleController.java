@@ -251,7 +251,7 @@ public class AddCourseToScheduleController implements Initializable {
         // If the class name has not been selected
         if (course.getSelectionModel().isEmpty()) {
             // Set content of the error alert
-            new MyAlert("Invalid Course Error", "Please Select A Valid Course",
+            new MyAlert("Invalid Course Alert", "Please Select a valid course",
                     Alert.AlertType.ERROR).show();
             return false;
         }
@@ -265,7 +265,7 @@ public class AddCourseToScheduleController implements Initializable {
      */
     private boolean validateDates() {
         if (classTimes.getSelectionModel().isEmpty()) {
-            new MyAlert("Timeslot alert", "Please select a timeslot for the course",
+            new MyAlert("Invalid Timeslot Alert", "Please select a timeslot for the course",
                     Alert.AlertType.WARNING).show();
             return false;
         }
@@ -280,7 +280,7 @@ public class AddCourseToScheduleController implements Initializable {
      */
     private boolean validateProfessor() {
         if (professor.getSelectionModel().isEmpty()) {
-            new MyAlert("Professor alert", "Please select a professor for the course",
+            new MyAlert("Invalid Professor Alert", "Please select a professor for the course",
                     Alert.AlertType.WARNING).show();
             return false;
         }
@@ -295,7 +295,7 @@ public class AddCourseToScheduleController implements Initializable {
      */
     private boolean validateRoom() {
         if (classTimes.getSelectionModel().isEmpty()) {
-            new MyAlert("Room alert", "Please select a room for the course",
+            new MyAlert("Invalid Room Alert", "Please select a room for the course",
                     Alert.AlertType.WARNING).show();
             return false;
         }

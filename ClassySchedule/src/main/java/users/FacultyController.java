@@ -8,6 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -41,7 +42,10 @@ public class FacultyController implements Initializable {
      * The faculty type
      */
     @FXML
-    ChoiceBox<String> type;
+    TextField type;
+
+    @FXML
+    TextField email;
 
     /**
      * The submit button
@@ -79,15 +83,6 @@ public class FacultyController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        JSONArray types = DatabaseStatic.getData("title");
-        for (Object jsonObject: types) {
-
-            JSONObject job = (JSONObject)jsonObject;
-            if (job.get("title_id") != JSONObject.NULL) {
-                //change to ENUM
-                type.getItems().add(String.valueOf(job.get("title_id")));
-            }
-        }
     }
 
     /**
@@ -118,7 +113,7 @@ public class FacultyController implements Initializable {
             createAlert.show();
             return;
         }
-        if (type.getSelectionModel().isEmpty()) {
+        if (type.getText().isBlank()) {
             MyAlert createAlert = new MyAlert("Invalid Faculty Type", "Please Input In The Faculty Type", Alert.AlertType.ERROR);
             createAlert.show();
             return;
@@ -137,13 +132,18 @@ public class FacultyController implements Initializable {
         newFaculty.put("faculty_id", facultyId.getText());
         newFaculty.put("faculty_first", firstName.getText());
         newFaculty.put("faculty_last", lastName.getText());
-        //newFaculty.put("title_id", type.getValue());
 
         DatabaseStatic.insertData("faculty", newFaculty);
+
+
+        MyAlert createAlert = new MyAlert("Insertion Complete", "The faculty member has been added", Alert.AlertType.INFORMATION);
+        createAlert.show();
 
         firstName.clear();
         lastName.clear();
         facultyId.clear();
+        email.clear();
+        type.clear();
     }
 
     /**

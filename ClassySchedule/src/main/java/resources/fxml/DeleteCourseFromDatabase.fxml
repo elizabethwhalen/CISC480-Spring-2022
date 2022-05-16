@@ -35,7 +35,23 @@
          </font>
       </Label>
       <CheckComboBox fx:id="course" layoutX="217.0" layoutY="99.0" prefHeight="25.0" prefWidth="200.0" />
-      <Button fx:id="confirm" layoutX="340.0" layoutY="240.0" mnemonicParsing="false" text="Confirm" textFill="#5ce85c" />
+      <Button fx:id="confirm" layoutX="340.0" layoutY="240.0" mnemonicParsing="false" text="Confirm">
+         <textFill>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill></Button>
       <Button fx:id="back" layoutX="140.0" layoutY="240.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="59.0" text="Back">
          <textFill>
             <LinearGradient>
