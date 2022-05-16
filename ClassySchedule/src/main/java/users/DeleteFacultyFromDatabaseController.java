@@ -265,18 +265,17 @@ public class DeleteFacultyFromDatabaseController implements Initializable {
                 // If JSON object contain the user's selected request
                 if (job.get("faculty_id").equals(Integer.parseInt(facultyIDValue))) {
                     try {
-                        System.out.println(job);
                         job.remove("prev_load");
                         job.remove("curr_load");
                         job.remove("title_id");
                         job.remove("faculty_last");
                         job.remove("faculty_first");
                         job.put("faculty_id", facultyIDValue);
-                        System.out.println(job);
                         // Delete the JSON object from the "faculty" table from the database
                         DatabaseStatic.deleteData("faculty", job);
                         // Set faculty id drop-down back to blank default
-                        facultyID.getSelectionModel().clearSelection();
+                        facultyID.getItems().clear();
+                        getFacultyID();
                         // Clear all the text-fields
                         clearTextField();
                     } catch (URISyntaxException | IOException e) {

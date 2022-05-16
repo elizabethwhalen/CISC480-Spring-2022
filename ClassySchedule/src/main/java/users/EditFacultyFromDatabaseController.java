@@ -143,36 +143,38 @@ public class EditFacultyFromDatabaseController implements Initializable {
         facultyID.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // Clear all the previous text-fields
-                clearTextField();
-                // Initialize all the selected text-fields
-                title.setText(getTitle());
-                firstName.setText(getFirstName());
-                lastName.setText(getLastName());
-                prevCourseLoad.setText(getPrevCourseLoad());
-                currCourseLoad.setText(getCurrCourseLoad());
+                if (!(newValue == null)) {
+                    // Clear all the previous text-fields
+                    clearTextField();
+                    // Initialize all the selected text-fields
+                    title.setText(getTitle());
+                    firstName.setText(getFirstName());
+                    lastName.setText(getLastName());
+                    prevCourseLoad.setText(getPrevCourseLoad());
+                    currCourseLoad.setText(getCurrCourseLoad());
 
-                // Hide selected variables
-                facultyID.setVisible(false);
-                title.setVisible(false);
-                firstName.setVisible(false);
-                lastName.setVisible(false);
-                prevCourseLoad.setVisible(false);
-                currCourseLoad.setVisible(false);
+                    // Hide selected variables
+                    facultyID.setVisible(false);
+                    title.setVisible(false);
+                    firstName.setVisible(false);
+                    lastName.setVisible(false);
+                    prevCourseLoad.setVisible(false);
+                    currCourseLoad.setVisible(false);
 
-                // Initialize user input changes text-fields and show them
-                changeFacultyId.setText(facultyID.getValue());
-                changeFacultyId.setVisible(true);
-                changeTitle.setText(title.getText());
-                changeTitle.setVisible(true);
-                changeFirst.setText(firstName.getText());
-                changeFirst.setVisible(true);
-                changeLast.setText(lastName.getText());
-                changeLast.setVisible(true);
-                changePrevLoad.setText(prevCourseLoad.getText());
-                changePrevLoad.setVisible(true);
-                changeCurrLoad.setText(currCourseLoad.getText());
-                changeCurrLoad.setVisible(true);
+                    // Initialize user input changes text-fields and show them
+                    changeFacultyId.setText(facultyID.getValue());
+                    changeFacultyId.setVisible(true);
+                    changeTitle.setText(title.getText());
+                    changeTitle.setVisible(true);
+                    changeFirst.setText(firstName.getText());
+                    changeFirst.setVisible(true);
+                    changeLast.setText(lastName.getText());
+                    changeLast.setVisible(true);
+                    changePrevLoad.setText(prevCourseLoad.getText());
+                    changePrevLoad.setVisible(true);
+                    changeCurrLoad.setText(currCourseLoad.getText());
+                    changeCurrLoad.setVisible(true);
+                }
             }
         });
 
@@ -401,6 +403,11 @@ public class EditFacultyFromDatabaseController implements Initializable {
         lastName.clear();
         prevCourseLoad.clear();
         currCourseLoad.clear();
+        changeTitle.clear();
+        changeFirst.clear();
+        changeLast.clear();
+        changePrevLoad.clear();
+        changeCurrLoad.clear();
     }
 
     /**
@@ -420,6 +427,12 @@ public class EditFacultyFromDatabaseController implements Initializable {
                 JSONObject job = (JSONObject) jsonObject;
                 if (job.get("faculty_id").equals(Integer.parseInt(facultyIDValue))) {
                     try {
+                        job.remove("prev_load");
+                        job.remove("curr_load");
+                        job.remove("title_id");
+                        job.remove("faculty_last");
+                        job.remove("faculty_first");
+                        job.put("faculty_id", facultyIDValue);
                         JSONObject data = new JSONObject();
                         if (isChangeFacultyIdVal()) {
                             data.put("faculty_id", changeFacultyId.getText());
@@ -439,8 +452,14 @@ public class EditFacultyFromDatabaseController implements Initializable {
                         if (isChangeCurrVal()) {
                             data.put("curr_load", changeCurrLoad.getText());
                         }
-                        System.out.println(data);
                         DatabaseStatic.updateData("faculty", job, data);
+                        // Clear all the text fields
+                        clearTextField();
+                        // Show faculty id and hide faculty id text fields
+                        changeFacultyId.clear();
+                        changeFacultyId.setVisible(false);
+                        facultyID.getSelectionModel().clearSelection();
+                        facultyID.setVisible(true);
                     } catch (URISyntaxException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -496,7 +515,7 @@ public class EditFacultyFromDatabaseController implements Initializable {
                         // If delete was successful
                         if (confirmButton()) {
                             // Successful deletion alert
-                            MyAlert createAlert = new MyAlert("Deleted", "The Selected Faculty Has Been Deleted", Alert.AlertType.INFORMATION);
+                            MyAlert createAlert = new MyAlert("Updated", "The selected faculty has been updated", Alert.AlertType.INFORMATION);
                             createAlert.show();
                         }
                     }
