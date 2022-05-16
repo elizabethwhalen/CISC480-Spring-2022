@@ -679,9 +679,7 @@ app.delete('/v2/building/:building_code_id', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        // check_str_type(req.body.building_code, res);
         let query = 'DELETE FROM building WHERE building_code= '+con.escape(req.params.building_code_id)+'';
-
         query_db_delete(query, res)
     }
 });
@@ -880,9 +878,6 @@ app.delete('/v2/class/:dept_code_id/:class_num_id', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_str_type(req.body.dept_code, res, 5);
-        check_str_type(req.body.class_num, res, 5);
-        check_str_type(req.body.class_name, res, 100);
 
         let query = 'DELETE FROM class WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
 
@@ -1082,9 +1077,6 @@ app.delete('/v2/class_feature/:dept_code_id/:class_num_id/:feature_id_id', (req,
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_str_type(req.body.dept_code, res, 5);
-        check_str_type(req.body.class_num, res, 5);
-        check_int_type(req.body.feature_id, res, 255);
         
         let query = 'DELETE FROM class_feature WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
 
@@ -1270,8 +1262,6 @@ app.delete('/v2/dept/:dept_code_id', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_str_type(req.body.dept_code, res);
-        check_str_type(req.body.dept_name, res);
         let query = 'DELETE FROM dept WHERE dept_code= '+con.escape(req.params.dept_code_id)+'';
 
         query_db_delete(query, res)
@@ -1517,7 +1507,6 @@ app.delete('/v2/faculty/:faculty_id_id', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_int_type(req.body.faculty_id, res)
         let query = 'DELETE FROM faculty WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+'';
 
         query_db_delete(query, res)
@@ -1731,10 +1720,6 @@ app.delete('/v2/faculty_class/:faculty_id_id/:dept_code_id/:class_num_id', (req,
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
-        check_int_type(req.body.faculty_id, res);
-        check_str_type(req.body.dept_code, res);
-        check_str_type(req.body.class_num, res);
-        check_int_type(req.body.pref_level, res);
         let query = 'DELETE FROM faculty_class WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+'';
 
         query_db_delete(query, res)
@@ -1927,9 +1912,6 @@ app.delete('/v2/faculty_feature/:faculty_id_id/:feature_id_id', (req, res) => {
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
-        check_int_type(req.body.faculty_id, res);
-        check_int_type(req.body.feature_id, res);
-        check_int_type(req.body.pref_level, res);
         let query = 'DELETE FROM faculty_feature WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
 
         query_db_delete(query, res)
@@ -2106,8 +2088,6 @@ app.delete('/v2/faculty_other_request/:faculty_id_id/:request_id', (req, res) =>
     const payload=verifyOutput[1]
     if (status != 200){res.status(status).send(payload)}
     else{
-        check_int_type(req.body.faculty_id, res);
-        check_str_type(req.body.request, res);
         let query = 'DELETE FROM faculty_other_request WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND request= '+con.escape(req.params.request_id)+'';
 
         query_db_delete(query, res)
@@ -2300,9 +2280,6 @@ app.delete('/v2/faculty_timeslot/:faculty_id_id/:time_id_id', (req, res) => {
     if (status != 200){res.status(status).send(payload)}
     else{
         let query = 'DELETE FROM faculty_timeslot WHERE faculty_id= '+con.escape(req.params.faculty_id_id)+' AND time_id= '+con.escape(req.params.time_id_id)+'';
-        check_int_type(req.body.faculty_id, res);
-        check_int_type(req.body.time_id, res);
-        check_int_type(req.body.pref_level, res);
         query_db_delete(query, res)
     }
 });
@@ -2484,8 +2461,6 @@ app.delete('/v2/feature/:feature_id_id', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_int_type(req.body.feature_id, res, 255);
-        check_str_type(req.body.feature_name, res, 100);
         let query = 'DELETE FROM feature WHERE feature_id= '+con.escape(req.params.feature_id_id)+'';
 
         query_db_delete(query, res)
@@ -2716,7 +2691,6 @@ app.delete('/v2/login/:email_id', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_str_type(req.body.user_id, res);
         let query = 'DELETE FROM login WHERE user_id= '+con.escape(req.params.user_id_id)+'';
 
         query_db_delete(query, res)
@@ -2991,14 +2965,6 @@ app.delete('/v2/meets/:dept_code_id/:class_num_id/:section_num_id/:semester_id/:
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_str_type(req.body.dept_code, res);
-        check_str_type(req.body.class_num, res);
-        check_int_type(req.body.section_num, res);
-        check_str_type(req.body.semester, res);
-        check_int_type(req.body.draft, res);
-        check_str_type(req.body.building_code, res);
-        check_str_type(req.body.room_num, res);
-        check_int_type(req.body.time_id, res);
         let query = 'DELETE FROM meets WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+' AND building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+' AND time_id= '+con.escape(req.params.time_id_id)+'';
 
         query_db_delete(query, res)
@@ -3196,9 +3162,6 @@ app.delete('/v2/room/:building_code_id/:room_num_id', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_str_type(req.body.building_code, res, 5);
-        check_str_type(req.body.room_num, res, 5);
-        check_int_type(req.body.capacity, res, 255);
         let query = 'DELETE FROM room WHERE building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+'';
 
         query_db_delete(query, res)
@@ -3396,9 +3359,6 @@ app.delete('/v2/room_feature/:building_code_id/:room_num_id/:feature_id_id', (re
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_str_type(req.body.building_code, res);
-        check_str_type(req.body.room_num, res);
-        check_int_type(req.body.feature_id, res);
         let query = 'DELETE FROM room_feature WHERE building_code= '+con.escape(req.params.building_code_id)+' AND room_num= '+con.escape(req.params.room_num_id)+' AND feature_id= '+con.escape(req.params.feature_id_id)+'';
 
         query_db_delete(query, res)
@@ -3641,12 +3601,7 @@ app.delete('/v2/section/:dept_code_id/:class_num_id/:section_num_id/:semester_id
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_str_type(req.body.dept_code, res);
-        check_str_type(req.body.class_num, res);
-        check_int_type(req.body.seciton_num, res);
-        check_str_type(req.body.semester, res);
-        check_int_type(req.body.draft, res);
-        check_int_type(req.body.capacity, res);
+
         let query = 'DELETE FROM section WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+'';
 
         query_db_delete(query, res)
@@ -3889,12 +3844,6 @@ app.delete('/v2/teaches/:dept_code_id/:class_num_id/:section_num_id/:semester_id
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_str_type(req.body.dept_code, res);
-        check_str_type(req.body.class_num, res);
-        check_int_type(req.body.section_num, res);
-        check_str_type(req.body.semester, res);
-        check_int_type(req.body.draft, res);
-        check_int_type(req.body.faculty_id, res);
         let query = 'DELETE FROM teaches WHERE dept_code= '+con.escape(req.params.dept_code_id)+' AND class_num= '+con.escape(req.params.class_num_id)+' AND section_num= '+con.escape(req.params.section_num_id)+' AND semester= '+con.escape(req.params.semester_id)+' AND draft= '+con.escape(req.params.draft_id)+' AND faculty_id= '+con.escape(req.params.faculty_id_id)+'';
 
         query_db_delete(query, res)
@@ -4104,8 +4053,6 @@ app.delete('/v2/timeslot/:time_id_id', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_int_type(req.body.time_id, res);
-        check_int_type(req.body.day_of_week, res);
         let query = 'DELETE FROM timeslot WHERE time_id= '+con.escape(req.params.time_id_id)+'';
 
         query_db_delete(query, res)
@@ -4304,9 +4251,6 @@ app.delete('/v2/title/:title_id_id', (req, res) => {
     //auth verified. Only access_level 2 (admin) can use this method.
     else if (payload.user.access_level!=2){res.status(403).send("REQUEST DENIED- admin method only")}
     else{
-        check_int_type(req.body.title_id, res);
-        check_str_type(req.body.title_name, res);
-        check_int_type(req.body.max_load, res);
         let query = 'DELETE FROM title WHERE title_id= '+con.escape(req.params.title_id_id)+'';
 
         query_db_delete(query, res)
