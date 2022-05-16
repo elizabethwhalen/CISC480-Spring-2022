@@ -2877,7 +2877,6 @@ app.post('/v2/meets', (req, res) => {
         check_int_type(req.body.draft, res, 255);
         check_str_type(req.body.building_code, res, 5);
         check_str_type(req.body.room_num, res, 5);
-        check_int_type(req.body.time_id, res, 255);
         let query = "INSERT INTO meets (dept_code,class_num,section_num,semester,draft,building_code,room_num,time_id) VALUES ?";
         data = [
             [req.body.dept_code,req.body.class_num,req.body.section_num,req.body.semester,req.body.draft,req.body.building_code,req.body.room_num,req.body.time_id]
