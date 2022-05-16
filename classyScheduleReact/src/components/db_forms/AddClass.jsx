@@ -127,7 +127,7 @@ export default function AddClass() {
 
     // Return the UI of the component
     return (
-        <Paper className={classes.container} elevation={0} >
+        <Paper Paper sx={{ padding: '20px', height: "100%" }} elevation={0}  >
             <Grid container spacing={2}>
 
                 {/* TITLE */}

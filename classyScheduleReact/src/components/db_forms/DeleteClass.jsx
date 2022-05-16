@@ -20,12 +20,6 @@ const useStyles = makeStyles({
     root: {
         display: 'flex',
     },
-    container: {
-        padding: "40px",
-        position: 'relative',
-        flexGrow: 1,
-        height: '100%',
-    },
     title: {
         color: '#7E16A4',
     },
@@ -142,7 +136,7 @@ export default function DeleteClass() {
 
     // Return the UI of the component
     return (
-        <Paper className={classes.container} elevation={0} >
+        <Paper sx={{ padding: '20px', height: "100%" }} elevation={0}>
             <Grid container spacing={2}>
 
                 {/* TITLE */}
