@@ -56,6 +56,7 @@ Note: There is a "hidden" file containing API, password, and hashing seeds that 
 </br>
 | Date     | Highest Method Ver. | GitHub Commit ID                      |                                        Notes                                   |
 |----------|----------|-------------------------------|--------------------------------------------|
+| 05/16/22 | v3 | [df3e691](https://github.com/elizabethwhalen/CISC480-Spring-2022/commit/df3e691a61dd639f6a8898085a232010e4586d0b) | More type checking and v3 login |
 | 05/13/22 | v3 | [e5adaa7](https://github.com/elizabethwhalen/CISC480-Spring-2022/commit/e5adaa7bdd2cd4cb13e9db4c5993f0691c6c637b) | class/meets/ext featyre for Desktop Team |
 | 04/24/22 | v3 | [fd31615](https://github.com/elizabethwhalen/CISC480-Spring-2022/commit/fd31615614afc3c1920619136598fc7da3c9fd4b) | classy-schedule-api | Async/await and more robust options for certain tables |
 | 04/20/22 | v2 | [081fe98](https://github.com/elizabethwhalen/CISC480-Spring-2022/commit/081fe98a2d5377d59a871f55291b30573c68d751) | classy-schedule-api | Login and tokens |
