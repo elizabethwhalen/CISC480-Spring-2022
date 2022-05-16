@@ -25,6 +25,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 const sgMail = require('@sendgrid/mail');
 
+var con;
+
 // Developmental setting: 0 for local dev, or 1 for dev API deployment (classy-schedule-dev Web App), and 2 for production API deployment (classy-schedule-api Web App) 
 const dev = 2;
 
@@ -45,31 +47,30 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Read in Azure database password for our access account. Need callback 
 // so that the database connection not make too early
-let db_password = 'fA!6#_&eaU9-EaeJ';
+
 function makeConnection(callback) {
-    // fs.readFile('./hidden/db_password.txt', (err, data) => {
-    //     if (err) throw err;
-    //     db_password = data.toString();
-    //     callback(db_password);
-    // });
+    fs.readFile('./hidden/db_password.txt', (err, data) => {
+        if (err) throw err;
+        db_password = data.toString();
+        callback(db_password);
+    });
 }
 // // Read in seed used for jwt. We don't need callback function because hashing
 // doe not occur right when server is initiated.
 let secretkey;
 try {
-    secretkey = 'secretkey'
-    // secretkey = fs.readFileSync('./hidden/jwt_seed.txt').toString();
+    secretkey = fs.readFileSync('./hidden/jwt_seed.txt').toString();
 } catch {
     throw "Server error: security issue. Please try again later";
 }
 // Read in API key used for sendgrid email
-// let sg_key;
+let sg_key;
 try {
     sg_key = fs.readFileSync('./hidden/sg_key.txt').toString();
     sgMail.setApiKey(sg_key);
 } catch {
-    sg_key = 'fA!6#_&eaU9-EaeJ'
-    // throw "Server error: security issue. Please try again later";
+    // sg_key = 'fA!6#_&eaU9-EaeJ'
+    throw "Server error: security issue. Please try again later";
 }
 
 ///
@@ -4461,9 +4462,7 @@ function sql_error(err) {
     if (err_code === "ER_ROW_IS_REFERENCED_2"){return [409,"Bad Request- referential integrity would be violated"]}
     if (err_code === "ER_NO_REFERENCED_ROW_2"){return [404,"The entry you are trying to access does not exist"]}
     if (err_code === "ER_DUP_ENTRY"){return [409,"Entry already exists"]}
-    else {
-        return [500,"Unknown error- send this to DB team: "+err]
-    }
+    return [400,"Bad request"]
 }
 
 // ****login****
