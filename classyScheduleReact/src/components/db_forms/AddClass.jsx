@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     message: {
         color: '#388e3c',
     },
-    unsucessfulMessage: {
+    unsuccessfulMessage: {
         color: '#FA0D00',
     },
 })
@@ -222,7 +222,7 @@ export default function AddClass() {
                                 <Grid item xs={12}>
                                     <Typography
                                         variant="body1"
-                                        className={classes.unsucessfulMessage}
+                                        className={classes.unsuccessfulMessage}
                                         fontWeight='600'
                                     >
                                         <CloseIcon /> Class could not be added to the databse.
