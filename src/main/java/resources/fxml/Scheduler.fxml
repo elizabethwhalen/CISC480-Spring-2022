@@ -20,7 +20,7 @@
             </HBox>
         </top>
     </BorderPane>
-    <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="1200.0">
+    <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="1200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <Menu fx:id="goTohome" mnemonicParsing="false" text="Home">
             <MenuItem fx:id="goToHome" mnemonicParsing="false" onAction="#goBack" text="Back to Home" />
         </Menu>

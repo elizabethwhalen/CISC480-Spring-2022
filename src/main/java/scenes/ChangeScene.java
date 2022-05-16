@@ -29,10 +29,17 @@ public class ChangeScene {
      */
     public ChangeScene() {}
 
+    public void makeMaximized(Stage stage){
+        stage.setMaximized(false);
+        stage.show();
+        stage.setMaximized(true);
+    }
+
     /**
      * Changes scene to add course page when 'Add Course' button is clicked
      */
     public void addCourseButtonClicked(Stage stage) {
+        stage.setMaximized(false);
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/resources/fxml/AddCourseToDatabase.fxml"));
         Parent root = null;
         try {
@@ -44,6 +51,7 @@ public class ChangeScene {
         }
         stage.setTitle("Add Course");
         stage.setScene(new Scene(root));
+        makeMaximized(stage);
         stage.show();
     }
 
@@ -62,6 +70,7 @@ public class ChangeScene {
         }
         stage.setTitle("Add Classroom");
         stage.setScene(new Scene(root));
+        makeMaximized(stage);
         stage.show();
     }
 
@@ -80,6 +89,7 @@ public class ChangeScene {
         }
         stage.setTitle("Add Faculty");
         stage.setScene(new Scene(root));
+        makeMaximized(stage);
         stage.show();
     }
 
@@ -98,6 +108,7 @@ public class ChangeScene {
         }
         stage.setTitle("Edit Course");
         stage.setScene(new Scene(root));
+        makeMaximized(stage);
         stage.show();
     }
 
@@ -116,6 +127,7 @@ public class ChangeScene {
         }
         stage.setTitle("Edit Faculty");
         stage.setScene(new Scene(root));
+        makeMaximized(stage);
         stage.show();
     }
 
@@ -134,6 +146,7 @@ public class ChangeScene {
         }
         stage.setTitle("Edit Classroom");
         stage.setScene(new Scene(root));
+        makeMaximized(stage);
         stage.show();
     }
 
@@ -153,6 +166,7 @@ public class ChangeScene {
         }
         stage.setTitle("View Schedule");
         stage.setScene(new Scene(root));
+        makeMaximized(stage);
         stage.show();
     }
 
@@ -171,6 +185,7 @@ public class ChangeScene {
         }
         stage.setTitle("Delete Course");
         stage.setScene(new Scene(root));
+        makeMaximized(stage);
         stage.show();
     }
 
@@ -189,6 +204,7 @@ public class ChangeScene {
         }
         stage.setTitle("Delete Classroom");
         stage.setScene(new Scene(root));
+        makeMaximized(stage);
         stage.show();
     }
 
@@ -207,6 +223,7 @@ public class ChangeScene {
         }
         stage.setTitle("Delete Faculty");
         stage.setScene(new Scene(root));
+        makeMaximized(stage);
         stage.show();
     }
 
@@ -227,6 +244,7 @@ public class ChangeScene {
         }
         stage.setTitle("Homepage");
         stage.setScene(new Scene(root));
+        makeMaximized(stage);
         stage.show();
     }
 
@@ -246,6 +264,7 @@ public class ChangeScene {
         }
         stage.setTitle("Classy-Schedule");
         stage.setScene(new Scene(root));
+        makeMaximized(stage);
         stage.show();
     }
 }

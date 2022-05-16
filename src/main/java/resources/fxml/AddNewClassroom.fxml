@@ -112,7 +112,7 @@
             </LinearGradient>
          </textFill></Button>
         <TextField fx:id="capacity" layoutX="280.0" layoutY="167.0" prefHeight="25.0" prefWidth="200.0" promptText="capacity" />
-      <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="640.0">
+      <MenuBar layoutY="1.0" prefHeight="26.0" prefWidth="640.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <Menu fx:id="goTohome" mnemonicParsing="false" text="Home">
                 <MenuItem fx:id="goToHome" mnemonicParsing="false" onAction="#goBack" text="Back to Home" />
             </Menu>

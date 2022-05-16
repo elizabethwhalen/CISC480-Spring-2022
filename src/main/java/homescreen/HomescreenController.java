@@ -1,5 +1,7 @@
 package homescreen;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import scenes.ChangeScene;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -7,6 +9,8 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+
 
 /**
  *Controls the homescreen page, which allows the user to navigate to add course, add professor, add classroom, and view
@@ -125,8 +129,12 @@ public class HomescreenController implements Initializable {
      * Sets stage to homescreen
      * @param stage
      */
+    @FXML
+    public ImageView imageView;
     public void setStage(Stage stage) {
         this.stage = stage;
+        Image logo = new Image("main/java/images/ClassyScheduler.png");
+        imageView.setImage(logo);
     }
 
 }
