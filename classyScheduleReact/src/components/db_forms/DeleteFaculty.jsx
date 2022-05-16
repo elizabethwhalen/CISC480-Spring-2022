@@ -28,7 +28,7 @@ const useStyles = makeStyles({
         color: '#388e3c',
     },
     unsucessfulMessage: {
-        color: 'red',
+        color: '#FA0D00',
     },
 })
 
@@ -215,10 +215,10 @@ export default function DeleteFaculty() {
                                 <Grid item xs={12}>
                                     <Typography
                                         variant="body1"
-                                        className={classes.message}
+                                        className={classes.unsuccessfulMessage}
                                         fontWeight='600'
                                     >
-                                        <CloseIcon /> Faculty Member could not be deleted from the databse.
+                                        <CloseIcon /> Faculty Member could not be deleted from the database.
                                         Please verify that the record being deleted exists.
                                     </Typography>
                                 </Grid>

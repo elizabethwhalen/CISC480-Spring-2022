@@ -23,7 +23,7 @@ const useStyles = makeStyles({
         color: '#388e3c',
     },
     unsucessfulMessage: {
-        color: 'red',
+        color: '#FA0D00',
     },
 })
 
@@ -221,10 +221,10 @@ export default function AddFaculty() {
                                 <Grid item xs={12}>
                                     <Typography
                                         variant="body1"
-                                        className={classes.message}
+                                        className={classes.unsucessfulMessage}
                                         fontWeight='600'
                                     >
-                                        <CloseIcon /> Faculty could not be added to the databse.
+                                        <CloseIcon /> Faculty could not be added to the database.
                                         Please verify that the faculty ID being added does not already exist.
                                     </Typography>
                                 </Grid>

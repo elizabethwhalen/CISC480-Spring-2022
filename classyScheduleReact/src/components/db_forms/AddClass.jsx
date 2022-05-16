@@ -32,7 +32,7 @@ const useStyles = makeStyles({
         color: '#388e3c',
     },
     unsucessfulMessage: {
-        color: 'red',
+        color: '#FA0D00',
     },
 })
 

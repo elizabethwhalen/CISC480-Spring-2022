@@ -27,7 +27,7 @@ const useStyles = makeStyles({
         color: '#388e3c',
     },
     unsucessfulMessage: {
-        color: 'red',
+        color: '#FA0D00',
     },
 })
 
@@ -219,10 +219,10 @@ export default function DeleteRoom() {
                                 <Grid item xs={12}>
                                     <Typography
                                         variant="body1"
-                                        className={classes.message}
+                                        className={classes.unsuccessfulMessage}
                                         fontWeight='600'
                                     >
-                                        <CloseIcon /> Room could not be deleted from the databse.
+                                        <CloseIcon /> Room could not be deleted from the database.
                                         Please verify that the record being deleted exists.
                                     </Typography>
                                 </Grid>

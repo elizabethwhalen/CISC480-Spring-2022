@@ -27,7 +27,7 @@ const useStyles = makeStyles({
         color: '#388e3c',
     },
     unsucessfulMessage: {
-        color: 'red',
+        color: '#FA0D00',
     },
 })
 
@@ -222,7 +222,7 @@ export default function AddRoom() {
                                 <Grid item xs={12}>
                                     <Typography
                                         variant="body1"
-                                        className={classes.message}
+                                        className={classes.unsuccessfulMessage}
                                         fontWeight='600'
                                     >
                                         <CloseIcon /> Room could not be added to the databse.
