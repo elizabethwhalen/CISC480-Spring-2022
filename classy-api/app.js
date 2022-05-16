@@ -222,16 +222,19 @@ function check_int_type(value, res, int_size = null){
     @returns        Returns nothing if no errors encountered.
 */
     console.log(value);
-    if(isNaN(value)){
-        throw res.status(400).send(`${value} is not the correct data type for the column`);
-    };
-    if(int_size){
-        if(parseInt(value) > int_size){
-            throw res.status(400).send(`${value} is not the correct size for the column`);
-        }
+    if(value === undefined){
+        return;
     }
-}
+    if(isNaN(value)){
+            throw res.status(400).send(`${value} is not the correct data type for the column`);
+        };
+        if(int_size){
+            if(parseInt(value) > int_size){
+                throw res.status(400).send(`${value} is not the correct size for the column`);
+            }
+        }
 
+    }
 function check_str_type(value, res, str_size = null){
 /*
     Checks if a value is a STR and if the size fits within the column. 
@@ -247,13 +250,12 @@ function check_str_type(value, res, str_size = null){
 
     @returns        Returns nothing if no errors encountered.
 */
-    if(typeof value !== 'string'){
+    if(value !== undefined && typeof value !== 'string'){
         throw res.status(400).send(`${value} is not the correct data type for the column`);
     }
-    if(str_size){
+    if(value !== undefined && str_size){
         if(value.length > str_size){
             throw res.status(400).send(`${value} is not the correct size for the column`);
-
         }
     }
 }
@@ -3513,7 +3515,7 @@ app.post('/v2/section', (req, res) => {
         let query = "INSERT INTO section (dept_code,class_num,section_num,semester,draft,capacity) VALUES ?";
         check_str_type(req.body.dept_code, res, 5);
         check_str_type(req.body.class_num, res, 5);
-        check_int_type(req.body.seciton_num, res, 255);
+        check_int_type(req.body.section_num, res, 255);
         check_str_type(req.body.semester, res, 15);
         check_int_type(req.body.draft, res, 255);
         check_int_type(req.body.capacity, res, 255);
