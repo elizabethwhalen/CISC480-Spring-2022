@@ -385,6 +385,7 @@ app.post('/v3/login', async function (req, res) {
                     res.status(200).send(token);
                     
                     // Update the webpage and clear countdown timer
+                    validLogin = false; // Close time window
                     res2.status(200).send("Login attempt for user "+loginjson[0].email+" has been granted. The HTTP request will now be completed with a token.");
                     clearTimeout(myTimeout); 
                 } else {
@@ -420,7 +421,7 @@ function sendVerifyEmail(emailRecipient, token) {
         link = "http://localhost:3000/v3/authenticate/"+token;
     } else if (dev == 1) {
         link = "https://classy-dev.ddns.net/v3/authenticate/"+token;
-    } else {
+    } else if (dev == 2) {
         link = "https://classy-api.ddns.net/v3/authenticate/"+token;
     }
 
